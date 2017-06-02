@@ -106,13 +106,14 @@ public class HistoryListAdapter extends BaseAdapter {
                 titleText.setText(title);
                 // set the nice image
                 switch (file.getGameMode()) {
-                    case 1:
-                    case 2:
+                    case K_SCOREWIMBLEDON3:
+                    case K_SCOREWIMBLEDON5:
+                    case K_SCOREFAST4:
                         // this is a nice game of tennis
                         imageView.setImageResource(R.drawable.tennis);
                         break;
-                    case 3:
-                    case 4:
+                    case K_SCOREBADMINTON3:
+                    case K_SCOREBADMINTON5:
                         // this is a nice game of badminton
                         imageView.setImageResource(R.drawable.badminton);
                         break;

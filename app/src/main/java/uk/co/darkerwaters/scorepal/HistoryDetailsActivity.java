@@ -83,30 +83,23 @@ public class HistoryDetailsActivity extends AppCompatActivity {
     private void populateGameSummary() {
         TextView gameSummaryText = (TextView) findViewById(R.id.history_game_mode_summary);
 
-        int gameMode = HistoryFile.getGameMode(historyFileName);
-
-        /*
-        #define K_SCOREWIMBLEDON5	1
-        #define K_SCOREWIMBLEDON3	2
-        #define K_SCOREBADMINTON3	3
-        #define K_SCOREBADMINTON5	4
-        #define K_SCOREPOINTS		5
-         */
-
-        switch (gameMode) {
-            case 1:
+        switch (HistoryFile.getGameMode(historyFileName)) {
+            case K_SCOREWIMBLEDON5:
                 gameSummaryText.setText(R.string.played_wimbledon5);
                 break;
-            case 2:
+            case K_SCOREWIMBLEDON3:
                 gameSummaryText.setText(R.string.played_wimbedon3);
                 break;
-            case 3:
+            case K_SCOREBADMINTON3:
                 gameSummaryText.setText(R.string.played_badminton3);
                 break;
-            case 4:
+            case K_SCOREBADMINTON5:
                 gameSummaryText.setText(R.string.played_badminton3);
                 break;
-            case 5:
+            case K_SCOREFAST4:
+                gameSummaryText.setText(R.string.played_fast_four);
+                break;
+            case K_SCOREPOINTS:
             default:
                 gameSummaryText.setText(R.string.played_points);
                 break;
@@ -161,13 +154,14 @@ public class HistoryDetailsActivity extends AppCompatActivity {
             namesText.setText(title);
         // set the nice image
         switch (HistoryFile.getGameMode(historyFileName)) {
-            case 1:
-            case 2:
+            case K_SCOREWIMBLEDON5:
+            case K_SCOREWIMBLEDON3:
+            case K_SCOREFAST4:
                 // this is a nice game of tennis
                 imageView.setImageResource(R.drawable.tennis);
                 break;
-            case 3:
-            case 4:
+            case K_SCOREBADMINTON5:
+            case K_SCOREBADMINTON3:
                 // this is a nice game of badminton
                 imageView.setImageResource(R.drawable.badminton);
                 break;
@@ -223,15 +217,18 @@ public class HistoryDetailsActivity extends AppCompatActivity {
 
         int noSets = scoreData.sets.first + scoreData.sets.second;
         int noGames = scoreData.games.first + scoreData.games.second;
+        boolean isSets = false;
         if (noSets > 0) {
             switch (scoreData.currentScoreMode) {
-                case 1:
-                case 2:
+                case K_SCOREWIMBLEDON3:
+                case K_SCOREWIMBLEDON5:
                     // this is tennis, leave the labels alone
+                    isSets = true;
                     break;
-                case 3:
-                case 4:
-                    // this is badminton, the sets is the number of games
+                case K_SCOREBADMINTON3:
+                case K_SCOREBADMINTON5:
+                case K_SCOREFAST4:
+                    // this is badminton (or fast4 - no sets), the sets is the number of games
                     setsLabel.setText(R.string.games);
                     // and the games label is the hisory of points
                     gamesLabel.setText(R.string.game_points);
@@ -250,7 +247,7 @@ public class HistoryDetailsActivity extends AppCompatActivity {
                     playerOneGames[i].setText(Integer.toString(pair.first));
                     playerTwoGames[i].setText(Integer.toString(pair.second));
                 }
-                else if (scoreData.previousSets.size() == i) {
+                else if (scoreData.previousSets.size() == i && isSets) {
                     // show the final games result
                     playerOneGames[i].setText(Integer.toString(scoreData.games.first));
                     playerTwoGames[i].setText(Integer.toString(scoreData.games.second));

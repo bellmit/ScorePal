@@ -96,7 +96,7 @@ public class HistoryFile implements Comparable<HistoryFile> {
                 playerOne + "_" +
                 playerTwo + "_" +
                 scoreString + "_[" +
-                data.currentScoreMode + "]_" +
+                data.currentScoreMode.value + "]_" +
                 currentDateandTime +
                 K_FILENAME_EXT;
     }
@@ -107,13 +107,14 @@ public class HistoryFile implements Comparable<HistoryFile> {
         boolean isBadminton = false;
         // set the nice image
         switch (data.currentScoreMode) {
-            case 1:
-            case 2:
+            case K_SCOREWIMBLEDON5:
+            case K_SCOREWIMBLEDON3:
+            case K_SCOREFAST4:
                 // this is a nice game of tennis
                 isTennis = true;
                 break;
-            case 3:
-            case 4:
+            case K_SCOREBADMINTON3:
+            case K_SCOREBADMINTON5:
                 // this is a nice game of badminton
                 isBadminton = true;
                 break;
@@ -216,11 +217,11 @@ public class HistoryFile implements Comparable<HistoryFile> {
         return scoreString;
     }
 
-    public int getGameMode() {
+    public ScoreData.ScoreMode getGameMode() {
         return getGameMode(filename);
     }
 
-    public static int getGameMode(String filename) {
+    public static ScoreData.ScoreMode getGameMode(String filename) {
         int gameMode = 1;
         // the game mode is encapsulated in [], so search for those
         int startIndex = filename.indexOf("[");
@@ -233,7 +234,7 @@ public class HistoryFile implements Comparable<HistoryFile> {
                 e.printStackTrace();
             }
         }
-        return gameMode;
+        return ScoreData.ScoreMode.from(gameMode);
     }
 
     public static String getScoreStringType(Context context, String scoreString) {

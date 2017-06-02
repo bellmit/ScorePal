@@ -3,12 +3,46 @@ package uk.co.darkerwaters.scorepal;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by douglasbrain on 30/05/2017.
  */
 
 public class ScoreData {
+    public enum ScoreMode {
+        K_INVALID(0),
+        K_SCOREWIMBLEDON5(1),
+        K_SCOREWIMBLEDON3(2),
+        K_SCOREBADMINTON3(3),
+        K_SCOREBADMINTON5(4),
+        K_SCOREPOINTS(5),
+        K_SCOREFAST4(6);
+
+        public final int value;
+        private ScoreMode(int value) {
+            this.value = value;
+        }
+
+        // Mapping enum to id
+        private static final Map<Integer, ScoreMode> valueMap = new HashMap<Integer, ScoreMode>();
+        // initliase the map in a static global function
+        static {
+            for (ScoreMode mode : ScoreMode.values())
+                valueMap.put(mode.value, mode);
+        }
+
+        public static ScoreMode from(int value) {
+            ScoreMode mode = valueMap.get(value);
+            if (null == mode) {
+                return ScoreMode.K_INVALID;
+            }
+            else {
+                return mode;
+            }
+        }
+    }
 
     /*
         {		— as the first char
@@ -34,7 +68,7 @@ public class ScoreData {
 
     public int currentServer = 0;
     public int currentNorth = 0;
-    public int currentScoreMode = 0;
+    public ScoreMode currentScoreMode = ScoreMode.K_INVALID;
     public boolean isInTieBreak = false;
     public Integer matchWinner = null;
     public Pair<Integer, Integer> sets;
@@ -53,7 +87,7 @@ public class ScoreData {
     public ScoreData() {
         this.currentServer = 0;
         this.currentNorth = 0;
-        this.currentScoreMode = 0;
+        this.currentScoreMode = ScoreMode.K_INVALID;
         this.isInTieBreak = false;
         this.matchWinner = null;
         this.sets = new Pair<Integer, Integer>(0, 0);
@@ -75,7 +109,7 @@ public class ScoreData {
             // then the data code, this has a colon
             writeStringWithColon(dataCode, recDataString);
             // now the active mode
-            writeChar(this.currentScoreMode, recDataString);
+            writeChar(this.currentScoreMode.value, recDataString);
             // the match winner
             if (this.matchWinner == null) {
                 // no match winner
@@ -158,7 +192,7 @@ public class ScoreData {
                 // get the code that we need to respond with
                 dataCode = extractValueToColon(recDataString);
                 // get the active mode
-                currentScoreMode = Integer.parseInt(extractChars(1, recDataString));
+                currentScoreMode = ScoreMode.from(Integer.parseInt(extractChars(1, recDataString)));
                 int matchWinnerData = Integer.parseInt(extractChars(1, recDataString));
                 if (matchWinnerData <= 1) {
                     // there is a winner, 0 or 1 - set this
@@ -200,8 +234,9 @@ public class ScoreData {
 
     public String getPointsAsString(int points) {
         switch (currentScoreMode) {
-            case 1:
-            case 2:
+            case K_SCOREWIMBLEDON5:
+            case K_SCOREWIMBLEDON3:
+            case K_SCOREFAST4:
                 // this is ITF scoring mode
                 if (isInTieBreak) {
                     //just fall through to show the number of points

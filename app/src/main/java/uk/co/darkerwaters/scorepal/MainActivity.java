@@ -478,18 +478,23 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
 
             // a won match with set data is special, the final games score goes in the games
             // boxes with the previous sets not showing the final set's points
-            int noSets = scoreData.previousSets.size();
-            if (noSets > 0 && scoreData.sets.first + scoreData.sets.second > 0) {
-                // they are playing sets - show the games for the last set in the games boxes
-                int playerOneFinalSetGames = scoreData.previousSets.get(noSets - 1).first;
-                int playerTwoFinalSetGames = scoreData.previousSets.get(noSets - 1).second;
-                playerOneGamesText.setText(Integer.toString(playerOneFinalSetGames));
-                playerTwoGamesText.setText(Integer.toString(playerTwoFinalSetGames));
-                // and if the final set is not number 5 (not shown) then clear the boxes
-                if (noSets < 5) {
-                    playerOnePreviousSets[noSets - 1].setText("");
-                    playerTwoPreviousSets[noSets - 1].setText("");
+            switch(scoreData.currentScoreMode) {
+                case K_SCOREWIMBLEDON3:
+                case K_SCOREWIMBLEDON5:
+                int noSets = scoreData.previousSets.size();
+                if (noSets > 0 && scoreData.sets.first + scoreData.sets.second > 0) {
+                    // they are playing sets - show the games for the last set in the games boxes
+                    int playerOneFinalSetGames = scoreData.previousSets.get(noSets - 1).first;
+                    int playerTwoFinalSetGames = scoreData.previousSets.get(noSets - 1).second;
+                    playerOneGamesText.setText(Integer.toString(playerOneFinalSetGames));
+                    playerTwoGamesText.setText(Integer.toString(playerTwoFinalSetGames));
+                    // and if the final set is not number 5 (not shown) then clear the boxes
+                    if (noSets < 5) {
+                        playerOnePreviousSets[noSets - 1].setText("");
+                        playerTwoPreviousSets[noSets - 1].setText("");
+                    }
                 }
+                break;
             }
         } else {
             // hide the winning text and show the points
@@ -505,9 +510,10 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
 
         // only show serving indicators when no-one has won and we are tracking that (tennis)
         switch (scoreData.currentScoreMode) {
-            case 1 :
-            case 2 :
-                // modes one and two are wimbledon - show the server indicators
+            case K_SCOREWIMBLEDON5:
+            case K_SCOREWIMBLEDON3:
+            case K_SCOREFAST4:
+                // show the server indicators for tennis types
                 visibility = View.VISIBLE;
                 break;
             default:
@@ -573,14 +579,16 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             playerTwoGames += gameResult.second;
         }
         int visibility;
+        boolean isSets = false;
         // show all the information about games if we are playing games
         switch (scoreData.currentScoreMode) {
-            case 1 :
-            case 2 :
-                // modes one and two are wimbledon - show the games stuff
-            case 3 :
-            case 4 :
-                // modes three and four are badminton - show the games stuff
+            case K_SCOREWIMBLEDON5:
+            case K_SCOREWIMBLEDON3:
+                isSets = true;
+            case K_SCOREBADMINTON3:
+            case K_SCOREBADMINTON5:
+            case K_SCOREFAST4:
+                // for tennis and badminton, show the games stuff
                 visibility = View.VISIBLE;
                 break;
             default:
@@ -593,7 +601,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         playerTwoGamesText.setVisibility(visibility);
         gamesTitleText.setVisibility(visibility);
 
-        if (scoreData.previousSets.size() >= 5) {
+        if (scoreData.previousSets.size() >= 5 && isSets) {
             // the final set is the won result of the current one - just show in games
             Pair<Integer, Integer> gameResult = scoreData.previousSets.get(4);
             // set the current games
@@ -620,9 +628,17 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
 
         // show all the information about sets if we are playing sets
         int visibility;
+        boolean isSets = false;
+        String historyTitle = getResources().getString(R.string.games);
         switch (scoreData.currentScoreMode) {
-            case 1 :
-            case 2 :
+            case K_SCOREWIMBLEDON5:
+            case K_SCOREWIMBLEDON3:
+                // show sets
+                isSets = true;
+                historyTitle = getResources().getString(R.string.sets);
+            case K_SCOREBADMINTON3:
+            case K_SCOREBADMINTON5:
+            case K_SCOREFAST4:
                 // modes one and two are wimbledon - show the sets stuff
                 visibility = View.VISIBLE;
                 break;
@@ -631,6 +647,17 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
                 visibility = View.INVISIBLE;
                 break;
         }
+        int setsVisibility = visibility;
+        // set the sets label
+        setsTitleText.setText(historyTitle);
+        String previousTitle = getResources().getString(R.string.previous_sets);
+        if (false == isSets) {
+            // replace the 'sets' in the title with 'games'
+            previousTitle = previousTitle.replace(getResources().getString(R.string.sets), historyTitle);
+            // and hide the sets controls
+            setsVisibility = View.GONE;
+        }
+        previousSetsTitleText.setText(previousTitle);
         // set this on all the relevant controls
         if (null != playerOneSetsLabelText) {
             animateVisibilityChange(playerOneSetsLabelText, visibility);
@@ -638,9 +665,9 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         if (null != playerTwoSetsLabelText) {
             animateVisibilityChange(playerTwoSetsLabelText, visibility);
         }
-        animateVisibilityChange(playerOneSetsText, visibility);
-        animateVisibilityChange(playerTwoSetsText, visibility);
-        animateVisibilityChange(setsTitleText, visibility);
+        animateVisibilityChange(playerOneSetsText, setsVisibility);
+        animateVisibilityChange(playerTwoSetsText, setsVisibility);
+        animateVisibilityChange(setsTitleText, setsVisibility);
         animateVisibilityChange(previousSetsTitleText, visibility);
         // and the list of previous sets results labels
         for (int i = 0; i < 4; ++i) {
