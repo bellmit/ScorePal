@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.Gravity;
@@ -23,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +41,7 @@ import uk.co.darkerwaters.scorepal.history.HistoryManager;
 public class MainActivity extends AppCompatActivity implements BtManager.IBtManagerListener {
 
     private TextView connectionText;
-    private Button connectButton;
+    private View connectButton;
     private View topToolbar;
 
     private TextView winnerText;
@@ -104,9 +106,15 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         updateConnectionDisplay();
         // and update the titles for the players
         updatePlayerTitles();
+
+        // request focus from the main layout to prevent the edit box from taking it and showing
+        // the keyboard all the time
+        View topLayout = (View) findViewById(R.id.focusable_layout);
+        if (null != topLayout) {
+            topLayout.requestFocus();
+        }
+
         // and try to connect to the last device
-
-
         final ProgressDialog progress = ProgressDialog.show(this,
                 getResources().getString(R.string.connecting),
                 getResources().getString(R.string.please_wait_connecting), false);
@@ -166,21 +174,12 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // clear any unwanted chars
-                String playerText = getOnlyStrings(playerOneTitleText.getText().toString());
-                if (playerText == null || playerText.isEmpty()) {
-                    playerText = getString(R.string.player_one);
-                }
-                if (false == playerOneTitleText.getText().toString().equals(playerText)) {
-                    // text changed, set it back
-                    playerOneTitleText.setText(playerText);
-                }
-                // update the label
-                updatePlayerTitles();
+                // whatever
             }
             @Override
             public void afterTextChanged(Editable s) {
-                //whatever
+                // update the label
+                updatePlayerTitles();
             }
         });
         // and player two
@@ -191,21 +190,12 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // clear any unwanted chars
-                String playerText = getOnlyStrings(playerTwoTitleText.getText().toString());
-                if (playerText == null || playerText.isEmpty()) {
-                    playerText = getString(R.string.player_two);
-                }
-                if (false == playerTwoTitleText.getText().toString().equals(playerText)) {
-                    // text changed, set it back
-                    playerTwoTitleText.setText(playerText);
-                }
-                // update the label
-                updatePlayerTitles();
+                // whatever
             }
             @Override
             public void afterTextChanged(Editable s) {
-                //whatever
+                // update the label
+                updatePlayerTitles();
             }
         });
     }
@@ -237,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         topToolbar = findViewById(R.id.top_toolbar_layout);
 
         connectionText = (TextView) findViewById(R.id.bt_connected_text);
-        connectButton = (Button) findViewById(R.id.connect_button);
+        connectButton = (View) findViewById(R.id.connect_button);
         winnerText = (TextView) findViewById(R.id.winner_text_view);
 
         playerOneTitleText = (EditText) findViewById(R.id.player_one_name_text_view);
@@ -337,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
 
     private void updatePlayerTitles() {
         // set the titles of the labels in the sets view
-        String playerOneTitle = playerOneTitleText.getText().toString();
+        String playerOneTitle = getOnlyStrings(playerOneTitleText.getText().toString());
         if (null == playerOneTitle || playerOneTitle.isEmpty()) {
             playerOneTitle = getResources().getString(R.string.player_one);
         }
@@ -345,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             playerOneSetsLabelText.setText(playerOneTitle);
         }
         // and do player two
-        String playerTwoTitle = playerTwoTitleText.getText().toString();
+        String playerTwoTitle = getOnlyStrings(playerTwoTitleText.getText().toString());
         if (null == playerTwoTitle || playerTwoTitle.isEmpty()) {
             playerTwoTitle = getResources().getString(R.string.player_two);
         }
@@ -478,7 +468,9 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         if (null != scoreData.matchWinner) {
             winnerText.setVisibility(View.VISIBLE);
             visibility = View.INVISIBLE;
-            String title = (scoreData.matchWinner.intValue() == 0 ? playerOneTitleText.getText().toString() : playerTwoTitleText.getText().toString());
+            String title = (scoreData.matchWinner.intValue() == 0 ?
+                    getOnlyStrings(playerOneTitleText.getText().toString()) :
+                    getOnlyStrings(playerTwoTitleText.getText().toString()));
             if (title.isEmpty()) {
                 title = scoreData.matchWinner == 0 ? getResources().getString(R.string.player_one) : getResources().getString(R.string.player_two);
             }
