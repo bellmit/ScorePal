@@ -202,11 +202,11 @@ public class ScoreData {
         switch (currentScoreMode) {
             case 1:
             case 2:
-                // this is ATP wimbledon scoring mode
+                // this is ITF scoring mode
                 if (isInTieBreak) {
                     //just fall through to show the number of points
                 } else {
-                    return getAtpScore(points);
+                    return getItfScore(points);
                 }
             default:
                 // just numbers, fall through to the default
@@ -214,7 +214,7 @@ public class ScoreData {
         }
     }
 
-    public static String getAtpScore(int value) {
+    public static String getItfScore(int value) {
         switch (value) {
             case 0:
                 return "00";

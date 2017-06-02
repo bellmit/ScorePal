@@ -36,8 +36,8 @@
     <string name="points">Points</string>
     <string name="successful_save">Successfully saved...</string>
     <string name="total_points">Total Points</string>
-    <string name="played_wimbedon3">A 3 set match of ATP scored tennis</string>
-    <string name="played_wimbledon5">A 5 set match of ATP scored tennis</string>
+    <string name="played_wimbedon3">A 3 set match of ITF scored tennis</string>
+    <string name="played_wimbledon5">A 5 set match of ITF scored tennis</string>
     <string name="played_badminton3">A 3 game match of badminton</string>
     <string name="played_badminton5">A 5 game match of badminton</string>
     <string name="played_points">Played a straight game of points</string>
