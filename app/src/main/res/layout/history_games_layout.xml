@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/history_player_two_set_four"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_two_set_three"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_two_set_three" />
+
+    <TextView
+        android:id="@+id/history_player_two_set_five"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_two_set_four"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_two_set_four" />
+
+    <TextView
+        android:id="@+id/history_player_one_set_two"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_one_set_one"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_one_set_one" />
+
+    <TextView
+        android:id="@+id/history_player_two_set_two"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_two_set_one"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_two_set_one" />
+
+    <TextView
+        android:id="@+id/history_player_one_set_five"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_one_set_four"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_one_set_four" />
+
+    <TextView
+        android:id="@+id/history_player_two_games_label"
+        style="@style/PlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/history_player_one_games_label"
+        tools:text="@string/player_two" />
+
+    <TextView
+        android:id="@+id/history_player_one_set_three"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_one_set_two"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_one_set_two" />
+
+    <TextView
+        android:id="@+id/history_player_two_set_three"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_two_set_two"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_two_set_two" />
+
+    <TextView
+        android:id="@+id/history_player_one_set_one"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_one_games_label"
+        app:layout_constraintLeft_toLeftOf="@+id/history_games_label" />
+
+    <TextView
+        android:id="@+id/history_player_one_set_four"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_one_set_three"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_one_set_three" />
+
+    <TextView
+        android:id="@+id/history_games_label"
+        style="@style/ScoreInformation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/games"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_one_games_label" />
+
+    <TextView
+        android:id="@+id/history_player_one_games_label"
+        style="@style/PlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/history_games_label"
+        tools:text="@string/player_one" />
+
+    <TextView
+        android:id="@+id/history_player_two_set_one"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_two_games_label"
+        app:layout_constraintLeft_toLeftOf="@+id/history_games_label" />
+</android.support.constraint.ConstraintLayout>

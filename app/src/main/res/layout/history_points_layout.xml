@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/history_total_points_label"
+        style="@style/ScoreInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/total_points"
+        app:layout_constraintLeft_toRightOf="@+id/history_player_one_points_label"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/history_player_two_total_points"
+        style="@style/ScoreValues"
+        android:layout_width="64dp"
+        android:layout_height="32dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_two_points_label"
+        app:layout_constraintLeft_toLeftOf="@+id/history_total_points_label" />
+
+    <TextView
+        android:id="@+id/history_player_one_total_points"
+        style="@style/ScoreValues"
+        android:layout_width="64dp"
+        android:layout_height="32dp"
+        android:text="00"
+        app:layout_constraintBaseline_toBaselineOf="@+id/history_player_one_points_label"
+        app:layout_constraintLeft_toLeftOf="@+id/history_total_points_label" />
+
+    <TextView
+        android:id="@+id/history_player_two_points_label"
+        style="@style/PlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/history_player_one_points_label"
+        tools:text="@string/player_two" />
+
+    <TextView
+        android:id="@+id/history_player_one_points_label"
+        style="@style/PlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/history_total_points_label"
+        tools:text="@string/player_one" />
+</android.support.constraint.ConstraintLayout>

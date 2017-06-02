@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/listImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/court" />
+
+    <TextView
+        android:id="@+id/listTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/listImage"
+        android:layout_toRightOf="@+id/listImage"
+        android:text="A List item title"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/listDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listTitle"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/listImage"
+        android:maxLines="2"
+        android:text="The List item description"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/history_row_score_type"
+        style="@style/PlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/history_row_score"
+        android:layout_alignLeft="@+id/history_row_score"
+        android:text="Points" />
+
+    <TextView
+        android:id="@+id/history_row_score"
+        style="@style/PlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/history_row_delete"
+        android:layout_below="@+id/listTitle"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
+        android:text="88-88" />
+
+    <Button
+        android:id="@+id/history_row_delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/Color.Button"
+        android:layout_alignBottom="@+id/listImage"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:text="X" />
+
+</RelativeLayout>
