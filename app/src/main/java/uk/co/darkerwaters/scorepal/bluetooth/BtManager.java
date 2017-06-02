@@ -250,17 +250,18 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
 
     public boolean isEnabled() {
         // set the status of the adapter
-        return adapter.isEnabled();
+        return null != adapter && adapter.isEnabled();
     }
 
     public void enable(boolean isChecked) {
-        if (adapter.isEnabled() && false == isChecked) {
-            // BT is on but the user just turned it off
-            adapter.disable();
-        }
-        else if (false == adapter.isEnabled() && isChecked) {
-            // BT is off but the user just turned it on
-            adapter.enable();
+        if (null != adapter) {
+            if (adapter.isEnabled() && false == isChecked) {
+                // BT is on but the user just turned it off
+                adapter.disable();
+            } else if (false == adapter.isEnabled() && isChecked) {
+                // BT is off but the user just turned it on
+                adapter.enable();
+            }
         }
     }
 
