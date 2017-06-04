@@ -53,4 +53,5 @@
     <string name="sure_to_reset">Are you sure you want to reset this match?</string>
     <string name="unsuccessful_reset">Sorry, failed to send the reset command. Check bluetooth connection...</string>
     <string name="played_fast_four">A match of ITF Fast 4</string>
+    <string name="previous_games">Previous Games</string>
 </resources>

@@ -64,17 +64,27 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
     private TextView playerOneSetsLabelText;
     private TextView playerTwoSetsLabelText;
 
+    private TextView playerOneGamesLabelText;
+    private TextView playerTwoGamesLabelText;
+
     private TextView setsTitleText;
     private TextView gamesTitleText;
     private TextView previousSetsTitleText;
+    private TextView previousGamesTitleText;
 
     private TextSwitcher[] playerOnePreviousSets = new TextSwitcher[4];
     private TextSwitcher[] playerTwoPreviousSets = new TextSwitcher[4];
 
+    private TextSwitcher[] playerOnePreviousGames = new TextSwitcher[4];
+    private TextSwitcher[] playerTwoPreviousGames = new TextSwitcher[4];
+
     private boolean isPlayerOneServeStateOn = false;
     private boolean isPlayerTwoServeStateOn = false;
 
+    private ViewSwitcher previousViewSwitcher;
+
     boolean isConnectivityControlsShown = true;
+    boolean isSetsViewShown = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,9 +267,13 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         playerOneSetsLabelText = (TextView) findViewById(R.id.player_one_sets_label_text);
         playerTwoSetsLabelText = (TextView) findViewById(R.id.player_two_sets_label_text);
 
+        playerOneGamesLabelText = (TextView) findViewById(R.id.player_one_games_label_text);
+        playerTwoGamesLabelText = (TextView) findViewById(R.id.player_two_games_label_text);
+
         setsTitleText = (TextView) findViewById(R.id.sets_text);
         gamesTitleText = (TextView) findViewById(R.id.games_text);
         previousSetsTitleText = (TextView) findViewById(R.id.previous_sets_text);
+        previousGamesTitleText = (TextView) findViewById(R.id.previous_games_text);
 
         // also do the player one and two previous sets display boxes
         playerOnePreviousSets[0] = (TextSwitcher) findViewById(R.id.player_one_set_one_text);
@@ -279,12 +293,35 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         setTextSwitcherFactories(playerTwoPreviousSets[2], scoreViewFactory, animationIn, animationOut);
         playerTwoPreviousSets[3] = (TextSwitcher) findViewById(R.id.player_two_set_four_text);
         setTextSwitcherFactories(playerTwoPreviousSets[3], scoreViewFactory, animationIn, animationOut);
+
+        // also do the player one and two previous games display boxes
+        playerOnePreviousGames[0] = (TextSwitcher) findViewById(R.id.player_one_game_one_text);
+        setTextSwitcherFactories(playerOnePreviousGames[0], scoreViewFactory, animationIn, animationOut);
+        playerOnePreviousGames[1] = (TextSwitcher) findViewById(R.id.player_one_game_two_text);
+        setTextSwitcherFactories(playerOnePreviousGames[1], scoreViewFactory, animationIn, animationOut);
+        playerOnePreviousGames[2] = (TextSwitcher) findViewById(R.id.player_one_game_three_text);
+        setTextSwitcherFactories(playerOnePreviousGames[2], scoreViewFactory, animationIn, animationOut);
+        playerOnePreviousGames[3] = (TextSwitcher) findViewById(R.id.player_one_game_four_text);
+        setTextSwitcherFactories(playerOnePreviousGames[3], scoreViewFactory, animationIn, animationOut);
+
+        playerTwoPreviousGames[0] = (TextSwitcher) findViewById(R.id.player_two_game_one_text);
+        setTextSwitcherFactories(playerTwoPreviousGames[0], scoreViewFactory, animationIn, animationOut);
+        playerTwoPreviousGames[1] = (TextSwitcher) findViewById(R.id.player_two_game_two_text);
+        setTextSwitcherFactories(playerTwoPreviousGames[1], scoreViewFactory, animationIn, animationOut);
+        playerTwoPreviousGames[2] = (TextSwitcher) findViewById(R.id.player_two_game_three_text);
+        setTextSwitcherFactories(playerTwoPreviousGames[2], scoreViewFactory, animationIn, animationOut);
+        playerTwoPreviousGames[3] = (TextSwitcher) findViewById(R.id.player_two_game_four_text);
+        setTextSwitcherFactories(playerTwoPreviousGames[3], scoreViewFactory, animationIn, animationOut);
+
+        previousViewSwitcher = (ViewSwitcher) findViewById(R.id.previous_view_switcher);
     }
 
     private void setTextSwitcherFactories(TextSwitcher view, ViewSwitcher.ViewFactory pointViewFactory, Animation animationIn, Animation animationOut) {
-        view.setFactory(pointViewFactory);
-        view.setInAnimation(animationIn);
-        view.setOutAnimation(animationOut);
+        if (null != view) {
+            view.setFactory(pointViewFactory);
+            view.setInAnimation(animationIn);
+            view.setOutAnimation(animationOut);
+        }
     }
 
     @Override
@@ -334,6 +371,9 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         if (null != playerOneSetsLabelText) {
             playerOneSetsLabelText.setText(playerOneTitle);
         }
+        if (null != playerOneGamesLabelText) {
+            playerOneGamesLabelText.setText(playerOneTitle);
+        }
         // and do player two
         String playerTwoTitle = getOnlyStrings(playerTwoTitleText.getText().toString());
         if (null == playerTwoTitle || playerTwoTitle.isEmpty()) {
@@ -341,6 +381,9 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         }
         if (null != playerTwoSetsLabelText) {
             playerTwoSetsLabelText.setText(playerTwoTitle);
+        }
+        if (null != playerTwoGamesLabelText) {
+            playerTwoGamesLabelText.setText(playerTwoTitle);
         }
 
         // we want to store these titles to remember them next time too
@@ -380,6 +423,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         String connectedDevice = manager.getConnectedDevice();
         updateConnectionDisplay(manager.isEnabled() && null != connectedDevice, connectedDevice);
     }
+
     private void updateConnectionDisplay(boolean isConencted, String connectedDevice) {
         if (isConencted && null != connectedDevice) {
             // get the connected device, if there is one
@@ -455,10 +499,10 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             displayScoreSetData(scoreData);
             // display the data for games
             diplayScoreGameData(scoreData);
-            // and the points
-            displayScorePointsData(scoreData);
             // did someone win?
             displayScoreWinnerData(scoreData);
+            // and the points
+            displayScorePointsData(scoreData);
         }
     }
 
@@ -492,6 +536,10 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
                     if (noSets < 5) {
                         playerOnePreviousSets[noSets - 1].setText("");
                         playerTwoPreviousSets[noSets - 1].setText("");
+                        if (null != playerOnePreviousGames[noSets - 1]) {
+                            playerOnePreviousGames[noSets - 1].setText("");
+                            playerTwoPreviousGames[noSets - 1].setText("");
+                        }
                     }
                 }
                 break;
@@ -504,9 +552,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
 
         // show / hide the playing controls
         playerOnePointsText.setVisibility(visibility);
-        playerOneServeRadio.setVisibility(visibility);
         playerTwoPointsText.setVisibility(visibility);
-        playerTwoServeRadio.setVisibility(visibility);
 
         // only show serving indicators when no-one has won and we are tracking that (tennis)
         switch (scoreData.currentScoreMode) {
@@ -536,23 +582,27 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         setTextSwitcherContent(scoreData.getPointsAsString(scoreData.points.first), playerOnePointsText);
         setTextSwitcherContent(scoreData.getPointsAsString(scoreData.points.second), playerTwoPointsText);
         // who is serving?
-        boolean isPlayerOneServing = scoreData.currentServer == 0;
-        if ( (false == isPlayerOneServeStateOn && isPlayerOneServing) ||
-                (isPlayerOneServeStateOn && false == isPlayerOneServing) ) {
-            // we are not showing the correst state for player one, correct this now
-            TransitionDrawable background = (TransitionDrawable) playerOneServeRadio.getBackground();
-            background.reverseTransition(300);
-            // and remember the state we are in
-            isPlayerOneServeStateOn = isPlayerOneServing;
+        if (playerOneServeRadio.getVisibility() == View.VISIBLE) {
+            boolean isPlayerOneServing = scoreData.currentServer == 0;
+            if ((false == isPlayerOneServeStateOn && isPlayerOneServing) ||
+                    (isPlayerOneServeStateOn && false == isPlayerOneServing)) {
+                // we are not showing the correst state for player one, correct this now
+                TransitionDrawable background = (TransitionDrawable) playerOneServeRadio.getBackground();
+                background.reverseTransition(300);
+                // and remember the state we are in
+                isPlayerOneServeStateOn = isPlayerOneServing;
+            }
         }
-        boolean isPlayerTwoServing = scoreData.currentServer == 1;
-        if ( (false == isPlayerTwoServeStateOn && isPlayerTwoServing) ||
-                (isPlayerTwoServeStateOn && false == isPlayerTwoServing) ) {
-            // we are not showing the correst state for player one, correct this now
-            TransitionDrawable background = (TransitionDrawable) playerTwoServeRadio.getBackground();
-            background.reverseTransition(300);
-            // and remember the state we are in
-            isPlayerTwoServeStateOn = isPlayerTwoServing;
+        if (playerTwoServeRadio.getVisibility() == View.VISIBLE) {
+            boolean isPlayerTwoServing = scoreData.currentServer == 1;
+            if ((false == isPlayerTwoServeStateOn && isPlayerTwoServing) ||
+                    (isPlayerTwoServeStateOn && false == isPlayerTwoServing)) {
+                // we are not showing the correst state for player one, correct this now
+                TransitionDrawable background = (TransitionDrawable) playerTwoServeRadio.getBackground();
+                background.reverseTransition(300);
+                // and remember the state we are in
+                isPlayerTwoServeStateOn = isPlayerTwoServing;
+            }
         }
     }
 
@@ -575,6 +625,10 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             Pair<Integer, Integer> gameResult = scoreData.previousSets.get(i);
             setTextSwitcherContent(Integer.toString(gameResult.first), playerOnePreviousSets[i]);
             setTextSwitcherContent(Integer.toString(gameResult.second), playerTwoPreviousSets[i]);
+            if (null != playerOnePreviousGames[i]) {
+                setTextSwitcherContent(Integer.toString(gameResult.first), playerOnePreviousGames[i]);
+                setTextSwitcherContent(Integer.toString(gameResult.second), playerTwoPreviousGames[i]);
+            }
             playerOneGames += gameResult.first;
             playerTwoGames += gameResult.second;
         }
@@ -612,6 +666,10 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             for (; i < 4; ++i) {
                 setTextSwitcherContent("", playerOnePreviousSets[i]);
                 setTextSwitcherContent("", playerTwoPreviousSets[i]);
+                if (null != playerOnePreviousGames[i]) {
+                    setTextSwitcherContent("", playerOnePreviousGames[i]);
+                    setTextSwitcherContent("", playerTwoPreviousGames[i]);
+                }
             }
             // set the current games
             setTextSwitcherContent(Integer.toString(scoreData.games.first), playerOneGamesText);
@@ -648,36 +706,63 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
                 break;
         }
         int setsVisibility = visibility;
-        // set the sets label
-        setsTitleText.setText(historyTitle);
-        String previousTitle = getResources().getString(R.string.previous_sets);
-        if (false == isSets) {
-            // replace the 'sets' in the title with 'games'
-            previousTitle = previousTitle.replace(getResources().getString(R.string.sets), historyTitle);
-            // and hide the sets controls
-            setsVisibility = View.GONE;
+        if (null == previousViewSwitcher) {
+            // set the sets label
+            setsTitleText.setText(historyTitle);
+            String previousTitle = getResources().getString(R.string.previous_sets);
+            if (false == isSets) {
+                // replace the 'sets' in the title with 'games'
+                previousTitle = previousTitle.replace(getResources().getString(R.string.sets), historyTitle);
+                // and hide the sets controls
+                setsVisibility = View.GONE;
+            }
+            previousSetsTitleText.setText(previousTitle);
         }
-        previousSetsTitleText.setText(previousTitle);
+        else {
+            // switch the view
+            if (isSets) {
+                // showing sets
+                if (false == this.isSetsViewShown) {
+                    previousViewSwitcher.showPrevious();
+                }
+            }
+            else {
+                if (this.isSetsViewShown) {
+                    // don't want to show sets
+                    previousViewSwitcher.showNext();
+                }
+            }
+            this.isSetsViewShown = isSets;
+        }
         // set this on all the relevant controls
         if (null != playerOneSetsLabelText) {
             animateVisibilityChange(playerOneSetsLabelText, visibility);
         }
+        if (null != playerOneGamesLabelText) {
+            animateVisibilityChange(playerOneGamesLabelText, visibility);
+        }
         if (null != playerTwoSetsLabelText) {
             animateVisibilityChange(playerTwoSetsLabelText, visibility);
+        }
+        if (null != playerTwoGamesLabelText) {
+            animateVisibilityChange(playerTwoGamesLabelText, visibility);
         }
         animateVisibilityChange(playerOneSetsText, setsVisibility);
         animateVisibilityChange(playerTwoSetsText, setsVisibility);
         animateVisibilityChange(setsTitleText, setsVisibility);
         animateVisibilityChange(previousSetsTitleText, visibility);
+        animateVisibilityChange(previousGamesTitleText, visibility);
         // and the list of previous sets results labels
         for (int i = 0; i < 4; ++i) {
             animateVisibilityChange(playerOnePreviousSets[i], visibility);
             animateVisibilityChange(playerTwoPreviousSets[i], visibility);
+            animateVisibilityChange(playerOnePreviousGames[i], visibility);
+            animateVisibilityChange(playerTwoPreviousGames[i], visibility);
         }
     }
 
     private void animateVisibilityChange(final View view, final int visibility) {
-        if (view.getVisibility() != visibility) {
+        if (null != view && view.getVisibility() != visibility) {
             float targetAlpha;
             if (visibility == View.VISIBLE) {
                 // want to show
