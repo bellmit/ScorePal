@@ -80,6 +80,8 @@ public class ScoreData {
     public ArrayList<Integer> historicPoints;
 
     public int dataCode = 0;
+    public int secondsStartTime = 0;
+    public int secondsGameDuration = 0;
     public String dataCommand = "u";
 
     public String filename = null;
@@ -108,6 +110,9 @@ public class ScoreData {
             writeChar(this.dataCommand, recDataString);
             // then the data code, this has a colon
             writeStringWithColon(dataCode, recDataString);
+            // now the start and duration timers which also have colons
+            writeStringWithColon(secondsStartTime, recDataString);
+            writeStringWithColon(secondsGameDuration, recDataString);
             // now the active mode
             writeChar(this.currentScoreMode.value, recDataString);
             // the match winner
@@ -191,6 +196,9 @@ public class ScoreData {
             if (dataCommand.equals("u")) {
                 // get the code that we need to respond with
                 dataCode = extractValueToColon(recDataString);
+                // get the start and duration timers
+                secondsStartTime = extractValueToColon(recDataString);
+                secondsGameDuration = extractValueToColon(recDataString);
                 // get the active mode
                 currentScoreMode = ScoreMode.from(Integer.parseInt(extractChars(1, recDataString)));
                 int matchWinnerData = Integer.parseInt(extractChars(1, recDataString));

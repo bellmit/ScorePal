@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.Gravity;
@@ -22,9 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
     private View topToolbar;
 
     private TextView winnerText;
+    private TextView gameTypeText;
 
     private EditText playerOneTitleText;
     private EditText playerTwoTitleText;
@@ -239,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
         connectionText = (TextView) findViewById(R.id.bt_connected_text);
         connectButton = (View) findViewById(R.id.connect_button);
         winnerText = (TextView) findViewById(R.id.winner_text_view);
+        gameTypeText = (TextView) findViewById(R.id.game_type_text);
 
         playerOneTitleText = (EditText) findViewById(R.id.player_one_name_text_view);
         playerTwoTitleText = (EditText) findViewById(R.id.player_two_name_text_view);
@@ -495,6 +494,8 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             // show no  data
         }
         else {
+            // show the game type
+            displayGameTypeAndData(scoreData);
             // display the data for sets
             displayScoreSetData(scoreData);
             // display the data for games
@@ -504,6 +505,42 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
             // and the points
             displayScorePointsData(scoreData);
         }
+    }
+
+    private void displayGameTypeAndData(ScoreData scoreData) {
+        String typeText = getResources().getString(R.string.played) + " ";
+        switch (scoreData.currentScoreMode) {
+            case K_SCOREWIMBLEDON5:
+                typeText += getResources().getString(R.string.played_wimbledon5);
+                break;
+            case K_SCOREWIMBLEDON3:
+                typeText += getResources().getString(R.string.played_wimbledon3);
+                break;
+            case K_SCOREBADMINTON5:
+                typeText += getResources().getString(R.string.played_badminton5);
+                break;
+            case K_SCOREBADMINTON3:
+                typeText += getResources().getString(R.string.played_badminton3);
+                break;
+            case K_SCOREFAST4:
+                typeText += getResources().getString(R.string.played_fast_four);
+                break;
+            case K_SCOREPOINTS:
+            default:
+                typeText += getResources().getString(R.string.played_points);
+                break;
+        }
+        // now we can add the time to this string, hours and seconds
+        int hours = (int)(scoreData.secondsGameDuration / 3600.0);
+        int minutes = (int)((scoreData.secondsGameDuration - (hours * 60)) / 60.0);
+        // add the space
+        typeText += " " + getResources().getString(R.string.sfor) + " ";
+        // the hours
+        typeText += Integer.toString(hours) + ".";
+        // and add the minutes
+        typeText += Integer.toString(minutes);
+        // and show to the user
+        gameTypeText.setText(typeText);
     }
 
     private void displayScoreWinnerData(ScoreData scoreData) {
@@ -827,7 +864,7 @@ public class MainActivity extends AppCompatActivity implements BtManager.IBtMana
                 // command the score board to reset
                 if (BtManager.getManager().sendMessage("{a9}")) {
                     // and reset our current match date
-                    HistoryManager.getManager().resetMatchStartedDate();
+                    HistoryManager.getManager().resetMatchStartedDate(0);
                 }
                 else {
                     runOnUiThread(new Runnable() {

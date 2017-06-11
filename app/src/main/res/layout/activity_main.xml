@@ -99,6 +99,13 @@
 
                 </ViewSwitcher>
 
+                <TextView
+                    android:id="@+id/game_type_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/played_wimbledon5"
+                    android:textAlignment="center" />
+
 
             </LinearLayout>
         </ScrollView>

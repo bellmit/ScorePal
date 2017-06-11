@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_margin="10dp"
-        android:background="@drawable/court" />
+        android:background="@android:color/darker_gray" />
 
     <TextView
         android:id="@+id/listTitle"

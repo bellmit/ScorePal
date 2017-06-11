@@ -8,15 +8,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.util.ArraySet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 import uk.co.darkerwaters.scorepal.MainActivity;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.ScoreData;
+import uk.co.darkerwaters.scorepal.history.HistoryManager;
 
 /**
  * Created by douglasbrain on 26/05/2017.
@@ -127,7 +130,12 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
 
     public Set<BluetoothDevice> getBondedDevices() {
         // return the list of devices we are paired with
-        return adapter.getBondedDevices();
+        if (null == adapter) {
+            return new HashSet<BluetoothDevice>(0);
+        }
+        else {
+            return adapter.getBondedDevices();
+        }
     }
 
     public void connectToLastDevice() {
@@ -139,7 +147,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
         }
         else {
             // we want to connect to this
-            if (false == adapter.isEnabled()) {
+            if (null != adapter && false == adapter.isEnabled()) {
                 // not enabled, turn on
                 adapter.enable();
             }
@@ -214,13 +222,17 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     }
 
     private void storeConnectedDevice(BluetoothDevice device) {
-        connectedDeviceAddress = device.getAddress();
-        connectedDeviceName = device.getName();
-        // store that we connected to this so we do again next time we start up
-        SharedPreferences sharedPref = this.main.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(this.main.getString(R.string.stored_device), connectedDeviceAddress);
-        editor.commit();
+        if (null != device) {
+            connectedDeviceAddress = device.getAddress();
+            connectedDeviceName = device.getName();
+            // store that we connected to this so we do again next time we start up
+            SharedPreferences sharedPref = this.main.getPreferences(Context.MODE_PRIVATE);
+            if (null != sharedPref) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(this.main.getString(R.string.stored_device), connectedDeviceAddress);
+                editor.commit();
+            }
+        }
     }
 
     public boolean connectToDevice(String wantedDeviceAddress) {
@@ -268,7 +280,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     public boolean isDeviceConnected(BluetoothDevice device) {
         // are we connected to this specified device
         boolean result = false;
-        if (isSocketConnected()) {
+        if (isSocketConnected() && null != device) {
             // we are connected, but to what?
             result = device.getAddress().equals(connectedDeviceAddress);
         }
@@ -276,11 +288,15 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     }
 
     public void scanForDevices() {
-        adapter.startDiscovery();
+        if (null != adapter) {
+            adapter.startDiscovery();
+        }
     }
 
     public void cancelScanning() {
-        adapter.cancelDiscovery();
+        if (null != adapter) {
+            adapter.cancelDiscovery();
+        }
     }
 
     public String getConnectedDevice() {
@@ -316,6 +332,14 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     @Override
     public synchronized void onBtDataReceived(ScoreData scoreData) {
         // received some data, process this to show the current score now
+        if (null != this.latestScoreData && null != scoreData) {
+            // this is replacing some existing score data, this happens all the time
+            // but quickly we want to check to see if this is a new match (user reset on the device)
+            if (this.latestScoreData.secondsStartTime != scoreData.secondsStartTime) {
+                // this is a different game, has a different start time, reset this
+                HistoryManager.getManager().resetMatchStartedDate(-scoreData.secondsGameDuration);
+            }
+        }
         this.latestScoreData = scoreData;
         for (IBtManagerListener listener : this.listeners) {
             listener.onBtDataChanged(scoreData);

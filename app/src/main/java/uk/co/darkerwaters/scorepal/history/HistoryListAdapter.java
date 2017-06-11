@@ -110,16 +110,16 @@ public class HistoryListAdapter extends BaseAdapter {
                     case K_SCOREWIMBLEDON5:
                     case K_SCOREFAST4:
                         // this is a nice game of tennis
-                        imageView.setImageResource(R.drawable.tennis);
+                        imageView.setImageResource(R.drawable.tennis_court);
                         break;
                     case K_SCOREBADMINTON3:
                     case K_SCOREBADMINTON5:
                         // this is a nice game of badminton
-                        imageView.setImageResource(R.drawable.badminton);
+                        imageView.setImageResource(R.drawable.badminton_court);
                         break;
                     default:
                         // this is something we score points in
-                        imageView.setImageResource(R.drawable.points);
+                        imageView.setImageResource(R.drawable.court);
                         break;
                 }
                 Date datePlayed = file.getDatePlayed();

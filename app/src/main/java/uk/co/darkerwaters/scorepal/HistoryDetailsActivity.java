@@ -2,7 +2,6 @@ package uk.co.darkerwaters.scorepal;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Pair;
 import android.view.View;
@@ -88,7 +87,7 @@ public class HistoryDetailsActivity extends AppCompatActivity {
                 gameSummaryText.setText(R.string.played_wimbledon5);
                 break;
             case K_SCOREWIMBLEDON3:
-                gameSummaryText.setText(R.string.played_wimbedon3);
+                gameSummaryText.setText(R.string.played_wimbledon3);
                 break;
             case K_SCOREBADMINTON3:
                 gameSummaryText.setText(R.string.played_badminton3);
@@ -158,16 +157,16 @@ public class HistoryDetailsActivity extends AppCompatActivity {
             case K_SCOREWIMBLEDON3:
             case K_SCOREFAST4:
                 // this is a nice game of tennis
-                imageView.setImageResource(R.drawable.tennis);
+                imageView.setImageResource(R.drawable.tennis_court);
                 break;
             case K_SCOREBADMINTON5:
             case K_SCOREBADMINTON3:
                 // this is a nice game of badminton
-                imageView.setImageResource(R.drawable.badminton);
+                imageView.setImageResource(R.drawable.badminton_court);
                 break;
             default:
                 // this is something we score points in
-                imageView.setImageResource(R.drawable.points);
+                imageView.setImageResource(R.drawable.court);
                 break;
         }
         Date datePlayed = HistoryFile.getDatePlayed(historyFileName);

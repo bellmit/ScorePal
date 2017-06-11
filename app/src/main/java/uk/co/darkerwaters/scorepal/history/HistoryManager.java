@@ -5,6 +5,7 @@ import android.content.Context;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -33,8 +34,17 @@ public class HistoryManager {
         return this.matchStartedDate;
     }
 
-    public void resetMatchStartedDate() {
+    public void resetMatchStartedDate(int secondsOffset) {
         this.matchStartedDate = new Date();
+        // there might be an offset from when the game actually started, pull back the start date
+        // to be the actual time the player started their game rather than the time they connected
+        // their phone to the device
+        if (secondsOffset != 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(this.matchStartedDate);
+            cal.add(Calendar.SECOND, secondsOffset);
+            this.matchStartedDate = cal.getTime();
+        }
     }
 
     public void deleteFilesForCurrentMatch(Context context) {

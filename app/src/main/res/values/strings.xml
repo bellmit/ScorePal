@@ -36,7 +36,7 @@
     <string name="points">Points</string>
     <string name="successful_save">Successfully saved...</string>
     <string name="total_points">Total Points</string>
-    <string name="played_wimbedon3">A 3 set match of ITF scored tennis</string>
+    <string name="played_wimbledon3">A 3 set match of ITF scored tennis</string>
     <string name="played_wimbledon5">A 5 set match of ITF scored tennis</string>
     <string name="played_badminton3">A 3 game match of badminton</string>
     <string name="played_badminton5">A 5 game match of badminton</string>
@@ -54,4 +54,6 @@
     <string name="unsuccessful_reset">Sorry, failed to send the reset command. Check bluetooth connection...</string>
     <string name="played_fast_four">A match of ITF Fast 4</string>
     <string name="previous_games">Previous Games</string>
+    <string name="played">Played</string>
+    <string name="sfor">for</string>
 </resources>
