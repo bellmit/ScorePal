@@ -1,6 +1,6 @@
 package uk.co.darkerwaters.scorepal.storage;
 
-import android.content.Context;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,6 +12,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import uk.co.darkerwaters.scorepal.activities.MainActivity;
 
 
 /**
@@ -88,7 +90,7 @@ public class Match {
         try {
             played = fileDateFormat.parse(this.matchPlayedDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(MainActivity.TAG, e.getMessage());
         }
         return played;
     }

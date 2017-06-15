@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.darkerwaters.scorepal.R;
+import uk.co.darkerwaters.scorepal.activities.MainActivity;
 
 /**
  * Created by douglasbrain on 30/05/2017.
@@ -187,7 +188,7 @@ public class ScoreData {
             return recDataString.toString();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Log.e(MainActivity.TAG, e.getMessage());
             return null;
         }
     }

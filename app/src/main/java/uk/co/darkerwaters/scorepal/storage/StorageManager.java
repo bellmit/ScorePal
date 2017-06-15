@@ -1,7 +1,6 @@
 package uk.co.darkerwaters.scorepal.storage;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -19,20 +18,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import uk.co.darkerwaters.scorepal.activities.MainActivity;
 import uk.co.darkerwaters.scorepal.R;
+import uk.co.darkerwaters.scorepal.activities.MainActivity;
 
 /**
  * Created by douglasbrain on 13/06/2017.
@@ -40,7 +34,6 @@ import uk.co.darkerwaters.scorepal.R;
 
 public class StorageManager {
 
-    private static final String TAG = "StorageManager";
     private static final String WEB_APP_ID = "AIzaSyATE7xgvUU6qiqbckYojn3eCH-kwaOT_ow";
     public static final int RC_SIGN_IN = 9001;
 
@@ -224,7 +217,7 @@ public class StorageManager {
     public void onSignInResult(Intent data) {
         GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
         if (result.isSuccess()) {
-            Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+            Log.d(MainActivity.TAG, "handleSignInResult:" + result.isSuccess());
             if (result.isSuccess()) {
                 // Signed in successfully, show authenticated UI.
                 GoogleSignInAccount acct = result.getSignInAccount();
@@ -246,8 +239,6 @@ public class StorageManager {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this.main, new OnCompleteListener<AuthResult>() {
@@ -255,12 +246,12 @@ public class StorageManager {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
+                            Log.d(MainActivity.TAG, "signInWithCredential:success");
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
                             onFirebaseSigninResult(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Log.w(MainActivity.TAG, "signInWithCredential:failure", task.getException());
                             onFirebaseSigninResult(null);
                         }
                     }

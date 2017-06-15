@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import uk.co.darkerwaters.scorepal.R;
+import uk.co.darkerwaters.scorepal.activities.MainActivity;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
@@ -162,17 +164,15 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             if (null != btSocket && btSocket.isConnected()) {
                 try {
                     btSocket.close();
-                } catch (IOException e1) {
-                    //Log.d(TAG,"Socket not closed");
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                } catch (IOException e) {
+                    Log.e(MainActivity.TAG, e.getMessage());
                 }
             }
             // now disconnected, connect to a new one
             try {
                 btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e1) {
-                //Log.d(this.container.TAG,"socket not created");
+            } catch (IOException e) {
+                Log.e(MainActivity.TAG, e.getMessage());
             }
             try{
                 btSocket.connect();
@@ -180,10 +180,9 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             catch(IOException e){
                 try {
                     btSocket.close();
-                    e.printStackTrace();
-                    //Log.d(TAG,"Cannot connect");
+                    Log.e(MainActivity.TAG, e.getMessage());
                 } catch (IOException e1) {
-                    //Log.d(TAG,"Socket not closed");
+                    Log.e(MainActivity.TAG, e1.getMessage());
                 }
             }
             if (btSocket.isConnected()) {

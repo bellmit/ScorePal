@@ -152,8 +152,7 @@ public class AccountActivity extends AppCompatActivity implements StorageManager
                             userBitmap = BitmapFactory.decodeStream(in);
 
                         } catch (Exception e) {
-                            Log.e("Error", e.getMessage());
-                            e.printStackTrace();
+                            Log.e(MainActivity.TAG, e.getMessage());
                         }
                         return userBitmap;
                     }

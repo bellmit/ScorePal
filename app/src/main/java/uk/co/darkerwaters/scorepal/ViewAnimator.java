@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
 /**
  * Created by douglasbrain on 14/06/2017.

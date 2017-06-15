@@ -1,12 +1,14 @@
 package uk.co.darkerwaters.scorepal.bluetooth;
 
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import uk.co.darkerwaters.scorepal.activities.MainActivity;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 
 /**
@@ -43,7 +45,7 @@ public class BtConnectionThread extends Thread {
             result = write("{x0}");
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Log.e(MainActivity.TAG, e.getMessage());
         }
         return result;
     }
@@ -100,7 +102,7 @@ public class BtConnectionThread extends Thread {
             result = true;
         } catch (IOException e) {
             //if you cannot write, close the application
-            e.printStackTrace();
+            Log.e(MainActivity.TAG, e.getMessage());
         }
         return result;
     }
@@ -125,7 +127,7 @@ public class BtConnectionThread extends Thread {
                 }
             }
             catch (Exception e) {
-                e.printStackTrace();
+                Log.e(MainActivity.TAG, e.getMessage());
             }
             // clear the string
             recDataString.delete(0, recDataString.length());
