@@ -4,7 +4,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 
@@ -12,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import uk.co.darkerwaters.scorepal.ScoreData;
 
 @IgnoreExtraProperties
 public class User {
@@ -58,7 +55,7 @@ public class User {
     List<String> groups;
 
     public User() {
-        // empty constructor needed for firebase construction
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
     public User(String ID, String nickname) {
@@ -69,6 +66,9 @@ public class User {
         this.friends = new ArrayList<String>();
         this.groups = new ArrayList<String>();
     }
+
+    @Exclude
+    public String getId() { return this.ID; }
 
     @Exclude
     public String getNickname() {

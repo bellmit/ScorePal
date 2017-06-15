@@ -17,8 +17,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import uk.co.darkerwaters.scorepal.R;
-import uk.co.darkerwaters.scorepal.ScoreData;
-import uk.co.darkerwaters.scorepal.history.HistoryManager;
+import uk.co.darkerwaters.scorepal.storage.ScoreData;
+import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
 /**
  * Created by douglasbrain on 26/05/2017.
@@ -336,7 +336,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             // but quickly we want to check to see if this is a new match (user reset on the device)
             if (this.latestScoreData.secondsStartTime != scoreData.secondsStartTime) {
                 // this is a different game, has a different start time, reset this
-                HistoryManager.getManager().resetMatchStartedDate(-scoreData.secondsGameDuration);
+                StorageManager.getManager().resetMatchStartedDate(-scoreData.secondsGameDuration);
             }
         }
         this.latestScoreData = scoreData;

@@ -1,10 +1,10 @@
 package uk.co.darkerwaters.scorepal.storage;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,12 +26,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.co.darkerwaters.scorepal.MainActivity;
+import uk.co.darkerwaters.scorepal.activities.MainActivity;
 import uk.co.darkerwaters.scorepal.R;
-import uk.co.darkerwaters.scorepal.ScoreData;
 
 /**
  * Created by douglasbrain on 13/06/2017.
@@ -52,10 +53,10 @@ public class StorageManager {
     private GoogleSignInAccount googleAcct = null;
     private FirebaseUser firebaseUser = null;
     private DatabaseReference mDatabase = null;
-    private DatabaseReference mMatchesReference = null;
-    private ValueEventListener mPostListener = null;
 
     private User currentUser = null;
+
+    private Date matchStartedDate;
 
     public interface IStorageManagerListener {
         public void onGoogleSigninResult(GoogleSignInAccount acct);
@@ -66,7 +67,27 @@ public class StorageManager {
     private final ArrayList<IStorageManagerListener> listeners;
 
     private StorageManager() {
+        // on creation remember the date and time the latest match started
+        this.matchStartedDate = new Date();
+        // and create the members to use
         this.listeners = new ArrayList<IStorageManagerListener>();
+    }
+
+    public void resetMatchStartedDate(int secondsOffset) {
+        this.matchStartedDate = new Date();
+        // there might be an offset from when the game actually started, pull back the start date
+        // to be the actual time the player started their game rather than the time they connected
+        // their phone to the device
+        if (secondsOffset != 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(this.matchStartedDate);
+            cal.add(Calendar.SECOND, secondsOffset);
+            this.matchStartedDate = cal.getTime();
+        }
+    }
+
+    public Date getMatchStartedDate() {
+        return this.matchStartedDate;
     }
 
     public static StorageManager getManager() {
@@ -105,10 +126,6 @@ public class StorageManager {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
 
-        // Initialize Database
-        mMatchesReference = mDatabase.child("matches");
-        listenForPosts();
-
         if (null == firebaseUser || null == currentUser) {
             // start the signin intent to sign into our Google account, and thence Firebase too
             signInToGoogle(main);
@@ -120,36 +137,7 @@ public class StorageManager {
         context.startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void listenForPosts() {
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get match object that has just changed
-                Post post = dataSnapshot.getValue(Post.class);
-                onPostDataChanged(post);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        mDatabase.child("posts").addValueEventListener(postListener);
-        // [END post_value_event_listener]
-
-        // Keep copy of listener so we can remove it when app stops
-        mPostListener = postListener;
-    }
-
-    private void onPostDataChanged(Post post) {
-
-    }
-
     public void signout() {
-        // remove any listeners
-        mDatabase.child("posts").removeEventListener(mPostListener);
-        mPostListener = null;
         // and signout from firebase
         FirebaseAuth.getInstance().signOut();
     }
@@ -178,6 +166,10 @@ public class StorageManager {
                 listener.onGoogleSigninResult(acct);
             }
         }
+    }
+
+    public DatabaseReference getTopLevel() {
+        return mDatabase;
     }
 
     private void onUserSigninResult(User currentUser) {
@@ -223,35 +215,10 @@ public class StorageManager {
         }
     }
 
-    public boolean isGoogleConnected() {
-        return null != this.googleAcct;
-    }
-
-    public boolean isFirebaseConnected() {
-        return null != this.firebaseUser;
-    }
-
-    public FirebaseUser getFirebaseUser() { return this.firebaseUser; }
-
     public User getCurrentUser() { return this.currentUser; }
 
     public Intent getSignInIntent() {
         return Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-    }
-
-    public void addMatchData(Match match) {
-        mDatabase.child("matches").child(match.ID).setValue(match);
-    }
-
-    public void setMatchData(Match match, ScoreData score) {
-        // create the match data at /matches/$matchId and at
-        // /scores/$matchId simultaneously
-        String matchId = match.ID;
-        Map<String, Object> childUpdates = new HashMap<String, Object>();
-        childUpdates.put("/matches/" + matchId, match);
-        childUpdates.put("/scores/" + matchId, score);
-        // and push this to the database
-        mDatabase.updateChildren(childUpdates);
     }
 
     public void onSignInResult(Intent data) {

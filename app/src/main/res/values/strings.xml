@@ -67,4 +67,7 @@
     <string name="title_activity_account">Account</string>
     <string name="failed_google_signin">Failed to signin to Google, please try again</string>
     <string name="failed_firebase_signin">Failed to signin to Firebase, please try again</string>
+    <string name="title_activity_match_details">Match Details</string>
+    <string name="error_user_not_signedin">Sorry you are not signed in, please go to account before saving.</string>
+    <string name="no_match_loaded">No Match Loaded</string>
 </resources>

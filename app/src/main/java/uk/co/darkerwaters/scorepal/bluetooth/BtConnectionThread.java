@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import uk.co.darkerwaters.scorepal.ScoreData;
+import uk.co.darkerwaters.scorepal.storage.ScoreData;
 
 /**
  * Created by douglasbrain on 26/05/2017.

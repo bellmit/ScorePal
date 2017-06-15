@@ -7,11 +7,6 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import uk.co.darkerwaters.scorepal.ScoreData;
-
 
 /**
  * Created by douglasbrain on 13/06/2017.

@@ -1,13 +1,10 @@
-package uk.co.darkerwaters.scorepal;
+package uk.co.darkerwaters.scorepal.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,15 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.InputStream;
 import java.net.URL;
 
+import uk.co.darkerwaters.scorepal.R;
+import uk.co.darkerwaters.scorepal.ViewAnimator;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 import uk.co.darkerwaters.scorepal.storage.User;
 

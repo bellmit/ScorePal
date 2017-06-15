@@ -1,65 +1,22 @@
-package uk.co.darkerwaters.scorepal;
+package uk.co.darkerwaters.scorepal.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.app.ProgressDialog;
-import android.bluetooth.BluetoothDevice;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.util.Pair;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextSwitcher;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.SignInButton;
-import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.bluetooth.BtConnectActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
-import uk.co.darkerwaters.scorepal.history.HistoryFile;
-import uk.co.darkerwaters.scorepal.history.HistoryManager;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
-import uk.co.darkerwaters.scorepal.storage.User;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

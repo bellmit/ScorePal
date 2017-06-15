@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.scorepal.history;
+package uk.co.darkerwaters.scorepal.activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,24 +21,25 @@ import java.util.Date;
 import java.util.List;
 
 import uk.co.darkerwaters.scorepal.Common;
-import uk.co.darkerwaters.scorepal.HistoryDetailsActivity;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
-import uk.co.darkerwaters.scorepal.ScoreData;
+import uk.co.darkerwaters.scorepal.storage.Match;
+import uk.co.darkerwaters.scorepal.storage.ScoreData;
+import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
 /**
  * Created by douglasbrain on 26/05/2017.
  */
 
-public class HistoryListAdapter extends BaseAdapter {
+public class MatchListAdapter extends BaseAdapter {
 
     private Context mContext;
 
     private LayoutInflater mLayoutInflater;
 
-    private ArrayList<HistoryFile> mEntries = new ArrayList<HistoryFile>();
+    private ArrayList<Match> mEntries = new ArrayList<Match>();
 
-    public HistoryListAdapter(Context context) {
+    public MatchListAdapter(Context context) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -68,7 +69,7 @@ public class HistoryListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         RelativeLayout itemView;
         if (convertView == null) {
-            itemView = (RelativeLayout) mLayoutInflater.inflate(R.layout.history_list_view_item, parent, false);
+            itemView = (RelativeLayout) mLayoutInflater.inflate(R.layout.list_view_match_item, parent, false);
 
         } else {
             itemView = (RelativeLayout) convertView;
@@ -82,30 +83,30 @@ public class HistoryListAdapter extends BaseAdapter {
         Button deleteButton = (Button) itemView.findViewById(R.id.history_row_delete);
 
         if (position < mEntries.size()) {
-            final HistoryFile file = mEntries.get(position);
-            if (null != file) {
+            final Match match = mEntries.get(position);
+            if (null != match) {
                 // set up the delete click handler
                 deleteButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onDeleteFile(file);
+                        onDeleteMatch(match);
                     }
                 });
                 // and the extra information click handler
                 itemView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onShowFileDetails(file);
+                        onShowMatchDetails(match);
                     }
                 });
-                String title = file.getPlayerOne(mContext) +
+                String title = match.getPlayerOne() +
                         " " +
                         mContext.getResources().getString(R.string.vs) +
                         " " +
-                        file.getPlayerTwo(mContext);
+                        match.getPlayerTwo();
                 titleText.setText(title);
                 // set the nice image
-                switch (file.getGameMode()) {
+                switch (match.getScoreMode()) {
                     case K_SCOREWIMBLEDON3:
                     case K_SCOREWIMBLEDON5:
                     case K_SCOREFAST4:
@@ -122,7 +123,7 @@ public class HistoryListAdapter extends BaseAdapter {
                         imageView.setImageResource(R.drawable.court);
                         break;
                 }
-                Date datePlayed = file.getDatePlayed();
+                Date datePlayed = match.getMatchPlayedDate();
                 // get the date and time played to show this
                 String description;
                 if (null == datePlayed) {
@@ -137,14 +138,14 @@ public class HistoryListAdapter extends BaseAdapter {
                 }
                 descriptionText.setText(description);
                 // get the score type to show this
-                String scoreString = file.getScoreString(mContext);
+                String scoreString = match.getScoreSummary();
                 // get the type
-                scoreTypeText.setText(file.getScoreStringType(mContext, scoreString));
+                scoreTypeText.setText(ScoreData.getScoreStringType(mContext, scoreString));
                 // and the actual points
-                scoreText.setText(file.getScoreStringPoints(mContext, scoreString));
+                scoreText.setText(ScoreData.getScoreStringPoints(mContext, scoreString));
                 // is this device connected?
                 ScoreData latest = BtManager.getManager().getLatestScoreData();
-                if (HistoryFile.isFileDatesSame(datePlayed, HistoryManager.getManager().getMatchStartedDate())) {
+                if (Match.isFileDatesSame(datePlayed, StorageManager.getManager().getMatchStartedDate())) {
                     // this is the current match
                     itemView.setBackgroundColor(Common.getThemeAccentColor(mContext));
                 }
@@ -157,25 +158,23 @@ public class HistoryListAdapter extends BaseAdapter {
         return itemView;
     }
 
-    private void onShowFileDetails(HistoryFile file) {
-        Intent intent = new Intent(mContext, HistoryDetailsActivity.class);
-        // the score data in this file is not fully loaded, fully load it now
-        HistoryFile loadedFile = file.readFileContent(file.getFilename(), mContext);
-        intent.putExtra("uk.co.darkerwaters.scorepal.historyfilename", file.getFilename());
-        intent.putExtra("uk.co.darkerwaters.scorepal.historyfile", loadedFile.getScoreData().toString());
+    private void onShowMatchDetails(Match match) {
+        Intent intent = new Intent(mContext, MatchDetailsActivity.class);
+        intent.putExtra("uk.co.darkerwaters.scorepal.match.userid", match.userId);
+        intent.putExtra("uk.co.darkerwaters.scorepal.match.matchid", match.getMatchId());
         mContext.startActivity(intent);
     }
 
-    private void onDeleteFile(final HistoryFile file) {
+    private void onDeleteMatch(final Match match) {
         AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
         alert.setTitle(mContext.getResources().getString(R.string.warning));
         alert.setMessage(mContext.getResources().getString(R.string.sure_to_delete));
         alert.setPositiveButton(mContext.getResources().getString(R.string.yes), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // delete the specified file
-                mContext.deleteFile(file.getFilename());
-                mEntries.remove(file);
+                // delete the specified match data
+                match.delete(StorageManager.getManager().getTopLevel());
+                mEntries.remove(match);
                 notifyDataSetChanged();
             }
         });
@@ -188,18 +187,18 @@ public class HistoryListAdapter extends BaseAdapter {
         alert.show();
     }
 
-    public void upDateEntries(List<HistoryFile> entries) {
+    public void upDateEntries(List<Match> entries) {
         mEntries.clear();
         if (null != entries) {
-            for (HistoryFile file : entries) {
-                mEntries.add(file);
+            for (Match match : entries) {
+                mEntries.add(match);
             }
         }
         notifyDataSetChanged();
     }
 
-    public void add(HistoryFile file) {
-        mEntries.add(file);
+    public void add(Match match) {
+        mEntries.add(match);
         notifyDataSetChanged();
     }
 }

@@ -20,6 +20,10 @@ public class Post {
     public String author;
     public int type;
 
+    public Post() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
+
     public Post(String ID, String title, String content) {
         this.ID = ID;
         this.title = title;

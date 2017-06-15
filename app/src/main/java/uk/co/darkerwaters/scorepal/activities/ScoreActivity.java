@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.scorepal;
+package uk.co.darkerwaters.scorepal.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,8 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +19,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,10 +33,12 @@ import android.widget.ViewSwitcher;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.co.darkerwaters.scorepal.R;
+import uk.co.darkerwaters.scorepal.ViewAnimator;
 import uk.co.darkerwaters.scorepal.bluetooth.BtConnectActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
-import uk.co.darkerwaters.scorepal.history.HistoryFile;
-import uk.co.darkerwaters.scorepal.history.HistoryManager;
+import uk.co.darkerwaters.scorepal.storage.Match;
+import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
 public class ScoreActivity extends AppCompatActivity implements BtManager.IBtManagerListener {
@@ -398,6 +401,27 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
         BtManager manager = BtManager.getManager();
         String connectedDevice = manager.getConnectedDevice();
         updateConnectionDisplay(manager.isEnabled() && null != connectedDevice, connectedDevice);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_history, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_history :
+                Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                startActivity(intent);
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateConnectionDisplay(boolean isConencted, String connectedDevice) {
@@ -799,7 +823,7 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
                 // command the score board to reset
                 if (BtManager.getManager().sendMessage("{a9}")) {
                     // and reset our current match date
-                    HistoryManager.getManager().resetMatchStartedDate(0);
+                    StorageManager.getManager().resetMatchStartedDate(0);
                 }
                 else {
                     runOnUiThread(new Runnable() {
@@ -823,27 +847,26 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
 
     public void onSaveMatchPress(View view) {
         ScoreData data = BtManager.getManager().getLatestScoreData();
-        if (null != data) {
+        StorageManager manager = StorageManager.getManager();
+        if (null == manager || null == manager.getCurrentUser()) {
+            Toast.makeText(this, R.string.error_user_not_signedin, Toast.LENGTH_SHORT).show();
+        }
+        else if (null != data) {
             // there is data to store, store it, first work out what we would want to call this
             String playerOne = getOnlyStrings(playerOneTitleText.getText().toString());
             String playerTwo = getOnlyStrings(playerTwoTitleText.getText().toString());
-            // delete any previously saved data for this match
-            HistoryManager.getManager().deleteFilesForCurrentMatch(view.getContext());
-            // now create the proper filename with the names, date etc all up-to-date
-            String filename = HistoryFile.createNewFilename(view.getContext(),
-                    HistoryManager.getManager().getMatchStartedDate(),
-                    playerOne, playerTwo, data);
-            // and store the data
-            HistoryFile file = HistoryFile.writeFileContent(filename, data, this);
-            // if stored, remember the filename we used to store it
-            if (null != file) {
-                // set the new filename
-                data.filename = filename;
-                // and tell the user this worked
-                Toast.makeText(this, R.string.successful_save, Toast.LENGTH_SHORT).show();
-                //TODO could show a fun little animation of a file wizzing off here to show it worked
-            }
 
+            // get the match data for this
+            Match match = new Match(manager.getCurrentUser(),
+                    playerOne, playerTwo,
+                    ScoreData.getScoreString(this, data),
+                    data,
+                    manager.getMatchStartedDate());
+            // and store this match / will overwrite any old on this key of userId / match date
+            match.updateInDatabase(StorageManager.getManager().getTopLevel());
+            // and tell the user this worked
+            Toast.makeText(this, R.string.successful_save, Toast.LENGTH_SHORT).show();
+            //TODO could show a fun little animation of a file wizzing off here to show it worked
         }
     }
 

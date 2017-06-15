@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,39 +27,47 @@
         <activity
             android:name=".bluetooth.BtConnectActivity"
             android:label="@string/title_activity_bt_connect"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.co.darkerwaters.scorepal.MainActivity" />
+                android:value="uk.co.darkerwaters.scorepal.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".HistoryActivity"
+            android:name=".activities.HistoryActivity"
             android:label="@string/title_activity_history"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.co.darkerwaters.scorepal.MainActivity" />
+                android:value="uk.co.darkerwaters.scorepal.activities.MainActivity" />
         </activity>
-        <activity android:name=".HistoryDetailsActivity" />
         <activity
-            android:name=".ScoreActivity"
+            android:name=".activities.ScoreActivity"
             android:label="@string/title_activity_score"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.co.darkerwaters.scorepal.MainActivity" />
+                android:value="uk.co.darkerwaters.scorepal.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".AccountActivity"
+            android:name=".activities.AccountActivity"
             android:label="@string/title_activity_account"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.co.darkerwaters.scorepal.MainActivity" />
+                android:value="uk.co.darkerwaters.scorepal.activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activities.MatchDetailsActivity"
+            android:label="@string/title_activity_match_details"
+            android:parentActivityName=".activities.HistoryActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uk.co.darkerwaters.scorepal.activities.HistoryActivity" />
         </activity>
     </application>
 

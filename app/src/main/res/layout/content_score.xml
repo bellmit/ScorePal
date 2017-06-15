@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="uk.co.darkerwaters.scorepal.ScoreActivity"
+    tools:context="uk.co.darkerwaters.scorepal.activities.ScoreActivity"
     tools:showIn="@layout/activity_score"
     android:animateLayoutChanges="true"
     android:focusableInTouchMode="true">

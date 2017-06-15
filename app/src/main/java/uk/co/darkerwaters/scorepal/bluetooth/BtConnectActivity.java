@@ -14,7 +14,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import uk.co.darkerwaters.scorepal.R;
-import uk.co.darkerwaters.scorepal.ScoreData;
+import uk.co.darkerwaters.scorepal.storage.ScoreData;
 
 public class BtConnectActivity extends AppCompatActivity implements BtManager.IBtManagerListener {
 

@@ -21,6 +21,11 @@ public class Group {
     List<String> members;
     List<String> matches;
 
+
+    public Group() {
+        // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
+
     public Group(String ID, String name, User owner, String location) {
         this.ID = ID;
         this.name = name;

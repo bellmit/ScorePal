@@ -1,11 +1,14 @@
-package uk.co.darkerwaters.scorepal;
+package uk.co.darkerwaters.scorepal.storage;
 
+import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import uk.co.darkerwaters.scorepal.R;
 
 /**
  * Created by douglasbrain on 30/05/2017.
@@ -357,5 +360,75 @@ public class ScoreData {
     private void writeStringWithColon(String data, StringBuilder recDataString) {
         recDataString.append(data);
         recDataString.append(':');
+    }
+
+    public static String getScoreString(Context context, ScoreData data) {
+        String scoreString = "";
+        boolean isTennis = false;
+        boolean isBadminton = false;
+        // set the nice image
+        switch (data.currentScoreMode) {
+            case K_SCOREWIMBLEDON5:
+            case K_SCOREWIMBLEDON3:
+            case K_SCOREFAST4:
+                // this is a nice game of tennis
+                isTennis = true;
+                break;
+            case K_SCOREBADMINTON3:
+            case K_SCOREBADMINTON5:
+                // this is a nice game of badminton
+                isBadminton = true;
+                break;
+            default:
+                // this is something we score points in
+                break;
+        }
+        if (data != null) {
+            if (isTennis && data.sets != null && data.sets.first + data.sets.second > 0) {
+                // the score is the number of sets they won - show this, we have to check
+                // is we are in tennis because badminton puts their games in this data
+                scoreString = context.getResources().getString(R.string.sets);
+                scoreString += "-" + data.sets.first + "-" + data.sets.second;
+            }
+            else if (data.games != null && data.games.first + data.games.second > 0) {
+                // the score is the number of games they won - show this
+                scoreString = context.getResources().getString(R.string.games);
+                scoreString += "-" + data.games.first + "-" + data.games.second;
+            }
+            else {
+                // show the points string
+                scoreString = context.getResources().getString(R.string.points);
+                scoreString += "-" + data.getPointsAsString(data.points.first) +
+                        "-" + data.getPointsAsString(data.points.second);
+            }
+        }
+        else {
+            // show the null data
+            scoreString = context.getResources().getString(R.string.points) + "-0-0";
+        }
+        return scoreString;
+    }
+
+    public static String getScoreStringType(Context context, String scoreString) {
+        // the score type is the first entry before the dash
+        String scoreType = context.getResources().getString(R.string.points);
+        // the type is the first string up to the first dash
+        int index = scoreString.indexOf("-");
+        if (index > -1) {
+            scoreType = scoreString.substring(0, index);
+        }
+        return scoreType;
+    }
+
+    public static String getScoreStringPoints(Context context, String scoreString) {
+        // the score is the data after the type (40-40) etc
+        String score = "0-0";
+        // the player type is the first string up to the first dash
+        int index = scoreString.indexOf("-");
+        if (index > -1) {
+            // this is the dash separating the scores, return the score
+            score = scoreString.substring(index + 1, scoreString.length());
+        }
+        return score;
     }
 }
