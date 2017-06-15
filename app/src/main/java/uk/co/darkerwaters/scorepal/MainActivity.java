@@ -156,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navigation, menu);
         //getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
@@ -182,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
+        // process the option clicked in the menu bar
         if (item.getItemId() == android.R.id.home) {
             // pressed the home button, ... or < to show/hide the drawer
             if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -213,29 +212,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent;
 
         switch (item.getItemId()) {
-            case R.id.manage_device:
+            case R.id.nav_device:
                 intent = new Intent(getApplicationContext(), BtConnectActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.history:
+            case R.id.nav_history:
                 intent = new Intent(getApplicationContext(), HistoryActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.nav_camera:
-                // Handle the camera action
-                return true;
-            case R.id.nav_gallery:
-                return true;
-            case R.id.nav_slideshow:
-                return true;
-            case R.id.action_settings:
             case R.id.nav_account:
                 intent = new Intent(getApplicationContext(), AccountActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.nav_share:
+                Toast.makeText(this, "Sorry not done this yet...", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.nav_send:
+                Toast.makeText(this, "Sorry not done this yet...", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return false;
