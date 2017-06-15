@@ -1,5 +1,6 @@
 package uk.co.darkerwaters.scorepal;
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ public class ScoreData {
     public ArrayList<Integer> historicPoints;
 
     public int dataCode = 0;
+    public char dataVersion = 0;
     public int secondsStartTime = 0;
     public int secondsGameDuration = 0;
     public String dataCommand = "u";
@@ -108,6 +110,8 @@ public class ScoreData {
             StringBuilder recDataString = new StringBuilder();
             // now write all the data, first comes the command character
             writeChar(this.dataCommand, recDataString);
+            // then the version
+            writeChar(this.dataVersion, recDataString);
             // then the data code, this has a colon
             writeStringWithColon(dataCode, recDataString);
             // now the start and duration timers which also have colons
@@ -194,48 +198,62 @@ public class ScoreData {
             // remove the first char, which should be the command
             dataCommand = extractChars(1, recDataString);
             if (dataCommand.equals("u")) {
-                // get the code that we need to respond with
-                dataCode = extractValueToColon(recDataString);
-                // get the start and duration timers
-                secondsStartTime = extractValueToColon(recDataString);
-                secondsGameDuration = extractValueToColon(recDataString);
-                // get the active mode
-                currentScoreMode = ScoreMode.from(Integer.parseInt(extractChars(1, recDataString)));
-                int matchWinnerData = Integer.parseInt(extractChars(1, recDataString));
-                if (matchWinnerData <= 1) {
-                    // there is a winner, 0 or 1 - set this
-                    matchWinner = new Integer(matchWinnerData);
+                // first get the version - one char only but representing the number of it
+                dataVersion = extractChars(1, recDataString).charAt(0);
+                // now process the data for this version
+                switch(dataVersion) {
+                    case 'a':
+                        parseVersionOneScoreData(recDataString);
+                        break;
+                    default:
+                        //TODO error reporting of unsupported version
+                        break;
                 }
-                isInTieBreak = Integer.parseInt(extractChars(1, recDataString)) == 1;
-                // get the current server
-                currentServer = Integer.parseInt(extractChars(1, recDataString));
-                currentNorth = Integer.parseInt(extractChars(1, recDataString));
-                sets = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
-                // do the games for each set played
-                int totalSets = sets.first + sets.second;
-                previousSets = new ArrayList<Pair<Integer, Integer>>(totalSets);
-                for (int i = 0; i < totalSets; ++i) {
-                    previousSets.add(new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString)));
-                }
-                points = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
-                games = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
-                totalPoints = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
-                // now do all the historic points
-                noHistoricPoints = extractValueToColon(recDataString);
-                historicPoints = new ArrayList<Integer>(noHistoricPoints);
-                int dataCounter = 0;
-                while (dataCounter < noHistoricPoints) {
-                    // while there are points to get, get them
-                    int dataReceived = extractHistoryValue(recDataString);
-                    // this char contains somewhere between one and eight values all bit-shifted, extract them now
-                    int bitCounter = 0;
-                    while (bitCounter < 10 && dataCounter < noHistoricPoints) {
-                        int bitValue = 1 & (dataReceived >> bitCounter++);
-                        // add this to the list of value received
-                        historicPoints.add(bitValue);
-                        ++dataCounter;
-                    }
-                }
+            }
+        }
+    }
+
+    private void parseVersionOneScoreData(StringBuilder recDataString) {
+        // get the code that we need to respond with
+        dataCode = extractValueToColon(recDataString);
+        // get the start and duration timers
+        secondsStartTime = extractValueToColon(recDataString);
+        secondsGameDuration = extractValueToColon(recDataString);
+        // get the active mode
+        currentScoreMode = ScoreMode.from(Integer.parseInt(extractChars(1, recDataString)));
+        int matchWinnerData = Integer.parseInt(extractChars(1, recDataString));
+        if (matchWinnerData <= 1) {
+            // there is a winner, 0 or 1 - set this
+            matchWinner = new Integer(matchWinnerData);
+        }
+        isInTieBreak = Integer.parseInt(extractChars(1, recDataString)) == 1;
+        // get the current server
+        currentServer = Integer.parseInt(extractChars(1, recDataString));
+        currentNorth = Integer.parseInt(extractChars(1, recDataString));
+        sets = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
+        // do the games for each set played
+        int totalSets = sets.first + sets.second;
+        previousSets = new ArrayList<Pair<Integer, Integer>>(totalSets);
+        for (int i = 0; i < totalSets; ++i) {
+            previousSets.add(new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString)));
+        }
+        points = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
+        games = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
+        totalPoints = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
+        // now do all the historic points
+        noHistoricPoints = extractValueToColon(recDataString);
+        historicPoints = new ArrayList<Integer>(noHistoricPoints);
+        int dataCounter = 0;
+        while (dataCounter < noHistoricPoints) {
+            // while there are points to get, get them
+            int dataReceived = extractHistoryValue(recDataString);
+            // this char contains somewhere between one and eight values all bit-shifted, extract them now
+            int bitCounter = 0;
+            while (bitCounter < 10 && dataCounter < noHistoricPoints) {
+                int bitValue = 1 & (dataReceived >> bitCounter++);
+                // add this to the list of value received
+                historicPoints.add(bitValue);
+                ++dataCounter;
             }
         }
     }
@@ -314,6 +332,11 @@ public class ScoreData {
         else {
             recDataString.append(data);
         }
+    }
+
+    private void writeChar(char data, StringBuilder recDataString) {
+        // append this char to the string builder
+        recDataString.append(Character.toString(data));
     }
 
     private void writeChar(int data, StringBuilder recDataString) {
