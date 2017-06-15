@@ -3,6 +3,7 @@ package uk.co.darkerwaters.scorepal.storage;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -51,6 +52,8 @@ public class StorageManager {
     private DatabaseReference mDatabase = null;
     private DatabaseReference mMatchesReference = null;
     private ValueEventListener mPostListener = null;
+
+    private User currentUser = null;
 
     public interface IStorageManagerListener {
         public void onGoogleSigninResult(GoogleSignInAccount acct);
@@ -164,9 +167,33 @@ public class StorageManager {
         }
     }
 
-    private void onFirebaseSigninResult(FirebaseUser acct) {
+    private void onFirebaseSigninResult(final FirebaseUser acct) {
         // remember the result of this signin to firebase
         this.firebaseUser = acct;
+        if (null != acct) {
+            // this is a nice special case as creates a user for this user, let's make it sure
+            // that this data is stored in the firebase database
+            User.getUser(mDatabase, acct.getUid(), new StorageResult<User>() {
+                @Override
+                public void onResult(User data) {
+                    // is the user in the database?
+                    if (null == data) {
+                        // create the user object
+                        currentUser = new User(acct.getUid(), acct.getDisplayName());
+                        // set the data on this user object
+                        currentUser.email = acct.getEmail();
+                        currentUser.photoUrl = acct.getPhotoUrl().toString();
+                        // and put in the database
+                        currentUser.updateInDatabase(mDatabase);
+                    }
+                    else {
+                        // have the user object, cool
+                        currentUser = data;
+                    }
+                }
+            });
+
+        }
         //inform all the listeners of this change
         synchronized (this.listeners) {
             for (IStorageManagerListener listener : this.listeners) {

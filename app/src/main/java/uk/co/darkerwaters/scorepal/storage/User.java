@@ -13,8 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import uk.co.darkerwaters.scorepal.ScoreData;
+
 @IgnoreExtraProperties
 public class User {
+
     public enum ShareLevel {
         K_NONE(0),
         K_FRIENDSONLY(1),
@@ -44,12 +47,19 @@ public class User {
             }
         }
     }
-    public String ID;
-    public String nickname;
-    public int shareDetailsLevel;
+    // add all the members to store
+    String ID;
+    String nickname;
+    int shareDetailsLevel;
+    String email;
+    String photoUrl;
     List<String> groupsOwned;
     List<String> friends;
     List<String> groups;
+
+    public User() {
+        // empty constructor needed for firebase construction
+    }
 
     public User(String ID, String nickname) {
         this.ID = ID;
@@ -61,7 +71,7 @@ public class User {
     }
 
     @Exclude
-    public void getUsers(DatabaseReference topLevel, final StorageResult<User> result) {
+    public static void getUsers(DatabaseReference topLevel, final StorageResult<User> result) {
         topLevel.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -80,7 +90,7 @@ public class User {
     }
 
     @Exclude
-    public void getUser(DatabaseReference topLevel, String userID, final StorageResult<User> result) {
+    public static void getUser(DatabaseReference topLevel, String userID, final StorageResult<User> result) {
         topLevel.child("users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -96,5 +106,16 @@ public class User {
                 result.onCancelled(databaseError);
             }
         });
+    }
+
+    @Exclude
+    public void updateInDatabase(DatabaseReference topLevel) {
+        User.setUserData(topLevel, this);
+    }
+
+    @Exclude
+    public static void setUserData(DatabaseReference topLevel, User user) {
+        // create the user node and set the data for it
+        topLevel.child("/users/" + user.ID).setValue(user);
     }
 }
