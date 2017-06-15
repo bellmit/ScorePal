@@ -26,51 +26,6 @@
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/user_image"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                app:srcCompat="@drawable/court"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:id="@+id/user_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:maxLines="2"
-                android:singleLine="false"
-                android:inputType="textMultiLine"
-                android:text="@string/signin_failed"
-                style="@style/ScoreInformation"
-                app:layout_constraintLeft_toRightOf="@+id/user_image"
-                app:layout_constraintRight_toLeftOf="@+id/sign_in_button"
-                app:layout_constraintTop_toTopOf="@+id/user_image" />
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp" />
-
-        </android.support.constraint.ConstraintLayout>
-
         <Button
             android:id="@+id/score_device_button"
             android:layout_width="wrap_content"

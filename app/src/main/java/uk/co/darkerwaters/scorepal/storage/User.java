@@ -71,6 +71,21 @@ public class User {
     }
 
     @Exclude
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    @Exclude
+    public String getPhotoUrl() {
+        return this.photoUrl;
+    }
+
+    @Exclude
+    public String getEmail() {
+        return  this.email;
+    }
+
+    @Exclude
     public static void getUsers(DatabaseReference topLevel, final StorageResult<User> result) {
         topLevel.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

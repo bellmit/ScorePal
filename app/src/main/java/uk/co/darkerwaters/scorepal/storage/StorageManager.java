@@ -1,5 +1,6 @@
 package uk.co.darkerwaters.scorepal.storage;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class StorageManager {
 
     private static final String TAG = "StorageManager";
     private static final String WEB_APP_ID = "AIzaSyATE7xgvUU6qiqbckYojn3eCH-kwaOT_ow";
+    public static final int RC_SIGN_IN = 9001;
 
     private static final StorageManager INSTANCE = new StorageManager();
     private MainActivity main;
@@ -58,6 +60,7 @@ public class StorageManager {
     public interface IStorageManagerListener {
         public void onGoogleSigninResult(GoogleSignInAccount acct);
         public void onFirebaseSigninResult(FirebaseUser acct);
+        public void onUserSigninResult(User currentUser);
     }
 
     private final ArrayList<IStorageManagerListener> listeners;
@@ -105,6 +108,16 @@ public class StorageManager {
         // Initialize Database
         mMatchesReference = mDatabase.child("matches");
         listenForPosts();
+
+        if (null == firebaseUser || null == currentUser) {
+            // start the signin intent to sign into our Google account, and thence Firebase too
+            signInToGoogle(main);
+        }
+    }
+
+    public void signInToGoogle(Activity context) {
+        Intent signInIntent = StorageManager.getManager().getSignInIntent();
+        context.startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void listenForPosts() {
@@ -167,6 +180,16 @@ public class StorageManager {
         }
     }
 
+    private void onUserSigninResult(User currentUser) {
+        // remember the result of this signin to google
+        this.currentUser = currentUser;
+        synchronized (this.listeners) {
+            for (IStorageManagerListener listener : this.listeners) {
+                listener.onUserSigninResult(this.currentUser);
+            }
+        }
+    }
+
     private void onFirebaseSigninResult(final FirebaseUser acct) {
         // remember the result of this signin to firebase
         this.firebaseUser = acct;
@@ -179,17 +202,15 @@ public class StorageManager {
                     // is the user in the database?
                     if (null == data) {
                         // create the user object
-                        currentUser = new User(acct.getUid(), acct.getDisplayName());
+                        data = new User(acct.getUid(), acct.getDisplayName());
                         // set the data on this user object
-                        currentUser.email = acct.getEmail();
-                        currentUser.photoUrl = acct.getPhotoUrl().toString();
+                        data.email = acct.getEmail();
+                        data.photoUrl = acct.getPhotoUrl().toString();
                         // and put in the database
-                        currentUser.updateInDatabase(mDatabase);
+                        data.updateInDatabase(mDatabase);
                     }
-                    else {
-                        // have the user object, cool
-                        currentUser = data;
-                    }
+                    // and inform everyone of this, and store the user object from the db
+                    onUserSigninResult(data);
                 }
             });
 
@@ -212,6 +233,8 @@ public class StorageManager {
 
     public FirebaseUser getFirebaseUser() { return this.firebaseUser; }
 
+    public User getCurrentUser() { return this.currentUser; }
+
     public Intent getSignInIntent() {
         return Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
     }
@@ -231,8 +254,8 @@ public class StorageManager {
         mDatabase.updateChildren(childUpdates);
     }
 
-    public void onSignInResult(GoogleSignInResult result) {
-
+    public void onSignInResult(Intent data) {
+        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
         if (result.isSuccess()) {
             Log.d(TAG, "handleSignInResult:" + result.isSuccess());
             if (result.isSuccess()) {

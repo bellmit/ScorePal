@@ -59,14 +59,11 @@ import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.history.HistoryFile;
 import uk.co.darkerwaters.scorepal.history.HistoryManager;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
+import uk.co.darkerwaters.scorepal.storage.User;
 
-public class MainActivity extends AppCompatActivity implements StorageManager.IStorageManagerListener, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
-    private static final int RC_SIGN_IN = 9001;
-
-    private boolean isUserLoginDataShown = false;
-    private Bitmap userBitmap = null;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -89,34 +86,15 @@ public class MainActivity extends AppCompatActivity implements StorageManager.IS
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        // get rid of the account details until we sign in
-        ((TextView) findViewById(R.id.user_name)).setVisibility(View.GONE);
-        ((ImageView) findViewById(R.id.user_image)).setVisibility(View.GONE);
-        ((SignInButton) findViewById(R.id.sign_in_button)).setVisibility(View.GONE);
-        // this hides the controls
-        isUserLoginDataShown = false;
+        navigationView.bringToFront();
 
         // setup the navigation drawer
         setupDrawer();
 
         // configure all the google stuff in the storage manager
         StorageManager storageManager = StorageManager.getManager();
-        // listen to changes on this manager
-        storageManager.registerListener(this);
         // and initialise the manager
         storageManager.initialise(this);
-
-        // and initialise the sign in button
-        ((SignInButton)findViewById(R.id.sign_in_button)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signInToGoogle();
-            }
-        });
-
-        // start the signin intent to sign into our Google account, and thence Firebase too
-        signInToGoogle();
     }
 
     @Override
@@ -134,25 +112,12 @@ public class MainActivity extends AppCompatActivity implements StorageManager.IS
     @Override
     protected void onResume() {
         super.onResume();
-
-        // setup the correct controls
-        FirebaseUser acct = StorageManager.getManager().getFirebaseUser();
-        // and show this data
-        if (null == acct) {
-            showUserLoginData(null, null);
-        }
-        else {
-            showUserLoginData(acct.getDisplayName(), acct.getPhotoUrl());
-        }
     }
 
     @Override
     protected void onDestroy() {
         // unregister our listeners
         BtManager.getManager().unregisterGlobalListeners();
-        StorageManager.getManager().unregiserListener(this);
-        // clean the bitmap
-        userBitmap.recycle();
         super.onDestroy();
     }
 
@@ -196,108 +161,13 @@ public class MainActivity extends AppCompatActivity implements StorageManager.IS
         return true;
     }
 
-    public void signInToGoogle() {
-        Intent signInIntent = StorageManager.getManager().getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    @Override
-    public void onGoogleSigninResult(GoogleSignInAccount acct) {
-        // we are signed into our google account - this is fine, but just
-        // a step to the firebase account really, leave it till then to do the good stuff
-
-    }
-
-    @Override
-    public void onFirebaseSigninResult(final FirebaseUser acct) {
-        // show the user's account all nice here
-        if (null == acct) {
-            showUserLoginData(null, null);
-        }
-        else {
-            showUserLoginData(acct.getDisplayName(), acct.getPhotoUrl());
-        }
-    }
-
-    private void showUserLoginData(final String name, final Uri photoUri) {
-        TextView nameView = (TextView) findViewById(R.id.user_name);
-        final ImageView imageView = (ImageView) findViewById(R.id.user_image);
-        final SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        // slide these controls in to show them
-        imageView.setImageResource(R.drawable.court);
-        if (false == isUserLoginDataShown) {
-            // slide in the controls, only slide in the signin button if there is no account signed in
-            ViewAnimator.slideControlsDownAndIn(this, new ViewAnimator.IViewAnimator() {
-                @Override
-                public void onAnimationEnd() {
-                    if (null == name) {
-                        signInButton.setVisibility(View.VISIBLE);
-                    } else {
-                        signInButton.setVisibility(View.GONE);
-                    }
-                }
-            }, nameView, imageView, signInButton);
-            isUserLoginDataShown = true;
-        }
-        else {
-            // set the signin button visibility properly
-            if (null == name) {
-                signInButton.setVisibility(View.VISIBLE);
-            } else {
-                signInButton.setVisibility(View.GONE);
-            }
-        }
-        if (name == null || photoUri == null) {
-            // show that the user didn't log in okay
-            nameView.setText(R.string.signin_failed);
-        }
-        else {
-            // show the logged in user details
-            nameView.setText(name);
-            if (null != userBitmap) {
-                imageView.setImageBitmap(userBitmap);
-            }
-            else {
-                // and finally show the image from the user - load it here
-                new AsyncTask<String, Void, Bitmap>() {
-                    @Override
-                    protected Bitmap doInBackground(String... params) {
-                        try {
-                            InputStream in = new URL(photoUri.toString()).openStream();
-                            userBitmap = BitmapFactory.decodeStream(in);
-
-                        } catch (Exception e) {
-                            Log.e("Error", e.getMessage());
-                            e.printStackTrace();
-                        }
-                        return userBitmap;
-                    }
-
-                    @Override
-                    protected void onPostExecute(final Bitmap bitmap) {
-                        // and set this
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                imageView.setImageBitmap(bitmap);
-                            }
-                        });
-                        super.onPostExecute(bitmap);
-                    }
-                }.execute();
-            }
-        };
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+        if (requestCode == StorageManager.RC_SIGN_IN) {
             // pass this back to the manager
-            StorageManager.getManager().onSignInResult(result);
+            StorageManager.getManager().onSignInResult(data);
         }
     }
 
@@ -358,7 +228,10 @@ public class MainActivity extends AppCompatActivity implements StorageManager.IS
                 return true;
             case R.id.nav_slideshow:
                 return true;
-            case R.id.nav_manage:
+            case R.id.action_settings:
+            case R.id.nav_account:
+                intent = new Intent(getApplicationContext(), AccountActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.nav_share:
                 return true;
@@ -369,7 +242,6 @@ public class MainActivity extends AppCompatActivity implements StorageManager.IS
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         processNavigationItem(item);

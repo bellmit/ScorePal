@@ -52,6 +52,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="uk.co.darkerwaters.scorepal.MainActivity" />
         </activity>
+        <activity
+            android:name=".AccountActivity"
+            android:label="@string/title_activity_account"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uk.co.darkerwaters.scorepal.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

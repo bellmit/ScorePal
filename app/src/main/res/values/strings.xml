@@ -62,7 +62,9 @@
     <string name="score_device">Score Device</string>
     <string name="score_manual">Score Manual</string>
     <string name="title_activity_navigation">ScorePal Options</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_account">Account</string>
+    <string name="failed_google_signin">Failed to signin to Google, please try again</string>
+    <string name="failed_firebase_signin">Failed to signin to Firebase, please try again</string>
 </resources>
