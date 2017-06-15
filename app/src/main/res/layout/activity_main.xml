@@ -1,166 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/focusable_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability="beforeDescendants"
     android:animateLayoutChanges="true"
-    android:focusableInTouchMode="true">
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/top_toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_alignParentTop="true"
-            android:background="#F1F8E9"
-            android:paddingBottom="16dp">
-
-            <TextView
-                android:id="@+id/bt_connected_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/bt_connected"
-                android:textAppearance="@android:style/TextAppearance.Material.Medium"
-                app:layout_constraintBaseline_toBaselineOf="@+id/connect_button"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/connect_button"
-                tools:text="@string/bt_connected" />
-
-            <Button
-                android:id="@+id/connect_button"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:onClick="onClickConnect"
-                android:text="@string/bt_connect"
-                android:theme="@style/Color.Button"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </android.support.constraint.ConstraintLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bottom_toolbar_layout"
-            android:layout_below="@+id/top_toolbar_layout"
-            android:clipChildren="false"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="178dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <include
-                    android:id="@+id/include_score_layout"
-                    layout="@layout/score_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></include>
-
-                <ViewSwitcher
-                    android:id="@+id/previous_view_switcher"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    app:layout_constraintTop_toBottomOf="@+id/include_score_layout">
-
-                    <include
-                        android:id="@+id/include_score_previous_sets_layout"
-                        layout="@layout/score_previous_sets_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"></include>
-
-                    <include
-                        android:id="@+id/include_score_previous_games_layout"
-                        layout="@layout/score_previous_games_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"></include>
-
-                </ViewSwitcher>
-
-                <TextView
-                    android:id="@+id/game_type_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/played_wimbledon5"
-                    android:textAlignment="center" />
-
-
-            </LinearLayout>
-        </ScrollView>
-
-    </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/bottom_toolbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="false"
-        android:background="#F1F8E9"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/reset_match_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:onClick="onNewMatchPress"
-            android:text="@string/reset"
-            android:theme="@style/Color.Button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <Button
-            android:id="@+id/undo_point_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:onClick="onUndoPress"
-            android:text="@string/undo"
-            android:theme="@style/Color.Button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/reset_match_button" />
-
-        <Button
-            android:id="@+id/save_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:onClick="onSaveMatchPress"
-            android:text="@string/save"
-            android:theme="@style/Color.Button"
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:srcCompat="@drawable/court"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:inputType="textMultiLine"
+            android:text="@string/signin_failed"
+            app:layout_constraintLeft_toRightOf="@+id/user_image"
+            app:layout_constraintRight_toLeftOf="@+id/sign_in_button"
+            app:layout_constraintTop_toTopOf="@+id/user_image" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/score_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="onScore"
+        android:text="@string/score"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+</LinearLayout>

@@ -56,4 +56,7 @@
     <string name="previous_games">Previous Games</string>
     <string name="played">Played</string>
     <string name="sfor">for</string>
+    <string name="title_activity_score">ScoreActivity</string>
+    <string name="score">Score</string>
+    <string name="signin_failed">Please sign in to access all features</string>
 </resources>

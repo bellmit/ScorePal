@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "85965429895",
+    "firebase_url": "https://regal-campus-169014.firebaseio.com",
+    "project_id": "regal-campus-169014",
+    "storage_bucket": "regal-campus-169014.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85965429895:android:6b9de677bccdf12b",
+        "android_client_info": {
+          "package_name": "uk.co.darkerwaters.scorepal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85965429895-dupr20u8cimqgikh46nl269a27kb75uo.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "85965429895-he8u4m94bdaa6as2duhsgkl5et03op9j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uk.co.darkerwaters.scorepal",
+            "certificate_hash": "9efc8029e17f6f3cb55607f3d82a51fffe4c20bf"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGBSwMLbooB0v9e84HwiUhsxWBF2uJWoc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85965429895-dupr20u8cimqgikh46nl269a27kb75uo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

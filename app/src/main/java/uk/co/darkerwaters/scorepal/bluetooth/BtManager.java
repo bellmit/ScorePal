@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.util.ArraySet;
+import android.support.v4.app.FragmentActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import uk.co.darkerwaters.scorepal.MainActivity;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.ScoreData;
 import uk.co.darkerwaters.scorepal.history.HistoryManager;
@@ -32,7 +31,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
 
     private BluetoothSocket btSocket = null;
     private BluetoothAdapter adapter = null;
-    private MainActivity main = null;
+    private FragmentActivity container = null;
 
     private String connectedDeviceAddress = null;
     private String connectedDeviceName = null;
@@ -58,18 +57,18 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     private BtManager() {
     }
 
-    public static void initialise(MainActivity mainActivity) {
+    public static void initialise(FragmentActivity containerActivity) {
         // initialise this class
         if (null == INSTANCE) {
             // create the instance (not bothering with thread safety as safely done in create of
-            // the main activity
+            // the container activity
             INSTANCE = new BtManager();
         }
         // enable the intent to let us use bluetooth
         Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        mainActivity.startActivityForResult(turnOn, 0);
+        containerActivity.startActivityForResult(turnOn, 0);
         // remember the activity - useful
-        INSTANCE.main = mainActivity;
+        INSTANCE.container = containerActivity;
         // get the adapter
         INSTANCE.adapter = BluetoothAdapter.getDefaultAdapter();
         INSTANCE.registerGlobalListeners();
@@ -105,13 +104,13 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
 
     private void registerActionReceiver(BroadcastReceiver receiver, IntentFilter filter) {
         // create the receiver that we will later unregister
-        this.main.registerReceiver(receiver, filter);
+        this.container.registerReceiver(receiver, filter);
         this.registeredReceivers.add(receiver);
     }
 
     public void unregisterGlobalListeners() {
         for (BroadcastReceiver receiver : this.registeredReceivers) {
-            this.main.unregisterReceiver(receiver);
+            this.container.unregisterReceiver(receiver);
         }
         this.registeredReceivers.clear();
     }
@@ -139,9 +138,9 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     }
 
     public void connectToLastDevice() {
-        SharedPreferences sharedPref = this.main.getPreferences(Context.MODE_PRIVATE);
-        String defaultValue = this.main.getResources().getString(R.string.stored_device);
-        String wantedDeviceAddress = sharedPref.getString(this.main.getString(R.string.stored_device), defaultValue);
+        SharedPreferences sharedPref = this.container.getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = this.container.getResources().getString(R.string.stored_device);
+        String wantedDeviceAddress = sharedPref.getString(this.container.getString(R.string.stored_device), defaultValue);
         if (wantedDeviceAddress.equals(defaultValue)) {
             // there is none saved, don't bother
         }
@@ -173,7 +172,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             try {
                 btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
             } catch (IOException e1) {
-                //Log.d(this.main.TAG,"socket not created");
+                //Log.d(this.container.TAG,"socket not created");
             }
             try{
                 btSocket.connect();
@@ -226,11 +225,11 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             connectedDeviceAddress = device.getAddress();
             connectedDeviceName = device.getName();
             // store that we connected to this so we do again next time we start up
-            SharedPreferences sharedPref = this.main.getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences sharedPref = this.container.getPreferences(Context.MODE_PRIVATE);
             if (null != sharedPref) {
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(this.main.getString(R.string.stored_device), connectedDeviceAddress);
-                editor.commit();
+                editor.putString(this.container.getString(R.string.stored_device), connectedDeviceAddress);
+                editor.apply();
             }
         }
     }
