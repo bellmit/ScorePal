@@ -115,7 +115,8 @@ public class Match {
 
     @Exclude
     public static void getMatches(DatabaseReference topLevel, final String userId, final StorageResult<Match> result) {
-        topLevel.child("matches").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        // get the matches (ordered by key, so newest will be last) and limit to the last 30 to not overload our list
+        topLevel.child("matches").child(userId).orderByKey().limitToLast(30).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // this data is a list of the children of the matches node, get all these

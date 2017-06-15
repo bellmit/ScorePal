@@ -198,7 +198,7 @@ public class MatchListAdapter extends BaseAdapter {
     }
 
     public void add(Match match) {
-        mEntries.add(match);
+        mEntries.add(0, match);
         notifyDataSetChanged();
     }
 }

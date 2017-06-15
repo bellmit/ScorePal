@@ -6,14 +6,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.storage.Match;
+import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 import uk.co.darkerwaters.scorepal.storage.StorageResult;
 
@@ -36,14 +41,6 @@ public class HistoryActivity extends AppCompatActivity {
         listAdapter = new MatchListAdapter(this);
         historyListView.setAdapter(listAdapter);
 
-        // listen for clicks on the list
-        historyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // handle the user clicking the item in the view
-
-            }
-        });
         // and fill the list if we can
         populateList();
     }
