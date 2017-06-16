@@ -27,11 +27,9 @@ public class DeviceConnectionFragment extends Fragment implements BtManager.IBtM
     private ImageView connectionImage;
     private ImageButton connectionButton;
     private Activity parentContext;
-    private IDeviceConnectionListener listener;
 
-    public interface IDeviceConnectionListener {
-        public void onDeviceConnectionChanged(boolean isManagerEnabled, String deviceConnected);
-    }
+    boolean isAutoHide = true;
+    boolean isConnectivityControlsShown = true;
 
     public DeviceConnectionFragment() {
         // Required empty public constructor
@@ -46,11 +44,9 @@ public class DeviceConnectionFragment extends Fragment implements BtManager.IBtM
         try {
             // we want it to be an activity to call RunOnUI
             this.parentContext = (Activity)context;
-            // also it has to be an listener
-            this.listener = (IDeviceConnectionListener)context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement IDeviceConnectionListener and Activity");
+                    + " must implement Activity");
         }
 
     }
@@ -73,6 +69,9 @@ public class DeviceConnectionFragment extends Fragment implements BtManager.IBtM
         // and the view
         connectionImage = (ImageView) view.findViewById(R.id.bt_connected_image);
 
+        // initially hide the connection toolbar fragment so slides in if disconnected
+        setIsAutoHide(isAutoHide, view);
+
         // return the view that is the fragment expanded from the xml
         return view;
     }
@@ -88,6 +87,26 @@ public class DeviceConnectionFragment extends Fragment implements BtManager.IBtM
         manager.connectToLastDevice();
         // update our current connectivity
         updateConnectionStatus();
+    }
+
+    public void setIsAutoHide(boolean isAutoHide, View topView) {
+        this.isAutoHide = isAutoHide;
+        if (null == topView) {
+            topView = getView();
+        }
+        if (isAutoHide) {
+            // are auto hiding - intially hide everything so they slide in when needed
+            // instead of always sliding out when created / orientation changes etc
+            isConnectivityControlsShown = false;
+            if (null != topView)
+                topView.setVisibility(View.GONE);
+        }
+        else {
+            // else are never hiding, make sure they are shown
+            isConnectivityControlsShown = true;
+            if (null != topView)
+                topView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void onConnectionClicked() {
@@ -131,12 +150,24 @@ public class DeviceConnectionFragment extends Fragment implements BtManager.IBtM
         if (manager.isEnabled() && null != connectedDevice) {
             connectionText.setText(connectedDevice);
             connectionImage.setImageResource(R.drawable.scorepal);
+            // just hide this because showing what is connected isn't required
+            if (isConnectivityControlsShown && isAutoHide) {
+                // slide the views away and make them gone
+                ViewAnimator.slideControlsUpAndAway(parentContext, null, getView());
+                // remember that we hid them
+                isConnectivityControlsShown = false;
+            }
         }
         else {
             connectionText.setText(R.string.bt_not_connected);
             connectionImage.setImageResource(R.drawable.bluetooth);
+            // show that no device is connected
+            if (false == isConnectivityControlsShown) {
+                // slide the views in and make them gone
+                ViewAnimator.slideControlsDownAndIn(parentContext, null, getView());
+                // remember that we showed them
+                isConnectivityControlsShown = true;
+            }
         }
-        // send this new data to the listener
-        listener.onDeviceConnectionChanged(manager.isEnabled() && null != connectedDevice, connectedDevice);
     }
 }

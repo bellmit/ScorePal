@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import layout.ScoreTypeButtonsFragment;
+import uk.co.darkerwaters.scorepal.DeviceConnectionFragment;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.bluetooth.BtConnectActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
+
+    private DeviceConnectionFragment deviceConnectionFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
+
+        deviceConnectionFragment = (DeviceConnectionFragment) getSupportFragmentManager().findFragmentById(R.id.deviceconnection_fragment);
+        //deviceConnectionFragment.setIsAutoHide(false, null);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

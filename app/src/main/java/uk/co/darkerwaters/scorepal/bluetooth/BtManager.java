@@ -76,6 +76,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
         // get the adapter
         INSTANCE.adapter = BluetoothAdapter.getDefaultAdapter();
         INSTANCE.registerGlobalListeners();
+        //TODO periodically check for BT connectivity in case it is dropped - poll and assume the device sends us data updates?
     }
 
     public void registerGlobalListeners() {
@@ -310,11 +311,6 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             connectedDevice = this.connectedDeviceName;
         }
         return connectedDevice;
-    }
-
-    public void deviceConnectivityChanged() {
-        // resend out the message, someone has worked out the BT device has gone / re-arrived
-        btConnectionStateChanged();
     }
 
     private synchronized void btDeviceFound(BluetoothDevice device) {

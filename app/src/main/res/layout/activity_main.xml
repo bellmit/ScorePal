@@ -12,16 +12,35 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
         android:layout_gravity="start"
+        android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
         android:fitsSystemWindows="true"
+        android:visibility="visible"
         app:headerLayout="@layout/nav_header_navigation"
         app:menu="@menu/activity_navigation_drawer" />
 
-    <fragment android:name="layout.ScoreTypeButtonsFragment"
-        android:id="@+id/scoretypebuttons_fragment"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_score_type_buttons" />
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/deviceconnection_fragment"
+            android:name="uk.co.darkerwaters.scorepal.DeviceConnectionFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F1F8E9"
+            android:elevation="16dp"
+            tools:layout="@layout/fragment_device_connection" />
+
+        <fragment
+            android:id="@+id/scoretypebuttons_fragment"
+            android:name="layout.ScoreTypeButtonsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:layout="@layout/fragment_score_type_buttons" />
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

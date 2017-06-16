@@ -42,7 +42,7 @@ import uk.co.darkerwaters.scorepal.storage.Match;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
-public class ScoreActivity extends AppCompatActivity implements BtManager.IBtManagerListener, DeviceConnectionFragment.IDeviceConnectionListener {
+public class ScoreActivity extends AppCompatActivity implements BtManager.IBtManagerListener {
 
     private DeviceConnectionFragment topToolbar;
 
@@ -85,8 +85,6 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
     private boolean isPlayerTwoServeStateOn = false;
 
     private ViewSwitcher previousViewSwitcher;
-
-    boolean isConnectivityControlsShown = true;
     boolean isSetsViewShown = true;
 
     @Override
@@ -98,10 +96,6 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // initialise the members so we can read / change / hide etc
         initialiseMembersFromView();
-
-        // initially hide the connection toolbar fragment so slides in if disconnected
-        isConnectivityControlsShown = false;
-        topToolbar.getView().setVisibility(View.GONE);
 
         // initialise any remembered settings
         recallStoredSettings();
@@ -359,11 +353,6 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
             // want to inc player two
             result = manager.sendMessage("{a8}");
         }
-        if (result == isConnectivityControlsShown) {
-            // the result is false, but the view is visible (or vice versa)
-            // either way the connectivity display is incorrect
-            BtManager.getManager().deviceConnectivityChanged();
-        }
     }
 
     @Override
@@ -385,29 +374,6 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public void onDeviceConnectionChanged(boolean isManagerEnabled, String deviceConnected) {
-        if (isManagerEnabled && null != deviceConnected) {
-            // just hide this
-            if (isConnectivityControlsShown) {
-                // slide the views away and make them gone
-                ViewAnimator.slideControlsUpAndAway(this, null, topToolbar.getView());
-                // remember that we hid them
-                isConnectivityControlsShown = false;
-            }
-        }
-        else {
-            // show that no device is connected
-            if (false == isConnectivityControlsShown) {
-                // slide the views in and make them gone
-                ViewAnimator.slideControlsDownAndIn(this, null, topToolbar.getView());
-                // remember that we showed them
-                isConnectivityControlsShown = true;
-            }
-        }
     }
 
     private void displayScoreData(ScoreData scoreData) {
