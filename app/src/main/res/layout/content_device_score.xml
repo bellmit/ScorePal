@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="uk.co.darkerwaters.scorepal.activities.ScoreActivity"
-    tools:showIn="@layout/activity_score"
+    tools:context="uk.co.darkerwaters.scorepal.activities.DeviceScoreActivity"
+    tools:showIn="@layout/activity_device_score"
     android:animateLayoutChanges="true"
     android:focusableInTouchMode="true">
 
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <fragment android:name="uk.co.darkerwaters.scorepal.DeviceConnectionFragment"
+        <fragment android:name="uk.co.darkerwaters.scorepal.fragments.DeviceConnectionFragment"
             android:id="@+id/deviceconnection_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,35 +41,22 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <include
-                    android:id="@+id/include_score_layout"
-                    layout="@layout/score_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></include>
-
-                <ViewSwitcher
-                    android:id="@+id/previous_view_switcher"
+                <fragment
+                    android:id="@+id/fragment_score_entry"
+                    android:name="uk.co.darkerwaters.scorepal.fragments.ScoreEntryFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    tools:layout="@layout/fragment_score_entry" />
+
+                <fragment
+                    android:id="@+id/fragment_previous_sets"
+                    android:name="uk.co.darkerwaters.scorepal.fragments.ScorePreviousSetsFragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:layout="@layout/fragment_previous_sets"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    app:layout_constraintTop_toBottomOf="@+id/include_score_layout">
-
-                    <include
-                        android:id="@+id/include_score_previous_sets_layout"
-                        layout="@layout/score_previous_sets_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"></include>
-
-                    <include
-                        android:id="@+id/include_score_previous_games_layout"
-                        layout="@layout/score_previous_games_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"></include>
-
-                </ViewSwitcher>
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_score_entry" />
 
                 <TextView
                     android:id="@+id/game_type_text"

@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.scorepal.bluetooth;
+package uk.co.darkerwaters.scorepal.activities;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -15,12 +15,13 @@ import java.util.Set;
 
 import uk.co.darkerwaters.scorepal.Common;
 import uk.co.darkerwaters.scorepal.R;
+import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 
 /**
  * Created by douglasbrain on 26/05/2017.
  */
 
-public class BtListAdapter extends BaseAdapter {
+public class BtConnectListAdapter extends BaseAdapter {
 
     private Context mContext;
 
@@ -28,7 +29,7 @@ public class BtListAdapter extends BaseAdapter {
 
     private ArrayList<BluetoothDevice> mEntries = new ArrayList<BluetoothDevice>();
 
-    public BtListAdapter(Context context) {
+    public BtConnectListAdapter(Context context) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -58,7 +59,7 @@ public class BtListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         RelativeLayout itemView;
         if (convertView == null) {
-            itemView = (RelativeLayout) mLayoutInflater.inflate(R.layout.bt_list_view_item, parent, false);
+            itemView = (RelativeLayout) mLayoutInflater.inflate(R.layout.list_item_bt, parent, false);
 
         } else {
             itemView = (RelativeLayout) convertView;

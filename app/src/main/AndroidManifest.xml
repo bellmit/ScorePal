@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".bluetooth.BtConnectActivity"
+            android:name=".activities.BtConnectActivity"
             android:label="@string/title_activity_bt_connect"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -34,7 +34,7 @@
                 android:value="uk.co.darkerwaters.scorepal.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.HistoryActivity"
+            android:name=".activities.MatchHistoryActivity"
             android:label="@string/title_activity_history"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -43,7 +43,7 @@
                 android:value="uk.co.darkerwaters.scorepal.activities.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.ScoreActivity"
+            android:name=".activities.DeviceScoreActivity"
             android:label="@string/title_activity_score"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -63,11 +63,11 @@
         <activity
             android:name=".activities.MatchDetailsActivity"
             android:label="@string/title_activity_match_details"
-            android:parentActivityName=".activities.HistoryActivity"
+            android:parentActivityName=".activities.MatchHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.co.darkerwaters.scorepal.activities.HistoryActivity" />
+                android:value="uk.co.darkerwaters.scorepal.activities.MatchHistoryActivity" />
         </activity>
     </application>
 

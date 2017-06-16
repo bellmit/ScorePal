@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/focusable_layout"
+    android:descendantFocusability="beforeDescendants"
+    android:animateLayoutChanges="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/bottom_toolbar_layout"
+        android:orientation="horizontal">
+
+        <fragment android:name="uk.co.darkerwaters.scorepal.fragments.DeviceConnectionFragment"
+            android:id="@+id/deviceconnection_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="#F1F8E9"
+            android:elevation="16dp"
+            tools:layout="@layout/fragment_device_connection" />
+
+        <FrameLayout
+            android:id="@+id/scrollview_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/top_toolbar_layout">
+
+            <HorizontalScrollView
+                android:layout_width="800dp"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fillViewport="true"
+                android:scrollbarAlwaysDrawHorizontalTrack="false">
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <fragment
+                        android:id="@+id/fragment_score_entry"
+                        android:name="uk.co.darkerwaters.scorepal.fragments.ScoreEntryFragment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:layout="@layout/fragment_score_entry"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="16dp" />
+
+                    <fragment
+                        android:id="@+id/fragment_previous_sets"
+                        android:name="uk.co.darkerwaters.scorepal.fragments.ScorePreviousSetsFragment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:layout="@layout/fragment_previous_sets"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toRightOf="@+id/fragment_score_entry"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="8dp" />
+
+                    <TextView
+                        android:id="@+id/game_type_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/played_wimbledon5"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/fragment_score_entry" />
+
+
+                </android.support.constraint.ConstraintLayout>
+            </HorizontalScrollView>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/bottom_toolbar_layout"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F1F8E9"
+            android:elevation="16dp">
+
+            <ImageButton
+                android:id="@+id/reset_match_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="88dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:onClick="onNewMatchPress"
+                android:text="@string/reset"
+                android:theme="@style/Color.Button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/new_match"
+                android:layout_marginEnd="16dp" />
+
+            <ImageButton
+                android:id="@+id/undo_point_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="88dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:onClick="onUndoPress"
+                android:text="@string/undo"
+                android:theme="@style/Color.Button"
+                app:layout_constraintBottom_toTopOf="@+id/reset_match_button"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/undo"
+                android:layout_marginEnd="16dp" />
+
+            <ImageButton
+                android:id="@+id/save_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="88dp"
+                android:layout_height="56dp"
+                android:layout_marginRight="16dp"
+                android:onClick="onSaveMatchPress"
+                android:text="@string/save"
+                android:theme="@style/Color.Button"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/save"
+                android:layout_marginEnd="16dp" />
+
+        </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+</RelativeLayout>

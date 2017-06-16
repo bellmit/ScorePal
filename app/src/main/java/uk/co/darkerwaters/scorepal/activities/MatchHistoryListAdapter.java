@@ -31,7 +31,7 @@ import uk.co.darkerwaters.scorepal.storage.StorageManager;
  * Created by douglasbrain on 26/05/2017.
  */
 
-public class MatchListAdapter extends BaseAdapter {
+public class MatchHistoryListAdapter extends BaseAdapter {
 
     private Context mContext;
 
@@ -39,7 +39,7 @@ public class MatchListAdapter extends BaseAdapter {
 
     private ArrayList<Match> mEntries = new ArrayList<Match>();
 
-    public MatchListAdapter(Context context) {
+    public MatchHistoryListAdapter(Context context) {
         mContext = context;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -69,7 +69,7 @@ public class MatchListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         RelativeLayout itemView;
         if (convertView == null) {
-            itemView = (RelativeLayout) mLayoutInflater.inflate(R.layout.list_view_match_item, parent, false);
+            itemView = (RelativeLayout) mLayoutInflater.inflate(R.layout.list_item_match, parent, false);
 
         } else {
             itemView = (RelativeLayout) convertView;

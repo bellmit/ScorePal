@@ -26,7 +26,7 @@
 
         <fragment
             android:id="@+id/deviceconnection_fragment"
-            android:name="uk.co.darkerwaters.scorepal.DeviceConnectionFragment"
+            android:name="uk.co.darkerwaters.scorepal.fragments.DeviceConnectionFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -36,7 +36,7 @@
 
         <fragment
             android:id="@+id/scoretypebuttons_fragment"
-            android:name="layout.ScoreTypeButtonsFragment"
+            android:name="uk.co.darkerwaters.scorepal.fragments.ScoreTypeButtonsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

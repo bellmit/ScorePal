@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="0dp"
+    android:paddingBottom="8dp"
+    android:descendantFocusability="beforeDescendants"
+    android:animateLayoutChanges="true"
+    android:focusableInTouchMode="true"
+    tools:context=".fragments.ScoreTypeButtonsFragment"
+    tools:layout_editor_absoluteY="73dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <TextView
+        android:id="@+id/games_text"
+        style="@style/ScoreInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="0dp"
+        android:text="@string/games"
+        app:layout_constraintLeft_toRightOf="@+id/player_one_points_text"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/winner_text_view"
+        style="@style/ScoreInformation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Winner Text Goes Here"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="64dp"
+        app:layout_constraintVertical_bias="0.486" />
+
+    <EditText
+        android:id="@+id/player_one_name_text_view"
+        style="@style/PlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:ems="5"
+        android:inputType="textPersonName"
+        android:text="@string/player_one"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/player_one_games_text"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/player_two_name_text_view"
+        style="@style/PlayerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:ems="5"
+        android:inputType="textPersonName"
+        android:text="@string/player_two"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/player_two_games_text"
+        android:layout_marginBottom="0dp" />
+
+    <View
+        android:id="@+id/player_one_signal_image"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/player_signal"
+        app:layout_constraintBottom_toBottomOf="@+id/player_one_name_text_view"
+        app:layout_constraintLeft_toLeftOf="@+id/player_one_name_text_view" />
+
+    <View
+        android:id="@+id/player_two_signal_image_one"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/player_signal"
+        app:layout_constraintBottom_toBottomOf="@+id/player_two_name_text_view"
+        app:layout_constraintLeft_toLeftOf="@+id/player_two_name_text_view" />
+
+    <View
+        android:id="@+id/player_two_signal_image_two"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/player_signal"
+        app:layout_constraintBottom_toBottomOf="@+id/player_two_name_text_view"
+        app:layout_constraintLeft_toRightOf="@+id/player_two_signal_image_one" />
+
+    <TextSwitcher
+        android:id="@+id/player_two_points_text"
+        style="@style/ScorePoints"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:text="00"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toRightOf="@+id/player_two_name_text_view"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/winner_text_view" />
+
+    <TextSwitcher
+        android:id="@+id/player_one_games_text"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="24dp"
+        android:text="00"
+        app:layout_constraintLeft_toLeftOf="@+id/games_text"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/winner_text_view" />
+
+    <TextSwitcher
+        android:id="@+id/player_two_games_text"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="24dp"
+        android:text="00"
+        app:layout_constraintLeft_toLeftOf="@+id/games_text"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/winner_text_view" />
+
+    <View
+        android:id="@+id/player_one_serve_signal"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/serve_transition_on"
+        app:layout_constraintBottom_toBottomOf="@+id/player_one_points_text"
+        app:layout_constraintLeft_toRightOf="@+id/player_one_points_text" />
+
+    <View
+        android:id="@+id/player_two_serve_signal"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/serve_transition_on"
+        app:layout_constraintBottom_toBottomOf="@+id/player_two_points_text"
+        app:layout_constraintLeft_toRightOf="@+id/player_two_points_text" />
+
+    <TextSwitcher
+        android:id="@+id/player_one_points_text"
+        style="@style/ScorePoints"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:text="00"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/winner_text_view"
+        app:layout_constraintLeft_toRightOf="@+id/player_one_name_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/games_text" />
+
+</android.support.constraint.ConstraintLayout>

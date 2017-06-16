@@ -1,8 +1,7 @@
-package uk.co.darkerwaters.scorepal;
+package uk.co.darkerwaters.scorepal.fragments;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import uk.co.darkerwaters.scorepal.activities.ScoreActivity;
-import uk.co.darkerwaters.scorepal.bluetooth.BtConnectActivity;
+import uk.co.darkerwaters.scorepal.R;
+import uk.co.darkerwaters.scorepal.ViewAnimator;
+import uk.co.darkerwaters.scorepal.activities.BtConnectActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 

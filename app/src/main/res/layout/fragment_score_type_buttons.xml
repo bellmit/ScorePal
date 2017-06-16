@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="layout.ScoreTypeButtonsFragment">
+    tools:context=".fragments.ScoreTypeButtonsFragment">
 
     <Button
         android:id="@+id/score_device_button"

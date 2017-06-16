@@ -8,7 +8,8 @@
     android:paddingBottom="8dp"
     android:descendantFocusability="beforeDescendants"
     android:animateLayoutChanges="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    tools:context=".fragments.ScoreTypeButtonsFragment">
 
     <TextSwitcher
         android:id="@+id/player_one_games_text"

@@ -5,7 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingTop="0dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    tools:context=".fragments.ScorePreviousSetsFragment">
 
     <TextView
         android:id="@+id/previous_sets_text"

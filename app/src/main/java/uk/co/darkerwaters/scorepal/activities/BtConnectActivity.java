@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.scorepal.bluetooth;
+package uk.co.darkerwaters.scorepal.activities;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import uk.co.darkerwaters.scorepal.R;
+import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 
 public class BtConnectActivity extends AppCompatActivity implements BtManager.IBtManagerListener {
@@ -24,8 +25,8 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
     private TextView btStatusText;
     private ToggleButton btStatusToggle;
     private boolean isScanInitiated = false;
-    private BtListAdapter pairedListAdapter = null;
-    private BtListAdapter scanListAdapter = null;
+    private BtConnectListAdapter pairedListAdapter = null;
+    private BtConnectListAdapter scanListAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,9 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
         btStatusToggle = (ToggleButton) findViewById(R.id.bt_toggle);
 
         // create the list view adapters
-        scanListAdapter = new BtListAdapter(this);
+        scanListAdapter = new BtConnectListAdapter(this);
         devicesScanListView.setAdapter(scanListAdapter);
-        pairedListAdapter = new BtListAdapter(this);
+        pairedListAdapter = new BtConnectListAdapter(this);
         devicesPairedListView.setAdapter(pairedListAdapter);
 
         // setup the BT status display things

@@ -12,15 +12,15 @@ import uk.co.darkerwaters.scorepal.storage.Match;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 import uk.co.darkerwaters.scorepal.storage.StorageResult;
 
-public class HistoryActivity extends AppCompatActivity {
+public class MatchHistoryActivity extends AppCompatActivity {
 
     private ListView historyListView;
-    private MatchListAdapter listAdapter;
+    private MatchHistoryListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_match_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -28,7 +28,7 @@ public class HistoryActivity extends AppCompatActivity {
         historyListView = (ListView) findViewById(R.id.history_list_view);
 
         // create the list view adapters
-        listAdapter = new MatchListAdapter(this);
+        listAdapter = new MatchHistoryListAdapter(this);
         historyListView.setAdapter(listAdapter);
 
         // and fill the list if we can

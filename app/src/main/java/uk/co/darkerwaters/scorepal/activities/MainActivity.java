@@ -2,7 +2,6 @@ package uk.co.darkerwaters.scorepal.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import layout.ScoreTypeButtonsFragment;
-import uk.co.darkerwaters.scorepal.DeviceConnectionFragment;
+import uk.co.darkerwaters.scorepal.fragments.DeviceConnectionFragment;
 import uk.co.darkerwaters.scorepal.R;
-import uk.co.darkerwaters.scorepal.bluetooth.BtConnectActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
@@ -173,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 return true;
             case R.id.nav_history:
-                intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                intent = new Intent(getApplicationContext(), MatchHistoryActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.nav_account:
