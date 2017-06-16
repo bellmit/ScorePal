@@ -18,31 +18,10 @@
         app:headerLayout="@layout/nav_header_navigation"
         app:menu="@menu/activity_navigation_drawer" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <fragment android:name="layout.ScoreTypeButtonsFragment"
+        android:id="@+id/scoretypebuttons_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
+        tools:layout="@layout/fragment_score_type_buttons" />
 
-        <Button
-            android:id="@+id/score_device_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            style="@style/ScorePoints"
-            android:onClick="onDeviceScore"
-            android:text="@string/score_device" />
-
-        <Button
-            android:id="@+id/score_manual_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onManualScore"
-            style="@style/ScorePoints"
-            android:text="@string/score_manual" />
-    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

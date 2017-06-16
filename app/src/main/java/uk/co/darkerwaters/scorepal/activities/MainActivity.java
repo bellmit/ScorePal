@@ -2,6 +2,7 @@ package uk.co.darkerwaters.scorepal.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import layout.ScoreTypeButtonsFragment;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.bluetooth.BtConnectActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
@@ -125,15 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // pass this back to the manager
             StorageManager.getManager().onSignInResult(data);
         }
-    }
-
-    public void onDeviceScore(View view) {
-        Intent intent = new Intent(getApplicationContext(), ScoreActivity.class);
-        startActivity(intent);
-    }
-
-    public void onManualScore(View view) {
-        Toast.makeText(this, "Sorry not done this yet...", Toast.LENGTH_SHORT).show();
     }
 
     @Override

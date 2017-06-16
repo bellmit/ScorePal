@@ -70,4 +70,7 @@
     <string name="title_activity_match_details">Match Details</string>
     <string name="error_user_not_signedin">Sorry you are not signed in, please go to account before saving.</string>
     <string name="no_match_loaded">No Match Loaded</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
