@@ -44,6 +44,8 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
 
     private ScoreData latestScoreData = null;
 
+    private Thread connectingThread = null;
+
     public interface IBtManagerListener {
         void onBtDeviceFound(BluetoothDevice device);
         void onBtStatusChanged();
@@ -157,48 +159,55 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
         }
     }
 
-    public boolean connectToDevice(BluetoothDevice device) {
-        boolean result = false;
-        if (false == isSocketConnected() || false == device.getAddress().equals(connectedDeviceAddress)) {
-            // disconnect the old one as the new one is different
-            if (null != btSocket && btSocket.isConnected()) {
-                try {
-                    btSocket.close();
-                } catch (IOException e) {
-                    Log.e(MainActivity.TAG, e.getMessage());
-                }
-            }
-            // now disconnected, connect to a new one
-            try {
-                btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) {
-                Log.e(MainActivity.TAG, e.getMessage());
-            }
-            try{
-                btSocket.connect();
-            }
-            catch(IOException e){
-                try {
-                    btSocket.close();
-                    Log.e(MainActivity.TAG, e.getMessage());
-                } catch (IOException e1) {
-                    Log.e(MainActivity.TAG, e1.getMessage());
-                }
-            }
-            if (btSocket.isConnected()) {
-                // this worked ok
-                result = true;
-                storeConnectedDevice(device);
-            }
-            // create the connection thread to manage communications to this device
-            createConnectionThread();
+    public void connectToDevice(final BluetoothDevice device) {
+        synchronized (this) {
+            if (null == connectingThread &&
+                    (false == isSocketConnected() || false == device.getAddress().equals(connectedDeviceAddress))) {
+                // create the new thread to connect to the device without blocking for this new device
+                connectingThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // disconnect the old one as the new one is different
+                        if (null != btSocket && btSocket.isConnected()) {
+                            try {
+                                btSocket.close();
+                            } catch (IOException e) {
+                                Log.e(MainActivity.TAG, e.getMessage());
+                            }
+                        }
+                        // now disconnected, connect to a new one
+                        try {
+                            btSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+                        } catch (IOException e) {
+                            Log.e(MainActivity.TAG, e.getMessage());
+                        }
+                        try {
+                            btSocket.connect();
+                        } catch (IOException e) {
+                            try {
+                                btSocket.close();
+                                Log.e(MainActivity.TAG, e.getMessage());
+                            } catch (IOException e1) {
+                                Log.e(MainActivity.TAG, e1.getMessage());
+                            }
+                        }
+                        if (btSocket.isConnected()) {
+                            // this worked ok
+                            storeConnectedDevice(device);
+                        }
+                        // create the connection thread to manage communications to this device
+                        createConnectionThread();
 
+                        // finished, set the member to null so next time they try they will
+                        // try rather than letting the existing thread end
+                        synchronized (BtManager.this) {
+                            BtManager.this.connectingThread = null;
+                        }
+                    }
+                }, "BT Connecting");
+                connectingThread.start();
+            }
         }
-        else {
-            // there is no change in the device, just leave it alone
-            result = true;
-        }
-        return result;
     }
 
     private boolean isSocketConnected() {
@@ -217,6 +226,8 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
         mConnectedThread = new BtConnectionThread(btSocket);
         mConnectedThread.registerListener(this);
         mConnectedThread.start();
+        // this changes our connection state
+        btConnectionStateChanged();
     }
 
     private void storeConnectedDevice(BluetoothDevice device) {
@@ -233,21 +244,17 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
         }
     }
 
-    public boolean connectToDevice(String wantedDeviceAddress) {
+    public void connectToDevice(String wantedDeviceAddress) {
         // connect to this device
-        boolean result = false;
         Set<BluetoothDevice> devices = getBondedDevices();
         for (BluetoothDevice device : devices) {
             if (null != device && device.getAddress().equals(wantedDeviceAddress)) {
                 // this is the device, the address matches the one we want
-                if (connectToDevice(device)) {
-                    // connected, stop trying
-                    result = true;
-                    break;
-                }
+                connectToDevice(device);
+                // stop trying
+                break;
             }
         }
-        return result;
     }
 
     public boolean sendMessage(String message) {
@@ -303,6 +310,11 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             connectedDevice = this.connectedDeviceName;
         }
         return connectedDevice;
+    }
+
+    public void deviceConnectivityChanged() {
+        // resend out the message, someone has worked out the BT device has gone / re-arrived
+        btConnectionStateChanged();
     }
 
     private synchronized void btDeviceFound(BluetoothDevice device) {

@@ -33,6 +33,7 @@ import android.widget.ViewSwitcher;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.co.darkerwaters.scorepal.DeviceConnectionFragment;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.ViewAnimator;
 import uk.co.darkerwaters.scorepal.bluetooth.BtConnectActivity;
@@ -41,11 +42,9 @@ import uk.co.darkerwaters.scorepal.storage.Match;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
-public class ScoreActivity extends AppCompatActivity implements BtManager.IBtManagerListener {
+public class ScoreActivity extends AppCompatActivity implements BtManager.IBtManagerListener, DeviceConnectionFragment.IDeviceConnectionListener {
 
-    private TextView connectionText;
-    private View connectButton;
-    private View topToolbar;
+    private DeviceConnectionFragment topToolbar;
 
     private TextView winnerText;
     private TextView gameTypeText;
@@ -100,6 +99,10 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
         // initialise the members so we can read / change / hide etc
         initialiseMembersFromView();
 
+        // initially hide the connection toolbar fragment so slides in if disconnected
+        isConnectivityControlsShown = false;
+        topToolbar.getView().setVisibility(View.GONE);
+
         // initialise any remembered settings
         recallStoredSettings();
 
@@ -115,8 +118,6 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
     @Override
     protected void onResume() {
         super.onResume();
-        // update our current connectivity
-        updateConnectionDisplay();
         // and update the titles for the players
         updatePlayerTitles();
 
@@ -126,30 +127,6 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
         if (null != topLayout) {
             topLayout.requestFocus();
         }
-
-        // and try to connect to the last device
-        final ProgressDialog progress = ProgressDialog.show(this,
-                getResources().getString(R.string.connecting),
-                getResources().getString(R.string.please_wait_connecting), false);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final BtManager manager = BtManager.getManager();
-                // try the connection here, can take a little while
-                manager.connectToLastDevice();
-                // dismiss the progress dialog
-                progress.dismiss();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (manager.getConnectedDevice() == null) {
-                            Toast.makeText(ScoreActivity.this, R.string.failed_to_connect, Toast.LENGTH_SHORT).show();
-                        }
-                        updateConnectionDisplay();
-                    }
-                });
-            }
-        }).start();
     }
 
     @Override
@@ -236,10 +213,7 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
             }
         };
 
-        topToolbar = findViewById(R.id.top_toolbar_layout);
-
-        connectionText = (TextView) findViewById(R.id.bt_connected_text);
-        connectButton = (View) findViewById(R.id.connect_button);
+        topToolbar = (DeviceConnectionFragment) getSupportFragmentManager().findFragmentById(R.id.deviceconnection_fragment);
         winnerText = (TextView) findViewById(R.id.winner_text_view);
         gameTypeText = (TextView) findViewById(R.id.game_type_text);
 
@@ -388,19 +362,8 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
         if (result == isConnectivityControlsShown) {
             // the result is false, but the view is visible (or vice versa)
             // either way the connectivity display is incorrect
-            updateConnectionDisplay(result, BtManager.getManager().getConnectedDevice());
+            BtManager.getManager().deviceConnectivityChanged();
         }
-    }
-
-    public void onClickConnect(View view) {
-        Intent intent = new Intent(getApplicationContext(), BtConnectActivity.class);
-        startActivity(intent);
-    }
-
-    private void updateConnectionDisplay() {
-        BtManager manager = BtManager.getManager();
-        String connectedDevice = manager.getConnectedDevice();
-        updateConnectionDisplay(manager.isEnabled() && null != connectedDevice, connectedDevice);
     }
 
     @Override
@@ -424,24 +387,23 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateConnectionDisplay(boolean isConencted, String connectedDevice) {
-        if (isConencted && null != connectedDevice) {
-            // get the connected device, if there is one
-            connectionText.setText(connectedDevice);
+
+    @Override
+    public void onDeviceConnectionChanged(boolean isManagerEnabled, String deviceConnected) {
+        if (isManagerEnabled && null != deviceConnected) {
             // just hide this
             if (isConnectivityControlsShown) {
                 // slide the views away and make them gone
-                ViewAnimator.slideControlsUpAndAway(this, null, topToolbar, connectionText, connectButton);
+                ViewAnimator.slideControlsUpAndAway(this, null, topToolbar.getView());
                 // remember that we hid them
                 isConnectivityControlsShown = false;
             }
         }
         else {
             // show that no device is connected
-            connectionText.setText(R.string.bt_connected);
             if (false == isConnectivityControlsShown) {
                 // slide the views in and make them gone
-                ViewAnimator.slideControlsDownAndIn(this, null, topToolbar, connectionText, connectButton);
+                ViewAnimator.slideControlsDownAndIn(this, null, topToolbar.getView());
                 // remember that we showed them
                 isConnectivityControlsShown = true;
             }
@@ -789,18 +751,17 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
 
     @Override
     public void onBtStatusChanged() {
-        // the state of the bluetooth connectivity just changed, update the display
-        updateConnectionDisplay();
+        // not very interesting
     }
 
     @Override
     public void onBtConnectionStatusChanged() {
-        // the state of the bluetooth connectivity just changed, update the display
-        updateConnectionDisplay();
+        // not very interesting
     }
 
     @Override
     public void onBtDataChanged(final ScoreData scoreData) {
+        // this is interesting - show this score data
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -876,5 +837,4 @@ public class ScoreActivity extends AppCompatActivity implements BtManager.IBtMan
         Matcher matcher = pattern.matcher(s);
         return matcher.replaceAll("").trim();
     }
-
 }

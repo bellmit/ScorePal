@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ScorePal</string>
     <string name="bt_connect">Connect</string>
-    <string name="bt_connected">no device connected</string>
+    <string name="bt_not_connected">no device connected</string>
     <string name="title_activity_bt_connect">Connect Device</string>
     <string name="stored_device">-</string>
     <string name="bt_scan">Scan</string>

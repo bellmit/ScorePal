@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
@@ -74,6 +75,18 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
         });
         // and fill the list if we can
         populateList();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // device can be shown from score and main, go back instead of up for
+                // consistency of behaviour here then
+                onBackPressed();
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -192,7 +205,12 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
     @Override
     public void onBtConnectionStatusChanged() {
         //TODO update the highlight status of the connected / not connected item
-        pairedListAdapter.notifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                pairedListAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
