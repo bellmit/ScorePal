@@ -71,9 +71,13 @@ public class ScorePreviousSetsFragment extends Fragment implements StorageManage
         animator.setTextSwitcherFactories(playerTwoPreviousSets[3], animator.scoreViewFactory);
 
         // and listen to changes in the storage of data
-        StorageManager.getManager().registerListener(this);
+        StorageManager store = StorageManager.getManager();
+        // and listen to changes in the storage of data
+        store.registerListener(this);
+        // display the correct titles for the players
+        onPlayerTitlesUpdated(store.getCurrentPlayerOneTitle(), store.getCurrentPlayerTwoTitle());
         // and update the display to the latest score
-        displayScoreData(StorageManager.getManager().getCurrentScoreData());
+        displayScoreData(store.getCurrentScoreData());
 
         return view;
     }

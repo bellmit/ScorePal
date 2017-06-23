@@ -55,6 +55,8 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
     private boolean isPlayerOneServeStateOn = false;
     private boolean isPlayerTwoServeStateOn = false;
 
+    private boolean isUsSendingTitleUpdate = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,10 +90,13 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
         // now we can initialise the user interactions now all the components are filled
         initialiseUserInteractions();
 
+        StorageManager store = StorageManager.getManager();
         // and listen to changes in the storage of data
-        StorageManager.getManager().registerListener(this);
+        store.registerListener(this);
+        // display the correct titles for the players
+        onPlayerTitlesUpdated(store.getCurrentPlayerOneTitle(), store.getCurrentPlayerTwoTitle());
         // and update the display to the latest score
-        displayScoreData(StorageManager.getManager().getCurrentScoreData());
+        displayScoreData(store.getCurrentScoreData());
 
         return view;
     }
@@ -151,7 +156,9 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
             @Override
             public void afterTextChanged(Editable s) {
                 // update the label on the storage manager
+                isUsSendingTitleUpdate = true;
                 StorageManager.getManager().setCurrentPlayerTitles(getPlayerOneTitle(), getPlayerTwoTitle());
+                isUsSendingTitleUpdate = false;
             }
         });
         // and player two
@@ -167,7 +174,9 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
             @Override
             public void afterTextChanged(Editable s) {
                 // update the label on the storage manager
+                isUsSendingTitleUpdate = true;
                 StorageManager.getManager().setCurrentPlayerTitles(getPlayerOneTitle(), getPlayerTwoTitle());
+                isUsSendingTitleUpdate = false;
             }
         });
     }
@@ -190,11 +199,13 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
     @Override
     public void onPlayerTitlesUpdated(String playerOneTitle, String playerTwoTitle) {
         // set the titles on these controls, get the titles as cleaned strings
-        playerOneTitle = getOnlyStrings(playerOneTitle);
-        playerTwoTitle = getOnlyStrings(playerTwoTitle);
-        // set the text
-        playerOneTitleText.setText(playerOneTitle);
-        playerTwoTitleText.setText(playerTwoTitle);
+        if (false == isUsSendingTitleUpdate) {
+            playerOneTitle = getOnlyStrings(playerOneTitle);
+            playerTwoTitle = getOnlyStrings(playerTwoTitle);
+            // set the text
+            playerOneTitleText.setText(playerOneTitle);
+            playerTwoTitleText.setText(playerTwoTitle);
+        }
     }
 
     @Override
