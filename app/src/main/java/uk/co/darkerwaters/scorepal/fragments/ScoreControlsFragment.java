@@ -88,15 +88,15 @@ public class ScoreControlsFragment extends Fragment {
     }
 
     private void onSaveClicked() {
-        ScoreData data = BtManager.getManager().getLatestScoreData();
         StorageManager manager = StorageManager.getManager();
+        ScoreData data = manager.getCurrentScoreData();
         if (null == manager || null == manager.getCurrentUser()) {
             Toast.makeText(parentContext, R.string.error_user_not_signedin, Toast.LENGTH_SHORT).show();
         }
         else if (null != data) {
             // there is data to store, store it, first work out what we would want to call this
-            String playerOne = parentContext.getPlayerOneTitle();
-            String playerTwo = parentContext.getPlayerTwoTitle();
+            String playerOne = manager.getCurrentPlayerOne();
+            String playerTwo = manager.getCurrentPlayerTwo();
 
             // get the match data for this
             Match match = new Match(manager.getCurrentUser(),

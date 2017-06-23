@@ -28,25 +28,30 @@ public class Match {
     @Exclude
     public String userId;
 
+    //TODO player one is usually the user of the app, store this as the ID of the player instead "ID:TITLE" where ID=0 if just a string?
+    //TODO player two could and probably should be selected friends they have played like "ID:TITLE"
     public String playerOne;
     public String playerTwo;
     public String scoreSummary;
     public int gameMode;
     public String matchPlayedDate;
     public String scoreData;
+    //TODO save the location the match was played at
+    @Exclude
+    private ScoreData currentScoreData;
 
     public Match() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Match(User user, String playerOne, String playerTwo, String scoreSummary, ScoreData scoreData, Date matchPlayedDate) {
-        this.userId = user.ID;
+    public Match(User user, String playerOne, String playerTwo, String scoreSummary, ScoreData scoreData, Date date) {
+        setCurrentUser(user);
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.scoreSummary = scoreSummary;
         this.gameMode = scoreData.currentScoreMode.value;
-        this.matchPlayedDate = fileDateFormat.format(matchPlayedDate);
-        this.scoreData = scoreData.toString();
+        setMatchPlayedDate(date);
+        setCurrentScoreData(scoreData);
     }
 
     @Exclude
@@ -70,13 +75,31 @@ public class Match {
     }
 
     @Exclude
-    public ScoreData getScoreData() {
-        if (this.scoreData == null) {
-            return new ScoreData();
+    public void setCurrentUser(User user) {
+        if (null != user) {
+            this.userId = user.ID;
         }
         else {
-            return new ScoreData(new StringBuilder(this.scoreData));
+            this.userId = "";
         }
+    }
+
+    @Exclude
+    public ScoreData getScoreData() {
+        if (null == this.currentScoreData) {
+            // no member, create it from the loaded string data
+            this.currentScoreData = new ScoreData(new StringBuilder(this.scoreData));
+        }
+        // return the data member as the object which is more helpful
+        return this.currentScoreData;
+    }
+
+    @Exclude
+    public void setCurrentScoreData(ScoreData newData) {
+        // store the actual object
+        this.currentScoreData = newData;
+        // and the string which will go into the Firebase DB
+        this.scoreData = newData.toString();
     }
 
     @Exclude
@@ -93,6 +116,11 @@ public class Match {
             Log.e(MainActivity.TAG, e.getMessage());
         }
         return played;
+    }
+
+    @Exclude
+    public void setMatchPlayedDate(Date date) {
+        this.matchPlayedDate = fileDateFormat.format(date);
     }
 
     public static boolean isFileDatesSame(Date fileDate1, Date fileDate2) {

@@ -144,7 +144,6 @@ public class MatchHistoryListAdapter extends BaseAdapter {
                 // and the actual points
                 scoreText.setText(ScoreData.getScoreStringPoints(mContext, scoreString));
                 // is this device connected?
-                ScoreData latest = BtManager.getManager().getLatestScoreData();
                 if (Match.isFileDatesSame(datePlayed, StorageManager.getManager().getMatchStartedDate())) {
                     // this is the current match
                     itemView.setBackgroundColor(Common.getThemeAccentColor(mContext));

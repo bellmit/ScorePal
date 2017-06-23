@@ -63,7 +63,6 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     public interface IBtManagerListener {
         void onBtStatusChanged();
         void onBtConnectionStatusChanged();
-        void onBtDataChanged(ScoreData scoreData);
     }
 
     public interface  IBtManagerScanningListener {
@@ -441,8 +440,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             }
         }
         this.latestScoreData = scoreData;
-        for (IBtManagerListener listener : this.listeners) {
-            listener.onBtDataChanged(scoreData);
-        }
+        // push this data to the storage manager as will want to update their latest score
+        StorageManager.getManager().onNewScoreData(scoreData);
     }
 }

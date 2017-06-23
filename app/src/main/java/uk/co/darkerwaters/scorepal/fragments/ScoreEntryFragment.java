@@ -3,6 +3,7 @@ package uk.co.darkerwaters.scorepal.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,9 +31,10 @@ import uk.co.darkerwaters.scorepal.ViewAnimator;
 import uk.co.darkerwaters.scorepal.activities.DeviceScoreActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
+import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
-public class ScoreEntryFragment extends Fragment {
-    private Context parentContext = null;
+public class ScoreEntryFragment extends Fragment implements StorageManager.IStorageManagerDataListener {
+    private Activity parentContext = null;
     private ViewAnimator animator;
 
     private TextView winnerText;
@@ -52,12 +54,6 @@ public class ScoreEntryFragment extends Fragment {
 
     private boolean isPlayerOneServeStateOn = false;
     private boolean isPlayerTwoServeStateOn = false;
-
-    public interface IScoreEntryFragmentListener {
-        void onPlayerTitlesUpdated(String playerOneTitle, String playerTwoTitle);
-    }
-
-    private IScoreEntryFragmentListener listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +87,19 @@ public class ScoreEntryFragment extends Fragment {
         // now we can initialise the user interactions now all the components are filled
         initialiseUserInteractions();
 
+        // and listen to changes in the storage of data
+        StorageManager.getManager().registerListener(this);
+        // and update the display to the latest score
+        displayScoreData(StorageManager.getManager().getCurrentScoreData());
+
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // un-register us as a listener now are are destroyed
+        StorageManager.getManager().unregisterListener(this);
     }
 
     @Override
@@ -101,10 +109,9 @@ public class ScoreEntryFragment extends Fragment {
         // the callback interface. If not, it throws an exception
         try {
             parentContext = (Activity) context;
-            listener = (IScoreEntryFragmentListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement IScoreEntryFragmentListener and Activity");
+                    + " must implement Activity");
         }
         // can create the animator here
         animator = new ViewAnimator(context);
@@ -142,8 +149,8 @@ public class ScoreEntryFragment extends Fragment {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                // update the label
-                listener.onPlayerTitlesUpdated(getPlayerOneTitle(), getPlayerTwoTitle());
+                // update the label on the storage manager
+                StorageManager.getManager().setCurrentPlayers(getPlayerOneTitle(), getPlayerTwoTitle());
             }
         });
         // and player two
@@ -158,13 +165,49 @@ public class ScoreEntryFragment extends Fragment {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                // update the label
-                listener.onPlayerTitlesUpdated(getPlayerOneTitle(), getPlayerTwoTitle());
+                // update the label on the storage manager
+                StorageManager.getManager().setCurrentPlayers(getPlayerOneTitle(), getPlayerTwoTitle());
             }
         });
     }
 
-    public void displayScoreData(ScoreData scoreData) {
+    private boolean addPoint(int player) {
+        // send the command to add the point for the right player
+        BtManager manager = BtManager.getManager();
+        boolean result = false;
+        if (player == 0) {
+            // want to inc player one
+            result = manager.sendMessage("{a7}");
+        }
+        else {
+            // want to inc player two
+            result = manager.sendMessage("{a8}");
+        }
+        return result;
+    }
+
+    @Override
+    public void onPlayerTitlesUpdated(String playerOneTitle, String playerTwoTitle) {
+        // set the titles on these controls, get the titles as cleaned strings
+        playerOneTitle = getOnlyStrings(playerOneTitle);
+        playerTwoTitle = getOnlyStrings(playerTwoTitle);
+        // set the text
+        playerOneTitleText.setText(playerOneTitle);
+        playerTwoTitleText.setText(playerTwoTitle);
+    }
+
+    @Override
+    public void onScoreDataUpdated(final ScoreData scoreData) {
+        // this is interesting - show this score data
+        this.parentContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                displayScoreData(scoreData);
+            }
+        });
+    }
+
+    private void displayScoreData(ScoreData scoreData) {
         // show the points in the points views
         animator.setTextSwitcherContent(scoreData.getPointsAsString(scoreData.points.first), playerOnePointsText);
         animator.setTextSwitcherContent(scoreData.getPointsAsString(scoreData.points.second), playerTwoPointsText);
@@ -301,33 +344,7 @@ public class ScoreEntryFragment extends Fragment {
         }
     }
 
-    private boolean addPoint(int player) {
-        // send the command to add the point for the right player
-        BtManager manager = BtManager.getManager();
-        boolean result = false;
-        if (player == 0) {
-            // want to inc player one
-            result = manager.sendMessage("{a7}");
-        }
-        else {
-            // want to inc player two
-            result = manager.sendMessage("{a8}");
-        }
-        return result;
-    }
-
-    public void setTitles(String playerOneTitle, String playerTwoTitle) {
-        // set the titles on these controls, get the titles as cleaned strings
-        playerOneTitle = getOnlyStrings(playerOneTitle);
-        playerTwoTitle = getOnlyStrings(playerTwoTitle);
-        // set the text
-        playerOneTitleText.setText(playerOneTitle);
-        playerTwoTitleText.setText(playerTwoTitle);
-        // update any listeners
-        listener.onPlayerTitlesUpdated(playerOneTitle, playerTwoTitle);
-    }
-
-    public String getPlayerOneTitle() {
+    private String getPlayerOneTitle() {
         String playerTitle = getOnlyStrings(playerOneTitleText.getText().toString());
         if (null == playerTitle || playerTitle.isEmpty()) {
             playerTitle = getResources().getString(R.string.player_one);
@@ -335,7 +352,7 @@ public class ScoreEntryFragment extends Fragment {
         return playerTitle;
     }
 
-    public String getPlayerTwoTitle() {
+    private String getPlayerTwoTitle() {
         String playerTitle = getOnlyStrings(playerTwoTitleText.getText().toString());
         if (null == playerTitle || playerTitle.isEmpty()) {
             playerTitle = getResources().getString(R.string.player_two);

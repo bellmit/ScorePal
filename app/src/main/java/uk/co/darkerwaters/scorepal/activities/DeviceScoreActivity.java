@@ -1,36 +1,17 @@
 package uk.co.darkerwaters.scorepal.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Pair;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.EditText;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import uk.co.darkerwaters.scorepal.ViewAnimator;
 import uk.co.darkerwaters.scorepal.fragments.DeviceConnectionFragment;
@@ -39,11 +20,10 @@ import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.fragments.ScoreControlsFragment;
 import uk.co.darkerwaters.scorepal.fragments.ScoreEntryFragment;
 import uk.co.darkerwaters.scorepal.fragments.ScorePreviousSetsFragment;
-import uk.co.darkerwaters.scorepal.storage.Match;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
-public class DeviceScoreActivity extends AppCompatActivity implements BtManager.IBtManagerListener, ScoreEntryFragment.IScoreEntryFragmentListener {
+public class DeviceScoreActivity extends AppCompatActivity implements BtManager.IBtManagerListener, StorageManager.IStorageManagerDataListener {
 
     private DeviceConnectionFragment topToolbar;
     private ScoreControlsFragment bottomToolbar;
@@ -52,6 +32,7 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
     private ViewAnimator animator;
 
     private TextView gameTypeText;
+    private boolean isActivityRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +51,24 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
         bottomToolbar = (ScoreControlsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_score_controls);
         gameTypeText = (TextView) findViewById(R.id.game_type_text);
 
-        // update our display to the latest received score data
-        displayScoreData(BtManager.getManager().getLatestScoreData());
         // register ourselves as a listener for changes
         BtManager.getManager().registerListener(this);
+        StorageManager.getManager().registerListener(this);
+
+        // update our display to the latest received score data
+        displayScoreData(StorageManager.getManager().getCurrentScoreData());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.isActivityRunning = false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        this.isActivityRunning = true;
 
         // request focus from the main layout to prevent the edit box from taking it and showing
         // the keyboard all the time
@@ -89,12 +79,15 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
 
         // initialise any remembered settings
         recallStoredSettings();
+        // and update the display to the latest score
+        displayScoreData(StorageManager.getManager().getCurrentScoreData());
     }
 
     @Override
     protected void onDestroy() {
         // unregister our listeners
         BtManager.getManager().unregisterListener(this);
+        StorageManager.getManager().unregisterListener(this);
         // and let the super destroy this activity
         super.onDestroy();
     }
@@ -108,20 +101,29 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
         // and the player two title
         defaultValue = getResources().getString(R.string.player_two);
         String playerTwoTitle = sharedPref.getString(getString(R.string.stored_playertwo_title), defaultValue);
-        // and put them into the boxes
-        scoreEntryFragment.setTitles(playerOneTitle, playerTwoTitle);
+        // and put this data on the storage manager
+        StorageManager.getManager().setCurrentPlayers(playerOneTitle, playerTwoTitle);
     }
 
     @Override
     public void onPlayerTitlesUpdated(String playerOneTitle, String playerTwoTitle) {
-        // set the titles of the labels in the sets view
-        scorePreviousSetsFragment.updatePlayerTitles(playerOneTitle, playerTwoTitle);
         // we want to store these titles to remember them next time too
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.stored_playerone_title), playerOneTitle);
         editor.putString(getString(R.string.stored_playertwo_title), playerTwoTitle);
         editor.commit();
+    }
+
+    @Override
+    public void onScoreDataUpdated(final ScoreData scoreData) {
+        // this is interesting - show this score data
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                displayScoreData(scoreData);
+            }
+        });
     }
 
     @Override
@@ -149,36 +151,66 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
         if (null == scoreData) {
             // show no  data
         } else {
-            // update the score entry fragment with this new score
-            this.scoreEntryFragment.displayScoreData(scoreData);
-            // and the previous games status
-            this.scorePreviousSetsFragment.displayScoreData(scoreData);
             // show the game type
             displayGameTypeAndData(scoreData);
+
+            // all our score is updated, but do we want to show it all?
+            boolean showPrevious = true;
+            switch (scoreData.currentScoreMode) {
+                case K_SCOREWIMBLEDON5:
+                case K_SCOREWIMBLEDON3:
+                case K_SCOREBADMINTON5:
+                case K_SCOREBADMINTON3:
+                    // show the previous points fragment
+                    break;
+                case K_SCOREFAST4:
+                case K_SCOREPOINTS:
+                    // don't show previous sets or games for simple point counting mode
+                    showPrevious = false;
+                    break;
+                default:
+                    break;
+            }
+            if (isActivityRunning) {
+                FragmentManager fm = getSupportFragmentManager();
+                if (showPrevious == false) {
+                    // hide the previous sets fragment as we don't use it
+                    fm.beginTransaction()
+                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                            .hide(scorePreviousSetsFragment)
+                            .commit();
+                } else {
+                    // show the previous sets fragment as we want to use it
+                    fm.beginTransaction()
+                            .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                            .show(scorePreviousSetsFragment)
+                            .commit();
+                }
+            }
         }
     }
 
     private void displayGameTypeAndData(ScoreData scoreData) {
-        String typeText = getResources().getString(R.string.played) + " ";
+        String typeText;
         switch (scoreData.currentScoreMode) {
             case K_SCOREWIMBLEDON5:
-                typeText += getResources().getString(R.string.played_wimbledon5);
+                typeText = getResources().getString(R.string.played_wimbledon5);
                 break;
             case K_SCOREWIMBLEDON3:
-                typeText += getResources().getString(R.string.played_wimbledon3);
+                typeText = getResources().getString(R.string.played_wimbledon3);
                 break;
             case K_SCOREBADMINTON5:
-                typeText += getResources().getString(R.string.played_badminton5);
+                typeText = getResources().getString(R.string.played_badminton5);
                 break;
             case K_SCOREBADMINTON3:
-                typeText += getResources().getString(R.string.played_badminton3);
+                typeText = getResources().getString(R.string.played_badminton3);
                 break;
             case K_SCOREFAST4:
-                typeText += getResources().getString(R.string.played_fast_four);
+                typeText = getResources().getString(R.string.played_fast_four);
                 break;
             case K_SCOREPOINTS:
             default:
-                typeText += getResources().getString(R.string.played_points);
+                typeText = getResources().getString(R.string.played_points);
                 break;
         }
         // now we can add the time to this string, hours and seconds
@@ -190,7 +222,7 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
         // the hours
         typeText += Integer.toString(hours) + ":";
         // and add the minutes
-        typeText += Integer.toString(minutes);
+        typeText += String.format("%02d", minutes);
         // and show to the user
         gameTypeText.setText(typeText);
     }
@@ -203,24 +235,5 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
     @Override
     public void onBtConnectionStatusChanged() {
         // not very interesting
-    }
-
-    @Override
-    public void onBtDataChanged(final ScoreData scoreData) {
-        // this is interesting - show this score data
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                displayScoreData(scoreData);
-            }
-        });
-    }
-
-    public String getPlayerOneTitle() {
-        return scoreEntryFragment.getPlayerOneTitle();
-    }
-
-    public String getPlayerTwoTitle() {
-        return scoreEntryFragment.getPlayerTwoTitle();
     }
 }

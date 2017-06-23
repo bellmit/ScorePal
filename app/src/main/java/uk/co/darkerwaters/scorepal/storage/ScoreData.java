@@ -371,13 +371,13 @@ public class ScoreData {
         switch (data.currentScoreMode) {
             case K_SCOREWIMBLEDON5:
             case K_SCOREWIMBLEDON3:
-            case K_SCOREFAST4:
-                // this is a nice game of tennis
+                // this is a nice game of tennis with sets
                 isTennis = true;
                 break;
             case K_SCOREBADMINTON3:
             case K_SCOREBADMINTON5:
-                // this is a nice game of badminton
+            case K_SCOREFAST4:
+                // this is a nice game of badminton which is games, or Fast4 which is games too
                 isBadminton = true;
                 break;
             default:

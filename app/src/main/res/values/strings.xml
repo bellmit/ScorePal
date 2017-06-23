@@ -40,7 +40,7 @@
     <string name="played_wimbledon5">A 5 set match of ITF scored tennis</string>
     <string name="played_badminton3">A 3 game match of badminton</string>
     <string name="played_badminton5">A 5 game match of badminton</string>
-    <string name="played_points">Played a straight game of points</string>
+    <string name="played_points">A straight game of points</string>
     <string name="game_not_completed">Didn\'t finish</string>
     <string name="won">won</string>
     <string name="send_to_device">Send to device >></string>

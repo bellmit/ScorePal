@@ -236,9 +236,4 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
             }
         });
     }
-
-    @Override
-    public void onBtDataChanged(ScoreData scoreData) {
-
-    }
 }

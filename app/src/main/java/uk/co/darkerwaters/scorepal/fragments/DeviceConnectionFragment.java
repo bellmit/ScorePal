@@ -142,11 +142,6 @@ public class DeviceConnectionFragment extends Fragment implements BtManager.IBtM
         });
     }
 
-    @Override
-    public void onBtDataChanged(ScoreData scoreData) {
-        // not very interesting
-    }
-
     public void updateConnectionStatus() {
         BtManager manager = BtManager.getManager();
         String connectedDevice = manager.getConnectedDevice();

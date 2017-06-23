@@ -83,7 +83,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // string up the message to send
+                    // string up the message to send via bluetooth to the device
                     BtManager manager = BtManager.getManager();
                     String message = "{" + match.scoreData.toString() + "}";
                     if (false == manager.sendMessage(message)) {
@@ -93,6 +93,12 @@ public class MatchDetailsActivity extends AppCompatActivity {
                                 Toast.makeText(MatchDetailsActivity.this, R.string.failed_to_send_history_file, Toast.LENGTH_SHORT).show();
                             }
                         });
+                    }
+                    else {
+                        // sent this data to the device, set our names on the storage manager
+                        // to those names from the stored game data
+                        StorageManager store = StorageManager.getManager();
+                        store.setCurrentPlayers(match.getPlayerOne(), match.getPlayerTwo());
                     }
                 }
             });

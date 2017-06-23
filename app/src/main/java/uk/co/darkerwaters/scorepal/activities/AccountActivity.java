@@ -56,7 +56,7 @@ public class AccountActivity extends AppCompatActivity implements StorageManager
 
     @Override
     protected void onDestroy() {
-        StorageManager.getManager().unregiserListener(this);
+        StorageManager.getManager().unregisterListener(this);
         if (null != userBitmap) {
             userBitmap.recycle();
             userBitmap = null;

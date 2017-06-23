@@ -2,30 +2,22 @@ package uk.co.darkerwaters.scorepal.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.ViewAnimator;
-import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
+import uk.co.darkerwaters.scorepal.storage.StorageManager;
 
-public class ScorePreviousSetsFragment extends Fragment {
-    private Context parentContext = null;
+public class ScorePreviousSetsFragment extends Fragment implements StorageManager.IStorageManagerDataListener {
+    private Activity parentContext = null;
     private ViewAnimator animator;
 
     private TextSwitcher playerOneSetsText;
@@ -78,7 +70,19 @@ public class ScorePreviousSetsFragment extends Fragment {
         playerTwoPreviousSets[3] = (TextSwitcher) view.findViewById(R.id.player_two_set_four_text);
         animator.setTextSwitcherFactories(playerTwoPreviousSets[3], animator.scoreViewFactory);
 
+        // and listen to changes in the storage of data
+        StorageManager.getManager().registerListener(this);
+        // and update the display to the latest score
+        displayScoreData(StorageManager.getManager().getCurrentScoreData());
+
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // un-register us as a listener now are are destroyed
+        StorageManager.getManager().unregisterListener(this);
     }
 
     @Override
@@ -98,92 +102,73 @@ public class ScorePreviousSetsFragment extends Fragment {
         super.onAttach(context);
     }
 
-    public void displayScoreData(ScoreData scoreData) {
-        // show the winner if there is one, hiding a load of other stuff to stop interactions
-        if (null != scoreData.matchWinner) {
-            // a won match with set data is special, the final games score goes in the games
-            // boxes with the previous sets not showing the final set's points
-            switch(scoreData.currentScoreMode) {
-                case K_SCOREWIMBLEDON3:
-                case K_SCOREWIMBLEDON5:
-                    int noSets = scoreData.previousSets.size();
-                    if (noSets > 0 && scoreData.sets.first + scoreData.sets.second > 0) {
-                        // if the final set is not number 5 (not shown) then clear the boxes
-                        if (noSets < 5) {
-                            playerOnePreviousSets[noSets - 1].setText("");
-                            playerTwoPreviousSets[noSets - 1].setText("");
-                        }
-                    }
-                    break;
+    @Override
+    public void onScoreDataUpdated(final ScoreData scoreData) {
+        // this is interesting - show this score data
+        this.parentContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                displayScoreData(scoreData);
             }
-        }
+        });
+    }
 
-        // now do the games
-        int playerOneGames = 0;
-        int playerTwoGames = 0;
-        int i = 0;
-        for (i = 0; i < scoreData.previousSets.size() && i < 4; ++i) {
-            Pair<Integer, Integer> gameResult = scoreData.previousSets.get(i);
-            animator.setTextSwitcherContent(Integer.toString(gameResult.first), playerOnePreviousSets[i]);
-            animator.setTextSwitcherContent(Integer.toString(gameResult.second), playerTwoPreviousSets[i]);
-            // keep a running total of this
-            playerOneGames += gameResult.first;
-            playerTwoGames += gameResult.second;
-        }
-        boolean isSets = false;
+    private void displayScoreData(ScoreData scoreData) {
+        // show the correct title for the previous scores (either sets or games)
+        String historyTitle = getResources().getString(R.string.sets);
+        String previousTitle = getResources().getString(R.string.previous_sets);
         // show all the information about games if we are playing games
         switch (scoreData.currentScoreMode) {
             case K_SCOREWIMBLEDON5:
             case K_SCOREWIMBLEDON3:
-                isSets = true;
+                break;
+            case K_SCOREBADMINTON3:
+            case K_SCOREBADMINTON5:
+            case K_SCOREFAST4:
+            case K_SCOREPOINTS:
+                // show 'games' instead of 'sets'
+                historyTitle = getResources().getString(R.string.games);
+                // replace the 'sets' in the title with 'games'
+                previousTitle = previousTitle.replace(getResources().getString(R.string.sets), historyTitle);
                 break;
         }
-
-        if (false == isSets || scoreData.previousSets.size() < 5) {
-            // clear the results that remain in the text boxes from any previous matches
-            for (; i < 4; ++i) {
-                animator.setTextSwitcherContent("", playerOnePreviousSets[i]);
-                animator.setTextSwitcherContent("", playerTwoPreviousSets[i]);
-            }
+        // show the games they have won on previous sets
+        int i = 0;
+        // show the data in the previous sets content of the scoreData
+        for (i = 0; i < scoreData.previousSets.size() && i < 4; ++i) {
+            Pair<Integer, Integer> gameResult = scoreData.previousSets.get(i);
+            animator.setTextSwitcherContent(Integer.toString(gameResult.first), playerOnePreviousSets[i]);
+            animator.setTextSwitcherContent(Integer.toString(gameResult.second), playerTwoPreviousSets[i]);
+        }
+        // clear the results that remain in the text boxes left over from any previous matches
+        for (; i < 4; ++i) {
+            animator.setTextSwitcherContent("", playerOnePreviousSets[i]);
+            animator.setTextSwitcherContent("", playerTwoPreviousSets[i]);
+        }
+        // hide the final (number 4) set display if we are only going to play 3
+        if (scoreData.currentScoreMode == ScoreData.ScoreMode.K_SCOREBADMINTON3 ||
+                scoreData.currentScoreMode == ScoreData.ScoreMode.K_SCOREWIMBLEDON3) {
+            // we are playing 3 sets or games, no need for showing the final one then...
+            playerOnePreviousSets[3].setVisibility(View.INVISIBLE);
+            playerTwoPreviousSets[3].setVisibility(View.INVISIBLE);
+        }
+        else {
+            // show the final one, might need it
+            playerOnePreviousSets[3].setVisibility(View.VISIBLE);
+            playerTwoPreviousSets[3].setVisibility(View.VISIBLE);
         }
 
-        // do the display of sets for players one and two
-        int totalSets = scoreData.sets.first + scoreData.sets.second;
         // set the correct values on the text boxes
         animator.setTextSwitcherContent(Integer.toString(scoreData.sets.first), playerOneSetsText);
         animator.setTextSwitcherContent(Integer.toString(scoreData.sets.second), playerTwoSetsText);
 
-        // show all the information about sets if we are playing sets
-        int visibility;
-        String historyTitle = getResources().getString(R.string.games);
-        switch (scoreData.currentScoreMode) {
-            case K_SCOREWIMBLEDON5:
-            case K_SCOREWIMBLEDON3:
-                // show sets
-                historyTitle = getResources().getString(R.string.sets);
-            case K_SCOREBADMINTON3:
-            case K_SCOREBADMINTON5:
-            case K_SCOREFAST4:
-                // modes one and two are wimbledon - show the sets stuff
-                visibility = View.VISIBLE;
-                break;
-            default:
-                // else do not
-                visibility = View.INVISIBLE;
-                break;
-        }
-        // set the sets label
+        // set the sets labels
         setsTitleText.setText(historyTitle);
-        String previousTitle = getResources().getString(R.string.previous_sets);
-        if (false == isSets) {
-            // replace the 'sets' in the title with 'games'
-            previousTitle = previousTitle.replace(getResources().getString(R.string.sets), historyTitle);
-            //TODO hide the sets controls when showing just games data
-        }
         previousSetsTitleText.setText(previousTitle);
     }
 
-    public void updatePlayerTitles(String playerOneTitle, String playerTwoTitle) {
+    @Override
+    public void onPlayerTitlesUpdated(String playerOneTitle, String playerTwoTitle) {
         // update our titles
         if (null != playerOneSetsLabelText) {
             playerOneSetsLabelText.setText(playerOneTitle);

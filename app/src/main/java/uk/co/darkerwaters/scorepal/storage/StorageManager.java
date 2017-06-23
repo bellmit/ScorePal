@@ -27,6 +27,7 @@ import java.util.Date;
 
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.activities.MainActivity;
+import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 
 /**
  * Created by douglasbrain on 13/06/2017.
@@ -49,7 +50,7 @@ public class StorageManager {
 
     private User currentUser = null;
 
-    private Date matchStartedDate;
+    private Match currentMatchData;
 
     public interface IStorageManagerListener {
         public void onGoogleSigninResult(GoogleSignInAccount acct);
@@ -57,30 +58,115 @@ public class StorageManager {
         public void onUserSigninResult(User currentUser);
     }
 
+    public interface IStorageManagerDataListener {
+        void onPlayerTitlesUpdated(String playerOneTitle, String playerTwoTitle);
+        void onScoreDataUpdated(ScoreData scoreData);
+    }
+
     private final ArrayList<IStorageManagerListener> listeners;
+    private final ArrayList<IStorageManagerDataListener> dataListeners;
 
     private StorageManager() {
-        // on creation remember the date and time the latest match started
-        this.matchStartedDate = new Date();
+        currentMatchData = null;
         // and create the members to use
         this.listeners = new ArrayList<IStorageManagerListener>();
+        this.dataListeners = new ArrayList<IStorageManagerDataListener>();
     }
 
     public void resetMatchStartedDate(int secondsOffset) {
-        this.matchStartedDate = new Date();
-        // there might be an offset from when the game actually started, pull back the start date
-        // to be the actual time the player started their game rather than the time they connected
-        // their phone to the device
-        if (secondsOffset != 0) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(this.matchStartedDate);
-            cal.add(Calendar.SECOND, secondsOffset);
-            this.matchStartedDate = cal.getTime();
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Resetting match date before initialising data");
+        }
+        else {
+            Date matchStartedDate = this.currentMatchData.getMatchPlayedDate();
+            // there might be an offset from when the game actually started, pull back the start date
+            // to be the actual time the player started their game rather than the time they connected
+            // their phone to the device
+            if (secondsOffset != 0) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(matchStartedDate);
+                cal.add(Calendar.SECOND, secondsOffset);
+                matchStartedDate = cal.getTime();
+                // and put this back on the match
+                this.currentMatchData.setMatchPlayedDate(matchStartedDate);
+            }
+        }
+    }
+
+    public void setCurrentPlayers(String playerOne, String playerTwo) {
+        // set the players on the match
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Setting match players before initialising data");
+        }
+        else if (this.currentMatchData.playerOne == null || false == this.currentMatchData.playerOne.equals(playerOne) ||
+                    this.currentMatchData.playerTwo == null || false == this.currentMatchData.playerTwo.equals(playerTwo)) {
+            // this is a change in data, so set this data on the match we are using to store our data
+            this.currentMatchData.playerOne = playerOne;
+            this.currentMatchData.playerTwo = playerTwo;
+            // inform listeners of this
+            synchronized (this.listeners) {
+                for (IStorageManagerDataListener listener : this.dataListeners) {
+                    listener.onPlayerTitlesUpdated(playerOne, playerTwo);
+                }
+            }
+        }
+    }
+
+    public String getCurrentPlayerOne() {
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Getting match player before initialising data");
+            return "";
+        }
+        else {
+            return this.currentMatchData.playerOne;
+        }
+    }
+
+    public String getCurrentPlayerTwo() {
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Getting match player before initialising data");
+            return "";
+        }
+        else {
+            return this.currentMatchData.playerTwo;
+        }
+    }
+
+    public ScoreData getCurrentScoreData() {
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Getting match score data before initialising data");
+            return new ScoreData();
+        }
+        else {
+            return this.currentMatchData.getScoreData();
+        }
+    }
+
+    public void onNewScoreData(ScoreData scoreData) {
+        // this score data should update our currently stored match
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Setting match score data before initialising data");
+        }
+        else {
+            // set this data on the match we are using to store our data
+            this.currentMatchData.setCurrentScoreData(scoreData);
+            // inform listeners of this
+            synchronized (this.listeners) {
+                for (IStorageManagerDataListener listener : this.dataListeners) {
+                    listener.onScoreDataUpdated(scoreData);
+                }
+            }
         }
     }
 
     public Date getMatchStartedDate() {
-        return this.matchStartedDate;
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Getting match date before initialising data");
+            return new Date();
+        }
+        else {
+            return this.currentMatchData.getMatchPlayedDate();
+        }
     }
 
     public static StorageManager getManager() {
@@ -89,6 +175,17 @@ public class StorageManager {
 
     public void initialise(MainActivity main) {
         this.main = main;
+        ScoreData newData = BtManager.getManager().getLatestScoreData();
+        if (null == newData) {
+            newData = new ScoreData();
+        }
+        // create the match we are playing here now we are initialised
+        this.currentMatchData = new Match(this.currentUser,
+                main.getString(R.string.player_one),
+                main.getString(R.string.player_two),
+                ScoreData.getScoreString(this.main, newData),
+                newData,
+                new Date());
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -143,10 +240,25 @@ public class StorageManager {
         return result;
     }
 
-    public boolean unregiserListener(IStorageManagerListener listener) {
+    public boolean unregisterListener(IStorageManagerListener listener) {
         boolean result;
         synchronized (this.listeners) {
             result = this.listeners.remove(listener);
+        }
+        return result;
+    }
+    public boolean registerListener(IStorageManagerDataListener listener) {
+        boolean result;
+        synchronized (this.dataListeners) {
+            result = this.dataListeners.add(listener);
+        }
+        return result;
+    }
+
+    public boolean unregisterListener(IStorageManagerDataListener listener) {
+        boolean result;
+        synchronized (this.dataListeners) {
+            result = this.dataListeners.remove(listener);
         }
         return result;
     }
@@ -168,6 +280,10 @@ public class StorageManager {
     private void onUserSigninResult(User currentUser) {
         // remember the result of this signin to google
         this.currentUser = currentUser;
+        // set this on our match data
+        if (null != this.currentMatchData) {
+            this.currentMatchData.setCurrentUser(this.currentUser);
+        }
         synchronized (this.listeners) {
             for (IStorageManagerListener listener : this.listeners) {
                 listener.onUserSigninResult(this.currentUser);
