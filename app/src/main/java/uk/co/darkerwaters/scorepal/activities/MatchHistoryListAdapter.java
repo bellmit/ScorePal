@@ -22,7 +22,6 @@ import java.util.List;
 
 import uk.co.darkerwaters.scorepal.Common;
 import uk.co.darkerwaters.scorepal.R;
-import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.storage.Match;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
@@ -99,11 +98,11 @@ public class MatchHistoryListAdapter extends BaseAdapter {
                         onShowMatchDetails(match);
                     }
                 });
-                String title = match.getPlayerOne() +
+                String title = match.getPlayerOneTitle() +
                         " " +
                         mContext.getResources().getString(R.string.vs) +
                         " " +
-                        match.getPlayerTwo();
+                        match.getPlayerTwoTitle();
                 titleText.setText(title);
                 // set the nice image
                 switch (match.getScoreMode()) {

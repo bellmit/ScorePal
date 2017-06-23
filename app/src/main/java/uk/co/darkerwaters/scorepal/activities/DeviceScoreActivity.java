@@ -102,7 +102,7 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
         defaultValue = getResources().getString(R.string.player_two);
         String playerTwoTitle = sharedPref.getString(getString(R.string.stored_playertwo_title), defaultValue);
         // and put this data on the storage manager
-        StorageManager.getManager().setCurrentPlayers(playerOneTitle, playerTwoTitle);
+        StorageManager.getManager().setCurrentPlayerTitles(playerOneTitle, playerTwoTitle);
     }
 
     @Override

@@ -93,16 +93,36 @@ public class StorageManager {
         }
     }
 
-    public void setCurrentPlayers(String playerOne, String playerTwo) {
+    public void setCurrentPlayerOne(User playerOne, String playerOneTitle) {
+        // have a user, set this data on the match we are using to store the data
+        if (null != this.currentMatchData) {
+            // set this data on the match
+            this.currentMatchData.setPlayerOne(playerOne, playerOneTitle);
+            // and set the current titles to inform listeners of this change
+            setCurrentPlayerTitles(playerOneTitle, getCurrentPlayerTwoTitle());
+        }
+    }
+
+    public void setCurrentPlayerTwo(User playerTwo, String playerTwoTitle) {
+        // have a user, set this data on the match we are using to store the data
+        if (null != this.currentMatchData) {
+            // set this data on the match
+            this.currentMatchData.setPlayerTwo(playerTwo, playerTwoTitle);
+            // and set the current titles to inform listeners of this change
+            setCurrentPlayerTitles(getCurrentPlayerOneTitle(), playerTwoTitle);
+        }
+    }
+
+    public void setCurrentPlayerTitles(String playerOne, String playerTwo) {
         // set the players on the match
         if (null == this.currentMatchData) {
             Log.e(MainActivity.TAG, "Setting match players before initialising data");
         }
-        else if (this.currentMatchData.playerOne == null || false == this.currentMatchData.playerOne.equals(playerOne) ||
-                    this.currentMatchData.playerTwo == null || false == this.currentMatchData.playerTwo.equals(playerTwo)) {
+        else if (this.currentMatchData.playerOneTitle == null || false == this.currentMatchData.playerOneTitle.equals(playerOne) ||
+                    this.currentMatchData.playerTwoTitle == null || false == this.currentMatchData.playerTwoTitle.equals(playerTwo)) {
             // this is a change in data, so set this data on the match we are using to store our data
-            this.currentMatchData.playerOne = playerOne;
-            this.currentMatchData.playerTwo = playerTwo;
+            this.currentMatchData.playerOneTitle = playerOne;
+            this.currentMatchData.playerTwoTitle = playerTwo;
             // inform listeners of this
             synchronized (this.listeners) {
                 for (IStorageManagerDataListener listener : this.dataListeners) {
@@ -112,23 +132,43 @@ public class StorageManager {
         }
     }
 
-    public String getCurrentPlayerOne() {
+    public User getCurrentPlayerOne() {
         if (null == this.currentMatchData) {
             Log.e(MainActivity.TAG, "Getting match player before initialising data");
-            return "";
+            return null;
         }
         else {
-            return this.currentMatchData.playerOne;
+            return this.currentMatchData.getPlayerOneUser();
         }
     }
 
-    public String getCurrentPlayerTwo() {
+    public User getCurrentPlayerTwo() {
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Getting match player before initialising data");
+            return null;
+        }
+        else {
+            return this.currentMatchData.getPlayerTwoUser();
+        }
+    }
+
+    public String getCurrentPlayerOneTitle() {
         if (null == this.currentMatchData) {
             Log.e(MainActivity.TAG, "Getting match player before initialising data");
             return "";
         }
         else {
-            return this.currentMatchData.playerTwo;
+            return this.currentMatchData.playerOneTitle;
+        }
+    }
+
+    public String getCurrentPlayerTwoTitle() {
+        if (null == this.currentMatchData) {
+            Log.e(MainActivity.TAG, "Getting match player before initialising data");
+            return "";
+        }
+        else {
+            return this.currentMatchData.playerTwoTitle;
         }
     }
 

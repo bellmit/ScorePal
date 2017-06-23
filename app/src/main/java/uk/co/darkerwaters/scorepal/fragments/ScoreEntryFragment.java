@@ -150,7 +150,7 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
             @Override
             public void afterTextChanged(Editable s) {
                 // update the label on the storage manager
-                StorageManager.getManager().setCurrentPlayers(getPlayerOneTitle(), getPlayerTwoTitle());
+                StorageManager.getManager().setCurrentPlayerTitles(getPlayerOneTitle(), getPlayerTwoTitle());
             }
         });
         // and player two
@@ -166,7 +166,7 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
             @Override
             public void afterTextChanged(Editable s) {
                 // update the label on the storage manager
-                StorageManager.getManager().setCurrentPlayers(getPlayerOneTitle(), getPlayerTwoTitle());
+                StorageManager.getManager().setCurrentPlayerTitles(getPlayerOneTitle(), getPlayerTwoTitle());
             }
         });
     }

@@ -98,7 +98,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
                         // sent this data to the device, set our names on the storage manager
                         // to those names from the stored game data
                         StorageManager store = StorageManager.getManager();
-                        store.setCurrentPlayers(match.getPlayerOne(), match.getPlayerTwo());
+                        store.setCurrentPlayerTitles(match.getPlayerOneTitle(), match.getPlayerTwoTitle());
                     }
                 }
             });
@@ -146,8 +146,8 @@ public class MatchDetailsActivity extends AppCompatActivity {
         String playerOne = getString(R.string.player_one);
         String playerTwo = getString(R.string.player_two);
         if (null != match) {
-            playerOne = match.getPlayerOne();
-            playerTwo = match.getPlayerTwo();
+            playerOne = match.getPlayerOneTitle();
+            playerTwo = match.getPlayerTwoTitle();
         }
 
         playerOneText.setText(playerOne);
@@ -188,8 +188,8 @@ public class MatchDetailsActivity extends AppCompatActivity {
         String playerTwo = getString(R.string.player_two);
         Date datePlayed = null;
         if (null != match) {
-            playerOne = match.getPlayerOne();
-            playerTwo = match.getPlayerTwo();
+            playerOne = match.getPlayerOneTitle();
+            playerTwo = match.getPlayerTwoTitle();
             datePlayed = match.getMatchPlayedDate();
         }
 

@@ -30,8 +30,10 @@ public class Match {
 
     //TODO player one is usually the user of the app, store this as the ID of the player instead "ID:TITLE" where ID=0 if just a string?
     //TODO player two could and probably should be selected friends they have played like "ID:TITLE"
-    public String playerOne;
-    public String playerTwo;
+    public String playerOneId;
+    public String playerTwoId;
+    public String playerOneTitle;
+    public String playerTwoTitle;
     public String scoreSummary;
     public int gameMode;
     public String matchPlayedDate;
@@ -39,6 +41,10 @@ public class Match {
     //TODO save the location the match was played at
     @Exclude
     private ScoreData currentScoreData;
+    @Exclude
+    private User playerOneUser;
+    @Exclude
+    private User playerTwoUser;
 
     public Match() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -46,8 +52,8 @@ public class Match {
 
     public Match(User user, String playerOne, String playerTwo, String scoreSummary, ScoreData scoreData, Date date) {
         setCurrentUser(user);
-        this.playerOne = playerOne;
-        this.playerTwo = playerTwo;
+        setPlayerOne(null, playerOne);
+        setPlayerTwo(null, playerTwo);
         this.scoreSummary = scoreSummary;
         this.gameMode = scoreData.currentScoreMode.value;
         setMatchPlayedDate(date);
@@ -60,13 +66,13 @@ public class Match {
     }
 
     @Exclude
-    public String getPlayerOne() {
-        return this.playerOne;
+    public String getPlayerOneTitle() {
+        return this.playerOneTitle;
     }
 
     @Exclude
-    public String getPlayerTwo() {
-        return this.playerTwo;
+    public String getPlayerTwoTitle() {
+        return this.playerTwoTitle;
     }
 
     @Exclude
@@ -121,6 +127,30 @@ public class Match {
     @Exclude
     public void setMatchPlayedDate(Date date) {
         this.matchPlayedDate = fileDateFormat.format(date);
+    }
+
+    @Exclude
+    public void setPlayerOne(User user, String userTitle) {
+        this.playerOneTitle = userTitle;
+        this.playerOneUser = user;
+        this.playerOneId = this.playerOneUser == null ? "" : this.playerOneUser.ID;
+    }
+
+    @Exclude
+    public void setPlayerTwo(User user, String userTitle) {
+        this.playerTwoTitle = userTitle;
+        this.playerTwoUser = user;
+        this.playerTwoId = this.playerTwoUser == null ? "" : this.playerTwoUser.ID;
+    }
+
+    @Exclude
+    public User getPlayerOneUser () {
+        return this.playerOneUser;
+    }
+
+    @Exclude
+    public User getPlayerTwoUser () {
+        return this.playerTwoUser;
     }
 
     public static boolean isFileDatesSame(Date fileDate1, Date fileDate2) {

@@ -1,10 +1,8 @@
 package uk.co.darkerwaters.scorepal.fragments;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -12,13 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import uk.co.darkerwaters.scorepal.R;
-import uk.co.darkerwaters.scorepal.ViewAnimator;
-import uk.co.darkerwaters.scorepal.activities.BtConnectActivity;
 import uk.co.darkerwaters.scorepal.activities.DeviceScoreActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.storage.Match;
@@ -95,8 +89,8 @@ public class ScoreControlsFragment extends Fragment {
         }
         else if (null != data) {
             // there is data to store, store it, first work out what we would want to call this
-            String playerOne = manager.getCurrentPlayerOne();
-            String playerTwo = manager.getCurrentPlayerTwo();
+            String playerOne = manager.getCurrentPlayerOneTitle();
+            String playerTwo = manager.getCurrentPlayerTwoTitle();
 
             // get the match data for this
             Match match = new Match(manager.getCurrentUser(),
