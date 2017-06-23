@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import uk.co.darkerwaters.scorepal.R;
-import uk.co.darkerwaters.scorepal.storage.Match;
+import uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data.Match;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 import uk.co.darkerwaters.scorepal.storage.StorageResult;
 

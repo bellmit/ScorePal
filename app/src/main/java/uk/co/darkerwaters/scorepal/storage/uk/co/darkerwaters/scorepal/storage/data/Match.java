@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.scorepal.storage;
+package uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data;
 
 import android.util.Log;
 
@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import uk.co.darkerwaters.scorepal.activities.MainActivity;
+import uk.co.darkerwaters.scorepal.storage.ScoreData;
+import uk.co.darkerwaters.scorepal.storage.StorageResult;
 
 
 /**

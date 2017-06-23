@@ -15,7 +15,7 @@ import android.widget.Toast;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.activities.DeviceScoreActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
-import uk.co.darkerwaters.scorepal.storage.Match;
+import uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data.Match;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 

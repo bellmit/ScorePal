@@ -22,7 +22,7 @@ import java.util.List;
 
 import uk.co.darkerwaters.scorepal.Common;
 import uk.co.darkerwaters.scorepal.R;
-import uk.co.darkerwaters.scorepal.storage.Match;
+import uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data.Match;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 import uk.co.darkerwaters.scorepal.storage.StorageManager;
 

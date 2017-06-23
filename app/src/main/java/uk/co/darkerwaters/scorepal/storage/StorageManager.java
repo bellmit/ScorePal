@@ -28,6 +28,8 @@ import java.util.Date;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.activities.MainActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
+import uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data.Match;
+import uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data.User;
 
 /**
  * Created by douglasbrain on 13/06/2017.
@@ -118,11 +120,11 @@ public class StorageManager {
         if (null == this.currentMatchData) {
             Log.e(MainActivity.TAG, "Setting match players before initialising data");
         }
-        else if (this.currentMatchData.playerOneTitle == null || false == this.currentMatchData.playerOneTitle.equals(playerOne) ||
-                    this.currentMatchData.playerTwoTitle == null || false == this.currentMatchData.playerTwoTitle.equals(playerTwo)) {
+        else if (this.currentMatchData.getPlayerOneTitle() == null || false == this.currentMatchData.getPlayerOneTitle().equals(playerOne) ||
+                    this.currentMatchData.getPlayerTwoTitle() == null || false == this.currentMatchData.getPlayerTwoTitle().equals(playerTwo)) {
             // this is a change in data, so set this data on the match we are using to store our data
-            this.currentMatchData.playerOneTitle = playerOne;
-            this.currentMatchData.playerTwoTitle = playerTwo;
+            this.currentMatchData.setPlayerOne(null, playerOne);
+            this.currentMatchData.setPlayerTwo(null, playerTwo);
             // inform listeners of this
             synchronized (this.listeners) {
                 for (IStorageManagerDataListener listener : this.dataListeners) {
@@ -158,7 +160,7 @@ public class StorageManager {
             return "";
         }
         else {
-            return this.currentMatchData.playerOneTitle;
+            return this.currentMatchData.getPlayerOneTitle();
         }
     }
 
@@ -168,7 +170,7 @@ public class StorageManager {
             return "";
         }
         else {
-            return this.currentMatchData.playerTwoTitle;
+            return this.currentMatchData.getPlayerTwoTitle();
         }
     }
 
@@ -345,8 +347,8 @@ public class StorageManager {
                         // create the user object
                         data = new User(acct.getUid(), acct.getDisplayName());
                         // set the data on this user object
-                        data.email = acct.getEmail();
-                        data.photoUrl = acct.getPhotoUrl().toString();
+                        data.setEmail(acct.getEmail());
+                        data.setPhotoUrl(acct.getPhotoUrl().toString());
                         // and put in the database
                         data.updateInDatabase(mDatabase);
                     }

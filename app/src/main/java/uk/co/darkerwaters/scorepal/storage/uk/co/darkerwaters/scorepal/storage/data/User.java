@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.scorepal.storage;
+package uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import uk.co.darkerwaters.scorepal.storage.StorageResult;
 
 @IgnoreExtraProperties
 public class User {
@@ -82,8 +84,18 @@ public class User {
     }
 
     @Exclude
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    @Exclude
     public String getEmail() {
         return  this.email;
+    }
+
+    @Exclude
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Exclude

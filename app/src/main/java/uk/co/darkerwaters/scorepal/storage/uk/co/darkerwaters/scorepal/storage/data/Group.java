@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.scorepal.storage;
+package uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,6 +9,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import uk.co.darkerwaters.scorepal.storage.StorageResult;
 
 @IgnoreExtraProperties
 public class Group {

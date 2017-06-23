@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.scorepal.storage;
+package uk.co.darkerwaters.scorepal.storage.uk.co.darkerwaters.scorepal.storage.data;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -6,6 +6,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
+
+import uk.co.darkerwaters.scorepal.storage.StorageResult;
 
 @IgnoreExtraProperties
 public class Post {

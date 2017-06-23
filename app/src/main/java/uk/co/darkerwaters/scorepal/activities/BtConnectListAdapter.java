@@ -116,6 +116,7 @@ public class BtConnectListAdapter extends BaseAdapter {
     }
 
     public void add(BluetoothDevice device) {
+        //TODO check for duplicates of the device and remove to re-add to the top
         mEntries.add(0, device);
         notifyDataSetChanged();
     }
