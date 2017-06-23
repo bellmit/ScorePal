@@ -72,7 +72,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
         Button sendButton = (Button) findViewById(R.id.history_send_to_button);
         // are we connected to anything?
         BtManager manager = BtManager.getManager();
-        if (null != match && null != match.scoreData) {
+        if (null != match) {
             ScoreData scoreData = match.getScoreData();
             if (null != scoreData.matchWinner || null == manager.getConnectedDevice()) {
                 // are not connected or there is a winner and the match is over
@@ -85,7 +85,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     // string up the message to send via bluetooth to the device
                     BtManager manager = BtManager.getManager();
-                    String message = "{" + match.scoreData.toString() + "}";
+                    String message = match.createScoreDataMessage();
                     if (false == manager.sendMessage(message)) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -162,7 +162,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
         TextView gameWinnerText = (TextView) findViewById(R.id.history_winner_label);
         // is there a winner?
         Integer matchWinner = null;
-        if (null != match && null != match.scoreData) {
+        if (null != match) {
             ScoreData scoreData = match.getScoreData();
             matchWinner = scoreData.matchWinner;
         }
@@ -263,7 +263,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
         playerTwoGames[3] = (TextView) findViewById(R.id.history_player_two_set_four);
         playerTwoGames[4] = (TextView) findViewById(R.id.history_player_two_set_five);
 
-        if (null != match && null != match.scoreData) {
+        if (null != match) {
             ScoreData scoreData = match.getScoreData();
             int noSets = scoreData.sets.first + scoreData.sets.second;
             int noGames = scoreData.games.first + scoreData.games.second;
@@ -346,7 +346,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
         TextView playerOneTotalPoints = (TextView) findViewById(R.id.history_player_one_total_points);
         TextView playerTwoTotalPoints = (TextView) findViewById(R.id.history_player_two_total_points);
 
-        if (null != match && null != match.scoreData) {
+        if (null != match) {
             ScoreData scoreData = match.getScoreData();
             playerOneTotalPoints.setText(Integer.toString(scoreData.totalPoints.first));
             playerTwoTotalPoints.setText(Integer.toString(scoreData.totalPoints.second));

@@ -9,13 +9,15 @@ import com.google.firebase.database.ValueEventListener;
 
 @IgnoreExtraProperties
 public class Post {
-    public String ID;
-    public String title;
-    public String content;
-    public String author;
-    public int type;
 
-    public Post() {
+    // members to store / load / save from Firebase
+    String ID;
+    String title;
+    String content;
+    String author;
+    int type;
+
+    Post() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 

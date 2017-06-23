@@ -12,15 +12,17 @@ import java.util.List;
 
 @IgnoreExtraProperties
 public class Group {
-    public String ID;
-    public String name;
-    public String owner;
-    public String location;
+
+    // members to store / load / save from Firebase
+    String ID;
+    String name;
+    String owner;
+    String location;
     List<String> members;
     List<String> matches;
 
 
-    public Group() {
+    Group() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 

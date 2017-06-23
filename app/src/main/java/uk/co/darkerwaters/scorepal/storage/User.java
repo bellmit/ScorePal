@@ -28,7 +28,7 @@ public class User {
 
         // Mapping enum to id
         private static final Map<Integer, ShareLevel> valueMap = new HashMap<Integer, ShareLevel>();
-        // initliase the map in a static global function
+        // initialise the map in a static global function
         static {
             for (ShareLevel mode : ShareLevel.values())
                 valueMap.put(mode.value, mode);
@@ -44,7 +44,8 @@ public class User {
             }
         }
     }
-    // add all the members to store
+
+    // members to store / load / save from Firebase
     String ID;
     String nickname;
     int shareDetailsLevel;
@@ -54,7 +55,7 @@ public class User {
     List<String> friends;
     List<String> groups;
 
-    public User() {
+    User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 

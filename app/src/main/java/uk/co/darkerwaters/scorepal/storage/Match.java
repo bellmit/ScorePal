@@ -26,18 +26,16 @@ public class Match {
     private static final SimpleDateFormat fileDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
     @Exclude
-    public String userId;
+    private String userId;
 
-    //TODO player one is usually the user of the app, store this as the ID of the player instead "ID:TITLE" where ID=0 if just a string?
-    //TODO player two could and probably should be selected friends they have played like "ID:TITLE"
-    public String playerOneId;
-    public String playerTwoId;
-    public String playerOneTitle;
-    public String playerTwoTitle;
-    public String scoreSummary;
-    public int gameMode;
-    public String matchPlayedDate;
-    public String scoreData;
+    String playerOneId;
+    String playerTwoId;
+    String playerOneTitle;
+    String playerTwoTitle;
+    String scoreSummary;
+    int gameMode;
+    String matchPlayedDate;
+    String scoreData;
     //TODO save the location the match was played at
     @Exclude
     private ScoreData currentScoreData;
@@ -46,7 +44,7 @@ public class Match {
     @Exclude
     private User playerTwoUser;
 
-    public Match() {
+    Match() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
@@ -61,8 +59,13 @@ public class Match {
     }
 
     @Exclude
+    public String getUserId() {
+        return this.userId;
+    }
+
+    @Exclude
     public String getMatchId() {
-        return matchPlayedDate;
+        return this.matchPlayedDate;
     }
 
     @Exclude
@@ -106,6 +109,10 @@ public class Match {
         this.currentScoreData = newData;
         // and the string which will go into the Firebase DB
         this.scoreData = newData.toString();
+    }
+
+    public String createScoreDataMessage() {
+        return "{" + scoreData.toString() + "}";
     }
 
     @Exclude
@@ -237,6 +244,4 @@ public class Match {
     public void delete(DatabaseReference topLevel) {
         topLevel.child("/matches/" + userId + "/" + getMatchId()).removeValue();
     }
-
-
 }

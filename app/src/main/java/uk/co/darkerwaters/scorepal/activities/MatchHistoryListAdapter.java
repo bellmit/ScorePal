@@ -158,7 +158,7 @@ public class MatchHistoryListAdapter extends BaseAdapter {
 
     private void onShowMatchDetails(Match match) {
         Intent intent = new Intent(mContext, MatchDetailsActivity.class);
-        intent.putExtra("uk.co.darkerwaters.scorepal.match.userid", match.userId);
+        intent.putExtra("uk.co.darkerwaters.scorepal.match.userid", match.getUserId());
         intent.putExtra("uk.co.darkerwaters.scorepal.match.matchid", match.getMatchId());
         mContext.startActivity(intent);
     }

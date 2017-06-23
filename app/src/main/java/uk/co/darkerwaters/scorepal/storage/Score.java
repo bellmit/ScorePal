@@ -15,10 +15,11 @@ import com.google.firebase.database.ValueEventListener;
 @IgnoreExtraProperties
 public class Score {
 
-    public String matchID;
-    public String scoreData;
+    // members to store / load / save from Firebase
+    String matchID;
+    String scoreData;
 
-    public Score() {
+    Score() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 

@@ -65,6 +65,7 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
         winnerText = (TextView) view.findViewById(R.id.winner_text_view);
         gamesTitleText = (TextView) view.findViewById(R.id.games_text);
 
+        //TODO change this to a display of the user or the title, then when click choose from Contacts, Friends, or enter a new one
         playerOneTitleText = (EditText) view.findViewById(R.id.player_one_name_text_view);
         playerTwoTitleText = (EditText) view.findViewById(R.id.player_two_name_text_view);
 
