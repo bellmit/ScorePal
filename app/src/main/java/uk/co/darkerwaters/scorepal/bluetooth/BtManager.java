@@ -42,6 +42,8 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     private static BtManager INSTANCE = null;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 9003;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_BLUETOOTH = 9004;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_BLUETOOTH_ADMIN = 9005;
 
     private BluetoothSocket btSocket = null;
     private BluetoothAdapter adapter = null;
@@ -94,6 +96,34 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
         // get the adapter
         INSTANCE.adapter = BluetoothAdapter.getDefaultAdapter();
         INSTANCE.registerGlobalListeners();
+
+        // request the BT permissions required
+        if (ContextCompat.checkSelfPermission(containerActivity,
+                Manifest.permission.BLUETOOTH)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // No explanation needed, we can request the permission.
+            ActivityCompat.requestPermissions(containerActivity,
+                    new String[]{Manifest.permission.BLUETOOTH},
+                    MY_PERMISSIONS_REQUEST_ACCESS_BLUETOOTH);
+            //TODO Handle when the app has no bluetooth permissions (intercept callback ID)
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+        }
+
+        // request the BT permissions required
+        if (ContextCompat.checkSelfPermission(containerActivity,
+                Manifest.permission.BLUETOOTH_ADMIN)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // No explanation needed, we can request the permission.
+            ActivityCompat.requestPermissions(containerActivity,
+                    new String[]{Manifest.permission.BLUETOOTH_ADMIN},
+                    MY_PERMISSIONS_REQUEST_ACCESS_BLUETOOTH_ADMIN);
+            //TODO Handle when the app has no bluetooth admin permissions (intercept callback ID)
+        }
 
         //TODO periodically check for BT connectivity in case it is dropped - poll and assume the device sends us data updates?
     }
@@ -342,7 +372,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             this.scanningListener = listener;
         }
         if (null != adapter) {
-            // Here, thisActivity is the current activity
+            // request the location permission because we need it to scan for BT devices
             if (ContextCompat.checkSelfPermission(this.container,
                     Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -351,8 +381,9 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
                 ActivityCompat.requestPermissions(this.container,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
+                //TODO Handle when the app has no location admin permissions (intercept callback ID)
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // MY_PERMISSIONS_REQUEST_ACCESS_LOCATION is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
