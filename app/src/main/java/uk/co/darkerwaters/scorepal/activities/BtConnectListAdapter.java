@@ -73,20 +73,31 @@ public class BtConnectListAdapter extends BaseAdapter {
             BluetoothDevice device = mEntries.get(position);
             if (null != device) {
                 String title = device.getName();
-                titleText.setText(title);
-                // check this - might it be a scorepal device?
-                if (title.toLowerCase().contains(mContext.getString(R.string.bt_scorepal_device_title))) {
-                    // set the nice image
-                    imageView.setImageResource(R.drawable.scorepal);
+                if (title != null) {
+                    titleText.setText(title);
+                    // check this - might it be a scorepal device?
+                    if (title.toLowerCase().contains(mContext.getString(R.string.bt_scorepal_device_title))) {
+                        // set the nice image
+                        imageView.setImageResource(R.drawable.scorepal);
+                    }
+                    else {
+                        // set the nice image
+                        imageView.setImageResource(R.drawable.bluetooth);
+                    }
                 }
                 String description = device.getAddress();
-                if (description.trim().length() == 0) {
-                    description = "Sorry, no address...";
-                }
-                descriptionText.setText(description);
-                // is this device connected?
-                if (BtManager.getManager().isDeviceConnected(device)) {
-                    itemView.setBackgroundColor(Common.getThemeAccentColor(mContext));
+                if (null != description) {
+                    if (description.trim().length() == 0) {
+                        description = "Sorry, no address...";
+                    }
+                    descriptionText.setText(description);
+                    // is this device connected?
+                    if (BtManager.getManager().isDeviceConnected(device)) {
+                        itemView.setBackgroundColor(Common.getThemeAccentColor(mContext));
+                    }
+                    else {
+                        itemView.setBackgroundColor(Common.getThemeBackgroundColor(mContext));
+                    }
                 }
             }
         }
@@ -105,7 +116,7 @@ public class BtConnectListAdapter extends BaseAdapter {
     }
 
     public void add(BluetoothDevice device) {
-        mEntries.add(device);
+        mEntries.add(0, device);
         notifyDataSetChanged();
     }
 }

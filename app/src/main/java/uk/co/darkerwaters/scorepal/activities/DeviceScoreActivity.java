@@ -36,6 +36,7 @@ import uk.co.darkerwaters.scorepal.ViewAnimator;
 import uk.co.darkerwaters.scorepal.fragments.DeviceConnectionFragment;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
+import uk.co.darkerwaters.scorepal.fragments.ScoreControlsFragment;
 import uk.co.darkerwaters.scorepal.fragments.ScoreEntryFragment;
 import uk.co.darkerwaters.scorepal.fragments.ScorePreviousSetsFragment;
 import uk.co.darkerwaters.scorepal.storage.Match;
@@ -45,6 +46,7 @@ import uk.co.darkerwaters.scorepal.storage.StorageManager;
 public class DeviceScoreActivity extends AppCompatActivity implements BtManager.IBtManagerListener, ScoreEntryFragment.IScoreEntryFragmentListener {
 
     private DeviceConnectionFragment topToolbar;
+    private ScoreControlsFragment bottomToolbar;
     private ScoreEntryFragment scoreEntryFragment;
     private ScorePreviousSetsFragment scorePreviousSetsFragment;
     private ViewAnimator animator;
@@ -65,7 +67,7 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
         topToolbar = (DeviceConnectionFragment) getSupportFragmentManager().findFragmentById(R.id.deviceconnection_fragment);
         scoreEntryFragment = (ScoreEntryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_score_entry);
         scorePreviousSetsFragment = (ScorePreviousSetsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_previous_sets);
-
+        bottomToolbar = (ScoreControlsFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_score_controls);
         gameTypeText = (TextView) findViewById(R.id.game_type_text);
 
         // update our display to the latest received score data
@@ -132,7 +134,7 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_history :
+            case R.id.nav_history:
                 Intent intent = new Intent(getApplicationContext(), MatchHistoryActivity.class);
                 startActivity(intent);
                 return true;
@@ -146,8 +148,7 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
     private void displayScoreData(ScoreData scoreData) {
         if (null == scoreData) {
             // show no  data
-        }
-        else {
+        } else {
             // update the score entry fragment with this new score
             this.scoreEntryFragment.displayScoreData(scoreData);
             // and the previous games status
@@ -181,21 +182,17 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
                 break;
         }
         // now we can add the time to this string, hours and seconds
-        int hours = (int)(scoreData.secondsGameDuration / 3600.0);
-        int minutes = (int)((scoreData.secondsGameDuration - (hours * 60)) / 60.0);
+        int totalMinutes = (int)(scoreData.secondsGameDuration / 60.0);
+        int hours = (int) (totalMinutes / 60.0);
+        int minutes = (int) (totalMinutes - (hours * 60));
         // add the space
         typeText += " " + getResources().getString(R.string.sfor) + " ";
         // the hours
-        typeText += Integer.toString(hours) + ".";
+        typeText += Integer.toString(hours) + ":";
         // and add the minutes
         typeText += Integer.toString(minutes);
         // and show to the user
         gameTypeText.setText(typeText);
-    }
-
-    @Override
-    public void onBtDeviceFound(BluetoothDevice device) {
-        // found a device - so what...
     }
 
     @Override
@@ -219,64 +216,11 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
         });
     }
 
-    public void onUndoPress(View view) {
-        BtManager.getManager().sendMessage("{a3}");
+    public String getPlayerOneTitle() {
+        return scoreEntryFragment.getPlayerOneTitle();
     }
 
-    public void onNewMatchPress(View view) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle(getResources().getString(R.string.warning));
-        alert.setMessage(getResources().getString(R.string.sure_to_reset));
-        alert.setPositiveButton(getResources().getString(R.string.yes), new AlertDialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // command the score board to reset
-                if (BtManager.getManager().sendMessage("{a9}")) {
-                    // and reset our current match date
-                    StorageManager.getManager().resetMatchStartedDate(0);
-                }
-                else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // show the error
-                            Toast.makeText(DeviceScoreActivity.this, R.string.unsuccessful_reset, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-        });
-        alert.setNegativeButton(getResources().getString(R.string.no), new AlertDialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // whatever
-            }
-        });
-        alert.show();
-    }
-
-    public void onSaveMatchPress(View view) {
-        ScoreData data = BtManager.getManager().getLatestScoreData();
-        StorageManager manager = StorageManager.getManager();
-        if (null == manager || null == manager.getCurrentUser()) {
-            Toast.makeText(this, R.string.error_user_not_signedin, Toast.LENGTH_SHORT).show();
-        }
-        else if (null != data) {
-            // there is data to store, store it, first work out what we would want to call this
-            String playerOne = scoreEntryFragment.getPlayerOneTitle();
-            String playerTwo = scoreEntryFragment.getPlayerTwoTitle();
-
-            // get the match data for this
-            Match match = new Match(manager.getCurrentUser(),
-                    playerOne, playerTwo,
-                    ScoreData.getScoreString(this, data),
-                    data,
-                    manager.getMatchStartedDate());
-            // and store this match / will overwrite any old on this key of userId / match date
-            match.updateInDatabase(StorageManager.getManager().getTopLevel());
-            // and tell the user this worked
-            Toast.makeText(this, R.string.successful_save, Toast.LENGTH_SHORT).show();
-            //TODO could show a fun little animation of a file wizzing off here to show it worked
-        }
+    public String getPlayerTwoTitle() {
+        return scoreEntryFragment.getPlayerTwoTitle();
     }
 }

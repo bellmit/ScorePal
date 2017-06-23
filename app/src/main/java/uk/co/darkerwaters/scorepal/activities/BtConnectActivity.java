@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -18,11 +19,11 @@ import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
 import uk.co.darkerwaters.scorepal.storage.ScoreData;
 
-public class BtConnectActivity extends AppCompatActivity implements BtManager.IBtManagerListener {
+public class BtConnectActivity extends AppCompatActivity implements BtManager.IBtManagerListener, BtManager.IBtManagerScanningListener {
 
     private ListView devicesPairedListView;
-    private ListView devicesScanListView;
     private TextView btStatusText;
+    private ProgressBar scanProgress;
     private ToggleButton btStatusToggle;
     private boolean isScanInitiated = false;
     private BtConnectListAdapter pairedListAdapter = null;
@@ -37,15 +38,17 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         devicesPairedListView = (ListView) findViewById(R.id.bt_devices_list);
-        devicesScanListView = (ListView) findViewById(R.id.bt_scan_devices_list);
+        scanProgress = (ProgressBar) findViewById(R.id.bt_scanning_progress);
         btStatusText = (TextView) findViewById(R.id.bt_status_text);
         btStatusToggle = (ToggleButton) findViewById(R.id.bt_toggle);
 
-        // create the list view adapters
-        scanListAdapter = new BtConnectListAdapter(this);
-        devicesScanListView.setAdapter(scanListAdapter);
+        // create the list view adapter
         pairedListAdapter = new BtConnectListAdapter(this);
         devicesPairedListView.setAdapter(pairedListAdapter);
+
+        // hide the progress spinner
+        scanProgress.setVisibility(View.INVISIBLE);
+        findViewById(R.id.bt_scan_button).setEnabled(true);
 
         // setup the BT status display things
         BtManager manager = BtManager.getManager();
@@ -67,13 +70,6 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
                 btPairedDeviceSelected(position);
             }
         });
-        devicesScanListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // handle the user clicked the item in the scanned device view
-                btScanedDeviceSelected(position);
-            }
-        });
         // and fill the list if we can
         populateList();
     }
@@ -92,6 +88,9 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
 
     @Override
     protected void onPause() {
+        // cancel any BT scanning
+        BtManager.getManager().cancelScanning();
+        // and unregister us as a listener
         BtManager.getManager().unregisterListener(this);
         super.onPause();
     }
@@ -103,7 +102,13 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
     }
 
     private void btScanedDeviceSelected(int position) {
+        // we want to pair this device and then connect to it, add it to the paired list
+        final Object clickedItem = scanListAdapter.getItem(position);
+        // add this to the paired list
+        if (null != clickedItem && clickedItem instanceof BluetoothDevice) {
+            connectDevice((BluetoothDevice)clickedItem);
 
+        }
     }
 
     private void btPairedDeviceSelected(int position) {
@@ -112,32 +117,38 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
         // find the BT device at this position in the list
         final Object clickedItem = pairedListAdapter.getItem(position);
         if (null != clickedItem && clickedItem instanceof BluetoothDevice) {
-            final ProgressDialog progress = ProgressDialog.show(this,
-                    getResources().getString(R.string.connecting),
-                    getResources().getString(R.string.please_wait_connecting), false);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // try the connection here, can take a little while
-                    manager.connectToDevice((BluetoothDevice)clickedItem);
-                    // dismiss the progress dialog
-                    progress.dismiss();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (manager.getConnectedDevice() == null) {
-                                Toast.makeText(BtConnectActivity.this, R.string.failed_to_connect, Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                //highlight the connected device
-                                populateList();
-                            }
-                        }
-                    });
-                }
-            }).start();
+            connectDevice((BluetoothDevice)clickedItem);
         }
     }
+
+    private void connectDevice(final BluetoothDevice device) {
+        final BtManager manager = BtManager.getManager();
+        final ProgressDialog progress = ProgressDialog.show(this,
+                getResources().getString(R.string.connecting),
+                getResources().getString(R.string.please_wait_connecting), false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // try the connection here, can take a little while
+                manager.connectToDevice(device);
+                // dismiss the progress dialog
+                progress.dismiss();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (manager.getConnectedDevice() == null) {
+                            Toast.makeText(BtConnectActivity.this, R.string.failed_to_connect, Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            //highlight the connected device
+                            populateList();
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
 
     public void onBtStatusCheck(boolean isChecked) {
         BtManager manager = BtManager.getManager();
@@ -171,9 +182,21 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
     }
 
     public void scanForDevices(View view) {
-        //TODO scanning or BT devices is not working for some reason
         // scan for new devices to connect to
-        BtManager.getManager().scanForDevices();
+        BtManager.getManager().scanForDevices(this);
+    }
+
+    @Override
+    public void onBtScanStarted() {
+        // scanning has started, show the progress indicator for this
+        findViewById(R.id.bt_scan_button).setEnabled(false);
+        scanProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onBtScanEnded() {
+        findViewById(R.id.bt_scan_button).setEnabled(true);
+        scanProgress.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -181,9 +204,9 @@ public class BtConnectActivity extends AppCompatActivity implements BtManager.IB
         // Discovery has found a device
         //String deviceName = device.getName();
         //String deviceHardwareAddress = device.getAddress(); // MAC address
-        if (null != scanListAdapter) {
-            // add to the list of scanned devices to appear in the list
-            scanListAdapter.add(device);
+        if (null != pairedListAdapter) {
+            // add to the list of devices to appear in the list
+            pairedListAdapter.add(device);
         }
     }
 

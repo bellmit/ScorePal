@@ -13,45 +13,24 @@
         style="@style/ScoreInformation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
         android:text="@string/previous_sets"
-        app:layout_constraintLeft_toRightOf="@+id/sets_text"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/player_one_set_one_text" />
 
     <TextView
         android:id="@+id/sets_text"
         style="@style/ScoreInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/sets"
-        app:layout_constraintLeft_toRightOf="@+id/player_one_sets_label_text"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextSwitcher
-        android:id="@+id/player_one_sets_text"
-        style="@style/ScoreValues"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="4dp"
-        android:text="00"
-        app:layout_constraintLeft_toLeftOf="@+id/sets_text"
-        app:layout_constraintTop_toBottomOf="@+id/sets_text"/>
-
-    <TextSwitcher
-        android:id="@+id/player_two_sets_text"
-        style="@style/ScoreValues"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
-        android:text="00"
-        app:layout_constraintLeft_toLeftOf="@+id/player_one_sets_text"
-        app:layout_constraintTop_toBottomOf="@+id/player_one_sets_text" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/player_one_sets_text" />
 
     <TextView
         android:id="@+id/player_one_sets_label_text"
@@ -80,14 +59,26 @@
         tools:text="@string/player_two" />
 
     <TextSwitcher
+        android:id="@+id/player_one_sets_text"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="7dp"
+        android:text="00"
+        app:layout_constraintLeft_toRightOf="@+id/player_one_sets_label_text"
+        app:layout_constraintTop_toBottomOf="@+id/sets_text" />
+
+    <TextSwitcher
         android:id="@+id/player_one_set_one_text"
         style="@style/ScoreValues"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginTop="0dp"
         android:text="00"
-        app:layout_constraintLeft_toLeftOf="@+id/previous_sets_text"
-        app:layout_constraintTop_toTopOf="@+id/player_one_sets_text" />
+        app:layout_constraintTop_toTopOf="@+id/player_one_sets_text"
+        app:layout_constraintLeft_toRightOf="@+id/player_one_sets_text"
+        android:layout_marginLeft="16dp" />
 
     <TextSwitcher
         android:id="@+id/player_one_set_two_text"
@@ -110,8 +101,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
         android:text="00"
-        app:layout_constraintLeft_toRightOf="@+id/player_two_set_two_text"
-        app:layout_constraintTop_toTopOf="@+id/player_two_set_two_text" />
+        app:layout_constraintLeft_toRightOf="@+id/player_one_set_two_text"
+        app:layout_constraintTop_toTopOf="@+id/player_one_set_two_text" />
 
     <TextSwitcher
         android:id="@+id/player_one_set_four_text"
@@ -122,8 +113,18 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
         android:text="00"
-        app:layout_constraintLeft_toRightOf="@+id/player_two_set_three_text"
-        app:layout_constraintTop_toTopOf="@+id/player_two_set_three_text" />
+        app:layout_constraintLeft_toRightOf="@+id/player_one_set_three_text"
+        app:layout_constraintTop_toTopOf="@+id/player_one_set_three_text" />
+
+    <TextSwitcher
+        android:id="@+id/player_two_sets_text"
+        style="@style/ScoreValues"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:text="00"
+        app:layout_constraintLeft_toLeftOf="@+id/player_one_sets_text"
+        app:layout_constraintTop_toBottomOf="@+id/player_one_sets_text" />
 
     <TextSwitcher
         android:id="@+id/player_two_set_one_text"
@@ -132,8 +133,9 @@
         android:layout_height="32dp"
         android:layout_marginTop="0dp"
         android:text="00"
-        app:layout_constraintLeft_toLeftOf="@+id/player_one_set_one_text"
-        app:layout_constraintTop_toTopOf="@+id/player_two_sets_text" />
+        app:layout_constraintTop_toTopOf="@+id/player_two_sets_text"
+        app:layout_constraintLeft_toRightOf="@+id/player_two_sets_text"
+        android:layout_marginLeft="16dp" />
 
     <TextSwitcher
         android:id="@+id/player_two_set_two_text"
@@ -156,8 +158,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
         android:text="00"
-        app:layout_constraintLeft_toRightOf="@+id/player_one_set_two_text"
-        app:layout_constraintTop_toTopOf="@+id/player_one_set_two_text" />
+        app:layout_constraintLeft_toRightOf="@+id/player_two_set_two_text"
+        app:layout_constraintTop_toTopOf="@+id/player_two_set_two_text" />
 
     <TextSwitcher
         android:id="@+id/player_two_set_four_text"
@@ -168,7 +170,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
         android:text="00"
-        app:layout_constraintLeft_toRightOf="@+id/player_one_set_three_text"
-        app:layout_constraintTop_toTopOf="@+id/player_one_set_three_text" />
+        app:layout_constraintLeft_toRightOf="@+id/player_two_set_three_text"
+        app:layout_constraintTop_toTopOf="@+id/player_two_set_three_text" />
 
 </android.support.constraint.ConstraintLayout>

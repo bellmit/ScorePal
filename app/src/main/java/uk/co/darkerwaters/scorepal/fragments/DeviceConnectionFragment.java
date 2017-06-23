@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,26 +98,30 @@ public class DeviceConnectionFragment extends Fragment implements BtManager.IBtM
             // are auto hiding - intially hide everything so they slide in when needed
             // instead of always sliding out when created / orientation changes etc
             isConnectivityControlsShown = false;
-            if (null != topView)
-                topView.setVisibility(View.GONE);
+            if (null != topView) {
+                FragmentManager fm = getFragmentManager();
+                fm.beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .hide(this)
+                        .commit();
+            }
         }
         else {
             // else are never hiding, make sure they are shown
             isConnectivityControlsShown = true;
-            if (null != topView)
-                topView.setVisibility(View.VISIBLE);
+            if (null != topView) {
+                FragmentManager fm = getFragmentManager();
+                fm.beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .show(this)
+                        .commit();
+            }
         }
     }
 
     private void onConnectionClicked() {
         Intent intent = new Intent(parentContext.getApplicationContext(), BtConnectActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onBtDeviceFound(BluetoothDevice device) {
-        // not very interesting, update the display anyway
-        updateConnectionStatus();
     }
 
     @Override

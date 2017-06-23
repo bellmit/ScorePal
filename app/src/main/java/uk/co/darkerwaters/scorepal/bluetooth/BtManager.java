@@ -1,15 +1,26 @@
 package uk.co.darkerwaters.scorepal.bluetooth;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +41,7 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     // make this a singleton
     private static BtManager INSTANCE = null;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 9003;
 
     private BluetoothSocket btSocket = null;
     private BluetoothAdapter adapter = null;
@@ -47,12 +59,18 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     private Thread connectingThread = null;
 
     public interface IBtManagerListener {
-        void onBtDeviceFound(BluetoothDevice device);
         void onBtStatusChanged();
         void onBtConnectionStatusChanged();
         void onBtDataChanged(ScoreData scoreData);
     }
+
+    public interface  IBtManagerScanningListener {
+        void onBtScanStarted();
+        void onBtScanEnded();
+        void onBtDeviceFound(BluetoothDevice device);
+    }
     private ArrayList<IBtManagerListener> listeners = new ArrayList<IBtManagerListener>();
+    private IBtManagerScanningListener scanningListener = null;
 
     public static BtManager getManager() {
         return INSTANCE;
@@ -76,35 +94,60 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
         // get the adapter
         INSTANCE.adapter = BluetoothAdapter.getDefaultAdapter();
         INSTANCE.registerGlobalListeners();
+
         //TODO periodically check for BT connectivity in case it is dropped - poll and assume the device sends us data updates?
     }
 
     public void registerGlobalListeners() {
         // register the broadcast receiver for messages when we discover some device
-        registerActionReceiver(new BroadcastReceiver() {
-               @Override
-               public void onReceive(Context context, Intent intent) {
-                   // to call the function
-                   BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                   INSTANCE.btDeviceFound(device);
-               }
-           }, new IntentFilter(BluetoothDevice.ACTION_FOUND));
-        // and for state changes on the adapter
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        // register this listener on the main context
         registerActionReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                // to call the function
-                INSTANCE.btStateChanged();
+                String action = intent.getAction();
+
+                if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                    final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                    INSTANCE.btStateChanged();
+                }
+                else if (BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED.equals(action)) {
+                    // to call the function
+                    INSTANCE.btConnectionStateChanged();
+                }
+                else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
+                    // discovery started
+                    synchronized (BtManager.this) {
+                        if (null != BtManager.this.scanningListener) {
+                            BtManager.this.scanningListener.onBtScanStarted();
+                        }
+                    }
+                }
+                else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                    // discovery ended
+                    synchronized (BtManager.this) {
+                        if (null != BtManager.this.scanningListener) {
+                            BtManager.this.scanningListener.onBtScanEnded();
+                        }
+                    }
+                }
+                else if (BluetoothDevice.ACTION_FOUND.equals(action)) {// When discovery finds a device
+                    // Get the BluetoothDevice object from the Intent
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    // and call the function
+                    synchronized (BtManager.this) {
+                        if (null != BtManager.this.scanningListener) {
+                            BtManager.this.scanningListener.onBtDeviceFound(device);
+                        }
+                    }
+                }
             }
-        }, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
-        // and for any change in the connnection status
-        registerActionReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                // to call the function
-                INSTANCE.btConnectionStateChanged();
-            }
-        }, new IntentFilter(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED));
+        }, filter);
     }
 
     private void registerActionReceiver(BroadcastReceiver receiver, IntentFilter filter) {
@@ -293,8 +336,30 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
         return result;
     }
 
-    public void scanForDevices() {
+    public void scanForDevices(IBtManagerScanningListener listener) {
+        synchronized (this) {
+            // set the new listener, protected as functions can be called from listening callback
+            this.scanningListener = listener;
+        }
         if (null != adapter) {
+            // Here, thisActivity is the current activity
+            if (ContextCompat.checkSelfPermission(this.container,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this.container,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+
+            if (adapter.isDiscovering()) {
+                adapter.cancelDiscovery();
+            }
             adapter.startDiscovery();
         }
     }
@@ -302,6 +367,10 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
     public void cancelScanning() {
         if (null != adapter) {
             adapter.cancelDiscovery();
+        }
+        synchronized (this) {
+            // clear the listener, protected as functions can be called from listening callback
+            this.scanningListener = null;
         }
     }
 
@@ -311,12 +380,6 @@ public class BtManager implements BtConnectionThread.IBtDataListener {
             connectedDevice = this.connectedDeviceName;
         }
         return connectedDevice;
-    }
-
-    private synchronized void btDeviceFound(BluetoothDevice device) {
-        for (IBtManagerListener listener : this.listeners) {
-            listener.onBtDeviceFound(device);
-        }
     }
 
     private synchronized void btConnectionStateChanged() {

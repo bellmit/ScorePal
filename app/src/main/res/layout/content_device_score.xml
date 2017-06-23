@@ -12,16 +12,27 @@
     android:animateLayoutChanges="true"
     android:focusableInTouchMode="true">
 
+    <fragment
+        android:id="@+id/fragment_score_controls"
+        android:name="uk.co.darkerwaters.scorepal.fragments.ScoreControlsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#F1F8E9"
+        android:elevation="16dp"
+        tools:layout="@layout/fragment_score_controls" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/fragment_score_controls">
 
         <fragment android:name="uk.co.darkerwaters.scorepal.fragments.DeviceConnectionFragment"
             android:id="@+id/deviceconnection_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:background="#F1F8E9"
             android:elevation="16dp"
             tools:layout="@layout/fragment_device_connection" />
@@ -29,34 +40,30 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/bottom_toolbar_layout"
-            android:layout_below="@+id/top_toolbar_layout"
-            android:clipChildren="false"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="178dp">
+            android:gravity="center">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical" >
 
                 <fragment
                     android:id="@+id/fragment_score_entry"
                     android:name="uk.co.darkerwaters.scorepal.fragments.ScoreEntryFragment"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:layout="@layout/fragment_score_entry" />
 
                 <fragment
                     android:id="@+id/fragment_previous_sets"
                     android:name="uk.co.darkerwaters.scorepal.fragments.ScorePreviousSetsFragment"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:layout="@layout/fragment_previous_sets"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    app:layout_constraintTop_toBottomOf="@+id/fragment_score_entry" />
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_score_entry"
+                    tools:layout="@layout/fragment_previous_sets" />
 
                 <TextView
                     android:id="@+id/game_type_text"
@@ -66,58 +73,6 @@
                     android:textAlignment="center" />
             </LinearLayout>
         </ScrollView>
-
     </LinearLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/bottom_toolbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="false"
-        android:background="#F1F8E9"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
-
-        <Button
-            android:id="@+id/reset_match_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:onClick="onNewMatchPress"
-            android:text="@string/reset"
-            android:theme="@style/Color.Button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <Button
-            android:id="@+id/undo_point_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:onClick="onUndoPress"
-            android:text="@string/undo"
-            android:theme="@style/Color.Button"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/reset_match_button" />
-
-        <Button
-            android:id="@+id/save_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:onClick="onSaveMatchPress"
-            android:text="@string/save"
-            android:theme="@style/Color.Button"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </android.support.constraint.ConstraintLayout>
 
 </RelativeLayout>

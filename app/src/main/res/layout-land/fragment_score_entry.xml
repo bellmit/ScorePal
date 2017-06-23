@@ -14,15 +14,27 @@
     tools:layout_editor_absoluteX="0dp">
 
     <TextView
-        android:id="@+id/games_text"
+        android:id="@+id/hidden_top_text"
         style="@style/ScoreInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="0dp"
-        android:text="@string/games"
+        android:text="hidden"
+        android:visibility="invisible"
         app:layout_constraintLeft_toRightOf="@+id/player_one_points_text"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/games_text"
+        style="@style/ScoreInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:text="@string/games"
+        app:layout_constraintLeft_toLeftOf="@+id/hidden_top_text"
+        app:layout_constraintTop_toBottomOf="@+id/hidden_top_text" />
 
     <TextView
         android:id="@+id/winner_text_view"
@@ -107,7 +119,7 @@
         android:layout_height="32dp"
         android:layout_marginLeft="24dp"
         android:text="00"
-        app:layout_constraintLeft_toLeftOf="@+id/games_text"
+        app:layout_constraintLeft_toLeftOf="@+id/hidden_top_text"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/winner_text_view" />
 
@@ -118,7 +130,7 @@
         android:layout_height="32dp"
         android:layout_marginLeft="24dp"
         android:text="00"
-        app:layout_constraintLeft_toLeftOf="@+id/games_text"
+        app:layout_constraintLeft_toLeftOf="@+id/hidden_top_text"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@+id/winner_text_view" />
 
@@ -154,6 +166,6 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/winner_text_view"
         app:layout_constraintLeft_toRightOf="@+id/player_one_name_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/games_text" />
+        app:layout_constraintTop_toBottomOf="@+id/hidden_top_text" />
 
 </android.support.constraint.ConstraintLayout>

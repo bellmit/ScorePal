@@ -218,6 +218,20 @@ public class ScoreEntryFragment extends Fragment {
                         playerTwoGamesText.setText(Integer.toString(playerTwoFinalSetGames));
                     }
                     break;
+                case K_SCOREBADMINTON5:
+                    // in a 5 game of badminton there is no place to put the final score, so
+                    // leave it in the points display
+                    int noGames = scoreData.previousSets.size();
+                    if (noGames > 0 && scoreData.sets.first + scoreData.sets.second > 0) {
+                        // they are playing sets - show the games for the last set in the games boxes
+                        int playerOneFinalSetGames = scoreData.previousSets.get(noGames - 1).first;
+                        int playerTwoFinalSetGames = scoreData.previousSets.get(noGames - 1).second;
+                        playerOnePointsText.setCurrentText(Integer.toString(playerOneFinalSetGames));
+                        playerTwoPointsText.setCurrentText(Integer.toString(playerTwoFinalSetGames));
+                        // and show the controls
+                        visibility = View.VISIBLE;
+                    }
+                    break;
             }
         } else {
             // hide the winning text and show the points
