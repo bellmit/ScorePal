@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">ScorePal</string>
+    <string name="app_name">Umpyr</string>
     <string name="bt_connect">Connect</string>
     <string name="bt_not_connected">no device connected</string>
     <string name="title_activity_bt_connect">Connect Device</string>
     <string name="stored_device">-</string>
     <string name="bt_scan">Scan</string>
     <string name="bt_status_text">Bluetooth not enabled</string>
-    <string name="bt_status_on_text">Bluetooth enabled: select scorepal</string>
+    <string name="bt_status_on_text">Bluetooth enabled: select device</string>
     <string name="bt_checked">On</string>
     <string name="bt_status_off">Off</string>
     <string name="bt_scorepal_device_title">hc-05</string>
@@ -48,8 +48,8 @@
     <string name="game_points">Game Points</string>
     <string name="title_activity_history_description">HistoryDescriptionActivity</string>
     <string name="failed_to_connect">Failed to connect to device...</string>
-    <string name="connecting">Connecting Scorepal Device</string>
-    <string name="please_wait_connecting">Please wait while connecting to the ScorePal device...</string>
+    <string name="connecting">Connecting Device</string>
+    <string name="please_wait_connecting">Please wait while connecting to the device...</string>
     <string name="sure_to_reset">Are you sure you want to reset this match?</string>
     <string name="unsuccessful_reset">Sorry, failed to send the reset command. Check bluetooth connection...</string>
     <string name="played_fast_four">A match of ITF Fast 4</string>
@@ -59,9 +59,9 @@
     <string name="title_activity_score">Device Scoring</string>
     <string name="score">Score</string>
     <string name="signin_failed">Please sign in to access all features</string>
-    <string name="score_device">Score Device</string>
-    <string name="score_manual">Score Manual</string>
-    <string name="title_activity_navigation">ScorePal Options</string>
+    <string name="score_device">Device</string>
+    <string name="score_manual">Manual</string>
+    <string name="title_activity_navigation">Options</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_account">Account</string>
@@ -70,4 +70,5 @@
     <string name="title_activity_match_details">Match Details</string>
     <string name="error_user_not_signedin">Sorry you are not signed in, please go to account before saving.</string>
     <string name="no_match_loaded">No Match Loaded</string>
+    <string name="website">www.umpyr.com</string>
 </resources>

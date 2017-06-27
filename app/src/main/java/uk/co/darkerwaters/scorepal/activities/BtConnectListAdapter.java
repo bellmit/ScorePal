@@ -75,10 +75,10 @@ public class BtConnectListAdapter extends BaseAdapter {
                 String title = device.getName();
                 if (title != null) {
                     titleText.setText(title);
-                    // check this - might it be a scorepal device?
+                    // check this - might it be a app_icon device?
                     if (title.toLowerCase().contains(mContext.getString(R.string.bt_scorepal_device_title))) {
                         // set the nice image
-                        imageView.setImageResource(R.drawable.scorepal);
+                        imageView.setImageResource(R.drawable.app_icon);
                     }
                     else {
                         // set the nice image

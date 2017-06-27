@@ -2,7 +2,6 @@ package uk.co.darkerwaters.scorepal.fragments;
 
 
 import android.app.Activity;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.ViewAnimator;
 import uk.co.darkerwaters.scorepal.activities.BtConnectActivity;
 import uk.co.darkerwaters.scorepal.bluetooth.BtManager;
-import uk.co.darkerwaters.scorepal.storage.ScoreData;
 
 public class DeviceConnectionFragment extends Fragment implements BtManager.IBtManagerListener {
 
@@ -148,7 +146,7 @@ public class DeviceConnectionFragment extends Fragment implements BtManager.IBtM
         // show the data if we are enabled and connected, else show we are not connected
         if (manager.isEnabled() && null != connectedDevice) {
             connectionText.setText(connectedDevice);
-            connectionImage.setImageResource(R.drawable.scorepal);
+            connectionImage.setImageResource(R.drawable.app_icon);
             // just hide this because showing what is connected isn't required
             if (isConnectivityControlsShown && isAutoHide) {
                 // slide the views away and make them gone
