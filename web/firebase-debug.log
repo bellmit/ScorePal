@@ -1,0 +1,36 @@
+[debug] [2017-07-09T10:32:39.323Z] ----------------------------------------------------------------------
+[debug] [2017-07-09T10:32:39.326Z] Command:      /usr/local/bin/node /usr/local/bin/firebase serve
+[debug] [2017-07-09T10:32:39.327Z] CLI Version:  3.9.1
+[debug] [2017-07-09T10:32:39.327Z] Platform:     darwin
+[debug] [2017-07-09T10:32:39.327Z] Node Version: v6.11.0
+[debug] [2017-07-09T10:32:39.328Z] Time:         Sun Jul 09 2017 11:32:39 GMT+0100 (BST)
+[debug] [2017-07-09T10:32:39.328Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-07-09T10:32:39.345Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-07-09T10:32:39.345Z] > authorizing via signed-in user
+[debug] [2017-07-09T10:32:39.347Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-07-09T10:32:39.348Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/YrMzR4GuTu1aMbOEKU15ZicRrbRJv1TQibh0AMXX_Bg',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Sun Jul 09 2017 11:32:39 GMT+0100 (BST)
+[debug] [2017-07-09T10:32:39.554Z] <<< HTTP RESPONSE 200
+[debug] [2017-07-09T10:32:39.573Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/regal-campus-169014  
+ Sun Jul 09 2017 11:32:39 GMT+0100 (BST)
+[debug] [2017-07-09T10:32:40.647Z] <<< HTTP RESPONSE 200
+[debug] [2017-07-09T10:32:40.648Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/regal-campus-169014/tokens  
+ Sun Jul 09 2017 11:32:40 GMT+0100 (BST)
+[debug] [2017-07-09T10:32:41.198Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/douglasbrain/Documents/code/git/darkerwaters/ScorePal/web'...
+[info] 
+[debug] [2017-07-09T10:32:41.202Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/regal-campus-169014  
+ Sun Jul 09 2017 11:32:41 GMT+0100 (BST)
+[debug] [2017-07-09T10:32:41.954Z] <<< HTTP RESPONSE 200
+[debug] [2017-07-09T10:32:41.955Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/85965429895/clients/_:getWebAppConfig  
+ Sun Jul 09 2017 11:32:41 GMT+0100 (BST)
+[debug] [2017-07-09T10:32:42.456Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: ./
+[info] ✔  hosting: Local server: http://localhost:5000
+

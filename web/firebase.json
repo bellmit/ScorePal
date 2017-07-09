@@ -1,0 +1,30 @@
+/* commands:
+it is "firebase serve" to serve a local version
+it is "firebase deploy" to deploy it to regal-campus-169014.firebaseapp.com"
+
+all worked up from https://codelabs.developers.google.com/codelabs/firebase-web/#0
+*/
+{
+    "database": {
+        "rules": "database-rules.json"
+    },
+    "storage": {
+        "rules": "storage.rules"
+    },
+    "hosting": {
+        "public": "./",
+        "ignore": [
+            "firebase.json",
+            "database-rules.json",
+            "storage.rules",
+            "functions"
+        ],
+        "headers": [{
+            "source": "**/*.@(js|html)",
+            "headers": [{
+                "key": "Cache-Control",
+                "value": "max-age=0"
+            }]
+        }]
+    }
+}
