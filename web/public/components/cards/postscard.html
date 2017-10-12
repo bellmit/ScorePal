@@ -1,0 +1,35 @@
+<!-- the posts card that shows the latest posts by members-->
+<div class="posts-card-wide mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+        <div class="card-content-right">
+            <h2 class="mdl-card__title-text">Latest Posts</h2>
+        </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-card__menu">
+            <a id="posts-image" class="card-contents-image cclink" target="_blank" href='https://www.flickr.com/photos/95222905@N02/10997835056/in/photolist-hKQMcN-a6rxdC-ad9L3j-4n5sc2-oMZXv-owqY5F-6ASjkk-eEz84-TM3afA-aw5Ze7-4ToAaQ-gFMU9Q-HdQFP-2azzAA-fe2PXb-pNfEcD-fdMd5Z-zymAZw-bjrjKD-6LBWu3-8oF5EH-jEf2Tp-oFjTUW-jkYcm1-Gbo6mj-rTCMrb-8nZs5P-hVJfmE-6ASji4-65V3t4-dXc1io-5HUgrM-4ZmSXb-4fAuoy-UK7wLg-TjQAjm-zBFEj-zBrau-PcgDi-Cv2Wy-FVqoT-dCF7cF-m945sN-pnqVM5-pB5UTe-nTpWhe-i2pEWp-4UKwkh-dsRUH-9cpTUL'>
+                <img class="ccoverlay" />
+                <div class="mdl-tooltip" data-mdl-for="posts-image">
+                    &quot;Conversation&quot; (CC BY 2.0) by raiznext
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <form id="post-form" class="card-contents-form" action="#">
+        <div class="mdl-textfield mdl-js-textfield">
+            <textarea class="mdl-textfield__input" type="text" id="post" class="card-contents" rows="3"></textarea>
+            <label class="mdl-textfield__label" for="post">Message text...</label>
+        </div>
+        <input id="postMediaCapture" class="mediaCapture" type="file" accept="image/*,capture=camera">
+        <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
+                <i class="material-icons">image</i>
+            </button>
+        <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Send</button>
+    </form>
+    <div id="posts-card-list" class="mdl-card__actions mdl-card--border">
+        <div id="posts" class="card-contents">
+            <span id="post-filler"></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<!-- the user details card shown on the front page when the user logs in -->
+<div class="user-details-card-wide card-contents-container mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Help</h2>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+
+    </div>
+
+    <div class="mdl-card__menu">
+        <a id="user-details-image" class="cclink" target="_blank" href='https://www.flickr.com/photos/krbo_sb/33309416641/'>
+            <img class="ccoverlay" />
+            <div class="mdl-tooltip" data-mdl-for="user-details-image">
+                &quot;Waiting...&quot; (CC BY 2.0) by krbo_sb
+            </div>
+        </a>
+        <!--
+        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+            <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right" for="hdrbtn">
+            <li class="mdl-menu__item" id="help-about-button">About</li>
+            <li class="mdl-menu__item" id="help-contact-button">Contact</li>
+            <li class="mdl-menu__item" id="help-legal-button">Legal information</li>
+        </ul>-->
+        <button type="button" class="mdl-chip chip-button" selected="true">
+            <span class="mdl-chip__text" id="help-about-button">About</span>
+        </button>
+        <button type="button" class="mdl-chip chip-button" selected="true">
+            <span class="mdl-chip__text" id="help-legal-button">Legal</span>
+        </button>
+        <button type="button" class="mdl-chip chip-button" selected="true">
+            <span class="mdl-chip__text" id="help-contact-button">Contact</span>
+        </button>
+    </div>
+    <div id="help-card-about" class="mdl-card__actions mdl-card--border">
+        <h5>About</h5>
+        Umpyr is a website created by Darker Waters LTD (UK). It is intended as a place to come to enter and record your scores as you play the sport of your choice.
+        <br/><br/> There is (will be) a companion app on Android and hopefully other platforms in the future. It is envisioned that you record the score of your game as you play it to help you track and keep accurate scoring statistics as you play. Then
+        as you progress, you can see that change in your game in this site.
+        <br/><br/> As the site grows it may well include groups which you can join, locations to play, more sports, different ways to sign-in, and more as required.
+    </div>
+    <div id="help-card-legal" class="mdl-card__actions mdl-card--border">
+        <h5>Legal disclaimer</h5>
+        Welcome to Umpyr, this disclaimer governs the usage of visitors on the website or by using the website.
+        <br/><br/> In signing-in and electing to use this site; it is assumed that you have accept this disclaimer in full.
+        <br/><br/> As the authors and operators of this site; we own the intellectual property rights of this website as well as materials included on it. All property rights are reserved, unless stated otherwise.
+        <br/><br/> All visitors or users can download or view and print pages for personal use, but it is subject to certain restrictions. Users must not republish any materials on the website which include republication on another site, site or rent
+        sub-license materials of the website and to show any materials from the site in public.
+        <br/><br/> The site authors ensure that all the information provided in the site is correct, but the company does not warrant its accuracy and completeness or commit to ensure that the site remains available and up to date. Variation: The disclaimer
+        can be revised from time to time. The disclaimer will be applied from date of publication of the revised disclaimer.
+        <br/><br/> This disclaimer is governed by as well as construed in accordance with the country’s law.
+    </div>
+    <form id="help-card-contact" class="mdl-card__actions mdl-card--border">
+        <h5 class="contact-form-content">Contact Darker Waters LTD about Umpyr.com</h5>
+        <div class="contact-form-content mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input readonly class="mdl-textfield__input" type="text" id="help-contact-name" class="card-contents" required>
+            <label class="mdl-textfield__label" for="help-contact-name">Name</label>
+        </div>
+        <div class="contact-form-content mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input readonly class="mdl-textfield__input" type="email" onblur="this.setAttribute('value', this.value);" id="help-contact-email" class="card-contents" required>
+            <label class="mdl-textfield__label" for="help-contact-email">Email</label>
+        </div>
+        <div class="contact-form-content mdl-textfield mdl-js-textfield">
+            <textarea class="mdl-textfield__input" type="text" id="help-contact-message" class="card-contents" rows="10" required></textarea>
+            <label class="mdl-textfield__label" for="help-contact-message">Message text...</label>
+        </div>
+        <button id="help-contact-send" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Send</button>
+    </form>
+</div>

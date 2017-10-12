@@ -1,0 +1,75 @@
+.primaryColor {
+    background-color: #4CAF4F
+}
+
+.primaryLightColor {
+    background-color: #80e27e
+}
+
+.primaryDarkColor {
+    background-color: #087f23
+}
+
+.secondaryColor {
+    background-color: #ffab40
+}
+
+.secondaryLightColor {
+    background-color: #ffdd71
+}
+
+.secondaryDarkColor {
+    background-color: #c77c02
+}
+
+.primaryTextColor {
+    color: #ffdd71
+}
+
+.secondaryTextColor {
+    color: rgb(66, 66, 66)
+}
+
+.colorPrimary {
+    background-color: #4caf50
+}
+
+.mdl-color--primary {
+    background-color: #4caf50
+}
+
+.mdl-color--primary-contrast {
+    background-color: rgb(66, 66, 66)!important
+}
+
+.mdl-color--primary-dark {
+    background-color: #087f23
+}
+
+.mdl-color--accent {
+    background-color: #ffab40
+}
+
+.mdl-color--accent-contrast {
+    background-color: rgb(66, 66, 66)!important
+}
+
+.mdl-color-text--primary {
+    color: #80e27e
+}
+
+.mdl-color-text--primary-contrast {
+    color: rgb(66, 66, 66)!important
+}
+
+.mdl-color-text--primary-dark {
+    color: rgb(56, 142, 60)!important
+}
+
+.mdl-color-text--accent {
+    color: #ffdd71
+}
+
+.mdl-color-text--accent-contrast {
+    color: rgb(66, 66, 66)!important
+}

@@ -1,0 +1,184 @@
+<!-- the matches details card that shows details of one specific match-->
+<div id="matchDetailsCard" class="match-details-card-wide mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+        <div class="card-content-right">
+            <h2 class="mdl-card__title-text" id="match-detils-title">A 5-set Match of Tennis</h2>
+        </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+
+    </div>
+    <div class="mdl-card__menu">
+        <a id="matches-details-cc-image" class="card-contents-image cclink" target="_blank" href='https://www.flickr.com/photos/dcjohn/30515698/in/photolist-3GpfJ-9cChrd-Tc3gbq-cy4yMm-6MQxFj-4Lbxc6-6rgCFX-UKVgXe-7GP2Tu-ocAvhG-6rkLTf-dStWUo-9DiXYG-93RUp7-7HYdmW-aNBNu-8pCLjG-pPRvZC-9LhDjG-61SMVA-bXPwjh-7GQXUj-5AUXLs-TFjLEZ-fTZrBz-aoks6h-2RukxM-ncwjm6-nhbwwB-phJo4-bvtJMR-kPs7SB-4LsLhF-6jhQWe-db1kNd-arFVFJ-oawag3-kWMYuS-a1qrkG-5Fof2j-4WhMyT-5B9UFo-oSVBSo-9cqrvU-ehj8ny-7mMRz3-gkqdvW-7g8TXm-9LhDkQ-CwDrNv'>
+            <img class="ccoverlaywhite" />
+            <div class="mdl-tooltip" data-mdl-for="matches-details-cc-image">
+                &quot;tennis&quot; (CC BY 2.0) by dcJohn
+            </div>
+        </a>
+        <button id="match-details-card-close" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">close</i>
+            <div class="mdl-tooltip" data-mdl-for="match-details-card-close">
+                Close this card
+            </div>
+        </button>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <table id="match-details-table" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+            <tbody>
+                <!-- played on row - with delete -->
+                <tr>
+                    <td colspan="3">
+                        <div class="information">
+                            <span>Played on </span>
+                            <span class="match-information-date"></span></span>
+                            <span> at </span>
+                            <span class="match-information-time"></span>
+                            <span> for </span>
+                            <span class="match-information-for-time"></span>
+                            <button class="match-delete-button mdl-button mdl-js-button mdl-button--icon">
+                            <i class="material-icons">delete</i>
+                        </button>
+                        </div>
+                    </td>
+                </tr>
+                <!-- match summary -->
+                <tr>
+                    <td colspan="3">
+                        <div class="summary"></div>
+                    </td>
+                </tr>
+                <!-- sets breakdown row -->
+                <tr>
+                    <td colspan="3" style="padding-left: 0px; padding-right: 0px">
+                        <table style="padding-left: 0px; padding-right: 0px">
+                            <thead>
+                                <tr>
+                                    <th id="match-details-player-title" class="mdl-data-table__cell--non-numeric">Player</th>
+                                    <th id="match-details-sets-title" class="mdl-data-table__cell--non-numeric">Sets</th>
+                                    <th id="match-details-games-title" class="mdl-data-table__cell--non-numeric" colspan="5">Games</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="mdl-data-table__cell--non-numeric match-information-player-one-title">Player One</td>
+                                    <td class="match-score match-information-player-one-set "></td>
+                                    <td class="match-score match-information-player-1-game1 "></td>
+                                    <td class="match-score match-information-player-1-game2 "></td>
+                                    <td class="match-score match-information-player-1-game3 "></td>
+                                    <td class="match-score match-information-player-1-game4 "></td>
+                                    <td class="match-score match-information-player-1-game5 "></td>
+                                </tr>
+                                <tr>
+                                    <td class="mdl-data-table__cell--non-numeric match-information-player-two-title ">Player Two</td>
+                                    <td class="match-score match-information-player-two-set "></td>
+                                    <td class="match-score match-information-player-2-game1 "></td>
+                                    <td class="match-score match-information-player-2-game2 "></td>
+                                    <td class="match-score match-information-player-2-game3 "></td>
+                                    <td class="match-score match-information-player-2-game4 "></td>
+                                    <td class="match-score match-information-player-2-game5 "></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <!-- first row - details about the teams -->
+                <tr>
+                    <td>
+                        <div class="match-details-team-one">
+                            <div id="match-details-team-one-title" class="name">Team One</div>
+                            <span class="spacing">
+                                    <img src="images/ic_person_black_24px.svg" class="player-avatar player-one-pic">
+                                </span>
+                            <span class="spacing">
+                                    <img src="images/ic_person_black_24px.svg" class="player-avatar player-one-partner-pic">
+                                </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="match-details-team-seperator">
+                            <span class="spacing">vs</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="match-details-team-two">
+                            <div id="match-details-team-two-title" class="name">Team Two</div>
+                            <span class="spacing">
+                                    <img src="images/ic_person_black_24px.svg" class="player-avatar player-two-pic">
+                                </span>
+                            <span class="spacing">
+                                    <img src="images/ic_person_black_24px.svg" class="player-avatar player-two-partner-pic">
+                                </span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- second row - details about the sets -->
+                <tr>
+                    <td>
+                        <div class="match-details-team-one">
+                            <span id="match-details-team-one-sets" class="score-pair-tight">2</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="match-details-team-seperator">
+                            <div id="match-details-sets-title" class="name">Sets</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="match-details-team-two">
+                            <span id="match-details-team-two-sets" class="score-pair-tight">3</span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- third row - details about the games for each set -->
+                <tr id="match-details-set-results-row">
+                    <td>
+                        <div class="match-details-team-one">
+                            <span id="match-details-team-one-set-results-1" class="score-pair-tight"></span>
+                            <span id="match-details-team-one-set-results-2" class="score-pair-tight"></span>
+                            <span id="match-details-team-one-set-results-3" class="score-pair-tight"></span>
+                            <span id="match-details-team-one-set-results-4" class="score-pair-tight"></span>
+                            <span id="match-details-team-one-set-results-5" class="score-pair-tight"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="match-details-team-seperator">
+                            <span id="match-details-set-results-title" class="name">Set Results</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="match-details-team-two">
+                            <span id="match-details-team-two-set-results-1" class="score-pair-tight"></span>
+                            <span id="match-details-team-two-set-results-2" class="score-pair-tight"></span>
+                            <span id="match-details-team-two-set-results-3" class="score-pair-tight"></span>
+                            <span id="match-details-team-two-set-results-4" class="score-pair-tight"></span>
+                            <span id="match-details-team-two-set-results-5" class="score-pair-tight"></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- forth row - details about the points won -->
+                <tr>
+                    <td>
+                        <div class="match-details-team-one">
+                            <span id="match-details-team-one-total-points" class="score-pair-tight">85</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="match-details-team-seperator">
+                            <span id="match-details-total-points-title" class="name">Total Points</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="match-details-team-two">
+                            <span id="match-details-team-two-total-points" class="score-pair-tight">166</span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- final row - the description -->
+                <tr>
+                    <td colspan="3" id="match-details-description" style="text-align: justify;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

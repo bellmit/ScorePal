@@ -1,0 +1,70 @@
+RESOURCES
+* colour pallette (http://www.tutorialspark.com/Google_MaterialDesignLite_Tutorials/MDL_Material_Design_Lite_Colors.php)
+* Full calendar (https://fullcalendar.io/docs/usage/)
+* MDL (https://getmdl.io/components/index.html)
+* MDL Icons (https://material.io/icons/?gclid=CjwKEAjw4vzKBRCt9Zmg8f2blgESJADN5fDggYgkZ2e4LBNtiO8sL-XxwTwuGJwaJ_lco6So7spU0xoCkoXw_wcB)
+* MDL Colour palette (https://material.io/guidelines/style/color.html#color-color-palette)
+* Firebase console (https://console.firebase.google.com/u/0/project/regal-campus-169014/database/data?pli=1)
+* App engine (https://console.cloud.google.com/appengine/settings/domains?project=regal-campus-169014&serviceId=default&versionId=1&sortCol=creation&sortDir=DESC&pli=1)
+* Cloud console (https://console.cloud.google.com/home/dashboard?project=regal-campus-169014)
+
+** Material UI for future ones? (https://material-ui-1dab0.firebaseapp.com/getting-started/installation)
+
+DEVELOP APP
+* Change checking of my id to show admin to 'isAdmin' in the user object (set this by hand)
+* Do function in firebase that moves submitted messages to area that can be read by admin. (getUser == isAdmin amd put under that ID)
+* Change 'points' as a title of a sport to 'something else' - remove it as an option?
+* Test the points entry system
+* Do and add an Umpyr logo to the top bar
+* Do cookies popup?
+* Do new images for friends, help and user
+* Add adwords to card we show a lot (at least on home page) or on the welcome card.
+
+MOVE on
+* https://firebase.googleblog.com/2016/01/the-beginners-guide-to-react-native-and_84.html
+* https://facebook.github.io/react-native/docs/tutorial.html
+
+
+EXTEND APP
+* Have a function in firebase that sends me an email when someone posts a message to the site
+https://github.com/firebase/functions-samples/blob/master/quickstarts/email-users/functions/index.js
+* Add some actual help to the help card
+* Matches <More Details> could show the card hovering next to the button pressed for better context
+* Show unread message count next to the friends option in the list if > 0 (will need to update on getting / reading a message)
+* Animate the cards in and out when they change (out to the left, in from the right - fading too?)
+* Friends - show stats against friend over last 30 days if requested (expand to show table we then populate?)
+* Show new badge against any match that is new (recent and not looked at, or just added?)
+* Think about intercepting the back button on the browser to prevent leaving the page accidentally
+* Connect to social media - post results of match on facebook or tweet it...
+* Add personal details to user, age, location, gender, fav sports
+* Enable horizontal scroll when too small to show cards (to help on phone)
+* add Fast-4 scoring
+* Show server and switch ends message (work out doubles serving)
+* Add graph of shot history to match breakdown
+* Add stats to match breakdown for tennis - breakpoints played/won for example
+* Animate the addition of a match so can see it added when submitted
+* Add animation to the ScrollTo - add top card on home and scrolls to hide the chips - not great either...
+* Show the results of a tie-break on the scoreboard, or at least on the expanded results
+* Entering score for live clears selected players
+* Add ability to make previous people played connected as friends after the fact
+* Stop people from recording score after the win?
+* Add events that groups/people can advertise
+* Add ability to create and log tournament results
+* Show description in match row with more >>> and <<< less buttons to show longer text entry
+* Add ability to block/unblock friends
+* Enable delete button for all messages from particular user
+* Would be nice if it selected the text that was in the box when clicked upon an entry
+* enable posts?
+-- Limit the size of image one can Post
+-- Limit the number of posts per user and for the whole application (task in background?)
+* Limit the number of friends a user can have - becommes a group?
+* Do groups - admin can add members by email address
+* Do Groups you are part of, also requests to join (message?)
+* Do locations, places to play / select to play at places
+* Do search?
+* Change to and buy Scorepal.com
+* Full-screen for ScoreEntry (https://github.com/rafrex/fscreen)
+
+FIX BUGS
+* Showing messages card from sending message on friends card doesn't change the colour of the menu item (need to call an update function)
+* Sending a message to a user should expand the history of that user in the messages card.

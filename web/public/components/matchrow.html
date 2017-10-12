@@ -1,0 +1,81 @@
+<div class="card-contents-container fadeable">
+    <!-- N.B. NOTHING CAN PROCEED THE ABOVE DIV!!!!!
+        Template for the display of a match in the MatchesDisplay -->
+    <div class="spacing">
+        <img id="match-sport-icon" src='./images/tennis.png' class="sport-icon">
+    </div>
+    <div class="spacing">
+        <div class="summary"></div>
+    </div>
+    <div class="spacing">
+        <img src="images/ic_person_black_24px.svg" class="player-avatar player-one-pic">
+    </div>
+    <div class="spacing">
+        <img src="images/ic_person_black_24px.svg" class="player-avatar player-one-partner-pic" hidden>
+    </div>
+    <div class="spacing">vs</div>
+    <div class="spacing">
+        <img src="images/ic_person_black_24px.svg" class="player-avatar player-two-pic">
+    </div>
+    <div class="spacing">
+        <img src="images/ic_person_black_24px.svg" class="player-avatar player-two-partner-pic" hidden>
+    </div>
+    <div class="match-summary"></div>
+    <button hidden class="match-submitted-accept-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+        <i class="material-icons">done</i>Accept Match
+    </button>
+    <button hidden class="match-submitted-reject-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+        <i class="material-icons">delete</i>Reject Match
+    </button>
+    <div>
+        <button class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="expand-icon-button material-icons">expand_more</i>
+        </button>Match breakdown...
+    </div>
+    <div class="expansion-area" hidden>
+        <!-- this is the hidden expansion area to show when the user clicks expand -->
+        <div class="information">
+            <span>Played on </span>
+            <span class="match-information-date"></span></span>
+            <span> at </span>
+            <span class="match-information-time"></span>
+            <span> for </span>
+            <span class="match-information-for-time"></span>
+            <button class="match-delete-button mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">delete</i>
+            </button>
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                    <tr>
+                        <th id="match-details-player-title" class="mdl-data-table__cell--non-numeric">Player</th>
+                        <th id="match-details-sets-title" class="mdl-data-table__cell--non-numeric">Sets</th>
+                        <th id="match-details-games-title" class="mdl-data-table__cell--non-numeric" colspan="5">Games</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="match-information-player-one-title mdl-data-table__cell--non-numeric">Player One</td>
+                        <td class="match-score match-information-player-one-set mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-1-game1 mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-1-game2 mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-1-game3 mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-1-game4 mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-1-game5 mdl-data-table__cell--non-numeric"></td>
+                    </tr>
+                    <tr>
+                        <td class="match-information-player-two-title mdl-data-table__cell--non-numeric">Player two</td>
+                        <td class="match-score match-information-player-two-set mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-2-game1 mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-2-game2 mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-2-game3 mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-2-game4 mdl-data-table__cell--non-numeric"></td>
+                        <td class="match-score match-information-player-2-game5 mdl-data-table__cell--non-numeric"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="match-information-details-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+                More Details
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+{
+    "rules": {
+        "users": {
+            // Users can only read their own section for user data (indexed by their UID)
+            "$uid": {
+                ".read": "$uid === auth.uid",
+                ".write": "$uid === auth.uid"
+            }
+        },
+        "posts": {
+            // user can read all the posts if they are logged in
+            ".read": "auth != null",
+            ".write": "auth != null"
+        },
+        "matches": {
+            // Users can only read their own section for matches (indexed by their UID)
+            "$uid": {
+                ".read": "$uid === auth.uid",
+                ".write": "$uid === auth.uid",
+                ".indexOn": ["matchPlayedDate"]
+            }
+        },
+        "matches_submitted": {
+            // users can read the matches that were submitted for them but anyone can post a match here
+            "$uid": {
+                ".read": "$uid === auth.uid",
+                ".write": "auth != null"
+            }
+        },
+        "messages": {
+            // users can read their messages but anyone can post one to them
+            "$uid": {
+                ".read": "$uid === auth.uid",
+                ".write": "auth != null"
+            }
+        },
+        "messages_submitted": {
+            // users can post a message to the administrator but only they can read them
+            "$uid": {
+                ".read": "$uid === auth.uid",
+                ".write": "auth.uid != null",
+                "$muid": {
+                    // the message uid must match the person sending it
+                    ".read": "$muid === auth.uid",
+                    // only the admin to whom it was sent can read it though
+                    ".write": "$uid === auth.uid"
+                }
+            }
+        },
+        "friends": {
+            // users can read their friends but anyone can post a request to them
+            "$uid": {
+                ".read": "$uid === auth.uid",
+                ".write": "auth != null"
+            }
+        },
+        "emails_to_ids": {
+            "$email": {
+                // "<User has need to lookup id by email>",
+                ".read": "auth != null",
+                //"<User has ability to create an email, or change the address of an email>"
+                ".write": "auth != null"
+                    //"$email === auth.emailToken" - if we were to use a custom token
+            }
+        },
+        "fcmTokens": {
+            "$token": {
+                // Users can only read their own device tokens
+                ".read": "data.val() === auth.uid",
+                // Users can only write to their own device tokens
+                ".write": "!data.exists() || data.val() === auth.uid",
+                // value has to be the UID of the user
+                ".validate": "newData.val() === auth.uid"
+            }
+        }
+    }
+}

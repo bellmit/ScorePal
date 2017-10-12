@@ -1,0 +1,35 @@
+<div class="card-contents-container">
+    <!-- N.B. NOTHING CAN PROCEED THE ABOVE DIV!!!!!
+        Template for the display of a friend in the FriendsCardController -->
+    <table style="padding-left: 0px; padding-right: 0px" class="mdl-card__supporting-text">
+        <tbody>
+            <tr class="friend-selectable">
+                <td>
+                    <img class="player-avatar pic"></img>
+                    <span class="friend-name">Friends name</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="spacing">
+                        <div class="card-contents">
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="message" class="card-contents">
+                            <label class="mdl-textfield__label" for="message">Message...</label>
+                        </div>
+                        <button title="Send a message" disabled class="message-friend-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                            <i class="material-icons">message</i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="friend-description"></div>
+                    <button hidden type="submit" class="reciprocate-friend-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Make</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

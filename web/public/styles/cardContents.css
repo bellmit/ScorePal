@@ -1,0 +1,294 @@
+.card-contents-filler {
+    flex-grow: 1;
+}
+
+.card-contents-form {
+    display: flex;
+    flex-direction: row;
+    width: calc(100% - 48px);
+    float: left;
+}
+
+.image-form {
+    display: flex;
+    flex-direction: row;
+    width: 48px;
+    float: right;
+}
+
+.floating-container {
+    z-index: 1000;
+    position: absolute;
+    width: 255px;
+    height: 150px;
+    overflow: auto;
+    max-height: 100vh;
+}
+
+.friends-selection-container {
+    z-index: 1000;
+    height: 200px;
+    margin: 0px;
+    padding: 0px;
+    overflow: auto;
+    max-height: 100vh;
+    background-color: #087f23;
+}
+
+.friends-selection-list {
+    margin: 0px;
+    padding: 0px;
+}
+
+.message-contents:hover {
+    background-color: #ffdd71;
+}
+
+.message-contents[unread='true'] {
+    font-weight: bold;
+}
+
+.friends-selection-list-item:hover {
+    background-color: #c77c02;
+    cursor: hand;
+}
+
+.friend-selectable:hover {
+    background-color: #c77c02;
+    cursor: hand;
+}
+
+.friend-selectable[selected='true'] {
+    background-color: #ffab40;
+}
+
+.chip-button {
+    cursor: pointer;
+    margin: 20px 10px;
+}
+
+.chip-button[selected='true'] {
+    background-color: #ffab40;
+}
+
+.fc-event[selected='true'] {
+    background-color: #ffab40;
+}
+
+.chip-button .material-icons {
+    height: 24px;
+    width: 24px;
+    background: 0 0;
+    opacity: .54;
+    padding: 0;
+    margin: 0 0 0 4px;
+    font-size: 13px;
+    text-decoration: none;
+    color: rgba(0, 0, 0, .87);
+    border: none;
+    outline: none;
+}
+
+.card-contents-form .mdl-textfield {
+    width: calc(100% - 100px);
+}
+
+.card-contents-form button,
+.image-form button {
+    width: 100px;
+    margin: 15px 0 0 10px;
+}
+
+.image-form #submitImage {
+    width: auto;
+    padding: 0 6px 0 1px;
+    min-width: 0;
+}
+
+.image-form #submitImage .material-icons {
+    top: -1px;
+}
+
+.card-contents img {
+    max-width: 300px;
+    max-height: 200px;
+}
+
+.mediaCapture {
+    display: none;
+}
+
+.card-contents-container:first-of-type {
+    border-top-width: 0;
+}
+
+.fadeable {
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.fadeable.visible {
+    opacity: 1;
+}
+
+.card-contents-container {
+    display: block;
+    margin-top: 10px;
+    border-top: 1px solid #f3f3f3;
+    padding-top: 10px;
+}
+
+.card-contents-container .pic {
+    background-image: url('/images/profile_placeholder.png');
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    background-size: 30px;
+    border-radius: 20px;
+}
+
+.card-contents-container .spacing {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.card-contents-container .summary {
+    display: table-cell;
+    width: calc(100% - 40px);
+    padding: 5px 0 5px 10px;
+}
+
+.card-contents-container .expansion-area {
+    opacity: 0;
+}
+
+.card-contents-container .expansion-area.visible {
+    opacity: 1;
+}
+
+.card-contents-container .information {
+    display: inline-block;
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 5px;
+    color: #bbb;
+    font-style: italic;
+    font-size: 75%;
+    box-sizing: border-box;
+}
+
+#help-card-contact {
+    text-align: center;
+    align-content: center;
+}
+
+.contact-form-content {
+    width: 80%;
+}
+
+.points-button {
+    height: 150px;
+    width: 150px;
+    font-size: 400%;
+}
+
+.score-pairs-container {
+    margin: 10px;
+}
+
+.score-pair {
+    margin: 5px 5px 5px 5px;
+    background-color: #ffab40;
+    border-radius: 5px 5px 5px 5px;
+    padding: 4px;
+}
+
+.score-pair-tight {
+    margin: 5px 1px;
+    background-color: #ffab40;
+    border-radius: 5px 5px 5px 5px;
+    padding: 4px;
+}
+
+.score-pairs-cal-container {
+    margin: 2px;
+}
+
+.score-pair-cal {
+    margin: 1px 1px 1px 1px;
+    background-color: #ffab40;
+    border-radius: 3px 3px 3px 3px;
+    padding: 2px;
+    font-size: 60%;
+}
+
+.match-details-summary-table {
+    width: 80%;
+}
+
+.match-score-text {
+    text-align: left;
+}
+
+.match-score[game-winner='true'] {
+    font-weight: bold;
+}
+
+.match-summary {
+    color: rgb(66, 66, 66);
+    font-style: italic;
+    font-size: 75%;
+    box-sizing: border-box;
+}
+
+.score-input {
+    background-color: #ffab40;
+    border-radius: 5px 5px 5px 5px;
+    width: 150%;
+    text-align: center;
+    font-size: 150%;
+    overflow: hidden;
+}
+
+.score-input[readonly='true'] {
+    background-color: #c77c02;
+}
+
+.score-input::selection {
+    background: darkgray;
+}
+
+.score-entry-table {
+    padding: 10px;
+}
+
+.score-entry-left {
+    text-align: right;
+    padding-right: 10px;
+}
+
+.score-entry-middle {
+    text-align: center;
+}
+
+.score-entry-right {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.score-data-input {
+    background-color: #4CAF4F;
+}
+
+;
+.match-details-team-one {
+    text-align: right;
+}
+
+.match-details-team-seperator {
+    text-align: center;
+}
+
+.match-details-team-two {
+    text-align: left;
+}

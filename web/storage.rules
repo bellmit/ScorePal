@@ -1,9 +1,7 @@
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{userId}/{timeStamp}/{fileName} {
-    	// restrict it so that only logged in users can write to their own bucket
-      allow write: if request.auth.uid == userId;
-      allow read;
+    match /{allPaths=**} {
+      allow read, write: if request.auth!=null;
     }
   }
 }

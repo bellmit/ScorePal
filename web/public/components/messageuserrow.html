@@ -1,0 +1,25 @@
+<div class="card-contents-container">
+    <!-- N.B. NOTHING CAN PROCEED THE ABOVE DIV!!!!!
+        Template for the display of a user in the MessagesDisplay, contains many messages -->
+    <div class="spacing">
+        <img class="player-avatar pic">
+        <span class="name"></span>
+        <div>
+            <button class="message-user-delete-button mdl-button mdl-js-button mdl-button--icon" hidden>
+                <i class="material-icons">delete</i>
+            </button>
+            <span class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="message-send-message">
+                <label class="mdl-textfield__label" for="message-send-message">Message...</label>
+            </span>
+            <button title="Send a message" disabled class="message-send-message-button mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                <i class="material-icons">message</i>
+            </button>
+            <button class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="expand-icon-button material-icons">expand_more</i>
+            </button>
+        </div>
+        <span id="message-filler"></span>
+        <div class="card-contents"></div>
+    </div>
+</div>

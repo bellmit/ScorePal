@@ -1,0 +1,46 @@
+<!-- the friends card that shows the latest friends by members-->
+<div class="friends-find-card-wide mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+        <div class="card-content-right">
+            <h2 class="mdl-card__title-text">Find Friends</h2>
+        </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <a><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+        <button id='friends-help-button' class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="expand-icon-button material-icons">expand_less</i>
+        </button> Find and make new friends...
+        <div id='friends-help-contents'>
+            <ul class='mdl-list'>
+                <li class="mdl-list__item">1: Type in your friend's email</li>
+                <li class="mdl-list__item">2: Press the 'Find' button to find them as Umpyr users...</li>
+                <li class="mdl-list__item">3: Press the 'Make' button to make them your friend...</li>
+                <li class="mdl-list__item">*: Play a match, send messages, whatever you want!...</li>
+            </ul>
+        </div>
+        <form id="friend-form" class="card-contents-form" action="#">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="friend" class="card-contents">
+                <label class="mdl-textfield__label" for="friend">email...</label>
+            </div>
+            <button id="find-friend-button" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Find</button>
+            <div id="find-friend-spinner" class="mdl-spinner mdl-js-spinner is-active" hidden></div>
+            <button id="make-friend-button" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Make</button>
+        </form>
+        <div id="friend-action-result"></div>
+    </div>
+    <div class="mdl-card__menu">
+        <a id="friends-image" class="card-contents-image cclink" target="_blank" href='https://www.flickr.com/photos/calliope/2219045534/in/photolist-4o6bVL-fKUBju-fKBqgi-fKUCV7-xpvDw-nAuTVv-363xdy-efT54Y-5RDmdC-fKUCnw-fKBgPM-fKBgY8-fKBh6z-62Kged-fKUzQ1-fKBsGa-fKBu96-fKC2d8-xpvt4-fKBzWx-dyBMyP-fKUaGL-fKBkNk-fKU3xf-fKUFvs-fKU4DQ-fKU56Y-fKBr4X-fKC2M4-fKBxpz-fKU7am-fKTXxC-fKU5c5-fKTSKs-fKBYgZ-fKU6HW-fKBDFX-fKBvVZ-fKC5xR-bAXYtE-fKBCCR-fKUjEo-fKU7zw-fKBCfD-fKUFbm-fKTZWG-fKBs3K-fKBmXM-fKU6Fq-fKBvcV'>
+            <img class="ccoverlay" />
+            <div class="mdl-tooltip" data-mdl-for="friends-image">
+                &quot;Tennis Club&quot; (CC BY 2.0) by Muffet
+            </div>
+        </a>
+        <button id="friends-find-card-close" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">close</i>
+            <div class="mdl-tooltip" data-mdl-for="friends-find-card-close">
+                Close this card
+            </div>
+        </button>
+    </div>
+</div>

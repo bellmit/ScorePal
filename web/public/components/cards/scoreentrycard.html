@@ -1,0 +1,351 @@
+<!-- the score entry card shown on the front page to all the user to enter a new score-->
+<div id="score-entry-wimbledon" class="score-card-wide mdl-card mdl-shadow--2dp">
+    <div id="score-entry-title-image" class="mdl-card__title">
+        <div class="card-content-right">
+            <h2 class="mdl-card__title-text">Score Entry</h2>
+        </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="expand-icon-button material-icons">expand_less</i>
+        </button>Enter the score for your latest match here...
+        <div class="expansion-area visible">
+            <!-- this is the hidden expansion area to show when the user clicks expand -->
+            <div class="information">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <select class="mdl-textfield__input score-data-input" id="score-type" name="score-type">
+                        <!--<option value="?">TITLE</option> will be added here -->
+                    </select>
+                </div>
+                <div>
+                    <!--class="mdl-data-table mdl-js-data-table mdl-shadow--2dp"-->
+                    <table class="score-entry-table">
+                        <tbody>
+                            <!-- entry radio buttons for the number of sets to play -->
+                            <tr>
+                                <td colspan="3" id="score-entry-sets-options-row" class="score-entry-middle">
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="score-entry-set-option-1">
+                                        <input checked class="mdl-radio__button" id="score-entry-set-option-1" name="score-entry-set-option" type="radio" value="1">
+                                        <span id="score-entry-set-option-label-1" class="mdl-radio__label">Set 1</span>
+                                    </label>
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="score-entry-set-option-2">
+                                        <input class="mdl-radio__button" id="score-entry-set-option-2" name="score-entry-set-option" type="radio" value="2">
+                                        <span id="score-entry-set-option-label-2" class="mdl-radio__label">Set 2</span>
+                                    </label>
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="score-entry-set-option-3">
+                                        <input class="mdl-radio__button" id="score-entry-set-option-3" name="score-entry-set-option" type="radio" value="3">
+                                        <span id="score-entry-set-option-label-3" class="mdl-radio__label">Set 3</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <!-- wether singles or doubles -->
+                            <tr>
+                                <td class="score-entry-left">
+                                    Singles
+                                </td>
+                                <td class="score-entry-middle">
+                                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="score-entry-enter-doubles">
+                                        <input type="checkbox" id="score-entry-enter-doubles" class="mdl-switch__input">
+                                        <span class="mdl-switch__label"></span>
+                                    </label>
+                                </td>
+                                <td class="score-entry-right">
+                                    Doubles
+                                </td>
+                            </tr>
+                            <!-- wether live or history -->
+                            <tr>
+                                <td class="score-entry-left">
+                                    Live Scoreboard
+                                </td>
+                                <td class="score-entry-middle">
+                                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="score-entry-live">
+                                        <input type="checkbox" id="score-entry-live" class="mdl-switch__input" name="score-entry-type" checked>
+                                        <span class="mdl-switch__label"></span>
+                                    </label>
+                                </td>
+                                <td class="score-entry-right">
+                                    Enter Match Results
+                                </td>
+                            </tr>
+                            <!-- decided to remove the functionality to let them enter set results only - weird -->
+                            <tr hidden>
+                                <td class="score-entry-left">
+                                    Only Enter Set Results
+                                </td>
+                                <td>
+                                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="score-entry-enter-games">
+                                        <input type="checkbox" id="score-entry-enter-games" class="mdl-switch__input" checked>
+                                        <span class="mdl-switch__label"></span>
+                                    </label>
+                                </td>
+                                <td class="score-entry-right">
+                                    Record Game Scores
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="score-entry-time-selection" class="mdl-card__actions mdl-card--border">
+        <!--<button id="score-entry-played-on-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+            Date
+        </button> -->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="score-entry-played-on" readonly='true'>
+            <label class="mdl-textfield__label" for="score-entry-played-on">Played on</label>
+        </div>
+        <span> at </span>
+        <div class="medium-number-input mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input score-data-input" id="score-entry-time-hours-played" name="time-hours-played">
+                    <option value="0">00</option>
+                    <option value="1">01</option>
+                    <option value="2">02</option>
+                    <option value="3">03</option>
+                    <option value="4">04</option>
+                    <option value="5">05</option>
+                    <option value="6">06</option>
+                    <option value="7">07</option>
+                    <option value="8">08</option>
+                    <option value="9">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                </select>
+        </div>
+        <div class="medium-number-input mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input score-data-input" id="score-entry-time-minutes-played" name="time-minutes-played">
+                    <option value="0">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                </select>
+        </div>
+        <span> for </span>
+        <div class="medium-number-input mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input score-data-input" id="score-entry-hours-played" name="hours-played">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+        </div>
+        <span> hours </span>
+        <div class="medium-number-input mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input score-data-input" id="score-entry-minutes-played" name="minutes-played">
+                    <option value="0">0</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                </select>
+        </div>
+        <span> mins</span>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+            <thead>
+                <tr>
+                    <th class="mdl-data-table__cell--non-numeric">Player</th>
+                    <th id="score-entry-points-title" class="mdl-data-table__cell--non-numeric" hidden>Points</th>
+                    <th id="score-entry-games-title" class="mdl-data-table__cell--non-numeric" colspan="5">Games</th>
+                    <th id="score-entry-sets-title" class="mdl-data-table__cell--non-numeric">Sets</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="score-entry-five-games-titles">
+                    <td>
+                        <!-- player -->
+                    </td>
+                    <td id="score-entry-points-subtitle" hidden>
+                        <!-- points -->
+                    </td>
+                    <td id="score-entry-game-heading-1">Set 1</td>
+                    <td id="score-entry-game-heading-2">Set 2</td>
+                    <td id="score-entry-game-heading-3">Set 3</td>
+                    <td id="score-entry-game-heading-4">Set 4</td>
+                    <td id="score-entry-game-heading-5">Set 5</td>
+                    <td>
+                        <!-- sets -->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <div class="wide-name-input mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input id="player-one-title" class="mdl-textfield__input" type="text">
+                            <label class="mdl-textfield__label" for="player-one-title">Player One</label>
+                        </div>
+                        <br/>
+                        <div class="wide-name-input mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input id="player-one-partner-title" class="mdl-textfield__input" type="text">
+                            <label class="mdl-textfield__label" for="player-one-partner-title">Player One (partner)</label>
+                        </div>
+                    </td>
+                    <td id="score-entry-player-one-points" class="mdl-data-table__cell--non-numeric" hidden>
+                        <button id="score-entry-player-one-points-button" class="points-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+                            <span id="score-entry-player-one-points-label">00</span>
+                        </button>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-one-game-one" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-one-game-one">#</label>
+                            <span class="mdl-textfield__error">The number of games for the first set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-one-game-two" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-one-game-two">#</label>
+                            <span class="mdl-textfield__error">The number of games for the second set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-one-game-three" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-one-game-three">#</label>
+                            <span class="mdl-textfield__error">The number of games for the third set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-one-game-four" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-one-game-four">#</label>
+                            <span class="mdl-textfield__error">The number of games for the forth set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-one-game-five" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-one-game-five">#</label>
+                            <span class="mdl-textfield__error">The number of games for the fifth set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-one-sets" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-one-sets">#</label>
+                            <span class="mdl-textfield__error">The number of sets has to be a number</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <div class="wide-name-input mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="player-two-title">
+                            <label class="mdl-textfield__label" for="player-one-title">Player Two</label>
+                        </div>
+                        <br/>
+                        <div class="wide-name-input mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input id="player-two-partner-title" class="mdl-textfield__input" type="text">
+                            <label class="mdl-textfield__label" for="player-two-partner-title">Player Two (partner)</label>
+                        </div>
+                    </td>
+                    <td id="score-entry-player-two-points" class="mdl-data-table__cell--non-numeric" hidden>
+                        <button id="score-entry-player-two-points-button" class="points-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+                            <span id="score-entry-player-two-points-label">00</span>
+                        </button>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-two-game-one" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-two-game-one">#</label>
+                            <span class="mdl-textfield__error">The number of games for the first set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-two-game-two" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-two-game-two">#</label>
+                            <span class="mdl-textfield__error">The number of games for the second set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-two-game-three" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-two-game-three">#</label>
+                            <span class="mdl-textfield__error">The number of games for the third set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-two-game-four" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-two-game-four">#</label>
+                            <span class="mdl-textfield__error">The number of games for the forth set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-two-game-five" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-two-game-five">#</label>
+                            <span class="mdl-textfield__error">The number of games for the fifth set has to be a number</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="small-number-input mdl-textfield mdl-js-textfield">
+                            <input id="player-two-sets" class="mdl-textfield__input score-input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                            <label class="mdl-textfield__label" for="player-two-sets">#</label>
+                            <span class="mdl-textfield__error">The number of sets has to be a number</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <button id="score-entry-undo-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored" hidden>
+                                Undo
+                            </button>
+                        <button id="score-entry-reset-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored" hidden>
+                                Reset
+                            </button>
+                    </td>
+                    <td class="mdl-data-table__cell--non-numeric" colspan="100%">
+                        <h4 id="score-entry-match-over-span" hidden>The match is over</h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <span class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <textarea class="mdl-textfield__input" type="text" id="score-entry-description-text" class="card-contents" rows="3"></textarea>
+            <label class="mdl-textfield__label" for="score-entry-description-text">Match description...</label>
+        </span>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <button id="score-entry-submit-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+            Submit Score
+        </button>
+        <button id="score-entry-cancel-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored">
+            Cancel
+        </button>
+    </div>
+    <div class="mdl-card__menu">
+        <a id="score-entry-image" class="cclink" target="_blank" href='https://www.flickr.com/photos/michaelpardo/17508784006/'>
+            <img class="ccoverlaywhite" />
+            <div class="mdl-tooltip" data-mdl-for="score-entry-image">
+                &quot;The Love for Three Tennis Balls&quot; (Public Domain) by mpardo.photo
+            </div>
+        </a>
+    </div>
+</div>
