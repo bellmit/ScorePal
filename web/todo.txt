@@ -11,6 +11,7 @@ RESOURCES
 ** Material UI for future ones? (https://material-ui-1dab0.firebaseapp.com/getting-started/installation)
 
 DEVELOP APP
+* Data can load slow so messages and matches to do are not displayed on the home page
 * Change checking of my id to show admin to 'isAdmin' in the user object (set this by hand)
 * Do function in firebase that moves submitted messages to area that can be read by admin. (getUser == isAdmin amd put under that ID)
 * Change 'points' as a title of a sport to 'something else' - remove it as an option?
