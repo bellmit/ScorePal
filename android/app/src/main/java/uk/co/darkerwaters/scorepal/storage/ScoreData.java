@@ -17,13 +17,9 @@ import uk.co.darkerwaters.scorepal.activities.MainActivity;
 
 public class ScoreData {
     public enum ScoreMode {
-        K_INVALID(0),
-        K_SCOREWIMBLEDON5(1),
-        K_SCOREWIMBLEDON3(2),
-        K_SCOREBADMINTON3(3),
-        K_SCOREBADMINTON5(4),
-        K_SCOREPOINTS(5),
-        K_SCOREFAST4(6);
+        K_POINTS(0),
+        K_TENNIS(1),
+        K_BADMINTON(2);
 
         public final int value;
         private ScoreMode(int value) {
@@ -41,7 +37,7 @@ public class ScoreData {
         public static ScoreMode from(int value) {
             ScoreMode mode = valueMap.get(value);
             if (null == mode) {
-                return ScoreMode.K_INVALID;
+                return ScoreMode.K_POINTS;
             }
             else {
                 return mode;
@@ -73,7 +69,8 @@ public class ScoreData {
 
     public int currentServer = 0;
     public int currentNorth = 0;
-    public ScoreMode currentScoreMode = ScoreMode.K_INVALID;
+    public ScoreMode currentScoreMode = ScoreMode.K_POINTS;
+    public int currentSetsOption = 0;
     public boolean isInTieBreak = false;
     public Integer matchWinner = null;
     public Pair<Integer, Integer> sets;
@@ -95,7 +92,7 @@ public class ScoreData {
     public ScoreData() {
         this.currentServer = 0;
         this.currentNorth = 0;
-        this.currentScoreMode = ScoreMode.K_INVALID;
+        this.currentScoreMode = ScoreMode.K_POINTS;
         this.isInTieBreak = false;
         this.matchWinner = null;
         this.sets = new Pair<Integer, Integer>(0, 0);
@@ -224,7 +221,9 @@ public class ScoreData {
         secondsStartTime = extractValueToColon(recDataString);
         secondsGameDuration = extractValueToColon(recDataString);
         // get the active mode
-        currentScoreMode = ScoreMode.from(Integer.parseInt(extractChars(1, recDataString)));
+        currentScoreMode = ScoreMode.from(extractValueToColon(recDataString));
+        currentSetsOption = extractValueToColon(recDataString);
+        // and the winner
         int matchWinnerData = Integer.parseInt(extractChars(1, recDataString));
         if (matchWinnerData <= 1) {
             // there is a winner, 0 or 1 - set this
@@ -236,7 +235,7 @@ public class ScoreData {
         currentNorth = Integer.parseInt(extractChars(1, recDataString));
         sets = new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString));
         // do the games for each set played
-        int totalSets = sets.first + sets.second;
+        int totalSets = extractValueToColon(recDataString);
         previousSets = new ArrayList<Pair<Integer, Integer>>(totalSets);
         for (int i = 0; i < totalSets; ++i) {
             previousSets.add(new Pair<Integer, Integer>(extractValueToColon(recDataString), extractValueToColon(recDataString)));
@@ -264,9 +263,7 @@ public class ScoreData {
 
     public String getPointsAsString(int points) {
         switch (currentScoreMode) {
-            case K_SCOREWIMBLEDON5:
-            case K_SCOREWIMBLEDON3:
-            case K_SCOREFAST4:
+            case K_TENNIS:
                 // this is ITF scoring mode
                 if (isInTieBreak) {
                     //just fall through to show the number of points
@@ -369,14 +366,11 @@ public class ScoreData {
         boolean isBadminton = false;
         // set the nice image
         switch (data.currentScoreMode) {
-            case K_SCOREWIMBLEDON5:
-            case K_SCOREWIMBLEDON3:
+            case K_TENNIS:
                 // this is a nice game of tennis with sets
                 isTennis = true;
                 break;
-            case K_SCOREBADMINTON3:
-            case K_SCOREBADMINTON5:
-            case K_SCOREFAST4:
+            case K_BADMINTON:
                 // this is a nice game of badminton which is games, or Fast4 which is games too
                 isBadminton = true;
                 break;
@@ -414,7 +408,7 @@ public class ScoreData {
         // the score type is the first entry before the dash
         String scoreType = context.getResources().getString(R.string.points);
         // the type is the first string up to the first dash
-        int index = scoreString.indexOf("-");
+        int index = scoreString == null ? -1 : scoreString.indexOf("-");
         if (index > -1) {
             scoreType = scoreString.substring(0, index);
         }
@@ -425,7 +419,7 @@ public class ScoreData {
         // the score is the data after the type (40-40) etc
         String score = "0-0";
         // the player type is the first string up to the first dash
-        int index = scoreString.indexOf("-");
+        int index = scoreString == null ? -1 : scoreString.indexOf("-");
         if (index > -1) {
             // this is the dash separating the scores, return the score
             score = scoreString.substring(index + 1, scoreString.length());

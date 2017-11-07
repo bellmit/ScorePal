@@ -157,14 +157,11 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
             // all our score is updated, but do we want to show it all?
             boolean showPrevious = true;
             switch (scoreData.currentScoreMode) {
-                case K_SCOREWIMBLEDON5:
-                case K_SCOREWIMBLEDON3:
-                case K_SCOREBADMINTON5:
-                case K_SCOREBADMINTON3:
+                case K_TENNIS:
+                case K_BADMINTON:
                     // show the previous points fragment
                     break;
-                case K_SCOREFAST4:
-                case K_SCOREPOINTS:
+                case K_POINTS:
                     // don't show previous sets or games for simple point counting mode
                     showPrevious = false;
                     break;
@@ -193,22 +190,13 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
     private void displayGameTypeAndData(ScoreData scoreData) {
         String typeText;
         switch (scoreData.currentScoreMode) {
-            case K_SCOREWIMBLEDON5:
+            case K_TENNIS:
                 typeText = getResources().getString(R.string.played_wimbledon5);
                 break;
-            case K_SCOREWIMBLEDON3:
-                typeText = getResources().getString(R.string.played_wimbledon3);
-                break;
-            case K_SCOREBADMINTON5:
+            case K_BADMINTON:
                 typeText = getResources().getString(R.string.played_badminton5);
                 break;
-            case K_SCOREBADMINTON3:
-                typeText = getResources().getString(R.string.played_badminton3);
-                break;
-            case K_SCOREFAST4:
-                typeText = getResources().getString(R.string.played_fast_four);
-                break;
-            case K_SCOREPOINTS:
+            case K_POINTS:
             default:
                 typeText = getResources().getString(R.string.played_points);
                 break;

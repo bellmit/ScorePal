@@ -262,8 +262,7 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
             // a won match with set data is special, the final games score goes in the games
             // boxes with the previous sets not showing the final set's points
             switch(scoreData.currentScoreMode) {
-                case K_SCOREWIMBLEDON3:
-                case K_SCOREWIMBLEDON5:
+                case K_TENNIS:
                     int noSets = scoreData.previousSets.size();
                     if (noSets > 0 && scoreData.sets.first + scoreData.sets.second > 0) {
                         // they are playing sets - show the games for the last set in the games boxes
@@ -273,7 +272,7 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
                         playerTwoGamesText.setText(Integer.toString(playerTwoFinalSetGames));
                     }
                     break;
-                case K_SCOREBADMINTON5:
+                case K_BADMINTON:
                     // in a 5 game of badminton there is no place to put the final score, so
                     // leave it in the points display
                     int noGames = scoreData.previousSets.size();
@@ -300,9 +299,7 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
 
         // only show serving indicators when no-one has won and we are tracking that (tennis)
         switch (scoreData.currentScoreMode) {
-            case K_SCOREWIMBLEDON5:
-            case K_SCOREWIMBLEDON3:
-            case K_SCOREFAST4:
+            case K_TENNIS:
                 // show the server indicators for tennis types
                 visibility = View.VISIBLE;
                 break;
@@ -323,12 +320,9 @@ public class ScoreEntryFragment extends Fragment implements StorageManager.IStor
         boolean isSets = false;
         // show all the information about games if we are playing games
         switch (scoreData.currentScoreMode) {
-            case K_SCOREWIMBLEDON5:
-            case K_SCOREWIMBLEDON3:
+            case K_TENNIS:
                 isSets = true;
-            case K_SCOREBADMINTON3:
-            case K_SCOREBADMINTON5:
-            case K_SCOREFAST4:
+            case K_BADMINTON:
                 // for tennis and badminton, show the games stuff
                 visibility = View.VISIBLE;
                 break;

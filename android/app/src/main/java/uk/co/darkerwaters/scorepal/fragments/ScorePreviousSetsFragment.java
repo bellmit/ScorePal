@@ -123,13 +123,10 @@ public class ScorePreviousSetsFragment extends Fragment implements StorageManage
         String previousTitle = getResources().getString(R.string.previous_sets);
         // show all the information about games if we are playing games
         switch (scoreData.currentScoreMode) {
-            case K_SCOREWIMBLEDON5:
-            case K_SCOREWIMBLEDON3:
+            case K_TENNIS:
                 break;
-            case K_SCOREBADMINTON3:
-            case K_SCOREBADMINTON5:
-            case K_SCOREFAST4:
-            case K_SCOREPOINTS:
+            case K_BADMINTON:
+            case K_POINTS:
                 // show 'games' instead of 'sets'
                 historyTitle = getResources().getString(R.string.games);
                 // replace the 'sets' in the title with 'games'
@@ -150,8 +147,7 @@ public class ScorePreviousSetsFragment extends Fragment implements StorageManage
             animator.setTextSwitcherContent("", playerTwoPreviousSets[i]);
         }
         // hide the final (number 4) set display if we are only going to play 3
-        if (scoreData.currentScoreMode == ScoreData.ScoreMode.K_SCOREBADMINTON3 ||
-                scoreData.currentScoreMode == ScoreData.ScoreMode.K_SCOREWIMBLEDON3) {
+        if (scoreData.currentScoreMode == ScoreData.ScoreMode.K_BADMINTON) {
             // we are playing 3 sets or games, no need for showing the final one then...
             playerOnePreviousSets[3].setVisibility(View.INVISIBLE);
             playerTwoPreviousSets[3].setVisibility(View.INVISIBLE);

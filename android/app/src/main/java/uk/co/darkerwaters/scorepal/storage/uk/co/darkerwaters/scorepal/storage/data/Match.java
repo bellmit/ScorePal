@@ -30,14 +30,21 @@ public class Match {
     @Exclude
     private String userId;
 
-    String playerOneId;
-    String playerTwoId;
-    String playerOneTitle;
-    String playerTwoTitle;
-    String scoreSummary;
-    int gameMode;
+    String description;
+    boolean isDoubles;
+    String isUserPlayed;
+    String isUserWinner;
     String matchPlayedDate;
-    String scoreData;
+    String playerOneId;
+    String playerOnePartnerId;
+    String playerOnePartnerTitle;
+    String playerOneTitle;
+    String playerTwoId;
+    String playerTwoPartnerId;
+    String playerTwoPartnerTitle;
+    String playerTwoTitle;
+    String scoreState;
+    String sport;
     //TODO save the location the match was played at
     @Exclude
     private ScoreData currentScoreData;
@@ -45,6 +52,10 @@ public class Match {
     private User playerOneUser;
     @Exclude
     private User playerTwoUser;
+    @Exclude
+    private String scoreSummary;
+    @Exclude
+    private String id;
 
     Match() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -55,7 +66,6 @@ public class Match {
         setPlayerOne(null, playerOne);
         setPlayerTwo(null, playerTwo);
         this.scoreSummary = scoreSummary;
-        this.gameMode = scoreData.currentScoreMode.value;
         setMatchPlayedDate(date);
         setCurrentScoreData(scoreData);
     }
@@ -67,7 +77,7 @@ public class Match {
 
     @Exclude
     public String getMatchId() {
-        return this.matchPlayedDate;
+        return this.id == null ? this.matchPlayedDate : this.id;
     }
 
     @Exclude
@@ -99,7 +109,7 @@ public class Match {
     public ScoreData getScoreData() {
         if (null == this.currentScoreData) {
             // no member, create it from the loaded string data
-            this.currentScoreData = new ScoreData(new StringBuilder(this.scoreData));
+            this.currentScoreData = new ScoreData(new StringBuilder(this.scoreState));
         }
         // return the data member as the object which is more helpful
         return this.currentScoreData;
@@ -110,16 +120,25 @@ public class Match {
         // store the actual object
         this.currentScoreData = newData;
         // and the string which will go into the Firebase DB
-        this.scoreData = newData.toString();
+        this.scoreState = newData == null ? null : newData.toString();
     }
 
     public String createScoreDataMessage() {
-        return "{" + scoreData.toString() + "}";
+        return "{" + scoreState.toString() + "}";
     }
 
     @Exclude
     public ScoreData.ScoreMode getScoreMode() {
-        return ScoreData.ScoreMode.from(this.gameMode);
+        if (null == this.currentScoreData) {
+            // there is no score data, build the data from the string here
+            getScoreData();
+        }
+        if (null == this.currentScoreData || null == this.currentScoreData.currentScoreMode) {
+            return ScoreData.ScoreMode.K_POINTS;
+        }
+        else {
+            return this.currentScoreData.currentScoreMode;
+        }
     }
 
     @Exclude
@@ -194,6 +213,7 @@ public class Match {
                     Match match = childDataSnapshot.getValue(Match.class);
                     // the match doesn't contain the user id - but we know it, so set it
                     match.userId = userId;
+                    match.id = childDataSnapshot.getKey();
                     // pass this to the caller
                     result.onResult(match);
                 }
@@ -208,16 +228,22 @@ public class Match {
     }
 
     @Exclude
-    public static void getMatch(DatabaseReference topLevel, final String userId, String matchId, final StorageResult<Match> result) {
+    public static void getMatch(DatabaseReference topLevel, final String userId, final String matchId, final StorageResult<Match> result) {
         topLevel.child("matches").child(userId).child(matchId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // found some data, report this to the listener class
                 Match match = dataSnapshot.getValue(Match.class);
-                // the user ID isn't in the data (excluded) but we know it, so set it here
-                match.userId = userId;
-                // pass this to the caller
-                result.onResult(match);
+                if (null != match) {
+                    // the user ID isn't in the data (excluded) but we know it, so set it here
+                    match.userId = userId;
+                    match.id = dataSnapshot.getKey();
+                    // pass this to the caller
+                    result.onResult(match);
+                }
+                else {
+                    Log.e(MainActivity.TAG, "Failed to find the match: " + matchId);
+                }
             }
 
             @Override

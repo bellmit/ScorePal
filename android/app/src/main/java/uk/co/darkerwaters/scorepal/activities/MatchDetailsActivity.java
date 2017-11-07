@@ -112,22 +112,13 @@ public class MatchDetailsActivity extends AppCompatActivity {
         }
         else {
             switch (match.getScoreMode()) {
-                case K_SCOREWIMBLEDON5:
+                case K_TENNIS:
                     gameSummaryText.setText(R.string.played_wimbledon5);
                     break;
-                case K_SCOREWIMBLEDON3:
-                    gameSummaryText.setText(R.string.played_wimbledon3);
-                    break;
-                case K_SCOREBADMINTON3:
+                case K_BADMINTON:
                     gameSummaryText.setText(R.string.played_badminton3);
                     break;
-                case K_SCOREBADMINTON5:
-                    gameSummaryText.setText(R.string.played_badminton3);
-                    break;
-                case K_SCOREFAST4:
-                    gameSummaryText.setText(R.string.played_fast_four);
-                    break;
-                case K_SCOREPOINTS:
+                case K_POINTS:
                 default:
                     gameSummaryText.setText(R.string.played_points);
                     break;
@@ -201,14 +192,11 @@ public class MatchDetailsActivity extends AppCompatActivity {
         else {
             // set the nice image
             switch (match.getScoreMode()) {
-                case K_SCOREWIMBLEDON5:
-                case K_SCOREWIMBLEDON3:
-                case K_SCOREFAST4:
+                case K_TENNIS:
                     // this is a nice game of tennis
                     imageView.setImageResource(R.drawable.tennis_court);
                     break;
-                case K_SCOREBADMINTON5:
-                case K_SCOREBADMINTON3:
+                case K_BADMINTON:
                     // this is a nice game of badminton
                     imageView.setImageResource(R.drawable.badminton_court);
                     break;
@@ -270,14 +258,11 @@ public class MatchDetailsActivity extends AppCompatActivity {
             boolean isSets = false;
             if (noSets > 0) {
                 switch (scoreData.currentScoreMode) {
-                    case K_SCOREWIMBLEDON3:
-                    case K_SCOREWIMBLEDON5:
+                    case K_TENNIS:
                         // this is tennis, leave the labels alone
                         isSets = true;
                         break;
-                    case K_SCOREBADMINTON3:
-                    case K_SCOREBADMINTON5:
-                    case K_SCOREFAST4:
+                    case K_BADMINTON:
                         // this is badminton (or fast4 - no sets), the sets is the number of games
                         setsLabel.setText(R.string.games);
                         // and the games label is the hisory of points
