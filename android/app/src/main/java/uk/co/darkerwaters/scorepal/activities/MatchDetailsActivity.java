@@ -111,18 +111,23 @@ public class MatchDetailsActivity extends AppCompatActivity {
             gameSummaryText.setText(R.string.no_match_loaded);
         }
         else {
-            switch (match.getScoreMode()) {
+            String gameText = getResources().getString(R.string.played_start);
+            ScoreData scoreData = this.match.getScoreData();
+            switch (scoreData.currentScoreMode) {
                 case K_TENNIS:
-                    gameSummaryText.setText(R.string.played_wimbledon5);
+                    gameText += Integer.toString(scoreData.currentSetsOption);
+                    gameText += getResources().getString(R.string.played_end_tennis);
                     break;
                 case K_BADMINTON:
-                    gameSummaryText.setText(R.string.played_badminton3);
+                    gameText += Integer.toString(scoreData.currentSetsOption);
+                    gameText += getResources().getString(R.string.played_end_badminton);
                     break;
                 case K_POINTS:
                 default:
-                    gameSummaryText.setText(R.string.played_points);
+                    gameText += getResources().getString(R.string.played_end_points);
                     break;
             }
+            gameSummaryText.setText(gameText);
         }
     }
 
@@ -220,7 +225,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
         }
         dateText.setText(datePlayedText);
         if (null != match) {
-            String scoreString = match.getScoreSummary();
+            String scoreString = ScoreData.getScoreString(this, match.getScoreData());
             // get the type
             scoreTypeText.setText(ScoreData.getScoreStringType(this, scoreString));
             // and the actual points

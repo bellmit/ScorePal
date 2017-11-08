@@ -134,7 +134,7 @@ public class MatchHistoryListAdapter extends BaseAdapter {
                 }
                 descriptionText.setText(description);
                 // get the score type to show this
-                String scoreString = match.getScoreSummary();
+                String scoreString = ScoreData.getScoreString(mContext, match.getScoreData());
                 // get the type
                 scoreTypeText.setText(ScoreData.getScoreStringType(mContext, scoreString));
                 // and the actual points

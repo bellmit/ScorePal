@@ -53,19 +53,16 @@ public class Match {
     @Exclude
     private User playerTwoUser;
     @Exclude
-    private String scoreSummary;
-    @Exclude
     private String id;
 
     Match() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public Match(User user, String playerOne, String playerTwo, String scoreSummary, ScoreData scoreData, Date date) {
+    public Match(User user, String playerOne, String playerTwo, ScoreData scoreData, Date date) {
         setCurrentUser(user);
         setPlayerOne(null, playerOne);
         setPlayerTwo(null, playerTwo);
-        this.scoreSummary = scoreSummary;
         setMatchPlayedDate(date);
         setCurrentScoreData(scoreData);
     }
@@ -88,11 +85,6 @@ public class Match {
     @Exclude
     public String getPlayerTwoTitle() {
         return this.playerTwoTitle;
-    }
-
-    @Exclude
-    public String getScoreSummary() {
-        return this.scoreSummary;
     }
 
     @Exclude

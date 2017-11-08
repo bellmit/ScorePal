@@ -95,7 +95,6 @@ public class ScoreControlsFragment extends Fragment {
             // get the match data for this
             Match match = new Match(manager.getCurrentUser(),
                     playerOne, playerTwo,
-                    ScoreData.getScoreString(parentContext, data),
                     data,
                     manager.getMatchStartedDate());
             // and store this match / will overwrite any old on this key of userId / match date

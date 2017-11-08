@@ -188,17 +188,19 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
     }
 
     private void displayGameTypeAndData(ScoreData scoreData) {
-        String typeText;
+        String typeText = getResources().getString(R.string.played_start);
         switch (scoreData.currentScoreMode) {
             case K_TENNIS:
-                typeText = getResources().getString(R.string.played_wimbledon5);
+                typeText += Integer.toString(scoreData.currentSetsOption);
+                typeText += getResources().getString(R.string.played_end_tennis);
                 break;
             case K_BADMINTON:
-                typeText = getResources().getString(R.string.played_badminton5);
+                typeText += Integer.toString(scoreData.currentSetsOption);
+                typeText += getResources().getString(R.string.played_end_badminton);
                 break;
             case K_POINTS:
             default:
-                typeText = getResources().getString(R.string.played_points);
+                typeText += getResources().getString(R.string.played_end_points);
                 break;
         }
         // now we can add the time to this string, hours and seconds

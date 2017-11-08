@@ -225,7 +225,6 @@ public class StorageManager {
         this.currentMatchData = new Match(this.currentUser,
                 main.getString(R.string.player_one),
                 main.getString(R.string.player_two),
-                ScoreData.getScoreString(this.main, newData),
                 newData,
                 new Date());
 

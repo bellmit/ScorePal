@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
                 android:layout_marginLeft="32dp"
-                android:text="@string/played_wimbledon5"
+                android:text="@string/played_end_tennis"
                 android:textAlignment="center"/>
 
             <HorizontalScrollView
