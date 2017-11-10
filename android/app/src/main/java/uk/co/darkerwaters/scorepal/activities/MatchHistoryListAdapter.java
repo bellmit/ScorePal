@@ -3,6 +3,7 @@ package uk.co.darkerwaters.scorepal.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -80,6 +81,14 @@ public class MatchHistoryListAdapter extends BaseAdapter {
         TextView scoreText = (TextView) itemView.findViewById(R.id.history_row_score);
         TextView descriptionText = (TextView) itemView.findViewById(R.id.listDescription);
         Button deleteButton = (Button) itemView.findViewById(R.id.history_row_delete);
+
+        // make the backgrounds of the score text less transparent so they draw over the titles
+        TypedArray array = parent.getContext().getTheme().obtainStyledAttributes(new int[] {
+                android.R.attr.windowBackground});
+        int backgroundColor = array.getColor(0, 0xFF00FF);
+        array.recycle();
+        scoreTypeText.setBackgroundColor(backgroundColor);
+        scoreText.setBackgroundColor(backgroundColor);
 
         if (position < mEntries.size()) {
             final Match match = mEntries.get(position);

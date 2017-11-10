@@ -224,10 +224,10 @@ public class ScoreData {
         currentScoreMode = ScoreMode.from(extractValueToColon(recDataString));
         currentSetsOption = extractValueToColon(recDataString);
         // and the winner
-        int matchWinnerData = Integer.parseInt(extractChars(1, recDataString));
-        if (matchWinnerData <= 1) {
+        String matchWinnerData = extractChars(1, recDataString);
+        if (matchWinnerData != null && !matchWinnerData.isEmpty()) {
             // there is a winner, 0 or 1 - set this
-            matchWinner = new Integer(matchWinnerData);
+            matchWinner = Integer.parseInt(matchWinnerData);
         }
         isInTieBreak = Integer.parseInt(extractChars(1, recDataString)) == 1;
         // get the current server

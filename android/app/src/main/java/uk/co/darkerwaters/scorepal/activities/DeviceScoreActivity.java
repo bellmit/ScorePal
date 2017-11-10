@@ -188,14 +188,14 @@ public class DeviceScoreActivity extends AppCompatActivity implements BtManager.
     }
 
     private void displayGameTypeAndData(ScoreData scoreData) {
-        String typeText = getResources().getString(R.string.played_start);
+        String typeText = getResources().getString(R.string.played_start) + " ";
         switch (scoreData.currentScoreMode) {
             case K_TENNIS:
-                typeText += Integer.toString(scoreData.currentSetsOption);
+                typeText += Integer.toString(scoreData.currentSetsOption) + " ";
                 typeText += getResources().getString(R.string.played_end_tennis);
                 break;
             case K_BADMINTON:
-                typeText += Integer.toString(scoreData.currentSetsOption);
+                typeText += Integer.toString(scoreData.currentSetsOption) + " ";
                 typeText += getResources().getString(R.string.played_end_badminton);
                 break;
             case K_POINTS:

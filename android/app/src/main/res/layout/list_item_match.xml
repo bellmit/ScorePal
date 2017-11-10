@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/listImage"
         android:layout_toRightOf="@+id/listImage"
-        android:text="A List item title"
+        android:text="A List item title that is long"
         android:textSize="16sp"
         android:textStyle="bold" />
 

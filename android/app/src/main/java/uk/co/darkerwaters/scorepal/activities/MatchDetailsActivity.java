@@ -111,15 +111,15 @@ public class MatchDetailsActivity extends AppCompatActivity {
             gameSummaryText.setText(R.string.no_match_loaded);
         }
         else {
-            String gameText = getResources().getString(R.string.played_start);
+            String gameText = getResources().getString(R.string.played_start) + " ";
             ScoreData scoreData = this.match.getScoreData();
             switch (scoreData.currentScoreMode) {
                 case K_TENNIS:
-                    gameText += Integer.toString(scoreData.currentSetsOption);
+                    gameText += Integer.toString(scoreData.currentSetsOption) + " ";
                     gameText += getResources().getString(R.string.played_end_tennis);
                     break;
                 case K_BADMINTON:
-                    gameText += Integer.toString(scoreData.currentSetsOption);
+                    gameText += Integer.toString(scoreData.currentSetsOption) + " ";
                     gameText += getResources().getString(R.string.played_end_badminton);
                     break;
                 case K_POINTS:
@@ -280,16 +280,12 @@ public class MatchDetailsActivity extends AppCompatActivity {
                 // setup the view to show the sets
                 playerOneSets.setText(Integer.toString(scoreData.sets.first));
                 playerTwoSets.setText(Integer.toString(scoreData.sets.second));
-                for (int i = 0; i < 5; ++i) {
-                    if (i < scoreData.previousSets.size()) {
+                for (int i = 0; i < scoreData.previousSets.size() && i < playerOneGames.length; ++i) {
+                    if (i < scoreData.currentSetsOption) {
                         Pair<Integer, Integer> pair = scoreData.previousSets.get(i);
                         // show the result for the set
                         playerOneGames[i].setText(Integer.toString(pair.first));
                         playerTwoGames[i].setText(Integer.toString(pair.second));
-                    } else if (scoreData.previousSets.size() == i && isSets) {
-                        // show the final games result
-                        playerOneGames[i].setText(Integer.toString(scoreData.games.first));
-                        playerTwoGames[i].setText(Integer.toString(scoreData.games.second));
                     } else {
                         // no data for this box
                         playerOneGames[i].setVisibility(View.INVISIBLE);
@@ -305,16 +301,12 @@ public class MatchDetailsActivity extends AppCompatActivity {
                 // are in the previous sets structure
                 // but this isn't showing games now, it is showing points instead
                 gamesLabel.setText(R.string.points);
-                for (int i = 0; i < 5; ++i) {
-                    if (i < scoreData.previousSets.size()) {
+                for (int i = 0; i < scoreData.previousSets.size() && i < playerOneGames.length; ++i) {
+                    if (i < scoreData.currentSetsOption) {
                         Pair<Integer, Integer> pair = scoreData.previousSets.get(i);
                         // show the result for the set
                         playerOneGames[i].setText(Integer.toString(pair.first));
                         playerTwoGames[i].setText(Integer.toString(pair.second));
-                    } else if (scoreData.previousSets.size() == i) {
-                        // show the final game's result
-                        playerOneGames[i].setText(Integer.toString(scoreData.points.first));
-                        playerTwoGames[i].setText(Integer.toString(scoreData.points.second));
                     } else {
                         // no data for this box
                         playerOneGames[i].setVisibility(View.INVISIBLE);
