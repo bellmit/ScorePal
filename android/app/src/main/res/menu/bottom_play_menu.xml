@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_play"
+        android:icon="@drawable/ic_sports_tennis_black_24dp"
+        android:title="@string/title_play" />
+
+    <item
+        android:id="@+id/navigation_play_history"
+        android:icon="@drawable/ic_history_black_24dp"
+        android:title="@string/title_history" />
+
+    <item
+        android:id="@+id/navigation_play_setup"
+        android:icon="@drawable/ic_match_settings_black_24dp"
+        android:title="@string/title_play_setup" />
+
+    <item
+        android:id="@+id/navigation_main_setup"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/title_setup" />
+</menu>

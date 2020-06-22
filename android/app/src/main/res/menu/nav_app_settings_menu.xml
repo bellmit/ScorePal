@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_app_settings_general"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/title_settings_general" />
+
+    <item
+        android:id="@+id/nav_app_settings_sounds"
+        android:icon="@drawable/ic_volume_up_black_24dp"
+        android:title="@string/title_settings_sounds" />
+
+    <item
+        android:id="@+id/nav_app_settings_controls"
+        android:icon="@drawable/ic_settings_remote_black_24dp"
+        android:title="@string/title_settings_controls" />
+</menu>

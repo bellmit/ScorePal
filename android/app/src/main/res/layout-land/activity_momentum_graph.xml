@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_details"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/matchMomentumFocusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primaryDarkColor"
+            android:text="@string/title_teamOne"
+            android:textColor="@color/primaryTextColor" />
+
+        <TextView
+            android:id="@+id/momentumGraphTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/match_momentum"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/primaryTextColor" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/imageButtonMomentumZoomIn"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonMomentumZoomIn">
+
+            <ImageButton
+                android:id="@+id/imageButtonMomentumLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/primaryDarkColor"
+                android:tint="@color/primaryTextColor"
+                app:layout_constraintBottom_toTopOf="@+id/imageButtonMomentumZoomIn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_keyboard_arrow_left_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/imageButtonMomentumZoomIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/primaryDarkColor"
+                android:tint="@color/primaryTextColor"
+                app:layout_constraintBottom_toTopOf="@+id/imageButtonMomentumZoomOut"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButtonMomentumLeft"
+                app:srcCompat="@drawable/ic_zoom_in_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/imageButtonMomentumZoomOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/primaryDarkColor"
+                android:tint="@color/primaryTextColor"
+                app:layout_constraintBottom_toTopOf="@+id/imageButtonMomentumRight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButtonMomentumZoomIn"
+                app:srcCompat="@drawable/ic_zoom_out_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/imageButtonMomentumRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/primaryDarkColor"
+                android:tint="@color/primaryTextColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButtonMomentumZoomOut"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <uk.co.darkerwaters.scorepal.ui.views.MatchMomentumGraph
+            android:id="@+id/matchMomentumGraph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

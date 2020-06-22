@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/background_fade_shadow"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/permissionsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_settings_controls"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/permissionsSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subtitleControls"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/permissionsTitle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/container_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
+
+            <TextView
+                android:id="@+id/controlFlicTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/titleControlsFlic"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryDarkColor" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/controlFlicLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:id="@+id/flicLink"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:layout_constraintEnd_toEndOf="@+id/flic1ControlButton"
+                    app:layout_constraintTop_toTopOf="@+id/flicControlExplain"
+                    app:srcCompat="@mipmap/ic_flic_button" />
+
+                <TextView
+                    android:id="@+id/flicControlExplain"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/flicControlExplanation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/flic1SetupButton"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/flicRecommendText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/flicSmartButtonRecommendation"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/flicLink"
+                    app:layout_constraintTop_toBottomOf="@+id/flic2ControlButton" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.CheckableIndicatorButton
+                    android:id="@+id/flic1ControlButton"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/flic_one"
+                    app:icon="@drawable/ic_flic_one_black_24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flicLink">
+
+                </uk.co.darkerwaters.scorepal.ui.views.CheckableIndicatorButton>
+
+                <Button
+                    android:id="@+id/flic1SetupButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:backgroundTint="@color/primaryDarkColor"
+                    android:text="@string/buttonSetupFlic1"
+                    android:textColor="@color/primaryTextColor"
+                    app:layout_constraintBottom_toBottomOf="@+id/flic1ControlButton"
+                    app:layout_constraintStart_toEndOf="@+id/flic1ControlButton"
+                    app:layout_constraintTop_toTopOf="@+id/flic1ControlButton" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.CheckableIndicatorButton
+                    android:id="@+id/flic2ControlButton"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/flic_two"
+                    app:icon="@drawable/ic_flic_two_black_24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flic1ControlButton">
+
+                </uk.co.darkerwaters.scorepal.ui.views.CheckableIndicatorButton>
+
+                <Button
+                    android:id="@+id/flic2SetupButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:backgroundTint="@color/primaryDarkColor"
+                    android:text="@string/flicSetupButton"
+                    android:textColor="@color/primaryTextColor"
+                    app:layout_constraintBottom_toBottomOf="@+id/flic2ControlButton"
+                    app:layout_constraintStart_toEndOf="@+id/flic2ControlButton"
+                    app:layout_constraintTop_toTopOf="@+id/flic2ControlButton" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tint="@color/primaryDarkColor"
+                    app:layout_constraintBottom_toBottomOf="@+id/flicLink"
+                    app:layout_constraintEnd_toEndOf="@+id/flicLink"
+                    app:srcCompat="@drawable/ic_link_black_24dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/controlVolTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/titleControlsVolume"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryDarkColor" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/controlVolLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/volTopLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <uk.co.darkerwaters.scorepal.ui.views.CheckableIndicatorButton
+                        android:id="@+id/volControlButton"
+                        android:layout_width="80dp"
+                        android:layout_height="72dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/controlVolSelect"
+                        app:icon="@drawable/ic_volume_up_black_24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    </uk.co.darkerwaters.scorepal.ui.views.CheckableIndicatorButton>
+
+                    <TextView
+                        android:id="@+id/volControlExplain"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/controlVolExplanation"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/volControlButton"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/volMediaLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/volTopLayout">
+
+                    <TextView
+                        android:id="@+id/volMediaExplain"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/controlVolMediaExplanation"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/volMediaImageView"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/volMediaImageView"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:tint="@color/primaryDarkColor"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_media_remote_black_24dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/controlTypeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/titleControlType"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryDarkColor" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/controlChoiceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup
+                    android:id="@+id/controlTypeRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                        android:id="@+id/controlTypeTeams"
+                        android:layout_width="80dp"
+                        android:layout_height="72dp"
+                        android:layout_margin="8dp"
+                        android:text="@string/controlTypeTeams"
+                        app:icon="@drawable/ic_control_we_black_24dp" />
+
+                    <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                        android:id="@+id/controlTypeServerReceiver"
+                        android:layout_width="80dp"
+                        android:layout_height="72dp"
+                        android:layout_margin="8dp"
+                        android:text="@string/controlTypeServerReceiver"
+                        app:icon="@drawable/ic_control_them_black_24dp" />
+
+                </uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup>
+
+                <ImageView
+                    android:id="@+id/clickSingleImage"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="8dp"
+                    android:tint="@color/primaryDarkColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/controlTypeRadioGroup"
+                    app:srcCompat="@drawable/ic_click_single_black_24dp" />
+
+                <TextView
+                    android:id="@+id/clickSingleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/controlClickSingleServingExplain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/clickSingleImage"
+                    app:layout_constraintTop_toTopOf="@+id/clickSingleImage" />
+
+                <ImageView
+                    android:id="@+id/clickDoubleImage"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="8dp"
+                    android:tint="@color/primaryDarkColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clickSingleImage"
+                    app:srcCompat="@drawable/ic_click_double_black_24dp" />
+
+                <TextView
+                    android:id="@+id/clickDoubleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/controlClickDoubleServingExplain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/clickDoubleImage"
+                    app:layout_constraintTop_toTopOf="@+id/clickDoubleImage" />
+
+                <ImageView
+                    android:id="@+id/clickLongImage"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="8dp"
+                    android:tint="@color/primaryDarkColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clickDoubleImage"
+                    app:srcCompat="@drawable/ic_click_long_black_24dp" />
+
+                <TextView
+                    android:id="@+id/clickLongTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/controlClickLongExplain"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/clickLongImage"
+                    app:layout_constraintTop_toTopOf="@+id/clickLongImage" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:tint="@color/primaryDarkColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/sport_nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:labelVisibilityMode="selected"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/nav_sports_menu" />
+
+    <ScrollView
+        android:id="@+id/container_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/sport_nav_view">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="80dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/pingPongTitleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/teamImage"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_sports_pingpong_black_24dp"
+                    android:tint="@color/primaryDarkColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/initServerText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/primaryDarkColor"
+                    android:text="@string/pingPongSetupTitle"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/teamImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup
+                android:id="@+id/pingPongRoundsRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pingPongTitleLayout">
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/pingPongRoundsOne"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_one_round"
+                    app:icon="@drawable/ic_ping_pong_ball_one_black_24_dp" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/pingPongRoundsThree"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_three_rounds"
+                    app:icon="@drawable/ic_ping_pong_ball_three_black_24_dp" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/pingPongRoundsFive"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_five_rounds"
+                    app:icon="@drawable/ic_ping_pong_ball_five_black_24_dp" />
+
+            </uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup>
+
+            <uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup
+                android:id="@+id/pingPongTeamsRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pingPongRoundsRadioGroup">
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/pingPongSingles"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_singles"
+                    app:icon="@drawable/ic_player_receiving_forehand_black_24dp" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/pingPongDoubles"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_doubles"
+                    app:icon="@drawable/ic_player_receiving_doubles_black_24dp" />
+
+            </uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup>
+
+            <fragment
+                android:id="@+id/fragmentTeamOne"
+                android:name="uk.co.darkerwaters.scorepal.ui.matchsetup.FragmentTeam"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pingPongTeamsRadioGroup"
+                tools:layout="@layout/fragment_team" />
+
+            <fragment
+                android:id="@+id/fragmentTeamTwo"
+                android:name="uk.co.darkerwaters.scorepal.ui.matchsetup.FragmentTeam"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentTeamOne"
+                tools:layout="@layout/fragment_team" />
+
+            <FrameLayout
+                android:id="@+id/textTitleAdvanced"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_details"
+                android:text="@string/titleAdvanced"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/primaryDarkColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentTeamTwo">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/titleAdvanced"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/primaryDarkColor" />
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/checkable_background_selector"
+                android:paddingBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textTitleAdvanced">
+
+                <TextView
+                    android:id="@+id/textPointsPerRound"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/title_points_per_round"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/primaryDarkColor"
+                    app:layout_constraintEnd_toStartOf="@+id/pingPongPointsRadioGroup"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup
+                    android:id="@+id/pingPongPointsRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                        android:id="@+id/pingPongPointsEleven"
+                        android:layout_width="80dp"
+                        android:layout_height="72dp"
+                        android:layout_margin="8dp"
+                        android:text="@string/points"
+                        app:icon="@drawable/ic_eleven_points_black_24dp" />
+
+                    <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                        android:id="@+id/pingPongPointsTwentyOne"
+                        android:layout_width="80dp"
+                        android:layout_height="72dp"
+                        android:layout_margin="8dp"
+                        android:text="@string/points"
+                        app:icon="@drawable/ic_twenty_one_points_black_24dp" />
+
+                </uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_play_arrow_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="24dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

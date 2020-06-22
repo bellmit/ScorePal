@@ -1,0 +1,399 @@
+<resources>
+    <string name="app_name">Scorepal</string>
+
+    <string name="file_provider_authority" translatable="false">uk.co.darkerwaters.scorepal</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">ScorePal for Android</string>
+    <string name="nav_header_subtitle"></string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_opponent_history">Results Breakdown</string>
+    <string name="menu_history">History</string>
+    <string name="menu_trash">Trash</string>
+
+    <string name="menu_mediaController">Remote control</string>
+
+    <string name="menu_mediaControllerSetup">Setup Remote control</string>
+    <string name="menu_broadcastMatch">Broadcast Match Data</string>
+    <string name="menu_broadcastMatchSetup">Setup Match Broadcasting</string>
+
+    <string name="menu_export">Export matches</string>
+    <string name="menu_import">Import matches</string>
+    <string name="menu_attributions">Attributions</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_chooseSport">Choose Sport</string>
+
+    <string name="useContact_desc">Use phone contacts to find players.</string>
+    <string name="useContact">Use contacts</string>
+
+    <string name="storeLocation_desc">Store the location at which each match was started.</string>
+    <string name="storeLocation">Store Locations</string>
+
+    <string name="makeClickSound_desc">Make a noise when you click a button to change the score.</string>
+    <string name="makeClickSound">Make Click Noise</string>
+
+    <string name="mediaVolume_desc">The volume at which to make announcements (max recommended).</string>
+    <string name="mediaVolume">Announcements Volume</string>
+    <string name="mediaVolume_short">Vol</string>
+
+    <string name="makeActionSound_desc">Make a noise to confirm the action you just performed to change the score.</string>
+    <string name="makeActionSound">Make Action Noise</string>
+
+    <string name="makeActionVibration_desc">Vibrate the phone to confirm the action you just performed to change the score.</string>
+    <string name="makeActionVibration">Vibrate on Action</string>
+
+    <string name="makePointsAnnouncement_desc">Speak the current score each time it changes.</string>
+    <string name="makePointsAnnouncement">Speak Points</string>
+
+    <string name="makeMessagesAnnouncement_desc">Speak the messages as they happen; change ends, server etc.</string>
+    <string name="makeMessagesAnnouncement">Speak Messages</string>
+
+    <string name="dataWipe">Wipe Data</string>
+    <string name="dataWipe_desc">Delete all data and progress from application</string>
+    <string name="onlyIfSure">Only Press if you are REALLY sure, all progress will be lost forever.</string>
+    <string name="wipe">Wipe All Data</string>
+    <string name="areYouSure">Are you REALLY REALLY Sure?</string>
+    <string name="areYouSureToNotLogin">Using your name rather than logging in will limit the functionality of this app, any data stored will remain private in your account./n/nAre you sure that you want to just use your name?</string>
+    <string name="noNameEntered">No name entered.</string>
+    <string name="noLogin">No Google Login.</string>
+    <string name="noNameEnteredExplain">So that we know who you are and how many matches you have won, we need your name. It will remain totally private to you.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="matchWipeConfirmation">Are you sure? Current match data will be lost forever…</string>
+    <string name="matchDeleteConfirmation">Are you sure? Match data will be lost forever…</string>
+
+    <string name="btn_beep">Beep</string>
+    <string name="btn_speak">Speak</string>
+
+    <string name="points">Points</string>
+    <string name="sets">Sets</string>
+    <string name="games">Games</string>
+    <string name="rounds">Rounds</string>
+
+    <string name="five_sets">5</string>
+    <string name="three_sets">3</string>
+    <string name="one_sets">1</string>
+
+    <string name="speak_all">all</string>
+    <string name="speak_number_all">%1$d %2$s all</string>
+    <string name="display_zero"> 0</string>
+    <string name="speak_zero">zero</string>
+    <string name="speak_zeros">zeros</string>
+    <string name="speak_zero_all">zero all</string>
+    <string name="display_love"> 0</string>
+    <string name="speak_love">love</string>
+    <string name="speak_love_all">love all</string>
+    <string name="display_15">15</string>
+    <string name="speak_15">fifteen</string>
+    <string name="speak_15_all">fifteen all</string>
+    <string name="display_30">30</string>
+    <string name="speak_30">thirty</string>
+    <string name="speak_30_all">thirty all</string>
+    <string name="display_40">40</string>
+    <string name="speak_40">forty</string>
+    <string name="display_advantage">AD</string>
+    <string name="speak_advantage">advantage</string>
+    <string name="display_deuce">40</string>
+    <string name="speak_deuce">deuce</string>
+    <string name="display_game">game</string>
+    <string name="speak_game">game</string>
+    <string name="display_set">set</string>
+    <string name="display_round">round</string>
+    <string name="speak_set">set</string>
+    <string name="speak_round">round</string>
+    <string name="display_match">match</string>
+    <string name="speak_match">match</string>
+    <string name="speak_expedite_system">Expedite System to commence…</string>
+
+    <string name="team_one_title">Team One</string>
+    <string name="team_two_title">Team Two</string>
+    <string name="default_playerOneName">Player One</string>
+    <string name="default_playerTwoName">Player Two</string>
+    <string name="default_playerOnePartnerName">Player One Partner</string>
+    <string name="default_playerTwoPartnerName">Player Two Partner</string>
+
+    <string name="tennis_sport">Tennis</string>
+    <string name="tennisSubtitle">Play sets / games / points</string>
+    <string name="tennis_setup">Setup Tennis Match</string>
+    <string name="points_sport">Points</string>
+    <string name="pointsSubtitle">Play a match of points</string>
+    <string name="points_setup">Setup Points Match</string>
+    <string name="bluetooth_sport">Connect</string>
+    <string name="bluetoothSubtitle">Connect to an already-running match</string>
+    <string name="ping_pong_sport">Ping Pong</string>
+    <string name="ping_pong_setup">Setup Ping Pong Match</string>
+    <string name="pingPongSubtitle">Play points and rounds</string>
+    <string name="squash_sport">Squash</string>
+    <string name="squash_setup">Setup Squash Match</string>
+    <string name="squashSubtitle">Play points and games</string>
+    <string name="badminton_sport">Badminton</string>
+    <string name="badminton_setup">Setup Badminton Match</string>
+    <string name="badmintonSubtitle">Play points and games</string>
+
+    <string name="server">Server</string>
+    <string name="receiver">Receiver</string>
+    <string name="singles">Singles</string>
+    <string name="doubles">Doubles</string>
+    <string name="contact_access_explanation">This app would like access to your contacts to show your friends as playing partners.</string>
+    <string name="file_access_explanation">This app would like access to your files to send match data to your friends.</string>
+    <string name="bluetooth_access_explanation">This app would like access to bluetooth to find and connect to local devices.</string>
+
+    <string name="previous_sets">Previous Sets</string>
+    <string name="tie_example">(7–5)</string>
+    <string name="time">Time</string>
+    <string name="match">Match</string>
+    <string name="time_separator">.</string>
+
+    <string name="change_ends">Change Ends…</string>
+    <string name="change_server">Change Server…</string>
+    <string name="change_server_server">%1$s to serve...</string>
+    <string name="match_over">Match Over</string>
+    <string name="match_completed">Match Completed</string>
+
+    <string name="btn_change">Change</string>
+    <string name="btn_change_ends">Swap Ends</string>
+    <string name="btn_change_server">Swap Server</string>
+    <string name="btn_change_starter">Swap Starter</string>
+    <string name="btn_undo">Undo Last Point</string>
+    <string name="btn_matchSettings">Change match settings</string>
+    <string name="btn_lock">Keep Screen on</string>
+    <string name="reset_match">Reset</string>
+    <string name="current_match">Current Match</string>
+    <string name="deciding_point_deuce">Deciding point following Deuce</string>
+    <string name="deciding_point_badminton">Deciding point</string>
+    <string name="tie_on_final_set">Tie-break in final set</string>
+    <string name="at">at</string>
+    <string name="default_final_set_target">6 – 6</string>
+    <string name="default_games">6</string>
+    <string name="deciding_point">Deciding Point…</string>
+    <string name="tie_break">Tie Break…</string>
+    <string name="correction">Correction…</string>
+    <string name="btn_endMatch">End Match</string>
+    <string name="btn_startMatch">Start Match</string>
+    <string name="loading_match_details">Loading Match Details…</string>
+    <string name="matches_played">%1$d matches played</string>
+    <string name="tennis_settings_summary">Playing best of %1$d sets to %2$d games per set%3$s%4$s.</string>
+    <string name="no_advantage">, no Advantage</string>
+    <string name="tie_in_final_set">, tie-break in final set at %1$d-%1$d</string>
+    <string name="points_settings_summary">First to %1$d points%2$s. Changing server every %3$d points and ends every %4$d.</string>
+    <string name="ping_pong_settings_summary">First to %1$d rounds. Playing to %2$d points%3$s.</string>
+    <string name="ping_pong_settings_expedite_system">, \'Expedite System\' enabled at %1$d minutes and %2$d points played</string>
+    <string name="squash_settings_summary">First to %1$d games. Playing to PAR%2$d.</string>
+    <string name="badminton_settings_summary">First to %1$d games. Playing to %2$d%3$s.</string>
+    <string name="badminton_deciding_point_summary">, deciding point at %1$d-%1$d points</string>
+    <string name="two_points_ahead_insert">, 2 points ahead</string>
+    <string name="opponent_summary">Against %1$s you have won %2$d matches and lost %3$d.</string>
+    <string name="date_played">%1$s %2$s</string>
+    <string name="match_description">%1$s %2$s %3$s\nLasting %4$s:%5$s minutes\nPlayed at %6$s on %7$s.</string>
+    <string name="tennis_description">%4$d Set Tennis Match: %1$s %2$s %3$s. Played %5$s:%6$s minutes, at %7$s on %8$s.</string>
+    <string name="ping_pong_description">%4$d Round Ping-Pong Match: %1$s %2$s %3$s. Played %5$s:%6$s minutes, at %7$s on %8$s.</string>
+    <string name="squash_description">%4$d Game Squash Match: %1$s %2$s %3$s. Played %5$s:%6$s minutes, at %7$s on %8$s.</string>
+    <string name="badminton_description">%4$d Game Badminton Match: %1$s %2$s %3$s. Played %5$s:%6$s minutes, at %7$s on %8$s.</string>
+    <string name="points_description">Match to %4$d Points: %1$s %2$s %3$s. Played %5$s:%6$s minutes, at %7$s on %8$s.</string>
+    <string name="tennis_short_description">%1$d Set Tennis Match.</string>
+    <string name="ping_pong_short_description">%1$d Round Ping-Pong Match.</string>
+    <string name="squash_short_description">%1$d Game Squash Match.</string>
+    <string name="badminton_short_description">%1$d Game Badminton Match.</string>
+    <string name="points_short_description">Match to %1$d points</string>
+    <string name="points_short_infinite_description">Match of points</string>
+    <string name="match_beat">beat</string>
+    <string name="match_beating">beating</string>
+    <string name="resume_match">Resume</string>
+    <string name="btn_more">More…</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_less">Less…</string>
+    <string name="total_points">Total points</string>
+    <string name="break_points">Break points</string>
+    <string name="btn_share">Share</string>
+    <string name="share_subject">Match results</string>
+    <string name="delete_failure">Sorry, I couldn\'t delete that.</string>
+    <string name="loading_failure">Failed to load the data</string>
+
+    <string name="btn_groupSounds">Sounds</string>
+    <string name="btn_sounds">Clicks</string>
+    <string name="btn_soundActions">Actions</string>
+    <string name="btn_points">Points</string>
+    <string name="btn_messages">Messages</string>
+    <string name="btn_tapController">Tap control</string>
+    <string name="btn_controlBT">Bluetooth Remote</string>
+    <string name="btn_controlVol">Volume Keys</string>
+    <string name="permission_denied_never_ask">Sorry, but you selected to never ask again. You will need to allow this permission in settings — apps on your phone.</string>
+    <string name="ok">OK</string>
+    <string name="bt_not_compatable">BT Not compatible</string>
+    <string name="bt_not_compatable_explain">Your phone does not support Bluetooth</string>
+    <string name="btn_code" />
+    <string name="btn_click_action">Click Action:</string>
+    <string name="btn_long_click_action">Lng Click:</string>
+    <string name="btn_one_click_action">1 Click:</string>
+    <string name="btn_two_click_action">2 Click:</string>
+    <string name="btn_three_click_action">3 Click:</string>
+    <string name="btn_button_off">Off</string>
+    <string name="btn_button_single">Single</string>
+    <string name="btn_button_multi">Multi-use</string>
+
+    <string name="action_nothing">No action</string>
+    <string name="action_ptServer">Point Server</string>
+    <string name="action_ptReceiver">Point Receiver</string>
+    <string name="action_ptTeamOne">Point Team 1</string>
+    <string name="action_ptTeamTwo">Point Team 2</string>
+    <string name="action_ptUndo">Undo Last Point</string>
+    <string name="action_ptAnnounce">Announce Points</string>
+
+    <string name="action_nothing_short">No action</string>
+    <string name="action_ptServer_short">Server</string>
+    <string name="action_ptReceiver_short">Receiver</string>
+    <string name="action_ptTeamOne_short">Team 1</string>
+    <string name="action_ptTeamTwo_short">Team 2</string>
+    <string name="action_ptUndo_short">Undo</string>
+    <string name="action_ptAnnounce_short">Announce</string>
+
+    <string name="btn_mediaPlay">Play</string>
+    <string name="btn_mediaPause">Pause</string>
+    <string name="btn_mediaVolUp">Vol Up</string>
+    <string name="btn_mediaVolDown">Vol Down</string>
+    <string name="btn_mediaNext">Next</string>
+    <string name="btn_mediaPrev">Prev</string>
+
+    <string name="inputMode_Teams">Point: Team One / Team Two</string>
+    <string name="inputMode_ServerReceiver">Point: Server / Receiver</string>
+    <string name="inputMode_Both">Point: Complex\n(depends on media button)</string>
+    <string name="action_explanation">Click any media button to test action…</string>
+
+    <string name="pattern_singleClick">1 Click</string>
+    <string name="pattern_doubleClick">2 Click</string>
+    <string name="pattern_longClick">Long Click</string>
+    <string name="pattern_tripleClick">3 Click</string>
+
+    <string name="btn_hide">Hide</string>
+    <string name="hidden_toast">Match archived to history.</string>
+    <string name="deleted_toast">Match removed to the trash.</string>
+    <string name="restored_toast">Match restored from the trash.</string>
+    <string name="warn_screen_locked">Screen will remain on permanently.</string>
+    <string name="btn_accept">Accept Results</string>
+    <string name="results">Results</string>
+    <string name="btn_serveReceive">Server / Receiver</string>
+    <string name="btn_team1Team2">Team 1 / Team 2</string>
+
+    <string name="speak_no_score">Game not started</string>
+    <string name="speak_sets">Sets</string>
+    <string name="speak_games">Games</string>
+    <string name="speak_point">Point</string>
+    <string name="speak_points">Points</string>
+    <string name="speak_rounds">Rounds</string>
+
+    <string name="btn_volume_down">Volume Down</string>
+    <string name="btn_volume_up">Volume Up</string>
+    <string name="btn_volume_mute">Volume Mute</string>
+    <string name="btn_camera">Camera</string>
+
+    <string name="action_connect">Connect</string>
+    <string name="action_purchase">Purchase</string>
+    <string name="action_reset">Reset</string>
+
+    <string name="first_to">First to</string>
+    <string name="two_points_ahead">Require a lead of 2 points to win</string>
+    <string name="remoteModeAllButtons">All buttons behave the same</string>
+    <string name="remoteModeSpecificButtons">Each button has a different action</string>
+    <string name="starting_server">Starting Server / Playing End</string>
+    <string name="starting_server_explained">to start serving</string>
+    <string name="team_name_seperator">/</string>
+    <string name="self_title">Your Name</string>
+    <string name="selfName_description">Gather data on your match history by entering your name.</string>
+    <string name="signIn_description">Or sign in to your Google account.</string>
+    <string name="no_logged_in_user">Not signed in.</string>
+    <string name="logged_in_user">User \'%1$s\' signed in.</string>
+    <string name="btn_selfNameOverride">change</string>
+
+    <string name="title_statistics">Activity in last 30 days</string>
+    <string name="statistics_recorded">Recorded.</string>
+    <string name="statistics_wins">Wins</string>
+    <string name="statistics_losses">Losses</string>
+    <string name="play">Play</string>
+    <string name="games_per_set">Games in each set</string>
+    <string name="points_till_change_ends">Points before changing ends.</string>
+    <string name="points_till_change_server">Points before changing server.</string>
+    <string name="purchase_remote_query">Flic Smart button</string>
+    <string name="purchase_puck_query">Puck.js Smart button</string>
+    <string name="purchase_puck_site">https://www.scorepal.co.uk/purchase_remote.html</string>
+    <string name="install_flic">You must purchase a \'flic\' button and install the \'flic\' app to use one.</string>
+    <string name="flic_installed">\'flic\' is correctly installed, start a match to use.</string>
+    <string name="purchase_remote_help">This app works by detecting media buttons being pressed, so you can use any Android media remote. I would advise one with at least 10m range.</string>
+    <string name="btn_shop_google">Shop on Google</string>
+
+    <string name="administration">Administration</string>
+    <string name="year_default">2019</string>
+    <string name="name">Name</string>
+    <string name="tennis_example">Sets: [2–3] Games: (6-2) (3-6) (6-2) (2-6) (12-10)</string>
+    <string name="scoreSummaryOneLine">%1$s %3$s — %4$s %2$s</string>
+    <string name="tie_display">(%1$d-%2$d)</string>
+    <string name="break_points_converted">%1$d / %2$d</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="successful_import">Successfully imported %1$s</string>
+
+    <string name="award_points_to">Award Points To...</string>
+    <string name="team_1_or_team_2">Team One or Team Two</string>
+    <string name="server_or_receiver">Server or Receiver</string>
+    <string name="use_flic">Use \'Flic\' Smart button</string>
+    <string name="use_puck">Use \'Scorepal\' Smart remote</string>
+    <string name="use_volume">Use Volume Controls</string>
+    <string name="use_media">Use Media Remote Control</string>
+    <string name="purchase_flic">Purchase a \'Flic\' Smart button...</string>
+    <string name="purchase_puck">Purchase a \'Scorepal\' Smart remote...</string>
+
+    <string name="bt_make_discoverable">Advertise...</string>
+    <string name="bt_discover">Discover devices</string>
+    <string name="bt_status_discoverable">This device is discoverable...</string>
+    <string name="bt_status_discovering">Searching, make the target discoverable...</string>
+    <string name="bt_status_on">Bluetooth enabled</string>
+    <string name="bt_status_off">Bluetooth disabled</string>
+    <string name="bluetooth_match_connected">Match Connected...</string>
+    <string name="bt_device_disconnected">The device disconnected. Are they broadcasting the match?</string>
+    <string name="bt_device_connected">Bluetooth device connected.</string>
+    <string name="channel_name">Scorepal</string>
+    <string name="channel_description">Match score notifications.</string>
+    <string name="socket_disconnected">Broadcaster is not connected.\nAre they broadcasting the match?</string>
+    <string name="btn_reconnect">Reconnect</string>
+    <string name="bt_help_discoverable">Broadcasting a match allows another player to join in to view and contribute.\nHave them \'Connect\' to a match you have started.</string>
+    <string name="bt_help_enabled">Broadcasting a match allows another player to join in to view and contribute.\nStart a new match and advertise that you are broadcasting for them to \'Connect\' to the current score.</string>
+    <string name="bt_help_disabled">Broadcasting a match allows another player to join in to view and contribute.\nEnable bluetooth for them to \'Connect\' to the current score.</string>
+    <string name="btn_allow_client_msgs">Allow connected clients to change score</string>
+
+    <string name="match_momentum">Momentum Analysis</string>
+    <string name="recent_momentum">Recent Point Momentum</string>
+    <string name="speak_round_completed">Round Completed</string>
+    <string name="round_target_description">points in each round.</string>
+    <string name="game_target_description">points in each game.</string>
+    <string name="btn_expedite_system">Enable Expedite System</string>
+    <string name="expedite_time_desc">minutes have elapsed.</string>
+    <string name="expedite_points_desc">points are scored.</string>
+    <string name="expedite_start">Start after</string>
+    <string name="bluetoothRemoteSetup">Setup Scorepal Remote</string>
+    <string name="ble_not_supported">Bluetooth Low-Energy isn\'t supported on your device. You might have difficulty connecting to the remote.</string>
+    <string name="ble_might_need_help">I will try to connect, but you might have to go to your bluetooth settings and try yourself... sorry...</string>
+    <string name="title_activity_login">Use name</string>
+    <string name="name_in_explanation">By entering your name, Scorepal, will collect your match statistics for you.</string>
+    <string name="sign_in_explanation">By signing-in to Google, Scorepal will privately store your match history in your account.</string>
+    <string name="main_activity">Scorepal</string>
+    <string name="flic_explanation">To use an ORIGINAL Flic smartbutton, you must install the Flic app and select the button you want to use.</string>
+    <string name="flic_explanationFurther">You will now be taken to the Flic registration app. Select (tap) the button you want to use with Scorepal.</string>
+    <string name="flic_two">Flic 2</string>
+    <string name="flic_one">Original Flic</string>
+    <string name="flic_disconnect">Disconnect</string>
+    <string name="flic_remove">Remove</string>
+    <string name="flic_scan">Scan for new button</string>
+    <string name="flic_cancelScan">Cancel Scanning</string>
+    <string name="flic_scanInstruction">Press and hold down your Flic2 button until it connects</string>
+    <string name="flic_scanAlreadyFound">Found an already paired button. Try another button.</string>
+    <string name="flic_scanFound">Found Flic2, now connecting...</string>
+    <string name="flic_connected">\"Connected. Now pairing...\"</string>
+    <string name="flic_scanError">Flic scan failed with code %1$s</string>
+
+</resources>

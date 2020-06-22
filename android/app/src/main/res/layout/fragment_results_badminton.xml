@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/textViewTeamOne"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="end"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/primaryDarkColor"
+        android:ellipsize="marquee"
+        android:freezesText="true"
+        android:textAlignment="textEnd"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxWidth="120dp"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/title_teamOne"
+        android:textColor="@color/teamOneColor"
+        app:layout_constraintBottom_toBottomOf="@+id/teamOne_Games"
+        app:layout_constraintEnd_toStartOf="@+id/teamOne_Games"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/teamOne_Games" />
+
+    <uk.co.darkerwaters.scorepal.ui.views.ResizeTextView
+        android:id="@+id/teamOne_Games"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/primaryDarkColor"
+        android:gravity="center"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGames" />
+
+    <uk.co.darkerwaters.scorepal.ui.views.ResizeTextView
+        android:id="@+id/teamOne_Points"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/primaryDarkColor"
+        android:gravity="center"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPoints" />
+
+    <TextView
+        android:id="@+id/textViewTeamTwo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="end"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/primaryDarkColor"
+        android:ellipsize="marquee"
+        android:freezesText="true"
+        android:textAlignment="textEnd"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxWidth="120dp"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/title_teamTwo"
+        android:textColor="@color/teamTwoColor"
+        app:layout_constraintBottom_toBottomOf="@+id/teamTwo_Games"
+        app:layout_constraintEnd_toStartOf="@+id/teamTwo_Games"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/teamTwo_Games" />
+
+    <uk.co.darkerwaters.scorepal.ui.views.ResizeTextView
+        android:id="@+id/teamTwo_Games"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/primaryDarkColor"
+        android:gravity="center"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/teamOne_Games" />
+
+    <uk.co.darkerwaters.scorepal.ui.views.ResizeTextView
+        android:id="@+id/teamTwo_Points"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/primaryDarkColor"
+        android:gravity="center"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/teamOne_Points" />
+
+    <ImageView
+        android:id="@+id/servingImageView"
+        android:layout_width="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/server"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/teamOne_Games"
+        app:layout_constraintEnd_toStartOf="@+id/teamOne_Games"
+        app:layout_constraintTop_toTopOf="@+id/teamOne_Games"
+        app:srcCompat="@drawable/ic_navigate_next_black_24dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/moreLessLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamTwo_Points">
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/primaryLightColor"
+            android:drawableStart="@drawable/ic_delete_black_24dp"
+            android:drawableTint="@color/secondaryLightColor"
+            android:text="@string/btn_delete"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintEnd_toStartOf="@+id/shareButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/shareButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/primaryLightColor"
+            android:drawableStart="@drawable/ic_share_black_24dp"
+            android:drawableTint="@color/secondaryLightColor"
+            android:text="@string/btn_share"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/moreLessButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/primaryLightColor"
+            android:drawableEnd="@drawable/ic_expand_more_black_24dp"
+            android:drawableTint="@color/secondaryLightColor"
+            android:text="@string/btn_more"
+            android:textColor="@color/primaryTextColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pointSummaryLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/primaryDarkColor"
+            android:paddingBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shareButton">
+
+            <TextView
+                android:id="@+id/summaryTitleText_teamOne"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/title_teamOne"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/teamOneColor"
+                app:layout_constraintEnd_toStartOf="@+id/summaryTitleText_teamTwo"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/summaryTitleText_teamTwo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/title_teamTwo"
+                android:textAlignment="textStart"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/teamTwoColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/summaryTitleText_teamOne"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/totalPointsText_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/total_points"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryTextColor"
+                app:layout_constraintEnd_toStartOf="@+id/totalPointsText_teamOne"
+                app:layout_constraintTop_toBottomOf="@+id/summaryTitleText_teamOne" />
+
+            <TextView
+                android:id="@+id/totalPointsText_teamOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/display_love"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/teamOneColor"
+                app:layout_constraintBottom_toBottomOf="@+id/totalPointsText_title"
+                app:layout_constraintEnd_toEndOf="@+id/summaryTitleText_teamOne"
+                app:layout_constraintTop_toTopOf="@+id/totalPointsText_title" />
+
+            <TextView
+                android:id="@+id/totalPointsText_teamTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/display_love"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/teamTwoColor"
+                app:layout_constraintBottom_toBottomOf="@+id/totalPointsText_title"
+                app:layout_constraintStart_toStartOf="@+id/summaryTitleText_teamTwo"
+                app:layout_constraintTop_toTopOf="@+id/totalPointsText_title"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <View
+                android:id="@+id/totalPoints_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="?android:attr/listDivider"
+                android:backgroundTint="@color/secondaryLightColor"
+                app:layout_constraintEnd_toEndOf="@+id/summaryTitleText_teamTwo"
+                app:layout_constraintStart_toStartOf="@+id/summaryTitleText_teamOne"
+                app:layout_constraintTop_toBottomOf="@+id/totalPointsText_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="8dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewGames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/games"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintEnd_toEndOf="@+id/teamOne_Games"
+        app:layout_constraintStart_toStartOf="@id/teamOne_Games"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/points"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintEnd_toEndOf="@+id/teamOne_Points"
+        app:layout_constraintStart_toStartOf="@+id/teamOne_Points"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

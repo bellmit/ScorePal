@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fade_dark_med"
+    android:orientation="vertical"
+    tools:context=".activities.TennisSummaryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/matchMomentumFocusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:text="@string/team_one_title"
+            android:textColor="@color/primaryTextColor" />
+
+        <TextView
+            android:id="@+id/momentumGraphTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/match_momentum"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/primaryTextColor" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/imageButtonMomentumZoomIn"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonMomentumZoomIn">
+
+            <ImageButton
+                android:id="@+id/imageButtonMomentumLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:tint="@color/primaryTextColor"
+                app:layout_constraintBottom_toTopOf="@+id/imageButtonMomentumZoomIn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/momentum_left"
+                app:srcCompat="@drawable/ic_baseline_keyboard_arrow_left" />
+
+            <ImageButton
+                android:id="@+id/imageButtonMomentumZoomIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:tint="@color/primaryTextColor"
+                app:layout_constraintBottom_toTopOf="@+id/imageButtonMomentumZoomOut"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButtonMomentumLeft"
+                android:contentDescription="@string/momentum_in"
+                app:srcCompat="@drawable/ic_baseline_zoom_in" />
+
+            <ImageButton
+                android:id="@+id/imageButtonMomentumZoomOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:tint="@color/primaryTextColor"
+                app:layout_constraintBottom_toTopOf="@+id/imageButtonMomentumRight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButtonMomentumZoomIn"
+                android:contentDescription="@string/momentum_out"
+                app:srcCompat="@drawable/ic_baseline_zoom_out" />
+
+            <ImageButton
+                android:id="@+id/imageButtonMomentumRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:tint="@color/primaryTextColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButtonMomentumZoomOut"
+                android:contentDescription="@string/momentum_right"
+                app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right" />
+        </android.support.constraint.ConstraintLayout>
+
+        <uk.co.darkerwaters.scorepal.views.MatchMomentumGraph
+            android:id="@+id/matchMomentumGraph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

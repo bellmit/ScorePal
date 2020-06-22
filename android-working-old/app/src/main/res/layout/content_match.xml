@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/team_one_scene"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/scene_player_north_doubles" />
+    </FrameLayout>
+
+    <uk.co.darkerwaters.scorepal.views.WrapContentHeightViewPager
+        android:id="@+id/score_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/team_two_scene"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/team_one_scene" />
+
+    <ImageView
+        android:id="@+id/viewPageLeftButton"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:paddingStart="-4dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_baseline_keyboard_arrow_left"
+        android:contentDescription="@string/left"
+        app:layout_constraintBottom_toBottomOf="@+id/score_pager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/score_pager" />
+
+    <ImageView
+        android:id="@+id/viewPageRightButton"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:paddingEnd="-4dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_baseline_keyboard_arrow_right"
+        android:contentDescription="@string/right"
+        app:layout_constraintBottom_toBottomOf="@+id/score_pager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/score_pager" />
+
+    <FrameLayout
+        android:id="@+id/team_two_scene"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/undoButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <include layout="@layout/scene_player_south_doubles" />
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/undoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:drawableStart="@drawable/ic_baseline_undo"
+        android:text="@string/btn_undo"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/endMatchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:drawableStart="@drawable/ic_baseline_stop"
+        android:text="@string/btn_endMatch"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

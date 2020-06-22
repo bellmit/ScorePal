@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/sport_nav_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:labelVisibilityMode="selected"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/nav_sports_menu" />
+
+    <ScrollView
+        android:id="@+id/container_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/sport_nav_view">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="80dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/tennisTitleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/teamImage"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_sports_tennisplay_black_24dp"
+                    android:tint="@color/primaryDarkColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/initServerText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/tennisSetupTitle"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/primaryDarkColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/teamImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup
+                android:id="@+id/tennisSetsRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tennisTitleLayout">
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/tennisSetsOne"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_one_set"
+                    app:icon="@drawable/ic_tennis_ball_one_black_24dp" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/tennisSetsThree"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_three_sets"
+                    app:icon="@drawable/ic_tennis_ball_three_black_24dp" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/tennisSetsFive"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_five_sets"
+                    app:icon="@drawable/ic_tennis_ball_five_black_24dp" />
+
+            </uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup>
+
+            <uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup
+                android:id="@+id/tennisTeamsRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tennisSetsRadioGroup">
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/tennisSingles"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_singles"
+                    app:icon="@drawable/ic_player_receiving_forehand_black_24dp" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                    android:id="@+id/tennisDoubles"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    android:text="@string/title_doubles"
+                    app:icon="@drawable/ic_player_receiving_doubles_black_24dp" />
+
+            </uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup>
+
+            <fragment
+                android:id="@+id/fragmentTeamOne"
+                android:name="uk.co.darkerwaters.scorepal.ui.matchsetup.FragmentTeam"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tennisTeamsRadioGroup"
+                tools:layout="@layout/fragment_team" />
+
+            <fragment
+                android:id="@+id/fragmentTeamTwo"
+                android:name="uk.co.darkerwaters.scorepal.ui.matchsetup.FragmentTeam"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentTeamOne"
+                tools:layout="@layout/fragment_team" />
+
+            <FrameLayout
+                android:id="@+id/textTitleAdvanced"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/background_details"
+                android:text="@string/titleAdvanced"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/primaryDarkColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentTeamTwo">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/titleAdvanced"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/primaryDarkColor" />
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/checkable_background_selector"
+                android:paddingBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textTitleAdvanced">
+
+                <TextView
+                    android:id="@+id/textGamesPerSet"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/title_games_per_set"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/primaryDarkColor"
+                    app:layout_constraintEnd_toStartOf="@+id/tennisGamesRadioGroup"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup
+                    android:id="@+id/tennisGamesRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                        android:id="@+id/tennisGamesFour"
+                        android:layout_width="80dp"
+                        android:layout_height="72dp"
+                        android:layout_margin="8dp"
+                        android:text="@string/title_games_four"
+                        app:icon="@drawable/ic_tennis_ball_four_black_24dp" />
+
+                    <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+                        android:id="@+id/tennisGamesSix"
+                        android:layout_width="80dp"
+                        android:layout_height="72dp"
+                        android:layout_margin="8dp"
+                        android:text="@string/title_games_six"
+                        app:icon="@drawable/ic_tennis_ball_six_black_24dp" />
+
+                </uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup>
+
+                <TextView
+                    android:id="@+id/textSuddenDeath"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/title_deuce_sudden_death"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/primaryDarkColor"
+                    app:layout_constraintEnd_toStartOf="@+id/deuceSuddenDeathButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/deuceSuddenDeathButton" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.CheckableIndicatorButton
+                    android:id="@+id/deuceSuddenDeathButton"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/title_deuce_sudden_death_button"
+                    app:icon="@drawable/ic_deuce_sudden_death_black_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tennisGamesRadioGroup" />
+
+                <TextView
+                    android:id="@+id/textTieBreak"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/title_final_set_tie"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/primaryDarkColor"
+                    app:layout_constraintEnd_toStartOf="@+id/finalSetTieBreakButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/finalSetTieBreakButton" />
+
+                <uk.co.darkerwaters.scorepal.ui.views.CheckableIndicatorButton
+                    android:id="@+id/finalSetTieBreakButton"
+                    android:layout_width="80dp"
+                    android:layout_height="72dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/title_final_set_tie_button"
+                    app:icon="@drawable/ic_tie_break_black_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/deuceSuddenDeathButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_play_arrow_black_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="24dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

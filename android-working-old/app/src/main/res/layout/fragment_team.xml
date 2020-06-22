@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/teamFrameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".activities.fragments.FragmentTeam">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/team_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        app:cardCornerRadius="12dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/team_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_fade_reverse"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/team_one_title"
+                android:textAlignment="center"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/teamTitleModeButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <AutoCompleteTextView
+                android:id="@+id/playerAutoTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/default_playerOneName"
+                android:minWidth="60dp"
+                app:layout_constraintEnd_toStartOf="@+id/playerDeleteNameButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+            <ImageView
+                android:id="@+id/playerDeleteNameButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/colorPrimaryDark"
+                android:contentDescription="@string/change_team_titles"
+                android:elevation="8dp"
+                android:src="@android:drawable/ic_delete"
+                android:tint="@color/colorSecondaryDark"
+                app:layout_constraintBottom_toBottomOf="@+id/playerAutoTextView"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/playerAutoTextView" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/partnerNameLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/playerAutoTextView">
+
+                <AutoCompleteTextView
+                    android:id="@+id/playerPartnerAutoTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:hint="@string/default_playerOnePartnerName"
+                    android:minWidth="60dp"
+                    app:layout_constraintEnd_toStartOf="@+id/playerPartnerDeleteNameButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/playerPartnerDeleteNameButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:contentDescription="@string/change_team_titles"
+                    android:elevation="8dp"
+                    android:src="@android:drawable/ic_delete"
+                    android:tint="@color/colorSecondaryDark"
+                    app:layout_constraintBottom_toBottomOf="@+id/playerPartnerAutoTextView"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/playerPartnerAutoTextView" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/teamTitleModeButton"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/colorPrimaryDark"
+                android:contentDescription="@string/change_team_titles"
+                android:elevation="8dp"
+                android:src="@android:drawable/ic_menu_rotate"
+                app:layout_constraintBottom_toBottomOf="@+id/titleText"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/titleText" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

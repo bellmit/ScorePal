@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_snackbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_dark"
+    android:paddingBottom="80dp">
+
+    <uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup
+        android:id="@+id/serverChoiceRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamTitle">
+
+        <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+            android:id="@+id/playerServeButton"
+            android:layout_width="80dp"
+            android:layout_height="72dp"
+            android:layout_margin="8dp"
+            android:text=""
+            app:icon="@drawable/ic_player_serving_black_24dp" />
+
+        <uk.co.darkerwaters.scorepal.ui.views.RadioIndicatorButton
+            android:id="@+id/partnerServeButton"
+            android:layout_width="80dp"
+            android:layout_height="72dp"
+            android:layout_margin="8dp"
+            android:text=""
+            app:icon="@drawable/ic_player_serving_black_24dp" />
+
+    </uk.co.darkerwaters.scorepal.ui.views.IndicatorRadioGroup>
+
+    <TextView
+        android:id="@+id/teamTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/background_details"
+        android:text="@string/title_teamTwo"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonClose"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/teamPlayerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/title_playerTwo"
+        android:inputType="none"
+        android:editable="false"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textColor="@color/secondaryLightColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/serverChoiceRadioGroup"
+        app:layout_constraintTop_toTopOf="@+id/serverChoiceRadioGroup" />
+
+    <EditText
+        android:id="@+id/teamPartnerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="@string/title_partnerTwo"
+        android:inputType="none"
+        android:editable="false"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textColor="@color/secondaryLightColor"
+        app:layout_constraintBottom_toBottomOf="@+id/serverChoiceRadioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/serverChoiceRadioGroup" />
+
+    <ImageButton
+        android:id="@+id/imageButtonClose"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_cancel_black_24dp"
+        android:tint="@color/secondaryLightColor"/>
+
+    <TextView
+        android:id="@+id/textViewChooseServer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/background_details"
+        android:padding="4dp"
+        android:text="Choose server"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/secondaryLightColor"
+        app:layout_constraintBottom_toTopOf="@+id/teamPartnerName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/serverChoiceRadioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/teamPlayerName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

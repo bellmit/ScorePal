@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_snackbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_dark"
+    android:paddingBottom="80dp">
+
+    <ImageView
+        android:id="@+id/imageIconSnackbar"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:tint="@color/secondaryColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_sports_tennis_black_24dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageIconSnackbar">
+
+        <TextView
+            android:id="@+id/message_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".6"
+            android:padding="15dp"
+            android:gravity="center_vertical"
+            android:text="Two button snackbar"
+            android:textColor="@color/secondaryColor" />
+
+        <TextView
+            android:id="@+id/first_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"
+            android:padding="15dp"
+            android:gravity="center"
+            android:text="ONE"
+            android:textColor="@color/secondaryColor" />
+
+        <TextView
+            android:id="@+id/second_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".2"
+            android:padding="15dp"
+            android:gravity="center"
+            android:text="TWO"
+            android:textColor="@color/secondaryColor" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButtonClose"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        android:tint="@color/secondaryLightColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_cancel_black_24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

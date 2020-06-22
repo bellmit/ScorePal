@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.matchinit.ActivityInitMatch">
+
+    <LinearLayout
+        android:id="@+id/serverChangeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/cycleServerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/primaryLightColor"
+            android:drawableLeft="@drawable/ic_swap_vert_black_24dp"
+            android:drawableTint="@color/secondaryLightColor"
+            android:text="@string/cycle_server_button"
+            android:textColor="@color/primaryTextColor" />
+
+        <Button
+            android:id="@+id/randomServerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/primaryLightColor"
+            android:drawableLeft="@drawable/ic_shuffle_black_24dp"
+            android:drawableTint="@color/secondaryLightColor"
+            android:text="@string/ramdom_server_button"
+            android:textColor="@color/primaryTextColor" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/serverImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_navigate_next_black_24dp"
+        android:tint="@color/primaryDarkColor"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/teamTwoPartnerName">
+
+        <ImageView
+            android:id="@+id/serverIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/checkable_background_selector"
+            android:src="@drawable/ic_player_serving_black_24dp"
+            android:tint="@color/primaryDarkColor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/selectionImageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/serverIcon"
+            app:layout_constraintTop_toTopOf="@+id/serverIcon"
+            app:srcCompat="@drawable/ic_navigate_next_black_24dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/teamOneTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/background_details"
+        android:text="@string/title_teamOne"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/serverChangeLayout" />
+
+    <EditText
+        android:id="@+id/teamOnePlayerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/title_playerOne"
+        android:inputType="none"
+        android:editable="false"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/teamOneTitle"
+        app:layout_constraintTop_toBottomOf="@+id/teamOneTitle" />
+
+    <EditText
+        android:id="@+id/teamOnePartnerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/title_partnerOne"
+        android:inputType="none"
+        android:editable="false"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/teamOneTitle"
+        app:layout_constraintTop_toBottomOf="@+id/teamOnePlayerName" />
+
+    <TextView
+        android:id="@+id/teamTwoTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/background_details"
+        android:text="@string/title_teamTwo"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamOnePartnerName" />
+
+    <EditText
+        android:id="@+id/teamTwoPlayerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/title_playerTwo"
+        android:inputType="none"
+        android:editable="false"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/teamTwoTitle"
+        app:layout_constraintTop_toBottomOf="@+id/teamTwoTitle" />
+
+    <EditText
+        android:id="@+id/teamTwoPartnerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/title_partnerTwo"
+        android:inputType="none"
+        android:editable="false"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/teamTwoTitle"
+        app:layout_constraintTop_toBottomOf="@+id/teamTwoPlayerName" />
+
+    <ImageView
+        android:id="@+id/speakingImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:tint="@color/primaryDarkColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teamTwoPartnerName"
+        app:srcCompat="@drawable/ic_record_voice_over_black_24dp" />
+
+    <TextView
+        android:id="@+id/speakingTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/speakingExplain"
+        android:textColor="@color/primaryDarkColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/speakingImage"
+        app:layout_constraintTop_toTopOf="@+id/speakingImage" />
+
+    <Button
+        android:id="@+id/cycleNamingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/primaryLightColor"
+        android:drawableLeft="@drawable/ic_chat_black_24dp"
+        android:drawableTint="@color/secondaryLightColor"
+        android:text="@string/cycle_naming_button"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintEnd_toEndOf="@+id/teamTwoTitle"
+        app:layout_constraintTop_toBottomOf="@+id/speakingTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

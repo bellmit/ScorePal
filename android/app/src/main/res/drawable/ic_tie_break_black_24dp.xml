@@ -1,0 +1,30 @@
+<vector android:height="24dp" android:viewportHeight="700"
+    android:viewportWidth="700" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#00000000"
+        android:pathData="M388.002,229C528.104,180.796 570.2,235.767 574.002,341"
+        android:strokeColor="#000000" android:strokeWidth="30"/>
+    <path android:fillColor="#00000000"
+        android:pathData="M382.002,466.593C522.104,522.37 570.2,462.763 574.002,340.998"
+        android:strokeColor="#000000" android:strokeWidth="27.74"/>
+    <path android:fillColor="#00000000"
+        android:pathData="M49.002,216C77.725,248.654 110.571,274.464 149.002,291C199.589,310.73 270.597,295.994 320.002,267.861"
+        android:strokeColor="#000000" android:strokeWidth="30"/>
+    <path android:fillColor="#00000000"
+        android:pathData="M49.002,485.635C77.725,447.851 110.571,417.987 149.002,398.853C199.589,376.023 263.597,389.346 313.002,421.899"
+        android:strokeColor="#000000" android:strokeWidth="27.74"/>
+    <path android:fillColor="#00000000"
+        android:pathData="M649.002,216L595.002,263"
+        android:strokeColor="#000000" android:strokeWidth="30"/>
+    <path android:fillColor="#00000000"
+        android:pathData="M536.002,299C499.708,317.848 462.125,309.356 408.002,278C389.243,265.881 367.406,253.008 330.002,231C280.109,214.173 201.24,183.429 166.002,258"
+        android:strokeColor="#000000" android:strokeWidth="30"/>
+    <path android:fillColor="#00000000"
+        android:pathData="M650.002,467.449L596.002,420.663"
+        android:strokeColor="#000000" android:strokeWidth="30.07"/>
+    <path android:fillColor="#00000000"
+        android:pathData="M537.002,384.828C500.708,366.066 463.125,374.519 409.002,405.732C390.243,417.795 368.406,430.61 331.002,452.517C281.109,469.268 203.24,503.871 168.002,429.64"
+        android:strokeColor="#000000" android:strokeWidth="30.07"/>
+    <path android:fillColor="#00000000"
+        android:pathData="M150.002,327C148.298,339.43 148.71,351.785 150.002,364"
+        android:strokeColor="#000000" android:strokeWidth="30"/>
+</vector>

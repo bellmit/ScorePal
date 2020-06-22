@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_sport_tennis"
+        android:icon="@drawable/ic_sports_tennisplay_black_24dp"
+        android:title="@string/title_tennis" />
+
+    <item
+        android:id="@+id/nav_sport_badminton"
+        android:icon="@drawable/ic_sports_badminton_black_24dp"
+        android:title="@string/title_badminton" />
+
+    <item
+        android:id="@+id/nav_sport_pingpong"
+        android:icon="@drawable/ic_sports_pingpong_black_24dp"
+        android:title="@string/title_pingpong" />
+</menu>

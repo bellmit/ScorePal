@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="20dp"
+    android:animateLayoutChanges="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/matchMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/matchHistoryTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="well hello there match"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryDarkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/matchProgress"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <uk.co.darkerwaters.scorepal.ui.views.CircularProgressBar
+            android:id="@+id/matchProgress"
+            style="@style/Widget.ProgressBar.CircularProgressBar"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/matchDateSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="subtitle"
+            android:textColor="@color/primaryColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/matchProgress"
+            app:layout_constraintTop_toBottomOf="@+id/matchHistoryTitle" />
+
+        <ImageView
+            android:id="@+id/timerImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:tint="@color/primaryDarkColor"
+            app:layout_constraintStart_toEndOf="@+id/matchProgress"
+            app:layout_constraintTop_toBottomOf="@+id/matchDateSubtitle"
+            app:srcCompat="@drawable/ic_timer_black_24dp" />
+
+        <TextView
+            android:id="@+id/matchTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8:20 hrs"
+            app:layout_constraintBottom_toBottomOf="@+id/timerImage"
+            app:layout_constraintStart_toEndOf="@+id/timerImage"
+            app:layout_constraintTop_toTopOf="@+id/timerImage" />
+
+        <ImageView
+            android:id="@+id/winsImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:tint="@color/primaryDarkColor"
+            app:layout_constraintStart_toEndOf="@+id/matchTimeText"
+            app:layout_constraintTop_toBottomOf="@+id/matchDateSubtitle"
+            app:srcCompat="@drawable/ic_trophy_black_24dp" />
+
+        <TextView
+            android:id="@+id/matchWinsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 wins"
+            app:layout_constraintBottom_toBottomOf="@+id/winsImage"
+            app:layout_constraintStart_toEndOf="@+id/winsImage"
+            app:layout_constraintTop_toTopOf="@+id/winsImage" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/matchHistoryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/primaryDarkColor" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/matchHistoryBreakdownList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/primaryLightColorFaded" />
+    </LinearLayout>
+
+</LinearLayout>
