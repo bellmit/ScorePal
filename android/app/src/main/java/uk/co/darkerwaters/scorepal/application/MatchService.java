@@ -9,6 +9,7 @@ import android.os.Build;
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.controllers.Controller;
 import uk.co.darkerwaters.scorepal.data.Match;
+import uk.co.darkerwaters.scorepal.data.MatchId;
 import uk.co.darkerwaters.scorepal.data.MatchSetup;
 import uk.co.darkerwaters.scorepal.data.Score;
 import uk.co.darkerwaters.scorepal.data.ScoreState;
@@ -21,6 +22,8 @@ public class MatchService extends ReportingService implements Match.MatchListene
     private SpeakService speakService = null;
     private MatchServiceControllers controllers = null;
     private MatchServicePlayTracker playTracker = null;
+
+    private boolean isMatchCancelled = false;
 
     public static void CreateService(Activity context, Match match) {
         RunningService.createService(context, match);
@@ -114,6 +117,8 @@ public class MatchService extends ReportingService implements Match.MatchListene
         }
         // and set the new active match
         this.activeMatch = activeMatch;
+        // this new match is not cancelled
+        isMatchCancelled = false;
         // if we die and come back again, we want to use this match the same
         RunningService.setPreparedMatch(activeMatch);
         // we have an active match, listen to this
@@ -123,7 +128,7 @@ public class MatchService extends ReportingService implements Match.MatchListene
 
     public boolean storeMatchState(boolean areResultsAccepted) {
         // no params in the data list
-        if (null != playTracker) {
+        if (null != playTracker && false == isMatchCancelled) {
             playTracker.storeCurrentState(areResultsAccepted);
         }
         return null != playTracker;
@@ -226,6 +231,14 @@ public class MatchService extends ReportingService implements Match.MatchListene
     }
 
     public void cancelMatch() {
+        // remember we cancelled this so we don't save it
+        this.isMatchCancelled = true;
+        // delete any stored versions of this match
+        MatchPersistenceManager persistenceManager = MatchPersistenceManager.GetInstance();
+        if (null != this.activeMatch && null != persistenceManager) {
+            MatchId matchId = new MatchId(this.activeMatch);
+            persistenceManager.deleteMatchFile(matchId, this);
+        }
         // close down the service to just cancel the match
         closeService();
     }
@@ -239,7 +252,7 @@ public class MatchService extends ReportingService implements Match.MatchListene
 
         // and start tracking the match progress
         if (null != playTracker) {
-            playTracker.destroy();
+            playTracker.destroy(!this.isMatchCancelled);
         }
         playTracker = new MatchServicePlayTracker(this);
 
@@ -274,7 +287,7 @@ public class MatchService extends ReportingService implements Match.MatchListene
         }
         // and the play tracker
         if (null != playTracker) {
-            playTracker.destroy();
+            playTracker.destroy(!this.isMatchCancelled);
             playTracker = null;
         }
 
@@ -283,6 +296,7 @@ public class MatchService extends ReportingService implements Match.MatchListene
             activeMatch.removeListener(scoreRedoListener);
             scoreRedoListener = null;
             activeMatch = null;
+            isMatchCancelled = false;
         }
         // stop speaking
         if (null != this.speakService) {

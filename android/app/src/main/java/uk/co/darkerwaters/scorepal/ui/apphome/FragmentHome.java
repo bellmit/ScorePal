@@ -19,6 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
+
 import uk.co.darkerwaters.scorepal.R;
 import uk.co.darkerwaters.scorepal.application.Application;
 import uk.co.darkerwaters.scorepal.application.ApplicationState;
@@ -243,6 +247,30 @@ public class FragmentHome extends Fragment
 
     private MatchId[] getMatchList() {
         MatchId[] matchIds = MatchPersistenceManager.GetInstance().listRecentMatches(-1, getContext());
+        // sort the array so that we have the latest
+        Arrays.sort(matchIds, new Comparator<MatchId>() {
+            @Override
+            public int compare(MatchId obj1, MatchId obj2) {
+                // we want the latest first - so reverse the sort order of the objects
+                if (null != obj1 && null != obj2) {
+                    // have objects
+                    Date date1 = obj1.getDate();
+                    Date date2 = obj2.getDate();
+                    if (null != date1 && null != date2) {
+                        // compare the dates
+                        return date2.compareTo(date1);
+                    }
+                    else {
+                        // compare the strings - should never get here as should always have dates
+                        return obj2.toString().compareTo(obj1.toString());
+                    }
+                }
+                else {
+                    // missing some object
+                    return 0;
+                }
+            }
+        });
         MatchId[] toReturn = new MatchId[Math.min(RECENT_MATCHES_TO_SHOW, matchIds.length)];
         for (int i = 0; i < toReturn.length; ++i) {
             // move the match ID from the persistence manager to our list to show

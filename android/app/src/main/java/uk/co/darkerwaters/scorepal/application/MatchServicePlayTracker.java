@@ -59,9 +59,11 @@ public class MatchServicePlayTracker  {
         }
     }
 
-    public void destroy() {
-        // store these results for sure
-        storeMatchResults(true, false);
+    public void destroy(boolean isStoreResults) {
+        if (isStoreResults) {
+            // store these results for sure
+            storeMatchResults(true, false);
+        }
     }
 
     public void stopPlay() {

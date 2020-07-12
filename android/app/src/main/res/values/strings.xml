@@ -281,7 +281,7 @@
     <string name="flicControlSelect">Flic 1 / 2</string>
     <string name="controlVolExplanation">Your phone probably has volume up and down keys on the side. If so, you can use these to control the score.</string>
     <string name="controlVolSelect">Volume</string>
-    <string name="controlVolMediaExplanation">Here\'s a little hack you might like. Buy a bluetooth media remote and use it\'s vol keys to control your phone left on the bench. Search for one with at least a 10m or 13 foot range.</string>
+    <string name="controlVolMediaExplanation">Here\'s a little hack you might like. Buy a bluetooth media remote and use it\'s vol keys to control your phone left on the bench. Search for one with at least a 10m or 30 foot range.</string>
     <string name="remoteControlExplanation">Tapping the screen can be such a drag, here you can setup ways to change your score without all that...</string>
     <string name="purchase_flic_remote_query">Flic 2 Smart Button</string>
     <string name="purchase_media_remote_query">10m bluetooth media remote</string>
