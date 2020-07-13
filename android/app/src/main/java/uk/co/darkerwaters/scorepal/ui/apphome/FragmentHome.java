@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -246,7 +248,15 @@ public class FragmentHome extends Fragment
     }
 
     private MatchId[] getMatchList() {
-        MatchId[] matchIds = MatchPersistenceManager.GetInstance().listRecentMatches(-1, getContext());
+        // get all the matches this year - we need to get them all as they are unsorted as we do
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        MatchId[] matchIds = MatchPersistenceManager.GetInstance().listRecentMatches(year, getContext());
+        if (matchIds == null || matchIds.length < RECENT_MATCHES_TO_SHOW) {
+            // if there are not enough - go back in time a year
+            MatchId[] lastYearsMatchIds = MatchPersistenceManager.GetInstance().listRecentMatches(year - 1, getContext());
+            matchIds = ArrayUtils.concat(matchIds, lastYearsMatchIds);
+        }
         // sort the array so that we have the latest
         Arrays.sort(matchIds, new Comparator<MatchId>() {
             @Override
