@@ -230,12 +230,12 @@ public class MatchService extends ReportingService implements Match.MatchListene
         closeService();
     }
 
-    public void cancelMatch() {
+    public void cancelMatch(boolean isDeleteMatch) {
         // remember we cancelled this so we don't save it
-        this.isMatchCancelled = true;
+        this.isMatchCancelled = isDeleteMatch;
         // delete any stored versions of this match
         MatchPersistenceManager persistenceManager = MatchPersistenceManager.GetInstance();
-        if (null != this.activeMatch && null != persistenceManager) {
+        if (isDeleteMatch && null != this.activeMatch && null != persistenceManager) {
             MatchId matchId = new MatchId(this.activeMatch);
             persistenceManager.deleteMatchFile(matchId, this);
         }

@@ -198,7 +198,7 @@ public class ActivityPlayMatch extends AppCompatActivity
 
     private void cancelMatchAndGoBack() {
         // cancel the running service
-        this.activeMatchService.cancelMatch();
+        this.activeMatchService.cancelMatch(!this.activeMatch.isMatchPlayStarted());
         // call the super version of back to not ask they user if they want to again
         ActivityPlayMatch.super.onBackPressed();
     }

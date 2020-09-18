@@ -179,6 +179,19 @@ public abstract class Match<TSetup extends MatchSetup, TScore extends Score> {
         });
     }
 
+    public boolean isMatchPlayStarted() {
+        // we are started if there are points at the top level for either team
+        for (int i = 0; i < getScoreLevels(); ++i) {
+            if (this.score.getPointsTotal(i, MatchSetup.Team.T_ONE) > 0 ||
+                    this.score.getPointsTotal(i, MatchSetup.Team.T_TWO) > 0) {
+                // someone has scored something
+                return true;
+            }
+        }
+        // if here, there is no score on any level
+        return false;
+    }
+
     public boolean isMatchOver() {
         return this.score.isMatchOver();
     }
