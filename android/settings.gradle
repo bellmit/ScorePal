@@ -1,2 +1,2 @@
 rootProject.name='Scorepal'
-include ':app', ':fliclib', ':flic2lib-android'
+include ':app', ':fliclib'

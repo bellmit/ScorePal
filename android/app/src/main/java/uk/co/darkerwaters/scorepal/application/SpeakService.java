@@ -78,6 +78,12 @@ public class SpeakService implements TextToSpeech.OnInitListener {
         if (null != message && !message.trim().isEmpty()) {
             // there is a message to set, so set it
             activeMessage = message.trim();
+            activeMessage = activeMessage.replaceAll(" ,", ",");
+            activeMessage = activeMessage.replaceAll(" …", "…");
+            activeMessage = activeMessage.trim();
+            if (activeMessage.endsWith(",") || activeMessage.endsWith("…")) {
+                activeMessage = activeMessage.substring(0, activeMessage.length() - 1);
+            }
             // if we are saying something, when this ends it will say this thing, if we are not
             // we can say it now
             processRemainingMessage();

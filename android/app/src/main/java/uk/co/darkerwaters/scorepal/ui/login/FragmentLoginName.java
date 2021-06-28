@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -127,6 +128,8 @@ public class FragmentLoginName extends FragmentLogin {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.error("signInResult:failed code=" + e.getStatusCode());
+            String errorString = getContext().getString(R.string.errorGoogleLogin, e.getMessage());
+            Toast.makeText(getContext(), errorString, Toast.LENGTH_LONG).show();
             updateUI();
         }
     }

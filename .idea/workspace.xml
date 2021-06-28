@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa62f153-88e5-4e61-b61f-0f7333423877" name="Default Changelist" comment="" />
+    <list default="true" id="fa62f153-88e5-4e61-b61f-0f7333423877" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.idea/runConfigurations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/runConfigurations.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/uk/co/darkerwaters/scorepal/points/Point.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/uk/co/darkerwaters/scorepal/points/Point.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/uk/co/darkerwaters/scorepal/ui/ActivityMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/uk/co/darkerwaters/scorepal/ui/ActivityMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/consumer-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/AndroidHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/BatteryLevel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/Flic2Button.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/Flic2ButtonListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/Flic2Crypto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/Flic2Database.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/Flic2Manager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/Flic2ScanCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/HandlerInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/L2Cap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/LoggerInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/Packets.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/SafeIterableList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/ScanWrapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/SessionCallback.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/flic2lib-android/src/main/java/io/flic/flic2libandroid/Utils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/settings.gradle" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,13 +48,15 @@
   <component name="ProjectId" id="1dfPJmasoF6JtTtrOYrw7nq60Cn" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunManager">
     <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
@@ -71,6 +108,7 @@
       </method>
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>

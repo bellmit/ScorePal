@@ -309,6 +309,7 @@
     <string name="bt_not_compatable_explain">Your phone does not support bluetooth</string>
     <string name="ok">OK</string>
     <string name="errorFlic">There was some problem experienced</string>
+    <string name="errorGoogleLogin">Sorry, but your google login didn\'t work. Google returned an errorcode of: %1$s.</string>
     <string name="mediaRemoteExplain">A standard bluetooth media remote can be used to change your score. We recommend you get one with an advertised range of at least 10 metres or 40 feet.</string>
     <string name="tennisInitialisationTitle">Initialise the tennis match, who\'s serving first?</string>
     <string name="badmintonInitialisationTitle">Initialise the badminton match, who\'s serving first?</string>
