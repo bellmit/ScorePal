@@ -59,7 +59,7 @@ class Player with ChangeNotifier {
     notifyListeners();
   }
 
-  get name {
+  String get name {
     return _name;
   }
 

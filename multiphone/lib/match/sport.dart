@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 enum SportType {
   TENNIS,
   BADMINTON,
@@ -5,14 +7,30 @@ enum SportType {
 }
 
 class Sport {
-  static const TENNIS = Sport(id: SportType.TENNIS, title: 'Tennis', icon: 'tennis.jpg', image: 'tennis.jpg');
-  static const BADMINTON = Sport(id: SportType.BADMINTON, title: 'Badminton', icon: 'badminton.jpg', image: 'badminton.jpg');
-  static const PING_PONG = Sport(id: SportType.PING_PONG, title: 'Ping Pong', icon: 'ping_pong.jpg', image: 'ping_pong.jpg');
+  static const TENNIS = Sport(
+      id: SportType.TENNIS,
+      title: 'Tennis',
+      icon: 'tennis.jpg',
+      image: 'tennis.jpg');
+  static const BADMINTON = Sport(
+      id: SportType.BADMINTON,
+      title: 'Badminton',
+      icon: 'badminton.jpg',
+      image: 'badminton.jpg');
+  static const PING_PONG = Sport(
+      id: SportType.PING_PONG,
+      title: 'Ping Pong',
+      icon: 'ping_pong.jpg',
+      image: 'ping_pong.jpg');
 
   final SportType id;
   final String title;
   final String icon;
   final String image;
 
-  const Sport({this.id, this.title, this.icon, this.image});
+  const Sport(
+      {@required this.id,
+      @required this.title,
+      @required this.icon,
+      @required this.image});
 }

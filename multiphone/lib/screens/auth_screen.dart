@@ -14,12 +14,12 @@ class _AuthScreenState extends State<AuthScreen> {
   var _isAuthenticating = false;
 
   void _submitAuthForm(
-      String email,
-      String password,
-      String username,
-      bool isLoggingIn,
-      BuildContext ctx,
-      ) async {
+    String email,
+    String password,
+    String username,
+    bool isLoggingIn,
+    BuildContext ctx,
+  ) async {
     // login then!
     UserCredential authResult;
     setState(() {
@@ -42,9 +42,9 @@ class _AuthScreenState extends State<AuthScreen> {
             .collection('users')
             .doc(authResult.user.uid)
             .set({
-              'username': username,
-              'email': email,
-            });
+          'username': username,
+          'email': email,
+        });
       }
     } on PlatformException catch (error) {
       var message = 'An error occurred, please check your credentials';

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(
-      String email,
-      String password,
-      String userName,
-      bool isLoggingIn,
-      BuildContext context,
-      ) _onSubmit;
+    String email,
+    String password,
+    String userName,
+    bool isLoggingIn,
+    BuildContext context,
+  ) _onSubmit;
   final bool _isAuthenticating;
 
   AuthForm(this._onSubmit, this._isAuthenticating);
@@ -76,7 +76,7 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                     onSaved: (value) {
                       // store this value
-                      _userEmail = value;
+                      _userEmail = value ?? 'none';
                     },
                   ),
                   if (!_isLoggingIn)
@@ -98,7 +98,7 @@ class _AuthFormState extends State<AuthForm> {
                       ),
                       onSaved: (value) {
                         // store this value
-                        _userName = value;
+                        _userName = value ?? 'none';
                       },
                     ),
                   TextFormField(
@@ -117,7 +117,7 @@ class _AuthFormState extends State<AuthForm> {
                     obscureText: true,
                     onSaved: (value) {
                       // store this value
-                      _userPassword = value;
+                      _userPassword = value ?? 'none';
                     },
                   ),
                   SizedBox(
@@ -127,7 +127,7 @@ class _AuthFormState extends State<AuthForm> {
                   if (!widget._isAuthenticating)
                     RaisedButton(
                       child:
-                      _isLoggingIn ? Text('Login') : Text('Create Account'),
+                          _isLoggingIn ? Text('Login') : Text('Create Account'),
                       onPressed: _trySubmit,
                     ),
                   FlatButton(

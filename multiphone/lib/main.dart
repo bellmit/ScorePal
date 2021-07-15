@@ -50,7 +50,8 @@ class MyApp extends StatelessWidget {
                   if (authSnapshot.connectionState == ConnectionState.waiting) {
                     // show the splash screen that we are loading firebase things
                     return SplashScreen(SplashScreenState.loading, '');
-                  } else if (authSnapshot.hasData) {
+                  } else if (authSnapshot.hasData &&
+                      authSnapshot.data != null) {
                     // all loaded and initialised then - show the home screen
                     return HomeScreen(authSnapshot.data);
                   } else {
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title = ''}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
