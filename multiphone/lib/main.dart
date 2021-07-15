@@ -29,43 +29,43 @@ class MyApp extends StatelessWidget {
         title: 'Scorepal',
         theme: ThemeData(
           // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.red,
+          primarySwatch: Colors.green,
         ),
         home: FutureBuilder(
           // Initialize FlutterFire:
           future: _initialization,
           builder: (context, snapshot) {
+            // firebase has initialised (or not) so we can proceed
             if (snapshot.hasError) {
-              print('something went wrong with firebase');
-              return SplashScreen();
+              print('something went wrong with firebase:${snapshot.error}');
+              return SplashScreen(
+                  SplashScreenState.error, snapshot.error.toString());
             } else if (snapshot.connectionState == ConnectionState.done) {
               return StreamBuilder<User>(
+                // listening to the 'auth' stream to change our screen when
+                // the user logs in or out or even when they get booted
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (ctx, authSnapshot) {
                   // login stream just changed
                   if (authSnapshot.connectionState == ConnectionState.waiting) {
-                    return SplashScreen();
+                    // show the splash screen that we are loading firebase things
+                    return SplashScreen(SplashScreenState.loading, '');
                   } else if (authSnapshot.hasData) {
-                    return HomeScreen();
+                    // all loaded and initialised then - show the home screen
+                    return HomeScreen(authSnapshot.data);
                   } else {
+                    // not logged in, show the login screen
                     return AuthScreen();
                   }
                 },
               );
             } else {
-              return SplashScreen();
+              // show the splash screen that we are loading firebase things
+              return SplashScreen(SplashScreenState.loading, '');
             }
           },
         ),
-    ),
+      ),
     );
   }
 }
