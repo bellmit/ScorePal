@@ -1,5 +1,6 @@
 // ignore: unused_import
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/player.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             // firebase has initialised (or not) so we can proceed
             if (snapshot.hasError) {
-              print('something went wrong with firebase:${snapshot.error}');
+              log('something went wrong with firebase:${snapshot.error}');
               // just send them to the home screen so they can proceed
               return HomeScreen();
             } else if (snapshot.connectionState == ConnectionState.done) {

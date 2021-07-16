@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 
@@ -92,21 +93,20 @@ class UserLoggedInWidget extends StatelessWidget {
                 Icons.person,
                 size: Values.image_large,
               ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(userName),
-            TextButton.icon(
-                onPressed: signOutFunction,
-                icon: Icon(
-                  Icons.exit_to_app,
-                  color: theme.accentColor,
-                ),
-                label: Text(
-                  Values(context).strings.sign_out,
-                  style: TextStyle(color: theme.accentColor),
-                )),
-          ],
+        Text(userName),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            onPressed: signOutFunction,
+            icon: Icon(
+              Icons.exit_to_app,
+              color: theme.accentColor,
+            ),
+            label: Text(
+              Values(context).strings.sign_out,
+              style: TextStyle(color: theme.accentColor),
+            ),
+          ),
         ),
       ],
     );

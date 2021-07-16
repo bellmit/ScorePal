@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PlayMatchScreen extends StatelessWidget {
-  const PlayMatchScreen({Key key}) : super(key: key);
+class PlayMatchPanel extends StatelessWidget {
+  const PlayMatchPanel({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
