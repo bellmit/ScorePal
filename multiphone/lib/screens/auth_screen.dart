@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:multiphone/widgets/auth/auth_form.dart';
 
 class AuthScreen extends StatefulWidget {
+  static const String routeName = "/auth-screen";
+
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -46,6 +48,8 @@ class _AuthScreenState extends State<AuthScreen> {
           'email': email,
         });
       }
+      // if we are here then this worked excellently
+      Navigator.of(context).pop();
     } on PlatformException catch (error) {
       var message = 'An error occurred, please check your credentials';
 

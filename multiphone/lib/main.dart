@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Scorepal',
         theme: ThemeData(
-          // This is the theme of your application.
-          primarySwatch: Colors.green,
-        ),
+            // This is the theme of your application.
+            primarySwatch: Colors.green,
+            accentColor: Colors.amberAccent),
         home: FutureBuilder(
           // Initialize FlutterFire:
           future: _initialization,
@@ -41,31 +41,17 @@ class MyApp extends StatelessWidget {
               return SplashScreen(
                   SplashScreenState.error, snapshot.error.toString());
             } else if (snapshot.connectionState == ConnectionState.done) {
-              return StreamBuilder<User>(
-                // listening to the 'auth' stream to change our screen when
-                // the user logs in or out or even when they get booted
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (ctx, authSnapshot) {
-                  // login stream just changed
-                  if (authSnapshot.connectionState == ConnectionState.waiting) {
-                    // show the splash screen that we are loading firebase things
-                    return SplashScreen(SplashScreenState.loading, '');
-                  } else if (authSnapshot.hasData &&
-                      authSnapshot.data != null) {
-                    // all loaded and initialised then - show the home screen
-                    return HomeScreen(authSnapshot.data);
-                  } else {
-                    // not logged in, show the login screen
-                    return AuthScreen();
-                  }
-                },
-              );
+              return HomeScreen();
             } else {
               // show the splash screen that we are loading firebase things
               return SplashScreen(SplashScreenState.loading, '');
             }
           },
         ),
+        initialRoute: '/',
+        routes: {
+          AuthScreen.routeName: (ctx) => AuthScreen(),
+        },
       ),
     );
   }

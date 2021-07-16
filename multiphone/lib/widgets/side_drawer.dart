@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multiphone/widgets/user_details_widget.dart';
 
 class SideDrawer extends StatelessWidget {
   final User currentUser;
+
   const SideDrawer({
     Key key,
     @required this.currentUser,
@@ -34,7 +36,7 @@ class SideDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
             ),
-            child: Text(userName),
+            child: UserDetailsWidget(),
           ),
           ListTile(
             title: Text('Item 1'),

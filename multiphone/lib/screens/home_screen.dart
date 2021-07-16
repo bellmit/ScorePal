@@ -5,8 +5,7 @@ import 'package:multiphone/widgets/side_drawer.dart';
 class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey(); // Create a key
 
-  final User _currentUser;
-  HomeScreen(this._currentUser);
+  HomeScreen();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,10 +17,10 @@ class HomeScreen extends StatelessWidget {
             icon: Icon(Icons.more_vert)),
       ),
       backgroundColor: Theme.of(context).primaryColor,
-      drawer: SideDrawer(currentUser: _currentUser),
+      drawer: SideDrawer(),
       body: Center(
         child: Text(
-            'Hello ${_currentUser.displayName}\n${_currentUser.email}\n${_currentUser.uid}'),
+            'Hello'),
       ),
     );
   }
