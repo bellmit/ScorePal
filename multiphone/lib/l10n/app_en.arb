@@ -1,0 +1,26 @@
+{
+    "title": "Scorepal",
+    "@title": {
+      "description": "The main application title"
+    },
+    "option_matches": "Matches",
+    "@option_matches": {
+      "description": "The home screen title (matches summary)"
+    },
+    "option_play": "Play",
+    "@option_play": {
+      "description": "The second home screen title (play a new match)"
+    },
+    "option_settings": "Settings",
+    "@option_settings": {
+      "description": "The third home screen title (change app settings)"
+    },
+    "sign_out": "Sign Out",
+    "@sign_out": {
+      "description": "The button text to show for the user to log out of firebase"
+    },
+    "sign_in": "Sign In",
+    "@sign_in": {
+      "description": "The button text to show for the user to log in to firebase"
+    }
+}

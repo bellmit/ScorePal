@@ -1,10 +1,14 @@
+// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/player.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 
@@ -26,7 +30,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => Players()),
       ],
       child: MaterialApp(
-        title: 'Scorepal',
+        onGenerateTitle: (ctx) => Values(ctx).strings.title,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''), // English, no country code
+          Locale('fr', ''), // French, no country code
+        ],
         theme: ThemeData(
             // This is the theme of your application.
             primarySwatch: Colors.green,
@@ -38,9 +52,10 @@ class MyApp extends StatelessWidget {
             // firebase has initialised (or not) so we can proceed
             if (snapshot.hasError) {
               print('something went wrong with firebase:${snapshot.error}');
-              return SplashScreen(
-                  SplashScreenState.error, snapshot.error.toString());
+              // just send them to the home screen so they can proceed
+              return HomeScreen();
             } else if (snapshot.connectionState == ConnectionState.done) {
+              // connected - go on home
               return HomeScreen();
             } else {
               // show the splash screen that we are loading firebase things

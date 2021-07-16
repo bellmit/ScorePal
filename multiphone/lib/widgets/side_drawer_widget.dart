@@ -1,26 +1,12 @@
+// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/widgets/user_details_widget.dart';
 
 class SideDrawer extends StatelessWidget {
-  final User currentUser;
-
   const SideDrawer({
     Key key,
-    @required this.currentUser,
   }) : super(key: key);
-
-  String get userName {
-    if (null == currentUser) {
-      return 'not logged in';
-    } else if (currentUser.displayName.isNotEmpty) {
-      return currentUser.displayName;
-    } else if (currentUser.email.isNotEmpty) {
-      return currentUser.email;
-    } else {
-      return currentUser.uid;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

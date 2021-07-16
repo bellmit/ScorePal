@@ -103,7 +103,7 @@ class UserLoggedInWidget extends StatelessWidget {
                   color: theme.accentColor,
                 ),
                 label: Text(
-                  'Sign Out',
+                  Values(context).strings.sign_out,
                   style: TextStyle(color: theme.accentColor),
                 )),
           ],
@@ -128,8 +128,7 @@ class UserLoggingInWidget extends StatelessWidget {
 /// Widget that shows the option to log the user into firebase
 class LoginUserWidget extends StatelessWidget {
   final Function signInFunction;
-  const LoginUserWidget({Key key, Function this.signInFunction})
-      : super(key: key);
+  const LoginUserWidget({Key key, this.signInFunction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +140,7 @@ class LoginUserWidget extends StatelessWidget {
         color: theme.accentColor,
       ),
       label: Text(
-        'Sign In',
+        Values(context).strings.sign_in,
         style: TextStyle(color: theme.accentColor),
       ),
     );
