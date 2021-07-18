@@ -1,17 +1,53 @@
 // ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/screens/play_match_screen.dart';
 import 'package:multiphone/widgets/user_details_widget.dart';
 
-class SideDrawer extends StatelessWidget {
-  final List<HomeScreenPanel> panels;
-  final void Function(HomeScreenPanel) onPanelSelected;
-  final HomeScreenPanel currentPanel;
+class MenuItem {
+  final String name;
+  final int index;
+  final IconData icon;
+  final String navPath;
+  const MenuItem({this.index, this.icon, this.name, this.navPath});
 
-  const SideDrawer(
-      {Key key, this.panels, this.onPanelSelected, this.currentPanel})
+  static List<MenuItem> mainMenuItems(BuildContext context) {
+    var values = Values(context);
+    return <MenuItem>[
+      MenuItem(
+        index: 0,
+        icon: Icons.home,
+        name: values.strings.option_matches,
+        navPath: HomeScreen.routeName,
+      ),
+      MenuItem(
+        index: 1,
+        icon: Icons.play_arrow,
+        name: values.strings.option_play,
+        navPath: PlayMatchScreen.routeName,
+      ),
+      MenuItem(
+        index: 2,
+        icon: Icons.settings,
+        name: values.strings.option_settings,
+        navPath: '/settings',
+      ),
+    ];
+  }
+}
+
+class SideDrawer extends StatelessWidget {
+  final List<MenuItem> menuItems;
+  final String currentPath;
+
+  const SideDrawer({Key key, this.menuItems, this.currentPath})
       : super(key: key);
+
+  void _onItemSelected(BuildContext context, MenuItem item) {
+    Navigator.of(context).pushNamed(item.navPath);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +67,8 @@ class SideDrawer extends StatelessWidget {
             child: UserDetailsWidget(),
           ),
           // and the list of panels, as list tiles
-          ...panels.map((e) {
-            var isSelected = e == currentPanel;
+          ...menuItems.map((e) {
+            var isSelected = e.navPath == currentPath;
             return ListTile(
               selected: isSelected,
               selectedTileColor: theme.primaryColorLight,
@@ -45,7 +81,7 @@ class SideDrawer extends StatelessWidget {
                       color: isSelected
                           ? theme.primaryColorDark
                           : theme.primaryColor)),
-              onTap: () => onPanelSelected(e),
+              onTap: () => _onItemSelected(context, e),
             );
           }).toList(),
         ],

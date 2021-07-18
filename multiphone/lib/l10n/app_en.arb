@@ -3,6 +3,14 @@
     "@title": {
       "description": "The main application title"
     },
+    "title_play_match": "Start a new match",
+    "@title_play_match": {
+      "description": "The title for the play match screen"
+    },
+    "title_settings": "Settings",
+    "@title_settings": {
+      "description": "The title for the settings screen"
+    },
     "option_matches": "Matches",
     "@option_matches": {
       "description": "The home screen title (matches summary)"
@@ -22,5 +30,17 @@
     "sign_in": "Sign In",
     "@sign_in": {
       "description": "The button text to show for the user to log in to firebase"
+    },
+    "sport_tennis": "Tennis",
+    "@sport_tennis": {
+      "description": "The title for this sport"
+    },
+    "sport_badminton": "Badminton",
+    "@sport_badminton": {
+      "description": "The title for this sport"
+    },
+    "sport_ping_pong": "Ping Pong",
+    "@sport_ping_pong": {
+      "description": "The title for this sport"
     }
 }

@@ -5,6 +5,8 @@ class Values {
   static const double default_space = 8;
   static const double image_large = 64;
 
+  static const double select_item_size = 92;
+
   /// construct the Values object to get our localization strings object
   final BuildContext context;
   const Values(this.context);

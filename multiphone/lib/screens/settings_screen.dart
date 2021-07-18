@@ -3,16 +3,16 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/play_match_screen.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const String routeName = '/';
+class SettingsScreen extends StatefulWidget {
+  static const String routeName = '/settings';
 
-  HomeScreen();
+  SettingsScreen();
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _SettingsScreenState createState() => _SettingsScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
@@ -23,16 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(values.strings.title),
+        title: Text(values.strings.title_settings),
         leading: IconButton(
             onPressed: () => _scaffoldKey.currentState.openDrawer(),
             icon: Icon(Icons.more_vert)),
       ),
       drawer: SideDrawer(
           menuItems: MenuItem.mainMenuItems(context),
-          currentPath: HomeScreen.routeName),
+          currentPath: SettingsScreen.routeName),
       body: Center(
-        child: Text('Matches played'),
+        child: Text('Change Settings'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

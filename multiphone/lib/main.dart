@@ -4,8 +4,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/player.dart';
+import 'package:multiphone/match/sport.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/screens/play_match_screen.dart';
+import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -29,6 +32,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => Players()),
+        ChangeNotifierProvider(create: (ctx) => Sports()),
       ],
       child: MaterialApp(
         onGenerateTitle: (ctx) => Values(ctx).strings.title,
@@ -64,9 +68,11 @@ class MyApp extends StatelessWidget {
             }
           },
         ),
-        initialRoute: '/',
+        initialRoute: HomeScreen.routeName,
         routes: {
           AuthScreen.routeName: (ctx) => AuthScreen(),
+          PlayMatchScreen.routeName: (ctx) => PlayMatchScreen(),
+          SettingsScreen.routeName: (ctx) => SettingsScreen(),
         },
       ),
     );
