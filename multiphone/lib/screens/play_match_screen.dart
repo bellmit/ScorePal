@@ -5,7 +5,7 @@ import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
 import 'package:multiphone/widgets/setup_badminton_widget.dart';
 import 'package:multiphone/widgets/setup_ping_pong.dart';
-import 'package:multiphone/widgets/setup_tennis_widget.dart';
+import 'package:multiphone/widgets/tennis/setup_tennis_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +20,23 @@ class PlayMatchScreen extends StatefulWidget {
 
 class _PlayMatchScreenState extends State<PlayMatchScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  Widget _createActiveMatchSetup(BuildContext context, ActiveMatch match) {
+    var values = Values(context);
+    switch (match.sport.id) {
+      case SportType.TENNIS:
+        return SetupTennisWidget();
+      case SportType.BADMINTON:
+        return SetupBadmintonWidget();
+      case SportType.PING_PONG:
+        return SetupPingPongWidget();
+    }
+    // if error - just return something bad!
+    return Text(values.construct(
+      values.strings.error_sport_not_found,
+      [match.sport.title(context)],
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +70,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
             Consumer<ActiveMatch>(
               builder: (ctx, activeMatch, child) {
                 // create the correct widget to setup the sport here then
-                switch (activeMatch.sport.id) {
-                  case SportType.TENNIS:
-                    return SetupTennisWidget();
-                  case SportType.BADMINTON:
-                    return SetupBadmintonWidget();
-                  case SportType.PING_PONG:
-                    return SetupPingPongWidget();
-                }
-                return Text(activeMatch.sport.title(ctx));
+                return _createActiveMatchSetup(ctx, activeMatch);
               },
             )
           ],

@@ -26,6 +26,10 @@ class Sports with ChangeNotifier {
 
   Sports() : available = _validSports();
 
+  Sport sport(SportType type) {
+    return available.firstWhere((element) => element.id == type);
+  }
+
   Sport find(int index) {
     return available[index];
   }

@@ -4,7 +4,12 @@ import 'package:multiphone/helpers/values.dart';
 class SelectItemWidget extends StatelessWidget {
   final IconData icon;
   final String text;
-  const SelectItemWidget({Key key, @required this.icon, @required this.text})
+  final double iconSize;
+  const SelectItemWidget(
+      {Key key,
+      @required this.icon,
+      @required this.text,
+      this.iconSize = Values.image_large})
       : super(key: key);
 
   @override
@@ -16,7 +21,7 @@ class SelectItemWidget extends StatelessWidget {
           fit: BoxFit.contain,
           child: Icon(
             icon,
-            size: Values.image_large,
+            size: iconSize,
           ),
         ),
         FittedBox(

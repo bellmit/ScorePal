@@ -3,7 +3,11 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/select_item_widget.dart';
 
 abstract class SelectItemListWidget extends StatefulWidget {
-  const SelectItemListWidget({Key key}) : super(key: key);
+  final double itemSize;
+
+  const SelectItemListWidget(
+      {Key key, this.itemSize = Values.select_item_size_large})
+      : super(key: key);
 
   @override
   _SelectItemListWidgetState createState() => _SelectItemListWidgetState();
@@ -26,6 +30,7 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
   Widget build(BuildContext context) {
     // get the items we will be adding to the buttons
     var selectItems = widget.items(context);
+    const borderRadius = BorderRadius.all(Radius.circular(10));
     if (_isSelected.length != selectItems.length) {
       // setup the initial selection from the widget
       _currentSelection = widget.getInitialSelection(context);
@@ -38,8 +43,7 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
       padding: EdgeInsets.zero,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
-        border: Border.all(color: Colors.black, width: 1.0),
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: borderRadius,
       ),
       child: ToggleButtons(
         children: selectItems,
@@ -62,11 +66,11 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
         },
         isSelected: _isSelected,
         constraints: BoxConstraints.expand(
-            width: Values.select_item_size, height: Values.select_item_size),
+            width: widget.itemSize, height: widget.itemSize),
         renderBorder: true,
         selectedColor: Theme.of(context).accentColor,
         fillColor: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: borderRadius,
       ),
     );
   }

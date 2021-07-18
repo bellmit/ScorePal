@@ -35,6 +35,19 @@
     "@sport_tennis": {
       "description": "The title for this sport"
     },
+    "title_setup_tennis": "Setup your tennis match, number of sets to play and who's playing...",
+    "tennis_one_set": "1 Set",
+    "tennis_three_sets": "3 Sets",
+    "tennis_five_sets": "5 Sets",
+    "tennis_singles": "Singles",
+    "tennis_doubles": "Doubles",
+    "tennis_number_games_per_set": "Games per set",
+    "tennis_four_games_per_set": "4 Games",
+    "tennis_six_games_per_set": "6 Games",
+    "tennis_sudden_death_deuce": "Sudden death on deuce",
+    "tennis_sudden_death_deuce_sel": "Deuce",
+    "tennis_final_tie": "Tie-break in final set",
+    "tennis_final_tie_sel": "Final Tie",
     "sport_badminton": "Badminton",
     "@sport_badminton": {
       "description": "The title for this sport"
@@ -42,5 +55,6 @@
     "sport_ping_pong": "Ping Pong",
     "@sport_ping_pong": {
       "description": "The title for this sport"
-    }
+    },
+    "error_sport_not_found": "{0} is not a valid sport to play, sorry."
 }
