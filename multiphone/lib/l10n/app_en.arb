@@ -11,7 +11,7 @@
     "@title_settings": {
       "description": "The title for the settings screen"
     },
-    "option_matches": "Matches",
+    "option_matches": "Home",
     "@option_matches": {
       "description": "The home screen title (matches summary)"
     },

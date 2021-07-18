@@ -1,4 +1,4 @@
-import 'package:multiphone/match/player.dart';
+import 'package:multiphone/providers/player.dart';
 
 enum TeamIndex {
   T_ONE,

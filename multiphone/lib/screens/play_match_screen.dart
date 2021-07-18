@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/sport.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
 import 'package:multiphone/widgets/setup_badminton_widget.dart';
 import 'package:multiphone/widgets/setup_ping_pong.dart';
@@ -49,10 +50,10 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
               height: Values.default_space,
             ),
             // listen to changes to the sports to show the currently selected sport
-            Consumer<Sports>(
-              builder: (ctx, sports, child) {
+            Consumer<ActiveMatch>(
+              builder: (ctx, activeMatch, child) {
                 // create the correct widget to setup the sport here then
-                switch (sports.selected.id) {
+                switch (activeMatch.sport.id) {
                   case SportType.TENNIS:
                     return SetupTennisWidget();
                   case SportType.BADMINTON:
@@ -60,7 +61,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
                   case SportType.PING_PONG:
                     return SetupPingPongWidget();
                 }
-                return Text(sports.selected.title(ctx));
+                return Text(activeMatch.sport.title(ctx));
               },
             )
           ],

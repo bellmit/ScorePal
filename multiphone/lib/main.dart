@@ -3,8 +3,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/player.dart';
-import 'package:multiphone/match/sport.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/player.dart';
+import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/screens/play_match_screen.dart';
@@ -33,6 +34,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (ctx) => Players()),
         ChangeNotifierProvider(create: (ctx) => Sports()),
+        ChangeNotifierProxyProvider<Sports, ActiveMatch>(
+          // this proxy is called after the specified auth object is build
+          update: (ctx, sports, previousMatch) => ActiveMatch(sports),
+          create: (ctx) => ActiveMatch(null),
+        ),
       ],
       child: MaterialApp(
         onGenerateTitle: (ctx) => Values(ctx).strings.title,

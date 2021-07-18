@@ -22,35 +22,21 @@ class Sport {
 }
 
 class Sports with ChangeNotifier {
-  final List<Sport> sports;
-  Sport _selected;
+  final List<Sport> available;
 
-  Sports() : sports = _validSports();
-
-  Sport get selected {
-    if (_selected == null) {
-      _selected = sports[0];
-    }
-    return _selected;
-  }
+  Sports() : available = _validSports();
 
   Sport find(int index) {
-    return sports[index];
+    return available[index];
   }
 
   int index(Sport sport) {
-    for (int i = 0; i < sports.length; ++i) {
-      if (sport == sports[i]) {
+    for (int i = 0; i < available.length; ++i) {
+      if (sport == available[i]) {
         return i;
       }
     }
     return -1;
-  }
-
-  set selected(Sport newSelection) {
-    _selected = newSelection;
-    // and this is a change so notify people that something did change
-    notifyListeners();
   }
 
   static List<Sport> _validSports() {

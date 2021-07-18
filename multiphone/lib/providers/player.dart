@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:multiphone/match/team.dart';
+import 'package:multiphone/providers/team.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum PlayerIndex {

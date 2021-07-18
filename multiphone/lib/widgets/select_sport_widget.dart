@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/match/sport.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/select_item_list_widget.dart';
 import 'package:multiphone/widgets/select_item_widget.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +10,7 @@ class SelectSportWidget extends SelectItemListWidget {
 
   @override
   List<SelectItemWidget> items(BuildContext context) {
-    return Provider.of<Sports>(context, listen: false).sports.map((e) {
+    return Provider.of<Sports>(context, listen: false).available.map((e) {
       // for each sport, return a widget representing it
       return SelectItemWidget(icon: e.icon, text: e.title(context));
     }).toList();
@@ -17,15 +18,17 @@ class SelectSportWidget extends SelectItemListWidget {
 
   @override
   int getInitialSelection(BuildContext context) {
-    // the initial selection is handled by the sport provider
-    Sports sports = Provider.of<Sports>(context);
-    return sports.index(sports.selected);
+    // the initial selection is handled by the active match
+    Sport activeSport = Provider.of<ActiveMatch>(context).sport;
+    // from the active sport - return the index of the sport for that match
+    return Provider.of<Sports>(context, listen: false).index(activeSport);
   }
 
   @override
   void onSelectionChanged(BuildContext context, int newSelection) {
     // the user just selected a nice sport, inform the provider of this
-    final sports = Provider.of<Sports>(context, listen: false);
-    sports.selected = sports.find(newSelection);
+    final activeMatch = Provider.of<ActiveMatch>(context, listen: false);
+    activeMatch.sport =
+        Provider.of<Sports>(context, listen: false).find(newSelection);
   }
 }
