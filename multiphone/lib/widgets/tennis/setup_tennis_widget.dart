@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/heading_icon_widget.dart';
 import 'package:multiphone/widgets/heading_widget.dart';
@@ -18,20 +19,23 @@ class _SetupTennisWidgetState extends State<SetupTennisWidget> {
   @override
   Widget build(BuildContext context) {
     // get the sport for the icon etc
-    Sport tennis = Provider.of<Sports>(context).sport(SportType.TENNIS);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: Values.default_space),
       width: double.infinity,
-      child: Column(
+      child: Wrap(
+        alignment: WrapAlignment.center,
         children: <Widget>[
-          HeadingIconWidget(
-            icon: tennis.icon,
-            title: Values(context).strings.title_setup_tennis,
+          SizedBox(
+            width: Values.image_large,
           ),
-          SizedBox(height: Values.default_space),
-          SelectSetsWidget(),
-          SizedBox(height: Values.default_space),
-          SelectSinglesDoublesWidget(),
+          Padding(
+            padding: EdgeInsets.all(Values.default_space),
+            child: SelectSetsWidget(),
+          ),
+          Padding(
+            padding: EdgeInsets.all(Values.default_space),
+            child: SelectSinglesDoublesWidget(),
+          ),
         ],
       ),
     );

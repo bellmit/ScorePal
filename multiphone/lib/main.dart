@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
@@ -35,9 +36,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => Players()),
         ChangeNotifierProvider(create: (ctx) => Sports()),
         ChangeNotifierProxyProvider<Sports, ActiveMatch>(
-          // this proxy is called after the specified auth object is build
+          // this proxy is called after the specified sports object is build
           update: (ctx, sports, previousMatch) => ActiveMatch(sports),
           create: (ctx) => ActiveMatch(null),
+        ),
+        ChangeNotifierProxyProvider<ActiveMatch, MatchSetup>(
+          // this proxy is called after the specified active match object is build
+          update: (ctx, activeMatch, previousSetup) =>
+              // create the correct matchsetup from the sport
+              MatchSetup.create(activeMatch),
+          // create an empty one initially - needs the active match setting
+          create: (ctx) => MatchSetup.create(null),
         ),
       ],
       child: MaterialApp(

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/match/tennis_match_setup.dart';
-import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/select_item_list_widget.dart';
 import 'package:multiphone/widgets/select_item_widget.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +38,7 @@ class SelectSetsWidget extends SelectItemListWidget {
   @override
   int getInitialSelection(BuildContext context) {
     // the initial selection is handled by the active match's setup
-    var setup = Provider.of<ActiveMatch>(context, listen: false).setup;
+    var setup = Provider.of<MatchSetup>(context, listen: false);
     if (setup is TennisMatchSetup) {
       // this is correct
       switch (setup.sets) {
@@ -58,7 +57,7 @@ class SelectSetsWidget extends SelectItemListWidget {
   @override
   void onSelectionChanged(BuildContext context, int newSelection) {
     // the user just selected which number of sets to play in tennis
-    var setup = Provider.of<ActiveMatch>(context, listen: false).setup;
+    var setup = Provider.of<MatchSetup>(context, listen: false);
     if (setup is TennisMatchSetup) {
       switch (newSelection) {
         case 0:

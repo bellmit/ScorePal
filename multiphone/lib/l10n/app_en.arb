@@ -35,7 +35,7 @@
     "@sport_tennis": {
       "description": "The title for this sport"
     },
-    "title_setup_tennis": "Setup your tennis match, number of sets to play and who's playing...",
+    "title_setup_tennis": "{0} vs {1} in a {2} set match of tennis...",
     "tennis_one_set": "1 Set",
     "tennis_three_sets": "3 Sets",
     "tennis_five_sets": "5 Sets",

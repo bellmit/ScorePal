@@ -7,11 +7,13 @@ class HeadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Center(
       child: Text(
         title,
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: Values.font_size_title,
+          fontWeight: FontWeight.bold,
           color: Theme.of(context).primaryColorDark,
         ),
       ),

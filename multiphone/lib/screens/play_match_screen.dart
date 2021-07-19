@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/sport.dart';
+import 'package:multiphone/widgets/heading_widget.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
 import 'package:multiphone/widgets/setup_badminton_widget.dart';
 import 'package:multiphone/widgets/setup_ping_pong.dart';
+import 'package:multiphone/widgets/subheading_widget.dart';
 import 'package:multiphone/widgets/tennis/setup_tennis_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
@@ -54,27 +57,74 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
       drawer: SideDrawer(
           menuItems: MenuItem.mainMenuItems(context),
           currentPath: PlayMatchScreen.routeName),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              width: double.infinity,
-              height: Values.default_space,
-            ),
-            SelectSportWidget(),
-            const SizedBox(
-              width: double.infinity,
-              height: Values.default_space,
-            ),
-            // listen to changes to the sports to show the currently selected sport
-            Consumer<ActiveMatch>(
-              builder: (ctx, activeMatch, child) {
-                // create the correct widget to setup the sport here then
-                return _createActiveMatchSetup(ctx, activeMatch);
+      body: Column(
+        children: [
+          const SizedBox(
+            width: double.infinity,
+            height: Values.default_space,
+          ),
+          SelectSportWidget(),
+          const SizedBox(
+            width: double.infinity,
+            height: Values.default_space,
+          ),
+          Card(
+            child: Consumer<MatchSetup>(
+              builder: (ctx, matchSetup, child) {
+                // this changes as the active match changes
+                return Row(
+                  children: [
+                    Expanded(
+                        child:
+                            HeadingWidget(title: matchSetup.matchSummary(ctx))),
+                    // and the child of the consumer
+                    child,
+                  ],
+                );
               },
-            )
-          ],
-        ),
+              // the child of the consumer always is there, make it the play button
+              child: IconButton(
+                onPressed: () {},
+                color: Theme.of(context).primaryColorDark,
+                iconSize: Values.image_large,
+                icon: Icon(
+                  Icons.play_circle,
+                ),
+              ),
+            ),
+          ),
+          // listen to changes to the sports to show the currently selected sport
+          Expanded(
+            child: Card(
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(Values.default_space),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.settings,
+                            color: Theme.of(context).primaryColorDark,
+                            size: Values.image_small,
+                          ),
+                          SubheadingWidget(title: 'Setup'),
+                        ],
+                      ),
+                    ),
+                    Consumer<ActiveMatch>(
+                      builder: (ctx, activeMatch, child) {
+                        // create the correct widget to setup the sport here then
+                        return _createActiveMatchSetup(ctx, activeMatch);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
