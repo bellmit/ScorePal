@@ -4,6 +4,7 @@ import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/heading_icon_widget.dart';
 import 'package:multiphone/widgets/heading_widget.dart';
+import 'package:multiphone/widgets/player_select_widget.dart';
 import 'package:multiphone/widgets/select_singles_doubles_widget.dart';
 import 'package:multiphone/widgets/tennis/select_sets_widget.dart';
 import 'package:provider/provider.dart';
@@ -20,21 +21,34 @@ class _SetupTennisWidgetState extends State<SetupTennisWidget> {
   Widget build(BuildContext context) {
     // get the sport for the icon etc
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: Values.default_space),
       width: double.infinity,
-      child: Wrap(
-        alignment: WrapAlignment.center,
-        children: <Widget>[
-          SizedBox(
-            width: Values.image_large,
+      child: Column(
+        children: [
+          Wrap(
+            alignment: WrapAlignment.center,
+            children: <Widget>[
+              // move over a bit because the parent adds the icon and settings
+              // text to explain what this card is about
+              SizedBox(
+                width: Values.image_large,
+              ),
+              Padding(
+                padding: EdgeInsets.all(Values.default_space),
+                child: SelectSetsWidget(),
+              ),
+              Padding(
+                padding: EdgeInsets.all(Values.default_space),
+                child: SelectSinglesDoublesWidget(),
+              ),
+            ],
           ),
           Padding(
             padding: EdgeInsets.all(Values.default_space),
-            child: SelectSetsWidget(),
+            child: PlayerSelectWidget(),
           ),
           Padding(
             padding: EdgeInsets.all(Values.default_space),
-            child: SelectSinglesDoublesWidget(),
+            child: PlayerSelectWidget(),
           ),
         ],
       ),
