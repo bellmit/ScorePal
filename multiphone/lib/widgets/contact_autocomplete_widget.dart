@@ -1,49 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:multiphone/helpers/values.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ContactAutoCompleteWidget extends StatefulWidget {
-  const ContactAutoCompleteWidget({Key key}) : super(key: key);
+  final void Function(String) onTextChanged;
+  const ContactAutoCompleteWidget({
+    Key key,
+    this.onTextChanged,
+  }) : super(key: key);
 
   @override
   _ContactAutoCompleteWidgetState createState() =>
       _ContactAutoCompleteWidgetState();
 }
 
-class Continent {
-  const Continent({
-    @required this.name,
-    @required this.size,
-  });
-
-  final String name;
-
-  final int size;
-
-  @override
-  String toString() {
-    return '$name ($size)';
-  }
-}
-
-const List<Continent> continentOptions = [
-  Continent(name: 'Africa', size: 30370000),
-  Continent(name: 'Antarctica', size: 14000000),
-  Continent(name: 'Asia', size: 44579000),
-  Continent(name: 'Australia', size: 8600000),
-  Continent(name: 'Europe', size: 10180000),
-  Continent(name: 'North America', size: 24709000),
-  Continent(name: 'South America', size: 17840000),
-];
-
 class _ContactAutoCompleteWidgetState extends State<ContactAutoCompleteWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _autocompleteKey = GlobalKey();
 
+  List<Contact> _contacts;
+
   @override
   void initState() {
     super.initState();
-
+    // listen for the user entering a nice name
     _textEditingController.addListener(_textChanged);
+    // and go off and get our contacts
+    _fetchContacts();
   }
 
   @override
@@ -53,34 +38,77 @@ class _ContactAutoCompleteWidgetState extends State<ContactAutoCompleteWidget> {
     super.dispose();
   }
 
+  Future _fetchContacts() async {
+    if (await Permission.contacts.request().isGranted) {
+      // Either the permission was already granted before or the user just granted it.
+      final contacts = await FlutterContacts.getContacts();
+      setState(() => _contacts = contacts);
+    }
+  }
+
   void clear() {
     _textEditingController.clear();
   }
 
   void _textChanged() {
-    print('text is now ${_textEditingController.text}');
+    // they are typing - change the settings accordingly
+    if (widget.onTextChanged != null) {
+      // inform the passed function then of this change
+      widget.onTextChanged(_textEditingController.text);
+    }
   }
 
-  void _onContactSelected(Continent contact) {
-    print('Selected: ${contact.name}');
+  void _onContactSelected(Contact contact) {
+    // release the focus when selected a name (text changed will also be called)
+    _focusNode.nextFocus();
+  }
+
+  bool _isContactMatch(Contact contact, String text) {
+    // only search when there is a contact and enough text to justify searching
+    if (contact == null || text == null || text.isEmpty) {
+      return false;
+    }
+    final textToTest = text.toLowerCase().trim();
+    if (contact.displayName != null &&
+        contact.displayName.toLowerCase().startsWith(textToTest)) {
+      // matching display name
+      return true;
+    } else if (contact.emails != null) {
+      // check all the emails
+      for (int i = 0; i < contact.emails.length; ++i) {
+        var email = contact.emails[i];
+        if (email != null && email.address != null) {
+          final emailToTest = email.address.toLowerCase().trim();
+          if (emailToTest.startsWith(textToTest)) {
+            // this is a valid search by email address
+            return true;
+          }
+        }
+      }
+    }
+    // if here, then not what they are looking for
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(15.0),
-      child: RawAutocomplete<Continent>(
+      child: RawAutocomplete<Contact>(
         key: _autocompleteKey,
         focusNode: _focusNode,
         textEditingController: _textEditingController,
         optionsBuilder: (TextEditingValue textEditingValue) {
-          return continentOptions
-              .where((Continent continent) => continent.name
-                  .toLowerCase()
-                  .startsWith(textEditingValue.text.toLowerCase()))
+          if (_contacts == null || _contacts.isEmpty) {
+            return <Contact>[];
+          }
+          // else, search for the contacts that fit what the user is typing
+          return _contacts
+              .where((Contact contact) =>
+                  _isContactMatch(contact, textEditingValue.text))
               .toList();
         },
-        displayStringForOption: (Continent option) => option.name,
+        displayStringForOption: (Contact contact) => contact.displayName,
         fieldViewBuilder: (BuildContext context,
             TextEditingController fieldTextEditingController,
             FocusNode fieldFocusNode,
@@ -91,31 +119,32 @@ class _ContactAutoCompleteWidgetState extends State<ContactAutoCompleteWidget> {
             //style: const TextStyle(fontWeight: FontWeight.bold),
           );
         },
-        onSelected: (Continent selection) {
+        onSelected: (Contact selection) {
           _onContactSelected(selection);
         },
         optionsViewBuilder: (BuildContext context,
-            AutocompleteOnSelected<Continent> onSelected,
-            Iterable<Continent> options) {
+            AutocompleteOnSelected<Contact> onSelected,
+            Iterable<Contact> options) {
           return Align(
             alignment: Alignment.topLeft,
             child: Material(
               child: Container(
                 width: 300,
-                color: Colors.teal,
+                color: Theme.of(context).primaryColorLight,
                 child: ListView.builder(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(Values.default_space),
                   itemCount: options.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final Continent option = options.elementAt(index);
-
+                    final Contact contact = options.elementAt(index);
                     return GestureDetector(
                       onTap: () {
-                        onSelected(option);
+                        onSelected(contact);
                       },
                       child: ListTile(
-                        title: Text(option.name,
-                            style: const TextStyle(color: Colors.white)),
+                        leading: contact.thumbnail != null
+                            ? Image.memory(contact.thumbnail)
+                            : Icon(Icons.person),
+                        title: Text(contact.displayName),
                       ),
                     );
                   },

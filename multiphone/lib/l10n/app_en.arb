@@ -35,6 +35,22 @@
     "@sport_tennis": {
       "description": "The title for this sport"
     },
+    "player_one": "Player One",
+    "@player_one" : {
+      "description": "The default name for this player"
+    },
+    "player_two": "Player Two",
+    "@player_two" : {
+      "description": "The default name for this player"
+    },
+    "partner_one": "Partner One",
+    "@partner_one" : {
+      "description": "The default name for this player"
+    },
+    "partner_two": "Partner Two",
+    "@partner_two" : {
+      "description": "The default name for this player"
+    },
     "title_setup_tennis": "{0} vs {1} in a {2} set match of tennis...",
     "tennis_one_set": "1 Set",
     "tennis_three_sets": "3 Sets",

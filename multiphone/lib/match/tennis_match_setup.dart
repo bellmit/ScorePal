@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/player.dart';
 
 enum TENNIS_SETS { ONE, THREE, FIVE }
 
@@ -14,8 +15,8 @@ class TennisMatchSetup extends MatchSetup {
     // construct the match summary accordingly
     final values = Values(context);
     return values.construct(values.strings.title_setup_tennis, [
-      'player one',
-      'player two',
+      getPlayerName(PlayerIndex.P_ONE, context),
+      getPlayerName(PlayerIndex.P_TWO, context),
       setsValue(_sets).toString(),
     ]);
   }
