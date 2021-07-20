@@ -21,6 +21,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
   bool _showPartners = false;
 
   AnimationController _controller;
+  Animation<Offset> _slideAnimation;
+  Animation<double> _opacityAnimation;
 
   @override
   void initState() {
@@ -28,8 +30,22 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
     // animation things (this can have the mixin of SingleTickerProviderStateMixin)
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: Values.animation_duration_ms),
+      duration: Duration(milliseconds: 500),
     );
+    _slideAnimation = Tween<Offset>(
+      begin: Offset(-1, 0),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linear,
+    ));
+    _opacityAnimation = Tween<double>(
+      begin: 0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
   }
 
   @override
@@ -59,11 +75,17 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
           ),
           duration: Duration(milliseconds: Values.animation_duration_ms),
           curve: Curves.easeInOut,
-          child: PlayerNameWidget(
-            hintText: Values(context).strings.partner_one,
-            onTextChanged: (newName) =>
-                _onPlayerNameChanged(newName, PlayerIndex.PT_ONE),
-            availableOpponents: contacts,
+          child: FadeTransition(
+            opacity: _opacityAnimation,
+            child: SlideTransition(
+              position: _slideAnimation,
+              child: PlayerNameWidget(
+                hintText: Values(context).strings.partner_one,
+                onTextChanged: (newName) =>
+                    _onPlayerNameChanged(newName, PlayerIndex.PT_ONE),
+                availableOpponents: contacts,
+              ),
+            ),
           ),
         ),
         PlayerNameWidget(
@@ -78,11 +100,17 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
           ),
           duration: Duration(milliseconds: Values.animation_duration_ms),
           curve: Curves.easeInOut,
-          child: PlayerNameWidget(
-            hintText: Values(context).strings.partner_two,
-            onTextChanged: (newName) =>
-                _onPlayerNameChanged(newName, PlayerIndex.PT_TWO),
-            availableOpponents: contacts,
+          child: FadeTransition(
+            opacity: _opacityAnimation,
+            child: SlideTransition(
+              position: _slideAnimation,
+              child: PlayerNameWidget(
+                hintText: Values(context).strings.partner_two,
+                onTextChanged: (newName) =>
+                    _onPlayerNameChanged(newName, PlayerIndex.PT_TWO),
+                availableOpponents: contacts,
+              ),
+            ),
           ),
         ),
       ],
@@ -103,6 +131,12 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
     setState(() {
       _showPartners = isShowPartnerNames;
     });
+    if (isShowPartnerNames) {
+      // start the height animation to change
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
   }
 
   @override
