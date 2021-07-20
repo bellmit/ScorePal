@@ -6,9 +6,9 @@ import 'package:multiphone/widgets/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectSinglesDoublesWidget extends SelectItemListWidget {
-  const SelectSinglesDoublesWidget({
-    Key key,
-  }) : super(
+  final Function(SINGLES_DOUBLES) onSinglesDoublesChanged;
+  const SelectSinglesDoublesWidget({Key key, this.onSinglesDoublesChanged})
+      : super(
           key: key,
           itemSize: Values.select_item_size_medium,
         );
@@ -54,6 +54,9 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
       case 1:
         setup.singlesDoubles = SINGLES_DOUBLES.DOUBLES;
         break;
+    }
+    if (null != onSinglesDoublesChanged) {
+      onSinglesDoublesChanged(setup.singlesDoubles);
     }
   }
 }

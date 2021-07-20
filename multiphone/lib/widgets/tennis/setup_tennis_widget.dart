@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/providers/player.dart';
-import 'package:multiphone/widgets/player_select_widget.dart';
-import 'package:multiphone/widgets/select_singles_doubles_widget.dart';
+import 'package:multiphone/widgets/player_names_widget.dart';
 import 'package:multiphone/widgets/tennis/select_sets_widget.dart';
 
 class SetupTennisWidget extends StatefulWidget {
@@ -20,8 +18,7 @@ class _SetupTennisWidgetState extends State<SetupTennisWidget> {
       width: double.infinity,
       child: Column(
         children: [
-          Wrap(
-            alignment: WrapAlignment.center,
+          Row(
             children: <Widget>[
               // move over a bit because the parent adds the icon and settings
               // text to explain what this card is about
@@ -32,24 +29,9 @@ class _SetupTennisWidgetState extends State<SetupTennisWidget> {
                 padding: EdgeInsets.all(Values.default_space),
                 child: SelectSetsWidget(),
               ),
-              Padding(
-                padding: EdgeInsets.all(Values.default_space),
-                child: SelectSinglesDoublesWidget(),
-              ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.all(Values.default_space),
-            child: PlayerSelectWidget(
-              playerIndex: PlayerIndex.P_ONE,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(Values.default_space),
-            child: PlayerSelectWidget(
-              playerIndex: PlayerIndex.P_TWO,
-            ),
-          ),
+          PlayerNamesWidget(),
         ],
       ),
     );

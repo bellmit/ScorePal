@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-class ContactAutoCompleteWidget extends StatefulWidget {
+class PlayerNameWidget extends StatefulWidget {
   final void Function(String) onTextChanged;
-  const ContactAutoCompleteWidget({
+  final List<Contact> availableOpponents;
+  final String hintText;
+
+  const PlayerNameWidget({
     Key key,
+    @required this.hintText,
+    @required this.availableOpponents,
     this.onTextChanged,
   }) : super(key: key);
 
   @override
-  _ContactAutoCompleteWidgetState createState() =>
-      _ContactAutoCompleteWidgetState();
+  _PlayerNameWidgetState createState() => _PlayerNameWidgetState();
 }
 
-class _ContactAutoCompleteWidgetState extends State<ContactAutoCompleteWidget> {
+class _PlayerNameWidgetState extends State<PlayerNameWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _autocompleteKey = GlobalKey();
-
-  List<Contact> _contacts;
 
   @override
   void initState() {
     super.initState();
     // listen for the user entering a nice name
     _textEditingController.addListener(_textChanged);
-    // and go off and get our contacts
-    _fetchContacts();
   }
 
   @override
@@ -36,14 +35,6 @@ class _ContactAutoCompleteWidgetState extends State<ContactAutoCompleteWidget> {
     _textEditingController.removeListener(_textChanged);
     _textEditingController.dispose();
     super.dispose();
-  }
-
-  Future _fetchContacts() async {
-    if (await Permission.contacts.request().isGranted) {
-      // Either the permission was already granted before or the user just granted it.
-      final contacts = await FlutterContacts.getContacts();
-      setState(() => _contacts = contacts);
-    }
   }
 
   void clear() {
@@ -99,11 +90,12 @@ class _ContactAutoCompleteWidgetState extends State<ContactAutoCompleteWidget> {
         focusNode: _focusNode,
         textEditingController: _textEditingController,
         optionsBuilder: (TextEditingValue textEditingValue) {
-          if (_contacts == null || _contacts.isEmpty) {
+          if (widget.availableOpponents == null ||
+              widget.availableOpponents.isEmpty) {
             return <Contact>[];
           }
           // else, search for the contacts that fit what the user is typing
-          return _contacts
+          return widget.availableOpponents
               .where((Contact contact) =>
                   _isContactMatch(contact, textEditingValue.text))
               .toList();
@@ -117,6 +109,7 @@ class _ContactAutoCompleteWidgetState extends State<ContactAutoCompleteWidget> {
             controller: fieldTextEditingController,
             focusNode: fieldFocusNode,
             //style: const TextStyle(fontWeight: FontWeight.bold),
+            decoration: InputDecoration(hintText: widget.hintText),
           );
         },
         onSelected: (Contact selection) {
