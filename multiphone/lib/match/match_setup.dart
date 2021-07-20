@@ -4,6 +4,7 @@ import 'package:multiphone/match/tennis_match_setup.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
+import 'package:multiphone/providers/team.dart';
 
 enum SINGLES_DOUBLES {
   DOUBLES,
@@ -56,6 +57,20 @@ abstract class MatchSetup with ChangeNotifier {
       }
     }
     return name;
+  }
+
+  String getTeamName(TeamIndex team, BuildContext context) {
+    if (singlesDoubles == SINGLES_DOUBLES.SINGLES) {
+      // just do the player name
+      return getPlayerName(
+          team == TeamIndex.T_ONE ? PlayerIndex.P_ONE : PlayerIndex.P_TWO,
+          context);
+    } else if (team == TeamIndex.T_ONE) {
+      // do doubles names for team one
+      return '${getPlayerName(PlayerIndex.P_ONE, context)} / ${getPlayerName(PlayerIndex.PT_ONE, context)}';
+    } else {
+      return '${getPlayerName(PlayerIndex.P_TWO, context)} / ${getPlayerName(PlayerIndex.PT_TWO, context)}';
+    }
   }
 
   get singlesDoubles {

@@ -33,7 +33,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
       duration: Duration(milliseconds: 500),
     );
     _slideAnimation = Tween<Offset>(
-      begin: Offset(-1, 0),
+      begin: Offset(-2, 0),
       end: Offset(0, 0),
     ).animate(CurvedAnimation(
       parent: _controller,
@@ -63,6 +63,14 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
   Widget _createPlayerEntries(List<Contact> contacts) {
     return Column(
       children: [
+        Card(
+          color: Theme.of(context).primaryColorLight,
+          child: Container(
+            margin: EdgeInsets.all(Values.default_space),
+            width: double.infinity,
+            child: Text('Team One'),
+          ),
+        ),
         PlayerNameWidget(
           hintText: Values(context).strings.player_one,
           onTextChanged: (newName) =>
@@ -86,6 +94,14 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                 availableOpponents: contacts,
               ),
             ),
+          ),
+        ),
+        Card(
+          color: Theme.of(context).primaryColorLight,
+          child: Container(
+            margin: EdgeInsets.all(Values.default_space),
+            width: double.infinity,
+            child: Text('Team Two'),
           ),
         ),
         PlayerNameWidget(
