@@ -1,4 +1,4 @@
-package uk.co.darkerwaters.multiphone
+package uk.co.darkerwaters.scorepal
 
 import io.flutter.embedding.android.FlutterActivity
 
