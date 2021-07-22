@@ -17,7 +17,7 @@ abstract class MatchSetup with ChangeNotifier {
   final List<String> _playerNames =
       List<String>.filled(PlayerIndex.values.length, '');
 
-  MatchSetup() {}
+  MatchSetup();
 
   // need to create the proper one for the active match as it changes
   static MatchSetup create(ActiveMatch match) {
