@@ -109,7 +109,8 @@ abstract class MatchSetup with ChangeNotifier {
       name = _teamNamer.getDefaultPlayerName(player, context);
     }
     if (startingServer == player) {
-      name += ' (*)';
+      //TODO - we probably want to show who's serving somehow
+      //name += ' (*)';
     }
     return name;
   }
