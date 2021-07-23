@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/providers/team.dart';
+import 'package:multiphone/providers/sport.dart';
 
 enum BadmintonGames { one, three, five }
 enum BadmintonPoints { eleven, fifteen, twenty_one }
+enum BadmintonDecider { nineteen, twenty_five, twenty_nine }
 
 class BadmintonMatchSetup extends MatchSetup {
   BadmintonGames _games = BadmintonGames.three;
   BadmintonPoints _points = BadmintonPoints.twenty_one;
+  BadmintonDecider _decidingPoint = BadmintonDecider.twenty_nine;
 
-  BadmintonMatchSetup();
+  BadmintonMatchSetup(Sport sport) : super(sport);
 
   @override
   String matchSummary(BuildContext context) {
@@ -23,7 +25,7 @@ class BadmintonMatchSetup extends MatchSetup {
     ]);
   }
 
-  int gamesValue(BadmintonGames games) {
+  static int gamesValue(BadmintonGames games) {
     switch (games) {
       case BadmintonGames.one:
         return 1;
@@ -32,21 +34,24 @@ class BadmintonMatchSetup extends MatchSetup {
       case BadmintonGames.five:
         return 5;
       default:
-        return 0;
+        return 3;
     }
   }
 
-  get games {
-    return _games;
+  static BadmintonGames fromGamesValue(int value) {
+    switch (value) {
+      case 1:
+        return BadmintonGames.one;
+      case 3:
+        return BadmintonGames.three;
+      case 5:
+        return BadmintonGames.five;
+      default:
+        return BadmintonGames.five;
+    }
   }
 
-  set games(BadmintonGames games) {
-    _games = games;
-    // this is a change
-    notifyListeners();
-  }
-
-  int pointsValue(BadmintonPoints points) {
+  static int pointsValue(BadmintonPoints points) {
     switch (points) {
       case BadmintonPoints.eleven:
         return 11;
@@ -55,7 +60,99 @@ class BadmintonMatchSetup extends MatchSetup {
       case BadmintonPoints.twenty_one:
         return 21;
       default:
-        return 0;
+        return 21;
+    }
+  }
+
+  static BadmintonPoints fromPointsValue(int value) {
+    switch (value) {
+      case 11:
+        return BadmintonPoints.eleven;
+      case 15:
+        return BadmintonPoints.fifteen;
+      case 21:
+        return BadmintonPoints.twenty_one;
+      default:
+        return BadmintonPoints.twenty_one;
+    }
+  }
+
+  static int deciderValue(BadmintonDecider decider) {
+    switch (decider) {
+      case BadmintonDecider.nineteen:
+        return 19;
+      case BadmintonDecider.twenty_five:
+        return 25;
+      case BadmintonDecider.twenty_nine:
+        return 29;
+      default:
+        return 29;
+    }
+  }
+
+  static BadmintonDecider fromDeciderValue(int value) {
+    switch (value) {
+      case 19:
+        return BadmintonDecider.nineteen;
+      case 25:
+        return BadmintonDecider.twenty_five;
+      case 29:
+        return BadmintonDecider.twenty_nine;
+      default:
+        return BadmintonDecider.twenty_nine;
+    }
+  }
+
+  @override
+  Map<String, Object> getData() {
+    return {
+      ...super.getData(),
+      ...{
+        'games': gamesValue(_games),
+        'points': pointsValue(_points),
+        'decdng': deciderValue(_decidingPoint),
+      },
+    };
+  }
+
+  @override
+  void setData(Map<String, Object> data) {
+    super.setData(data);
+    _games = fromGamesValue(data['games'] as int);
+    _points = fromPointsValue(data['points'] as int);
+    _decidingPoint = fromDeciderValue(data['decdng'] as int);
+  }
+
+  @override
+  List<int> getStraightPointsToWin() {
+    // points levels are 3!
+    return [
+      1, // 1 point to win a point
+      pointsValue(_points), // 21 points to win a game
+    ];
+  }
+
+  get decidingPoint {
+    return _decidingPoint;
+  }
+
+  set decidingPoint(BadmintonDecider decider) {
+    if (_decidingPoint != decider) {
+      _decidingPoint = decider;
+      // this is a change
+      notifyListeners();
+    }
+  }
+
+  get games {
+    return _games;
+  }
+
+  set games(BadmintonGames games) {
+    if (_games != games) {
+      _games = games;
+      // this is a change
+      notifyListeners();
     }
   }
 
@@ -64,8 +161,10 @@ class BadmintonMatchSetup extends MatchSetup {
   }
 
   set points(BadmintonPoints points) {
-    _points = points;
-    // this is a change
-    notifyListeners();
+    if (_points != points) {
+      _points = points;
+      // this is a change
+      notifyListeners();
+    }
   }
 }

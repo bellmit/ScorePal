@@ -19,6 +19,19 @@ class Sport {
       @required this.title,
       @required this.icon,
       @required this.image});
+
+  get name {
+    switch (this.id) {
+      case SportType.TENNIS:
+        return "Tennis";
+      case SportType.BADMINTON:
+        return "Badminton";
+      case SportType.PING_PONG:
+        return "Ping Pong";
+      default:
+        return "Unknown";
+    }
+  }
 }
 
 class Sports with ChangeNotifier {
@@ -26,17 +39,18 @@ class Sports with ChangeNotifier {
 
   Sports() : available = _validSports();
 
-  Sport sport(SportType type) {
-    return available.firstWhere((element) => element.id == type);
+  static Sport sport(SportType type) {
+    return _validSports().firstWhere((element) => element.id == type);
   }
 
-  Sport find(int index) {
-    return available[index];
+  static Sport find(int index) {
+    return _validSports()[index];
   }
 
-  int index(Sport sport) {
-    for (int i = 0; i < available.length; ++i) {
-      if (sport == available[i]) {
+  static int index(Sport sport) {
+    List<Sport> validSports = _validSports();
+    for (int i = 0; i < validSports.length; ++i) {
+      if (sport == validSports[i]) {
         return i;
       }
     }

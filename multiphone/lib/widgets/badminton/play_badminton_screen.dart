@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/providers/team.dart';
+import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/widgets/badminton/badminton_score_widget.dart';
 import 'package:multiphone/widgets/play_match_screen.dart';
 

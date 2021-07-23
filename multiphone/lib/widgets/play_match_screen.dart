@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/team.dart';
 import 'package:multiphone/widgets/info_bar_widget.dart';
-import 'package:multiphone/widgets/tennis/tennis_score_widget.dart';
 import 'package:provider/provider.dart';
 
 abstract class PlayMatchScreen extends StatelessWidget {

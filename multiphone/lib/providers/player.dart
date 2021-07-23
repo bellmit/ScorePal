@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:multiphone/providers/team.dart';
+import 'package:multiphone/match/match_setup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum PlayerIndex {
@@ -10,15 +10,31 @@ enum PlayerIndex {
 }
 
 class Players with ChangeNotifier {
-  static final Player playerOne = Player(PlayerIndex.P_ONE, Teams.teamOne, "Player One",);
-  static final Player playerTwo = Player(PlayerIndex.P_TWO, Teams.teamOne, "Player Two",);
-  static final Player partnerOne = Player(PlayerIndex.PT_ONE, Teams.teamTwo, "Partner One",);
-  static final Player partnerTwo = Player(PlayerIndex.PT_TWO, Teams.teamTwo, "Partner Two",);
+  static final Player playerOne = Player(
+    PlayerIndex.P_ONE,
+    TeamIndex.T_ONE,
+    "Player One",
+  );
+  static final Player playerTwo = Player(
+    PlayerIndex.P_TWO,
+    TeamIndex.T_TWO,
+    "Player Two",
+  );
+  static final Player partnerOne = Player(
+    PlayerIndex.PT_ONE,
+    TeamIndex.T_ONE,
+    "Partner One",
+  );
+  static final Player partnerTwo = Player(
+    PlayerIndex.PT_TWO,
+    TeamIndex.T_TWO,
+    "Partner Two",
+  );
 }
 
 class Player with ChangeNotifier {
   final PlayerIndex index;
-  final Team team;
+  final TeamIndex team;
   String _name;
 
   Player(this.index, this.team, this._name) {
@@ -34,7 +50,7 @@ class Player with ChangeNotifier {
   }
 
   Player get partner {
-    switch(index) {
+    switch (index) {
       case PlayerIndex.P_ONE:
         return Players.partnerOne;
       case PlayerIndex.PT_ONE:
@@ -63,8 +79,8 @@ class Player with ChangeNotifier {
     return _name;
   }
 
-  bool isInTeam(Team team) {
-    switch(team.index) {
+  bool isInTeam(TeamIndex team) {
+    switch (team) {
       case TeamIndex.T_ONE:
         return index == PlayerIndex.P_ONE || index == PlayerIndex.PT_ONE;
       case TeamIndex.T_TWO:

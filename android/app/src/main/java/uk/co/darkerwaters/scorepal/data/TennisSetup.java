@@ -109,7 +109,6 @@ public class TennisSetup extends MatchSetup<TennisMatch> {
             // this changes the setup
             informMatchSetupChanged(SetupChange.POINTS_STRUCTURE);
         }
-
     }
 
     public int getFinalSetTieGame() {

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/providers/team.dart';
+import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/widgets/score_widget.dart';
 
 class PingPongScoreWidget extends ScoreWidget {
@@ -10,7 +10,6 @@ class PingPongScoreWidget extends ScoreWidget {
 
   @override
   Widget build(BuildContext context) {
-    final boxColor = Theme.of(context).primaryColorDark;
     return Row(
       children: [
         // split the row into the smaller controls

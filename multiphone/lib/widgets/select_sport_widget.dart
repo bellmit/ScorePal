@@ -21,14 +21,13 @@ class SelectSportWidget extends SelectItemListWidget {
     // the initial selection is handled by the active match
     Sport activeSport = Provider.of<ActiveMatch>(context).sport;
     // from the active sport - return the index of the sport for that match
-    return Provider.of<Sports>(context, listen: false).index(activeSport);
+    return Sports.index(activeSport);
   }
 
   @override
   void onSelectionChanged(BuildContext context, int newSelection) {
     // the user just selected a nice sport, inform the provider of this
     final activeMatch = Provider.of<ActiveMatch>(context, listen: false);
-    activeMatch.sport =
-        Provider.of<Sports>(context, listen: false).find(newSelection);
+    activeMatch.sport = Sports.find(newSelection);
   }
 }

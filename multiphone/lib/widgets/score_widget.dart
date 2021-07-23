@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/providers/team.dart';
-import 'package:multiphone/widgets/info_bar_widget.dart';
+import 'package:multiphone/match/match_setup.dart';
 
 abstract class ScoreWidget extends StatelessWidget {
   final TeamIndex team;
