@@ -6,8 +6,8 @@ import 'package:multiphone/widgets/select_item_list_widget.dart';
 import 'package:multiphone/widgets/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
-class SelectSetsWidget extends SelectItemListWidget {
-  const SelectSetsWidget({Key key})
+class SelectGamesWidget extends SelectItemListWidget {
+  const SelectGamesWidget({Key key})
       : super(
           key: key,
           itemSize: Values.select_item_size_medium,
@@ -19,17 +19,12 @@ class SelectSetsWidget extends SelectItemListWidget {
     return [
       SelectItemWidget(
         icon: Icons.one_k,
-        text: values.strings.tennis_one_set,
+        text: values.strings.tennis_four_games_per_set,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
         icon: Icons.three_k,
-        text: values.strings.tennis_three_sets,
-        iconSize: Values.image_medium,
-      ),
-      SelectItemWidget(
-        icon: Icons.five_k,
-        text: values.strings.tennis_five_sets,
+        text: values.strings.tennis_six_games_per_set,
         iconSize: Values.image_medium,
       ),
     ];
@@ -41,13 +36,11 @@ class SelectSetsWidget extends SelectItemListWidget {
     var setup = Provider.of<MatchSetup>(context, listen: false);
     if (setup is TennisMatchSetup) {
       // this is correct
-      switch (setup.sets) {
-        case TennisSets.one:
+      switch (setup.games) {
+        case TennisGames.four:
           return 0;
-        case TennisSets.three:
+        case TennisGames.six:
           return 1;
-        case TennisSets.five:
-          return 2;
       }
     }
     print('the tennis widget shouldn\'t show unless tennis is selected');
@@ -61,13 +54,10 @@ class SelectSetsWidget extends SelectItemListWidget {
     if (setup is TennisMatchSetup) {
       switch (newSelection) {
         case 0:
-          setup.sets = TennisSets.one;
+          setup.games = TennisGames.four;
           break;
         case 1:
-          setup.sets = TennisSets.three;
-          break;
-        case 2:
-          setup.sets = TennisSets.five;
+          setup.games = TennisGames.six;
           break;
       }
     }

@@ -4,6 +4,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/player.dart';
+import 'package:multiphone/widgets/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_name_widget.dart';
 import 'package:multiphone/widgets/select_singles_doubles_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -63,14 +64,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
   Widget _createPlayerEntries(List<Contact> contacts) {
     return Column(
       children: [
-        Card(
-          color: Theme.of(context).primaryColorLight,
-          child: Container(
-            margin: EdgeInsets.all(Values.default_space),
-            width: double.infinity,
-            child: Text('Team One'),
-          ),
-        ),
+        InfoBarWidget(title: Values(context).strings.team_one),
         PlayerNameWidget(
           hintText: Values(context).strings.player_one,
           onTextChanged: (newName) =>
@@ -96,14 +90,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
             ),
           ),
         ),
-        Card(
-          color: Theme.of(context).primaryColorLight,
-          child: Container(
-            margin: EdgeInsets.all(Values.default_space),
-            width: double.infinity,
-            child: Text('Team Two'),
-          ),
-        ),
+        InfoBarWidget(title: Values(context).strings.team_two),
         PlayerNameWidget(
           hintText: Values(context).strings.player_two,
           onTextChanged: (newName) =>

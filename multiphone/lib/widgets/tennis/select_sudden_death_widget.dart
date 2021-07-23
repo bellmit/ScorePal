@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/match/tennis_match_setup.dart';
+import 'package:multiphone/widgets/select_item_checked_widget.dart';
 import 'package:multiphone/widgets/select_item_list_widget.dart';
 import 'package:multiphone/widgets/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
-class SelectSetsWidget extends SelectItemListWidget {
-  const SelectSetsWidget({Key key})
+class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
+  const SelectSuddenDeathWidget({Key key})
       : super(
           key: key,
           itemSize: Values.select_item_size_medium,
@@ -19,57 +20,30 @@ class SelectSetsWidget extends SelectItemListWidget {
     return [
       SelectItemWidget(
         icon: Icons.one_k,
-        text: values.strings.tennis_one_set,
-        iconSize: Values.image_medium,
-      ),
-      SelectItemWidget(
-        icon: Icons.three_k,
-        text: values.strings.tennis_three_sets,
-        iconSize: Values.image_medium,
-      ),
-      SelectItemWidget(
-        icon: Icons.five_k,
-        text: values.strings.tennis_five_sets,
+        text: values.strings.tennis_sudden_death_deuce_sel,
         iconSize: Values.image_medium,
       ),
     ];
   }
 
   @override
-  int getInitialSelection(BuildContext context) {
+  bool getInitialSelection(BuildContext context, int index) {
     // the initial selection is handled by the active match's setup
     var setup = Provider.of<MatchSetup>(context, listen: false);
     if (setup is TennisMatchSetup) {
       // this is correct
-      switch (setup.sets) {
-        case TennisSets.one:
-          return 0;
-        case TennisSets.three:
-          return 1;
-        case TennisSets.five:
-          return 2;
-      }
+      return setup.isSuddenDeathOnDeuce;
     }
     print('the tennis widget shouldn\'t show unless tennis is selected');
-    return 0;
+    return false;
   }
 
   @override
-  void onSelectionChanged(BuildContext context, int newSelection) {
-    // the user just selected which number of sets to play in tennis
+  void onSelectionChanged(BuildContext context, int index, bool isSelected) {
+    // the user just selected to do a sudden death instead of deuce
     var setup = Provider.of<MatchSetup>(context, listen: false);
     if (setup is TennisMatchSetup) {
-      switch (newSelection) {
-        case 0:
-          setup.sets = TennisSets.one;
-          break;
-        case 1:
-          setup.sets = TennisSets.three;
-          break;
-        case 2:
-          setup.sets = TennisSets.five;
-          break;
-      }
+      setup.isSuddenDeathOnDeuce = isSelected;
     }
   }
 }

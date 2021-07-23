@@ -51,6 +51,18 @@
     "@partner_two" : {
       "description": "The default name for this player"
     },
+    "heading_advanced": "Advanced",
+    "@heading_advanced" : {
+      "heading_advanced": "The heading to show for the more advanced sport options"
+    },
+    "team_one": "Team One",
+    "@team_one" : {
+      "description": "The default name for this team"
+    },
+    "team_two": "Team Two",
+    "@team_two" : {
+      "description": "The default name for this team"
+    },
     "title_setup_tennis": "{0} vs {1} in a {2} set match of tennis...",
     "tennis_one_set": "1 Set",
     "tennis_three_sets": "3 Sets",

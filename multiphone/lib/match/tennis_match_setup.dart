@@ -3,10 +3,15 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/team.dart';
 
-enum TENNIS_SETS { ONE, THREE, FIVE }
+enum TennisSets { one, three, five }
+enum TennisGames { four, six }
 
 class TennisMatchSetup extends MatchSetup {
-  TENNIS_SETS _sets = TENNIS_SETS.THREE;
+  TennisSets _sets = TennisSets.three;
+  TennisGames _games = TennisGames.six;
+
+  bool _isSuddenDeathOnDeuce = false;
+  bool _tieInFinalSet = false;
 
   TennisMatchSetup();
 
@@ -21,13 +26,13 @@ class TennisMatchSetup extends MatchSetup {
     ]);
   }
 
-  int setsValue(TENNIS_SETS sets) {
+  int setsValue(TennisSets sets) {
     switch (sets) {
-      case TENNIS_SETS.ONE:
+      case TennisSets.one:
         return 1;
-      case TENNIS_SETS.THREE:
+      case TennisSets.three:
         return 3;
-      case TENNIS_SETS.FIVE:
+      case TennisSets.five:
         return 5;
       default:
         return 0;
@@ -38,8 +43,49 @@ class TennisMatchSetup extends MatchSetup {
     return _sets;
   }
 
-  set sets(TENNIS_SETS sets) {
+  set sets(TennisSets sets) {
     _sets = sets;
+    // this is a change
+    notifyListeners();
+  }
+
+  int gamesValue(TennisGames games) {
+    switch (games) {
+      case TennisGames.six:
+        return 6;
+      case TennisGames.four:
+        return 4;
+      default:
+        return 0;
+    }
+  }
+
+  get games {
+    return _games;
+  }
+
+  set games(TennisGames games) {
+    _games = games;
+    // this is a change
+    notifyListeners();
+  }
+
+  bool get isSuddenDeathOnDeuce {
+    return _isSuddenDeathOnDeuce;
+  }
+
+  set isSuddenDeathOnDeuce(bool value) {
+    _isSuddenDeathOnDeuce = value;
+    // this is a change
+    notifyListeners();
+  }
+
+  bool get tieInFinalSet {
+    return _tieInFinalSet;
+  }
+
+  set tieInFinalSet(bool value) {
+    _tieInFinalSet = value;
     // this is a change
     notifyListeners();
   }
