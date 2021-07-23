@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/home_screen.dart';
-import 'package:multiphone/screens/play_match_screen.dart';
+import 'package:multiphone/screens/setup_match_screen.dart';
 import 'package:multiphone/widgets/user_details_widget.dart';
 
 class MenuItem {
@@ -26,7 +26,7 @@ class MenuItem {
         index: 1,
         icon: Icons.play_arrow,
         name: values.strings.option_play,
-        navPath: PlayMatchScreen.routeName,
+        navPath: SetupMatchScreen.routeName,
       ),
       MenuItem(
         index: 2,

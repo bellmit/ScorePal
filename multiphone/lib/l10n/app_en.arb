@@ -64,6 +64,9 @@
       "description": "The default name for this team"
     },
     "title_setup_tennis": "{0} vs {1} in a {2} set match of tennis...",
+    "title_tennis_sets": "Sets",
+    "title_tennis_games": "Games",
+    "title_tennis_points": "Points",
     "tennis_one_set": "1 Set",
     "tennis_three_sets": "3 Sets",
     "tennis_five_sets": "5 Sets",
@@ -81,6 +84,8 @@
       "description": "The title for this sport"
     },
     "title_setup_badminton": "{0} vs {1} in a {2} game match of badminton...",
+    "title_badminton_games": "Games",
+    "title_badminton_points": "Points",
     "badminton_one_game": "1 Games",
     "badminton_three_game": "3 Games",
     "badminton_five_game": "5 Games",
@@ -93,6 +98,8 @@
       "description": "The title for this sport"
     },
     "title_setup_ping_pong": "{0} vs {1} in a {2} round match of Table Tennis...",
+    "title_ping_pong_rounds": "Rounds",
+    "title_ping_pong_points": "Points",
     "ping_pong_one_round": "1 Rounds",
     "ping_pong_three_round": "3 Rounds",
     "ping_pong_five_round": "5 Rounds",

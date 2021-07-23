@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/screens/play_match_screen.dart';
+import 'package:multiphone/screens/setup_match_screen.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed(PlayMatchScreen.routeName);
+          Navigator.of(context).pushNamed(SetupMatchScreen.routeName);
         },
         child: const Icon(Icons.play_arrow),
         backgroundColor: Theme.of(context).accentColor,

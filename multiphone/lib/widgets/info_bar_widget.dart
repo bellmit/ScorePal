@@ -8,7 +8,7 @@ class InfoBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).primaryColorLight,
+      color: Theme.of(context).primaryColorDark,
       child: Container(
         margin: EdgeInsets.all(Values.default_space),
         width: double.infinity,
@@ -16,7 +16,7 @@ class InfoBarWidget extends StatelessWidget {
           title,
           style: TextStyle(
               fontSize: Values.font_size_title,
-              color: Theme.of(context).primaryColorDark),
+              color: Theme.of(context).accentColor),
         ),
       ),
     );

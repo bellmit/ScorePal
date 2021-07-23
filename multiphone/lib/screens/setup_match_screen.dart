@@ -3,9 +3,9 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/sport.dart';
-import 'package:multiphone/screens/play_match_badminton_screen.dart';
-import 'package:multiphone/screens/play_match_ping_pong_screen.dart';
-import 'package:multiphone/screens/play_match_tennis_screen.dart';
+import 'package:multiphone/widgets/badminton/play_badminton_screen.dart';
+import 'package:multiphone/widgets/pingpong/play_ping_pong_screen.dart';
+import 'package:multiphone/widgets/tennis/play_tennis_screen.dart';
 import 'package:multiphone/widgets/heading_widget.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
 import 'package:multiphone/widgets/badminton/setup_badminton_widget.dart';
@@ -15,16 +15,16 @@ import 'package:multiphone/widgets/tennis/setup_tennis_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
-class PlayMatchScreen extends StatefulWidget {
+class SetupMatchScreen extends StatefulWidget {
   static const String routeName = '/play-match';
 
-  PlayMatchScreen();
+  SetupMatchScreen();
 
   @override
-  _PlayMatchScreenState createState() => _PlayMatchScreenState();
+  _SetupMatchScreenState createState() => _SetupMatchScreenState();
 }
 
-class _PlayMatchScreenState extends State<PlayMatchScreen> {
+class _SetupMatchScreenState extends State<SetupMatchScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   Widget _createActiveMatchSetup(BuildContext context, ActiveMatch match) {
@@ -51,13 +51,13 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
     String navPath = '/';
     switch (match.sport.id) {
       case SportType.TENNIS:
-        navPath = PlayMatchTennisScreen.routeName;
+        navPath = PlayTennisScreen.routeName;
         break;
       case SportType.BADMINTON:
-        navPath = PlayMatchBadmintonScreen.routeName;
+        navPath = PlayBadmintonScreen.routeName;
         break;
       case SportType.PING_PONG:
-        navPath = PlayMatchPingPongScreen.routeName;
+        navPath = PlayPingPongScreen.routeName;
         break;
     }
     // and go here
@@ -79,7 +79,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
       ),
       drawer: SideDrawer(
           menuItems: MenuItem.mainMenuItems(context),
-          currentPath: PlayMatchScreen.routeName),
+          currentPath: SetupMatchScreen.routeName),
       body: Column(
         children: [
           const SizedBox(
