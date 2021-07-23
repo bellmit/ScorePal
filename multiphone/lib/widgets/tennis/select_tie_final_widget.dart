@@ -3,7 +3,6 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/match/tennis_match_setup.dart';
 import 'package:multiphone/widgets/select_item_checked_widget.dart';
-import 'package:multiphone/widgets/select_item_list_widget.dart';
 import 'package:multiphone/widgets/select_item_widget.dart';
 import 'package:provider/provider.dart';
 

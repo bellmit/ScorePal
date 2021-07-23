@@ -6,13 +6,13 @@ import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/providers/team.dart';
 
-enum SINGLES_DOUBLES {
-  DOUBLES,
-  SINGLES,
+enum MatchSinglesDoubles {
+  doubles,
+  singles,
 }
 
 abstract class MatchSetup with ChangeNotifier {
-  SINGLES_DOUBLES _singlesDoubles = SINGLES_DOUBLES.SINGLES;
+  MatchSinglesDoubles _singlesDoubles = MatchSinglesDoubles.singles;
 
   final List<String> _playerNames =
       List<String>.filled(PlayerIndex.values.length, '');
@@ -60,7 +60,7 @@ abstract class MatchSetup with ChangeNotifier {
   }
 
   String getTeamName(TeamIndex team, BuildContext context) {
-    if (singlesDoubles == SINGLES_DOUBLES.SINGLES) {
+    if (singlesDoubles == MatchSinglesDoubles.singles) {
       // just do the player name
       return getPlayerName(
           team == TeamIndex.T_ONE ? PlayerIndex.P_ONE : PlayerIndex.P_TWO,
@@ -77,7 +77,7 @@ abstract class MatchSetup with ChangeNotifier {
     return _singlesDoubles;
   }
 
-  set singlesDoubles(SINGLES_DOUBLES singlesDoubles) {
+  set singlesDoubles(MatchSinglesDoubles singlesDoubles) {
     _singlesDoubles = singlesDoubles;
     // this is a change
     notifyListeners();

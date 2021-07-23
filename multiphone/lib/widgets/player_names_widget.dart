@@ -153,7 +153,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
               padding: EdgeInsets.all(Values.default_space),
               child: SelectSinglesDoublesWidget(
                 onSinglesDoublesChanged: (value) =>
-                    _showPartnerNames(value == SINGLES_DOUBLES.DOUBLES),
+                    _showPartnerNames(value == MatchSinglesDoubles.doubles),
               ),
             ),
             FutureBuilder(
