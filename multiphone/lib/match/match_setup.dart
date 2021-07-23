@@ -123,6 +123,11 @@ abstract class MatchSetup with ChangeNotifier {
     return _firstServingTeam;
   }
 
+  PlayerIndex getFirstServingPlayer(TeamIndex team) {
+    // return the player that serves first for this team
+    return _firstServers[team.index];
+  }
+
   get startingServer {
     return _firstServers[_firstServingTeam.index];
   }

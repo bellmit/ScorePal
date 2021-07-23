@@ -41,6 +41,10 @@ class TennisMatchSetup extends MatchSetup {
     }
   }
 
+  static int setsTargetValue(TennisSets sets) {
+    return ((setsValue(sets) + 1.0) / 2.0).floor();
+  }
+
   static TennisSets fromSetsValue(int value) {
     switch (value) {
       case 1:
