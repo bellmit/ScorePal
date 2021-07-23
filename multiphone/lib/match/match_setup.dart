@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/badminton_match_setup.dart';
+import 'package:multiphone/match/ping_pong_match_setup.dart';
 import 'package:multiphone/match/tennis_match_setup.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/player.dart';
@@ -27,9 +29,11 @@ abstract class MatchSetup with ChangeNotifier {
     switch (match.sport.id) {
       case SportType.TENNIS:
         return TennisMatchSetup();
-        break;
       case SportType.BADMINTON:
+        return BadmintonMatchSetup();
       case SportType.PING_PONG:
+        return PingPongMatchSetup();
+      default:
         print('do the setup for the sport type of ${match.sport.id}');
         break;
     }

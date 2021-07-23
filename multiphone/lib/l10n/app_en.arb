@@ -80,9 +80,24 @@
     "@sport_badminton": {
       "description": "The title for this sport"
     },
+    "title_setup_badminton": "{0} vs {1} in a {2} game match of badminton...",
+    "badminton_one_game": "1 Games",
+    "badminton_three_game": "3 Games",
+    "badminton_five_game": "5 Games",
+    "badminton_number_points_per_game": "Points per game",
+    "badminton_eleven_points_per_game": "11 Points",
+    "badminton_fifteen_points_per_game": "15 Points",
+    "badminton_twenty_one_points_per_game": "21 Points",
     "sport_ping_pong": "Ping Pong",
     "@sport_ping_pong": {
       "description": "The title for this sport"
     },
+    "title_setup_ping_pong": "{0} vs {1} in a {2} round match of Table Tennis...",
+    "ping_pong_one_round": "1 Rounds",
+    "ping_pong_three_round": "3 Rounds",
+    "ping_pong_five_round": "5 Rounds",
+    "ping_pong_number_points_per_round": "Points per round",
+    "ping_pong_eleven_points_per_round": "11 Points",
+    "ping_pong_twenty_one_points_per_round": "21 Points",
     "error_sport_not_found": "{0} is not a valid sport to play, sorry."
 }

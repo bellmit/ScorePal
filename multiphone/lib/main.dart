@@ -8,7 +8,10 @@ import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/screens/play_match_badminton_screen.dart';
+import 'package:multiphone/screens/play_match_ping_pong_screen.dart';
 import 'package:multiphone/screens/play_match_screen.dart';
+import 'package:multiphone/screens/play_match_tennis_screen.dart';
 import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -87,6 +90,10 @@ class MyApp extends StatelessWidget {
           AuthScreen.routeName: (ctx) => AuthScreen(),
           PlayMatchScreen.routeName: (ctx) => PlayMatchScreen(),
           SettingsScreen.routeName: (ctx) => SettingsScreen(),
+          PlayMatchTennisScreen.routeName: (ctx) => PlayMatchTennisScreen(),
+          PlayMatchBadmintonScreen.routeName: (ctx) =>
+              PlayMatchBadmintonScreen(),
+          PlayMatchPingPongScreen.routeName: (ctx) => PlayMatchPingPongScreen(),
         },
       ),
     );

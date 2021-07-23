@@ -3,6 +3,9 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/sport.dart';
+import 'package:multiphone/screens/play_match_badminton_screen.dart';
+import 'package:multiphone/screens/play_match_ping_pong_screen.dart';
+import 'package:multiphone/screens/play_match_tennis_screen.dart';
 import 'package:multiphone/widgets/heading_widget.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
 import 'package:multiphone/widgets/setup_badminton_widget.dart';
@@ -39,6 +42,26 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
       values.strings.error_sport_not_found,
       [match.sport.title(context)],
     ));
+  }
+
+  void _startMatch() {
+    // start playing the selected match then, just get the match as-is
+    final match = Provider.of<ActiveMatch>(context, listen: false);
+    // and navigate to the correct screen
+    String navPath = '/';
+    switch (match.sport.id) {
+      case SportType.TENNIS:
+        navPath = PlayMatchTennisScreen.routeName;
+        break;
+      case SportType.BADMINTON:
+        navPath = PlayMatchBadmintonScreen.routeName;
+        break;
+      case SportType.PING_PONG:
+        navPath = PlayMatchPingPongScreen.routeName;
+        break;
+    }
+    // and go here
+    Navigator.of(context).pushNamed(navPath);
   }
 
   @override
@@ -84,7 +107,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
               },
               // the child of the consumer always is there, make it the play button
               child: IconButton(
-                onPressed: () {},
+                onPressed: _startMatch,
                 color: Theme.of(context).primaryColorDark,
                 iconSize: Values.image_large,
                 icon: Icon(

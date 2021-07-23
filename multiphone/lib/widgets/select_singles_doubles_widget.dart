@@ -6,7 +6,7 @@ import 'package:multiphone/widgets/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectSinglesDoublesWidget extends SelectItemListWidget {
-  final Function(SINGLES_DOUBLES) onSinglesDoublesChanged;
+  final Function(MatchSinglesDoubles) onSinglesDoublesChanged;
   const SelectSinglesDoublesWidget({Key key, this.onSinglesDoublesChanged})
       : super(
           key: key,
@@ -35,9 +35,9 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
     // the initial selection is handled by the active match's setup
     var setup = Provider.of<MatchSetup>(context, listen: false);
     switch (setup.singlesDoubles) {
-      case SINGLES_DOUBLES.SINGLES:
+      case MatchSinglesDoubles.singles:
         return 0;
-      case SINGLES_DOUBLES.DOUBLES:
+      case MatchSinglesDoubles.doubles:
         return 1;
     }
     return 0;
@@ -49,10 +49,10 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
     var setup = Provider.of<MatchSetup>(context, listen: false);
     switch (newSelection) {
       case 0:
-        setup.singlesDoubles = SINGLES_DOUBLES.SINGLES;
+        setup.singlesDoubles = MatchSinglesDoubles.singles;
         break;
       case 1:
-        setup.singlesDoubles = SINGLES_DOUBLES.DOUBLES;
+        setup.singlesDoubles = MatchSinglesDoubles.doubles;
         break;
     }
     if (null != onSinglesDoublesChanged) {
