@@ -61,6 +61,12 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
         .setPlayerName(playerIndex, playerName);
   }
 
+  void _onServerSelected(PlayerIndex playerIndex) {
+    // update the starting server in the settings
+    Provider.of<MatchSetup>(context, listen: false).startingServer =
+        playerIndex;
+  }
+
   Widget _createPlayerEntries(List<Contact> contacts) {
     return Column(
       children: [
@@ -69,6 +75,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
           hintText: Values(context).strings.player_one,
           onTextChanged: (newName) =>
               _onPlayerNameChanged(newName, PlayerIndex.P_ONE),
+          onPlayerSelectedToServe: () => _onServerSelected(PlayerIndex.P_ONE),
           availableOpponents: contacts,
         ),
         AnimatedContainer(
@@ -85,6 +92,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                 hintText: Values(context).strings.partner_one,
                 onTextChanged: (newName) =>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_ONE),
+                onPlayerSelectedToServe: () =>
+                    _onServerSelected(PlayerIndex.PT_ONE),
                 availableOpponents: contacts,
               ),
             ),
@@ -95,6 +104,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
           hintText: Values(context).strings.player_two,
           onTextChanged: (newName) =>
               _onPlayerNameChanged(newName, PlayerIndex.P_TWO),
+          onPlayerSelectedToServe: () => _onServerSelected(PlayerIndex.P_TWO),
           availableOpponents: contacts,
         ),
         AnimatedContainer(
@@ -111,6 +121,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                 hintText: Values(context).strings.partner_two,
                 onTextChanged: (newName) =>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_TWO),
+                onPlayerSelectedToServe: () =>
+                    _onServerSelected(PlayerIndex.PT_TWO),
                 availableOpponents: contacts,
               ),
             ),

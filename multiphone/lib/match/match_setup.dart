@@ -19,6 +19,8 @@ abstract class MatchSetup with ChangeNotifier {
   final List<String> _playerNames =
       List<String>.filled(PlayerIndex.values.length, '');
 
+  PlayerIndex _startingServer = PlayerIndex.P_ONE;
+
   MatchSetup();
 
   // need to create the proper one for the active match as it changes
@@ -47,18 +49,25 @@ abstract class MatchSetup with ChangeNotifier {
   }
 
   String getPlayerName(PlayerIndex player, BuildContext context) {
-    final String name = _playerNames[player.index];
+    String name = _playerNames[player.index];
     if (name == null || name.isEmpty) {
       switch (player) {
         case PlayerIndex.P_ONE:
-          return Values(context).strings.player_one;
+          name = Values(context).strings.player_one;
+          break;
         case PlayerIndex.P_TWO:
-          return Values(context).strings.player_two;
+          name = Values(context).strings.player_two;
+          break;
         case PlayerIndex.PT_ONE:
-          return Values(context).strings.partner_one;
+          name = Values(context).strings.partner_one;
+          break;
         case PlayerIndex.PT_TWO:
-          return Values(context).strings.partner_two;
+          name = Values(context).strings.partner_two;
+          break;
       }
+    }
+    if (_startingServer == player) {
+      name += ' (*)';
     }
     return name;
   }
@@ -75,6 +84,16 @@ abstract class MatchSetup with ChangeNotifier {
     } else {
       return '${getPlayerName(PlayerIndex.P_TWO, context)} / ${getPlayerName(PlayerIndex.PT_TWO, context)}';
     }
+  }
+
+  get startingServer {
+    return _startingServer;
+  }
+
+  set startingServer(PlayerIndex server) {
+    _startingServer = server;
+    // this is a change
+    notifyListeners();
   }
 
   get singlesDoubles {

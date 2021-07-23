@@ -4,6 +4,7 @@ import 'package:multiphone/helpers/values.dart';
 
 class PlayerNameWidget extends StatefulWidget {
   final void Function(String) onTextChanged;
+  final void Function() onPlayerSelectedToServe;
   final List<Contact> availableOpponents;
   final String hintText;
 
@@ -11,7 +12,8 @@ class PlayerNameWidget extends StatefulWidget {
     Key key,
     @required this.hintText,
     @required this.availableOpponents,
-    this.onTextChanged,
+    @required this.onPlayerSelectedToServe,
+    @required this.onTextChanged,
   }) : super(key: key);
 
   @override
@@ -51,7 +53,7 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
 
   void _onContactSelected(Contact contact) {
     // release the focus when selected a name (text changed will also be called)
-    _focusNode.nextFocus();
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   bool _isContactMatch(Contact contact, String text) {
@@ -81,71 +83,94 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
     return false;
   }
 
+  Widget _createAutoComplete(BuildContext context) {
+    return RawAutocomplete<Contact>(
+      key: _autocompleteKey,
+      focusNode: _focusNode,
+      textEditingController: _textEditingController,
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (widget.availableOpponents == null ||
+            widget.availableOpponents.isEmpty) {
+          return <Contact>[];
+        }
+        // else, search for the contacts that fit what the user is typing
+        return widget.availableOpponents
+            .where((Contact contact) =>
+                _isContactMatch(contact, textEditingValue.text))
+            .toList();
+      },
+      displayStringForOption: (Contact contact) => contact.displayName,
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController fieldTextEditingController,
+          FocusNode fieldFocusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextField(
+          controller: fieldTextEditingController,
+          focusNode: fieldFocusNode,
+          //style: const TextStyle(fontWeight: FontWeight.bold),
+          decoration: InputDecoration(
+            hintText: widget.hintText,
+          ),
+        );
+      },
+      onSelected: (Contact selection) {
+        _onContactSelected(selection);
+      },
+      optionsViewBuilder: (BuildContext context,
+          AutocompleteOnSelected<Contact> onSelected,
+          Iterable<Contact> options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            child: Container(
+              width: 300,
+              color: Theme.of(context).primaryColorLight,
+              child: ListView.builder(
+                padding: EdgeInsets.all(Values.default_space),
+                itemCount: options.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final Contact contact = options.elementAt(index);
+                  return GestureDetector(
+                    onTap: () {
+                      onSelected(contact);
+                    },
+                    child: ListTile(
+                      leading: contact.thumbnail != null
+                          ? Image.memory(contact.thumbnail)
+                          : Icon(Icons.person),
+                      title: Text(contact.displayName),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(15.0),
-      child: RawAutocomplete<Contact>(
-        key: _autocompleteKey,
-        focusNode: _focusNode,
-        textEditingController: _textEditingController,
-        optionsBuilder: (TextEditingValue textEditingValue) {
-          if (widget.availableOpponents == null ||
-              widget.availableOpponents.isEmpty) {
-            return <Contact>[];
-          }
-          // else, search for the contacts that fit what the user is typing
-          return widget.availableOpponents
-              .where((Contact contact) =>
-                  _isContactMatch(contact, textEditingValue.text))
-              .toList();
-        },
-        displayStringForOption: (Contact contact) => contact.displayName,
-        fieldViewBuilder: (BuildContext context,
-            TextEditingController fieldTextEditingController,
-            FocusNode fieldFocusNode,
-            VoidCallback onFieldSubmitted) {
-          return TextField(
-            controller: fieldTextEditingController,
-            focusNode: fieldFocusNode,
-            //style: const TextStyle(fontWeight: FontWeight.bold),
-            decoration: InputDecoration(hintText: widget.hintText),
-          );
-        },
-        onSelected: (Contact selection) {
-          _onContactSelected(selection);
-        },
-        optionsViewBuilder: (BuildContext context,
-            AutocompleteOnSelected<Contact> onSelected,
-            Iterable<Contact> options) {
-          return Align(
-            alignment: Alignment.topLeft,
-            child: Material(
-              child: Container(
-                width: 300,
-                color: Theme.of(context).primaryColorLight,
-                child: ListView.builder(
-                  padding: EdgeInsets.all(Values.default_space),
-                  itemCount: options.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final Contact contact = options.elementAt(index);
-                    return GestureDetector(
-                      onTap: () {
-                        onSelected(contact);
-                      },
-                      child: ListTile(
-                        leading: contact.thumbnail != null
-                            ? Image.memory(contact.thumbnail)
-                            : Icon(Icons.person),
-                        title: Text(contact.displayName),
-                      ),
-                    );
-                  },
-                ),
-              ),
+      padding: EdgeInsets.all(Values.default_space),
+      child: Row(
+        children: [
+          Expanded(
+            child: _createAutoComplete(context),
+          ),
+          IconButton(
+            onPressed: () {
+              // close the keyboard then please
+              FocusScope.of(context).requestFocus(FocusNode());
+              // and inform the widget this was pressed
+              widget.onPlayerSelectedToServe();
+            },
+            icon: Icon(
+              Icons.play_for_work,
             ),
-          );
-        },
+          )
+        ],
       ),
     );
   }
