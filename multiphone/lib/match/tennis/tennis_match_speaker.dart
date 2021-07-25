@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/points/point.dart';
-import 'package:multiphone/match/points/tennis_point.dart';
-import 'package:multiphone/match/tennis_match.dart';
-import 'package:multiphone/match/tennis_match_setup.dart';
-import 'package:multiphone/match/tennis_score.dart';
-import 'package:multiphone/match/ui/match_speaker.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/point.dart';
+import 'package:multiphone/match/tennis/tennis_point.dart';
+import 'package:multiphone/match/tennis/tennis_match.dart';
+import 'package:multiphone/match/tennis/tennis_match_setup.dart';
+import 'package:multiphone/match/tennis/tennis_score.dart';
+import 'package:multiphone/match/match_speaker.dart';
 
 class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
   @override

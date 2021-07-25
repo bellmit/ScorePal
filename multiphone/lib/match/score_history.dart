@@ -2,7 +2,7 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:multiphone/helpers/class_stack.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 
 enum Importance {
   LOW,

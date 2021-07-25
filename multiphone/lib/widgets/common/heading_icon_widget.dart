@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/heading_widget.dart';
+import 'package:multiphone/widgets/common/heading_widget.dart';
 
 class HeadingIconWidget extends StatelessWidget {
   final String title;

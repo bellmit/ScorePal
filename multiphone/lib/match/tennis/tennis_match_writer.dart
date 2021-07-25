@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/points/point.dart';
-import 'package:multiphone/match/tennis_match.dart';
-import 'package:multiphone/match/tennis_match_setup.dart';
-import 'package:multiphone/match/tennis_score.dart';
-import 'package:multiphone/match/ui/match_writer.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/point.dart';
+import 'package:multiphone/match/tennis/tennis_match.dart';
+import 'package:multiphone/match/tennis/tennis_match_setup.dart';
+import 'package:multiphone/match/tennis/tennis_score.dart';
+import 'package:multiphone/match/match_writer.dart';
 
 class TennisMatchWriter extends MatchWriter<TennisMatch> {
   @override

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/tennis_match_setup.dart';
-import 'package:multiphone/widgets/select_item_checked_widget.dart';
-import 'package:multiphone/widgets/select_item_widget.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/tennis/tennis_match_setup.dart';
+import 'package:multiphone/widgets/common/select_item_checked_widget.dart';
+import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
@@ -28,7 +28,7 @@ class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
   @override
   bool getInitialSelection(BuildContext context, int index) {
     // the initial selection is handled by the active match's setup
-    var setup = Provider.of<MatchSetup>(context, listen: false);
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
     if (setup is TennisMatchSetup) {
       // this is correct
       return setup.isSuddenDeathOnDeuce;
@@ -40,7 +40,7 @@ class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
   @override
   void onSelectionChanged(BuildContext context, int index, bool isSelected) {
     // the user just selected to do a sudden death instead of deuce
-    var setup = Provider.of<MatchSetup>(context, listen: false);
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
     if (setup is TennisMatchSetup) {
       setup.isSuddenDeathOnDeuce = isSelected;
     }

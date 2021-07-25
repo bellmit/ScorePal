@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/info_bar_widget.dart';
+import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_names_widget.dart';
 import 'package:multiphone/widgets/badminton/select_games_widget.dart';
 import 'package:multiphone/widgets/badminton/select_points_widget.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/widgets/select_item_list_widget.dart';
-import 'package:multiphone/widgets/select_item_widget.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/widgets/common/select_item_list_widget.dart';
+import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectSinglesDoublesWidget extends SelectItemListWidget {
@@ -33,7 +33,7 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
   @override
   int getInitialSelection(BuildContext context) {
     // the initial selection is handled by the active match's setup
-    var setup = Provider.of<MatchSetup>(context, listen: false);
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
     switch (setup.singlesDoubles) {
       case MatchSinglesDoubles.singles:
         return 0;
@@ -46,7 +46,7 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
   @override
   void onSelectionChanged(BuildContext context, int newSelection) {
     // the user just selected which number of SinglesDoubles to play
-    var setup = Provider.of<MatchSetup>(context, listen: false);
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
     switch (newSelection) {
       case 0:
         setup.singlesDoubles = MatchSinglesDoubles.singles;

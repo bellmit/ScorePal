@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';
 
 enum PingPongRounds { one, three, five, seven, nine }
@@ -8,7 +8,7 @@ enum PingPongPoints { eleven, twenty_one }
 enum PingPongExpeditePoints { eighteen }
 enum PingPongExpediteMinutes { ten }
 
-class PingPongMatchSetup extends MatchSetup {
+class PingPongMatchSetup extends ActiveSetup {
   PingPongRounds _rounds = PingPongRounds.three;
   PingPongPoints _points = PingPongPoints.eleven;
   PingPongExpeditePoints _expeditePoints = PingPongExpeditePoints.eighteen;

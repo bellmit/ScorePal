@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/match/active_match.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';
 
 class ActiveSelection with ChangeNotifier {
   Sport _sport;
-  MatchSetup _setup;
+  ActiveSetup _setup;
   ActiveMatch _match;
 
   ActiveSelection(Sports sports) {

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/player.dart';
-import 'package:multiphone/widgets/info_bar_widget.dart';
+import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_name_widget.dart';
 import 'package:multiphone/widgets/select_singles_doubles_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -57,13 +57,13 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
 
   void _onPlayerNameChanged(String playerName, PlayerIndex playerIndex) {
     // update the player name in the settings
-    Provider.of<MatchSetup>(context, listen: false)
+    Provider.of<ActiveSetup>(context, listen: false)
         .setPlayerName(playerIndex, playerName);
   }
 
   void _onServerSelected(PlayerIndex playerIndex) {
     // update the starting server in the settings
-    Provider.of<MatchSetup>(context, listen: false).startingServer =
+    Provider.of<ActiveSetup>(context, listen: false).startingServer =
         playerIndex;
   }
 

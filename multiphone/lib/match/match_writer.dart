@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/active_match.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/points/point.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/point.dart';
 import 'package:multiphone/match/score_state.dart';
 
 enum DescriptionLevel {
@@ -60,7 +60,7 @@ class MatchWriter<T extends ActiveMatch> {
   }
 
   String getDescriptionShort(T match, BuildContext context) {
-    MatchSetup setup = match == null ? null : match.getSetup();
+    ActiveSetup setup = match == null ? null : match.getSetup();
     if (null == setup || null == match || null == context) {
       return "";
     }
@@ -82,7 +82,7 @@ class MatchWriter<T extends ActiveMatch> {
 
   String getDescriptionLong(T match, BuildContext context) {
     // return a nice description
-    MatchSetup setup = match == null ? null : match.getSetup();
+    ActiveSetup setup = match == null ? null : match.getSetup();
     if (null == setup || null == match || null == context) {
       return "";
     }
@@ -111,7 +111,7 @@ class MatchWriter<T extends ActiveMatch> {
   }
 
   String getScoreString(T match, BuildContext context) {
-    MatchSetup setup = match.getSetup();
+    ActiveSetup setup = match.getSetup();
     // get the lowest score currently being played
     Point teamOnePoint, teamTwoPoint;
     int level = 0;
@@ -170,7 +170,7 @@ class MatchWriter<T extends ActiveMatch> {
         break;
       }
     }
-    MatchSetup setup = match.getSetup();
+    ActiveSetup setup = match.getSetup();
     return Values(context)
         .construct(Values(context).strings.scoreSummaryOneLine, [
       setup.getTeamName(TeamIndex.T_ONE, context),
@@ -184,7 +184,7 @@ class MatchWriter<T extends ActiveMatch> {
     if (null == context) {
       return "";
     }
-    MatchSetup setup = match.getSetup();
+    ActiveSetup setup = match.getSetup();
     // get the lowest score currently being played
     Point teamOnePoint, teamTwoPoint;
     for (int i = 0; i < match.getScoreLevels(); ++i) {
@@ -236,7 +236,7 @@ class MatchWriter<T extends ActiveMatch> {
       }
     }
     // and the team names
-    MatchSetup setup = match.getSetup();
+    ActiveSetup setup = match.getSetup();
     String teamName = setup.getTeamName(TeamIndex.T_ONE, context);
     if (teamName.length > 20) {
       teamName = teamName.substring(0, 19) + "...";

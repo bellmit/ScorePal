@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/badminton_match_setup.dart';
-import 'package:multiphone/widgets/select_item_list_widget.dart';
-import 'package:multiphone/widgets/select_item_widget.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/badminton/badminton_match_setup.dart';
+import 'package:multiphone/widgets/common/select_item_list_widget.dart';
+import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectGamesWidget extends SelectItemListWidget {
@@ -38,7 +38,7 @@ class SelectGamesWidget extends SelectItemListWidget {
   @override
   int getInitialSelection(BuildContext context) {
     // the initial selection is handled by the active match's setup
-    var setup = Provider.of<MatchSetup>(context, listen: false);
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
     if (setup is BadmintonMatchSetup) {
       // this is correct
       switch (setup.games) {
@@ -57,7 +57,7 @@ class SelectGamesWidget extends SelectItemListWidget {
   @override
   void onSelectionChanged(BuildContext context, int newSelection) {
     // the user just selected which number of games to play in badminton
-    var setup = Provider.of<MatchSetup>(context, listen: false);
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
     if (setup is BadmintonMatchSetup) {
       switch (newSelection) {
         case 0:

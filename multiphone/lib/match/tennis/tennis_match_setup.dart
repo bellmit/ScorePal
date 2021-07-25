@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';
 
 enum TennisSets { one, three, five }
 enum TennisGames { four, six }
 
-class TennisMatchSetup extends MatchSetup {
+class TennisMatchSetup extends ActiveSetup {
   TennisSets _sets = TennisSets.three;
   TennisGames _games = TennisGames.six;
 

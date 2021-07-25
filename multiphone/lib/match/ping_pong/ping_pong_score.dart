@@ -1,5 +1,5 @@
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/ping_pong_match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
 import 'package:multiphone/match/score.dart';
 import 'package:multiphone/providers/player.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/active_match.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/points/point.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/point.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,7 @@ class MatchSpeaker<T extends ActiveMatch> {
 
   String createPointsPhrase(
       T match, BuildContext context, TeamIndex team, int level) {
-    MatchSetup setup = match.getSetup();
+    ActiveSetup setup = match.getSetup();
 
     TeamIndex otherTeam = setup.getOtherTeam(team);
     // formulate the message
@@ -48,7 +48,7 @@ class MatchSpeaker<T extends ActiveMatch> {
   }
 
   static String getSpeakingTeamName(
-      BuildContext context, MatchSetup setup, TeamIndex team) {
+      BuildContext context, ActiveSetup setup, TeamIndex team) {
     Preferences preferences = Provider.of<Preferences>(context, listen: false);
     if (preferences.soundUseSpeakingNames) {
       // use the player's names to speak
@@ -75,7 +75,7 @@ class MatchSpeaker<T extends ActiveMatch> {
   }
 
   static String getSpeakingPlayerName(
-      BuildContext context, MatchSetup setup, PlayerIndex player) {
+      BuildContext context, ActiveSetup setup, PlayerIndex player) {
     Preferences preferences = Provider.of<Preferences>(context, listen: false);
     if (preferences.soundUseSpeakingNames) {
       // use the player's names to speak
@@ -105,7 +105,7 @@ class MatchSpeaker<T extends ActiveMatch> {
     Preferences preferences = Provider.of<Preferences>(context, listen: false);
     // now handle the changes here to announce what happened
     String spokenMessage = '';
-    MatchSetup setup = match.getSetup();
+    ActiveSetup setup = match.getSetup();
     if (preferences.soundButtonClick) {
       //TODO the click of the button
     }

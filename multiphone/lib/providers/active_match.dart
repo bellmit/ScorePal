@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/match/match_id.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/points/point.dart';
-import 'package:multiphone/match/points/simple_point.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/point.dart';
 import 'package:multiphone/match/score.dart';
 import 'package:multiphone/match/score_history.dart';
-import 'package:multiphone/match/ui/match_speaker.dart';
-import 'package:multiphone/match/ui/match_writer.dart';
+import 'package:multiphone/match/match_speaker.dart';
+import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 
-abstract class ActiveMatch<TSetup extends MatchSetup, TScore extends Score>
+abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     with ChangeNotifier {
   TScore _score;
   TSetup _setup;

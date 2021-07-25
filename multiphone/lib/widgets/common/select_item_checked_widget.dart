@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/select_item_widget.dart';
+import 'package:multiphone/widgets/common/select_item_widget.dart';
 
 abstract class SelectItemCheckedWidget extends StatefulWidget {
   final double itemSize;

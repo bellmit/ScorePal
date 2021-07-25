@@ -1,5 +1,5 @@
-import 'package:multiphone/match/badminton_match_setup.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/match/badminton/badminton_match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/score.dart';
 import 'package:multiphone/match/score_state.dart';
 

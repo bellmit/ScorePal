@@ -1,33 +1,33 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/points/point.dart';
+import 'package:multiphone/match/point.dart';
 
-class BadmintonPoint implements Point {
-  static final zero = BadmintonPoint(
+class PingPongPoint implements Point {
+  static final zero = PingPongPoint(
     0,
     (context) => Values(context).strings.display_zero,
     (context) => Values(context).strings.speak_zero,
     (context) => Values(context).strings.speak_zeros,
   );
-  static final game = BadmintonPoint(
+  static final round = PingPongPoint(
     -1,
-    (context) => Values(context).strings.display_game,
-    (context) => Values(context).strings.speak_game,
-    (context) => Values(context).strings.speak_games,
+    (context) => Values(context).strings.display_round,
+    (context) => Values(context).strings.speak_round,
+    (context) => Values(context).strings.speak_rounds,
   );
-  static final point = BadmintonPoint(
+  static final point = PingPongPoint(
     -2,
     (context) => Values(context).strings.points,
     (context) => Values(context).strings.speak_point,
     (context) => Values(context).strings.speak_points,
   );
-  static final match = BadmintonPoint(
+  static final match = PingPongPoint(
     -3,
     (context) => Values(context).strings.display_match,
     (context) => Values(context).strings.speak_match,
     (context) => Values(context).strings.speak_match,
   );
-  static final deuce = BadmintonPoint(
+  static final deuce = PingPongPoint(
     -4,
     (context) => Values(context).strings.display_deuce,
     (context) => Values(context).strings.speak_deuce,
@@ -39,7 +39,7 @@ class BadmintonPoint implements Point {
   final String Function(BuildContext) speakStrId;
   final String Function(BuildContext) speakStrPluralId;
 
-  BadmintonPoint(
+  PingPongPoint(
     this.value,
     this.displayStrId,
     this.speakStrId,

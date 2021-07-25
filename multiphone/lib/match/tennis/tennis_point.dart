@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/points/point.dart';
-import 'package:multiphone/match/points/simple_point.dart';
+import 'package:multiphone/match/point.dart';
 
 class TennisPoint implements Point {
   static final love = TennisPoint(

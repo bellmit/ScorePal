@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/player.dart';
 
 enum TeamNamingMode {
@@ -14,7 +14,7 @@ enum TeamNamingMode {
 class TeamNamer {
   static const TEAM_SEP = ' -- ';
 
-  final MatchSetup _setup;
+  final ActiveSetup _setup;
   TeamNamingMode _currentMode = TeamNamingMode.SURNAME_INITIAL;
 
   TeamNamer(this._setup) {

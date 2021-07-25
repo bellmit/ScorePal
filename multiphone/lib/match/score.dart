@@ -1,11 +1,11 @@
 import 'dart:core';
 
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/score_history.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/player.dart';
 
-abstract class Score<S extends MatchSetup> {
+abstract class Score<S extends ActiveSetup> {
   static const invalidPoint = -1;
   static const clearPoint = 0;
 

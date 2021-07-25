@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/active_match.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           update: (ctx, sports, previousMatch) => ActiveSelection(sports),
           create: (ctx) => ActiveSelection(null),
         ),
-        ChangeNotifierProxyProvider<ActiveSelection, MatchSetup>(
+        ChangeNotifierProxyProvider<ActiveSelection, ActiveSetup>(
           // this proxy is called after the specified active match object is build
           update: (ctx, activeMatch, previousSetup) =>
               // create the correct match setup from the sport
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           // create an empty one initially - needs the active match setting
           create: (ctx) => null,
         ),
-        ChangeNotifierProxyProvider<MatchSetup, ActiveMatch>(
+        ChangeNotifierProxyProvider<ActiveSetup, ActiveMatch>(
             update: (ctx, setup, previousMatch) {
           // leave the match alone, but update it
           previousMatch.applyChangedMatchSettings();

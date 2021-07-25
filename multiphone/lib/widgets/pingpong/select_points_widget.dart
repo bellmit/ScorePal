@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/ping_pong_match_setup.dart';
-import 'package:multiphone/widgets/select_item_list_widget.dart';
-import 'package:multiphone/widgets/select_item_widget.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
+import 'package:multiphone/widgets/common/select_item_list_widget.dart';
+import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectPointsWidget extends SelectItemListWidget {
@@ -33,7 +33,7 @@ class SelectPointsWidget extends SelectItemListWidget {
   @override
   int getInitialSelection(BuildContext context) {
     // the initial selection is handled by the active match's setup
-    var setup = Provider.of<MatchSetup>(context, listen: false);
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
     if (setup is PingPongMatchSetup) {
       // this is correct
       switch (setup.points) {
@@ -50,7 +50,7 @@ class SelectPointsWidget extends SelectItemListWidget {
   @override
   void onSelectionChanged(BuildContext context, int newSelection) {
     // the user just selected which number of sets to play in pingpong
-    var setup = Provider.of<MatchSetup>(context, listen: false);
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
     if (setup is PingPongMatchSetup) {
       switch (newSelection) {
         case 0:

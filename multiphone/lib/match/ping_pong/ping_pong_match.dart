@@ -1,12 +1,11 @@
 import 'package:async/async.dart';
-import 'package:multiphone/match/active_match.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/ping_pong_match_setup.dart';
-import 'package:multiphone/match/ping_pong_score.dart';
-import 'package:multiphone/match/points/point.dart';
-import 'package:multiphone/match/points/simple_point.dart';
-import 'package:multiphone/match/ui/ping_pong_match_speaker.dart';
-import 'package:multiphone/match/ui/ping_pong_match_writer.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_score.dart';
+import 'package:multiphone/match/point.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_match_speaker.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_match_writer.dart';
 
 class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
   bool _expediteMinutesElapsed = false;

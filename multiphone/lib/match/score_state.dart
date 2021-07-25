@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 
 class ScoreChange {
   static final none = ScoreChange(0);

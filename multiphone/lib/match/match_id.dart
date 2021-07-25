@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:multiphone/match/active_match.dart';
+import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/sport.dart';
 
 class MatchId {

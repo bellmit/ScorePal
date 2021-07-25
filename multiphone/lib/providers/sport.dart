@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/badminton_match.dart';
-import 'package:multiphone/match/badminton_match_setup.dart';
-import 'package:multiphone/match/active_match.dart';
-import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/match/ping_pong_match.dart';
-import 'package:multiphone/match/ping_pong_match_setup.dart';
-import 'package:multiphone/match/tennis_match.dart';
-import 'package:multiphone/match/tennis_match_setup.dart';
+import 'package:multiphone/match/badminton/badminton_match.dart';
+import 'package:multiphone/match/badminton/badminton_match_setup.dart';
+import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_match.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
+import 'package:multiphone/match/tennis/tennis_match.dart';
+import 'package:multiphone/match/tennis/tennis_match_setup.dart';
 import 'package:multiphone/widgets/badminton/play_badminton_screen.dart';
 import 'package:multiphone/widgets/badminton/setup_badminton_widget.dart';
 import 'package:multiphone/widgets/pingpong/play_ping_pong_screen.dart';
@@ -30,8 +30,8 @@ class Sport {
   final String image;
   final String playNavPath;
   final Widget Function(BuildContext) createSetupWidget;
-  final MatchSetup Function() createSetup;
-  final ActiveMatch Function(MatchSetup) createMatch;
+  final ActiveSetup Function() createSetup;
+  final ActiveMatch Function(ActiveSetup) createMatch;
 
   const Sport({
     @required this.type,

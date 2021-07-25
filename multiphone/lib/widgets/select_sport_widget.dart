@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/sport.dart';
-import 'package:multiphone/widgets/select_item_list_widget.dart';
-import 'package:multiphone/widgets/select_item_widget.dart';
+import 'package:multiphone/widgets/common/select_item_list_widget.dart';
+import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectSportWidget extends SelectItemListWidget {

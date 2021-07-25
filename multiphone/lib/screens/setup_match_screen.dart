@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_setup.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/active_selection.dart';
-import 'package:multiphone/widgets/heading_widget.dart';
+import 'package:multiphone/widgets/common/heading_widget.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
-import 'package:multiphone/widgets/subheading_widget.dart';
+import 'package:multiphone/widgets/common/subheading_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +57,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             height: Values.default_space,
           ),
           Card(
-            child: Consumer<MatchSetup>(
+            child: Consumer<ActiveSetup>(
               builder: (ctx, matchSetup, child) {
                 // this changes as the active match changes
                 return Row(

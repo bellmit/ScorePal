@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/team_namer.dart';
+import 'package:multiphone/match/team_namer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences with ChangeNotifier {

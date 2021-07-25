@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/team_namer.dart';
+import 'package:multiphone/match/team_namer.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 
@@ -13,7 +13,7 @@ enum TeamIndex {
   T_TWO,
 }
 
-abstract class MatchSetup with ChangeNotifier {
+abstract class ActiveSetup with ChangeNotifier {
   MatchSinglesDoubles _singlesDoubles = MatchSinglesDoubles.singles;
 
   final List<String> _playerNames =
@@ -28,7 +28,7 @@ abstract class MatchSetup with ChangeNotifier {
     PlayerIndex.P_TWO
   ];
 
-  MatchSetup(this.sport) {
+  ActiveSetup(this.sport) {
     _teamNamer = TeamNamer(this);
   }
 
@@ -40,11 +40,11 @@ abstract class MatchSetup with ChangeNotifier {
     };
   }
 
-  static MatchSetup createFromJson(Map<String, Object> topLevel) {
+  static ActiveSetup createFromJson(Map<String, Object> topLevel) {
     // what is this, get the sport from the JSON object;
     Sport sport = Sports.find(topLevel['sport'] as int);
     // and create the setup for this
-    MatchSetup setup = sport.createSetup();
+    ActiveSetup setup = sport.createSetup();
     // set our data from this data under the top level
     setup.setData(topLevel['data']);
     // and return this now it's setup properly
