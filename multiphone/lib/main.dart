@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/active_match.dart';
 import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/screens/auth_screen.dart';
@@ -37,19 +38,28 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (ctx) => Players()),
         ChangeNotifierProvider(create: (ctx) => Sports()),
-        ChangeNotifierProxyProvider<Sports, ActiveMatch>(
+        ChangeNotifierProxyProvider<Sports, ActiveSelection>(
           // this proxy is called after the specified sports object is build
-          update: (ctx, sports, previousMatch) => ActiveMatch(sports),
-          create: (ctx) => ActiveMatch(null),
+          update: (ctx, sports, previousMatch) => ActiveSelection(sports),
+          create: (ctx) => ActiveSelection(null),
         ),
-        ChangeNotifierProxyProvider<ActiveMatch, MatchSetup>(
+        ChangeNotifierProxyProvider<ActiveSelection, MatchSetup>(
           // this proxy is called after the specified active match object is build
           update: (ctx, activeMatch, previousSetup) =>
-              // create the correct matchsetup from the sport
-              MatchSetup.create(activeMatch),
+              // create the correct match setup from the sport
+              activeMatch.sport.createSetup(),
           // create an empty one initially - needs the active match setting
-          create: (ctx) => MatchSetup.create(null),
+          create: (ctx) => null,
         ),
+        ChangeNotifierProxyProvider<MatchSetup, ActiveMatch>(
+            update: (ctx, setup, previousMatch) {
+          // leave the match alone, but update it
+          previousMatch.applyChangedMatchSettings();
+          return previousMatch;
+        }, create: (ctx) {
+          // we are wanting to create a new match each time the setup changes?
+          return Provider.of<ActiveSelection>(ctx, listen: false).startMatch();
+        }),
       ],
       child: MaterialApp(
         onGenerateTitle: (ctx) => Values(ctx).strings.title,

@@ -12,7 +12,7 @@ class BadmintonMatchSetup extends MatchSetup {
   BadmintonPoints _points = BadmintonPoints.twenty_one;
   BadmintonDecider _decidingPoint = BadmintonDecider.twenty_nine;
 
-  BadmintonMatchSetup(Sport sport) : super(sport);
+  BadmintonMatchSetup() : super(Sports.sport(SportType.BADMINTON));
 
   @override
   String matchSummary(BuildContext context) {
@@ -132,7 +132,7 @@ class BadmintonMatchSetup extends MatchSetup {
     ];
   }
 
-  get decidingPoint {
+  BadmintonDecider get decidingPoint {
     return _decidingPoint;
   }
 
@@ -144,7 +144,7 @@ class BadmintonMatchSetup extends MatchSetup {
     }
   }
 
-  get games {
+  BadmintonGames get games {
     return _games;
   }
 
@@ -156,7 +156,7 @@ class BadmintonMatchSetup extends MatchSetup {
     }
   }
 
-  get points {
+  BadmintonPoints get points {
     return _points;
   }
 

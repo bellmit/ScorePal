@@ -15,7 +15,7 @@ class TennisMatchSetup extends MatchSetup {
   // this is the game at which to play a tie in the final set
   int _finalSetTieGame = 0;
 
-  TennisMatchSetup(Sport sport) : super(sport);
+  TennisMatchSetup() : super(Sports.sport(SportType.TENNIS));
 
   @override
   String matchSummary(BuildContext context) {
@@ -102,7 +102,7 @@ class TennisMatchSetup extends MatchSetup {
     _isSuddenDeathOnDeuce = data['deuceDeath'];
   }
 
-  get sets {
+  TennisSets get sets {
     return _sets;
   }
 
@@ -112,7 +112,7 @@ class TennisMatchSetup extends MatchSetup {
     notifyListeners();
   }
 
-  get games {
+  TennisGames get games {
     return _games;
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/widgets/info_bar_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +29,7 @@ abstract class PlayMatchScreen extends StatelessWidget {
           );
         },
         // the main screen, outside of the setup consumer, shows the match details
-        child: Consumer<ActiveMatch>(builder: (ctx, match, child) {
+        child: Consumer<ActiveSelection>(builder: (ctx, match, child) {
           return Expanded(
             child: Column(
               children: [

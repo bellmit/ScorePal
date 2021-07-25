@@ -1,5 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
+class PointPair {
+  final Point first;
+  final Point second;
+
+  PointPair(this.first, this.second);
+}
+
 abstract class Point {
   static const String K_SPEAKING_SPACE = " ";
   static const String K_SPEAKING_PAUSE = ". ";

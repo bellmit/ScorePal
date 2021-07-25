@@ -15,7 +15,7 @@ class PingPongMatchSetup extends MatchSetup {
   PingPongExpediteMinutes _expediteMinutes = PingPongExpediteMinutes.ten;
   bool _isExpediteEnabled = true;
 
-  PingPongMatchSetup(Sport sport) : super(sport);
+  PingPongMatchSetup() : super(Sports.sport(SportType.PING_PONG));
 
   @override
   String matchSummary(BuildContext context) {
@@ -157,7 +157,7 @@ class PingPongMatchSetup extends MatchSetup {
     ];
   }
 
-  get rounds {
+  PingPongRounds get rounds {
     return _rounds;
   }
 
@@ -169,7 +169,7 @@ class PingPongMatchSetup extends MatchSetup {
     }
   }
 
-  get points {
+  PingPongPoints get points {
     return _points;
   }
 
@@ -181,11 +181,11 @@ class PingPongMatchSetup extends MatchSetup {
     }
   }
 
-  get decidingPoint {
+  int get decidingPoint {
     return pointsValue(_points) - 1;
   }
 
-  get isExpediteEnabled {
+  bool get isExpediteEnabled {
     return _isExpediteEnabled;
   }
 
@@ -197,7 +197,7 @@ class PingPongMatchSetup extends MatchSetup {
     }
   }
 
-  get expediteSystemPoints {
+  PingPongExpeditePoints get expediteSystemPoints {
     return _expeditePoints;
   }
 
@@ -209,7 +209,7 @@ class PingPongMatchSetup extends MatchSetup {
     }
   }
 
-  get expediteSystemMinutes {
+  PingPongExpediteMinutes get expediteSystemMinutes {
     return _expediteMinutes;
   }
 

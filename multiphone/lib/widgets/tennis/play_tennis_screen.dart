@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/widgets/play_match_screen.dart';
+import 'package:multiphone/screens/play_match_screen.dart';
 import 'package:multiphone/widgets/tennis/tennis_score_widget.dart';
 
 class PlayTennisScreen extends PlayMatchScreen {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/select_item_list_widget.dart';
 import 'package:multiphone/widgets/select_item_widget.dart';
@@ -19,7 +19,7 @@ class SelectSportWidget extends SelectItemListWidget {
   @override
   int getInitialSelection(BuildContext context) {
     // the initial selection is handled by the active match
-    Sport activeSport = Provider.of<ActiveMatch>(context).sport;
+    Sport activeSport = Provider.of<ActiveSelection>(context).sport;
     // from the active sport - return the index of the sport for that match
     return Sports.index(activeSport);
   }
@@ -27,7 +27,7 @@ class SelectSportWidget extends SelectItemListWidget {
   @override
   void onSelectionChanged(BuildContext context, int newSelection) {
     // the user just selected a nice sport, inform the provider of this
-    final activeMatch = Provider.of<ActiveMatch>(context, listen: false);
+    final activeMatch = Provider.of<ActiveSelection>(context, listen: false);
     activeMatch.sport = Sports.find(newSelection);
   }
 }

@@ -5,10 +5,6 @@ import 'package:multiphone/match/score_history.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/player.dart';
 
-abstract class RedoListener {
-  void pointIncremented();
-}
-
 abstract class Score<S extends MatchSetup> {
   static const invalidPoint = -1;
   static const clearPoint = 0;
@@ -76,14 +72,14 @@ abstract class Score<S extends MatchSetup> {
     data["scr"] = levelsArray;
   }
 
-  void restoreFromJSON(
-      Map<String, Object> data, int version, RedoListener actionListener) {
+  void restoreFromJSON(Map<String, Object> data, int version,
+      void Function() onPointIncremented) {
     // all we did was store the raw score points, restore from this data
     String pointsString = data["pts"] as String;
     this._history.clear();
     this._history.restorePointHistoryFromString(pointsString);
     // now we have the history restored, we can restore the score from it
-    restorePointHistory(actionListener);
+    restorePointHistory(onPointIncremented);
   }
 
   void resetScore() {
@@ -129,7 +125,7 @@ abstract class Score<S extends MatchSetup> {
     return correctServerErrors(server);
   }
 
-  TeamIndex undoLastPoint(RedoListener listener) {
+  TeamIndex undoLastPoint(void Function() onPointIncremented) {
     // we want to remove the last point, this can be tricky as can effect an awful lot of things
     // like are we in a tie-break, serving end, number of sets games, etc. This is hard to undo
     // so instead we are being lazy and using the power of the device you are on. ie, reset
@@ -139,7 +135,7 @@ abstract class Score<S extends MatchSetup> {
       // pop the last point from the history
       historyValue = _history.pop();
       // and restore the history that remains
-      restorePointHistory(listener);
+      restorePointHistory(onPointIncremented);
       // inform listeners of this
       state.addStateChange(ScoreChange.decrement);
     }
@@ -147,7 +143,7 @@ abstract class Score<S extends MatchSetup> {
     return historyValue != null ? historyValue.team : null;
   }
 
-  void restorePointHistory(RedoListener actionListener) {
+  void restorePointHistory(void Function() onPointIncremented) {
     // reset the score
     resetScore();
     // and restore the rest, adding points will create a new history - so let's clear it
@@ -169,8 +165,8 @@ abstract class Score<S extends MatchSetup> {
       // this is actually a 'redo' so be sure to add this
       state.addStateChange(ScoreChange.incrementRedo);
       // inform listener of this action
-      if (null != actionListener) {
-        actionListener.pointIncremented();
+      if (null != onPointIncremented) {
+        onPointIncremented();
       }
       // and reset this state
       resetState();

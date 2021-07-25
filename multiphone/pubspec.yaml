@@ -27,6 +27,7 @@ dependencies:
     sdk: flutter
   provider: ^4.0.0
   intl: ^0.17.0
+  async: ^2.6.1
   shared_preferences: ^2.0.6
   image_picker: ^0.8.1+4
   # contacts to autocomplete players

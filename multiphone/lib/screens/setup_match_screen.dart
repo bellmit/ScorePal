@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_setup.dart';
-import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/sport.dart';
-import 'package:multiphone/widgets/badminton/play_badminton_screen.dart';
-import 'package:multiphone/widgets/pingpong/play_ping_pong_screen.dart';
-import 'package:multiphone/widgets/tennis/play_tennis_screen.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/widgets/heading_widget.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
-import 'package:multiphone/widgets/badminton/setup_badminton_widget.dart';
-import 'package:multiphone/widgets/pingpong/setup_ping_pong_widget.dart';
 import 'package:multiphone/widgets/subheading_widget.dart';
-import 'package:multiphone/widgets/tennis/setup_tennis_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -27,41 +20,13 @@ class SetupMatchScreen extends StatefulWidget {
 class _SetupMatchScreenState extends State<SetupMatchScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  Widget _createActiveMatchSetup(BuildContext context, ActiveMatch match) {
-    var values = Values(context);
-    switch (match.sport.id) {
-      case SportType.TENNIS:
-        return SetupTennisWidget();
-      case SportType.BADMINTON:
-        return SetupBadmintonWidget();
-      case SportType.PING_PONG:
-        return SetupPingPongWidget();
-    }
-    // if error - just return something bad!
-    return Text(values.construct(
-      values.strings.error_sport_not_found,
-      [match.sport.title(context)],
-    ));
-  }
-
   void _startMatch() {
     // start playing the selected match then, just get the match as-is
-    final match = Provider.of<ActiveMatch>(context, listen: false);
-    // and navigate to the correct screen
-    String navPath = '/';
-    switch (match.sport.id) {
-      case SportType.TENNIS:
-        navPath = PlayTennisScreen.routeName;
-        break;
-      case SportType.BADMINTON:
-        navPath = PlayBadmintonScreen.routeName;
-        break;
-      case SportType.PING_PONG:
-        navPath = PlayPingPongScreen.routeName;
-        break;
-    }
-    // and go here
-    Navigator.of(context).pushNamed(navPath);
+    final match = Provider.of<ActiveSelection>(context, listen: false);
+    // this is the match placeholder, but we need to create one to start the match
+    match.startMatch();
+    // and navigate to the match screen
+    Navigator.of(context).pushNamed(match.sport.playNavPath);
   }
 
   @override
@@ -136,10 +101,10 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                         ],
                       ),
                     ),
-                    Consumer<ActiveMatch>(
+                    Consumer<ActiveSelection>(
                       builder: (ctx, activeMatch, child) {
                         // create the correct widget to setup the sport here then
-                        return _createActiveMatchSetup(ctx, activeMatch);
+                        return activeMatch.sport.createSetupWidget(ctx);
                       },
                     ),
                   ],

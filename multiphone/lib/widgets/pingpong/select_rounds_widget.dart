@@ -48,6 +48,10 @@ class SelectRoundsWidget extends SelectItemListWidget {
           return 1;
         case PingPongRounds.five:
           return 2;
+        case PingPongRounds.seven:
+          return 3;
+        case PingPongRounds.nine:
+          return 4;
       }
     }
     print('the pingpong widget shouldn\'t show unless pingpong is selected');

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/team_namer.dart';
-import 'package:multiphone/match/badminton_match_setup.dart';
-import 'package:multiphone/match/ping_pong_match_setup.dart';
-import 'package:multiphone/match/tennis_match_setup.dart';
-import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 
@@ -36,40 +32,19 @@ abstract class MatchSetup with ChangeNotifier {
     _teamNamer = TeamNamer(this);
   }
 
-  // need to create the proper one for the active match as it changes
-  static MatchSetup create(ActiveMatch match) {
-    if (match == null || match.sport == null) {
-      return null;
-    } else {
-      return _createSetup(match.sport);
-    }
-  }
-
-  static MatchSetup _createSetup(Sport sport) {
-    switch (sport.id) {
-      case SportType.TENNIS:
-        return TennisMatchSetup(sport);
-      case SportType.BADMINTON:
-        return BadmintonMatchSetup(sport);
-      case SportType.PING_PONG:
-        return PingPongMatchSetup(sport);
-      default:
-        print('do the setup for the sport type of ${sport.id}');
-        return null;
-    }
-  }
-
   Map<String, Object> getAsJSON() {
     return {
       'ver': 1,
-      'sport': sport.id.index,
+      'sport': sport.type.index,
       'data': getData(),
     };
   }
 
   static MatchSetup createFromJson(Map<String, Object> topLevel) {
-    // what is this?
-    MatchSetup setup = _createSetup(Sports.find(topLevel['sport'] as int));
+    // what is this, get the sport from the JSON object;
+    Sport sport = Sports.find(topLevel['sport'] as int);
+    // and create the setup for this
+    MatchSetup setup = sport.createSetup();
     // set our data from this data under the top level
     setup.setData(topLevel['data']);
     // and return this now it's setup properly
