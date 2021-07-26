@@ -26,11 +26,15 @@ class PlayPingPongScreen extends PlayMatchScreen {
   }
 
   @override
-  Widget createScoreWidget(
-      TeamIndex teamIndex, void Function(int level) onScoreClicked) {
+  Widget createScoreWidget(ActiveMatch match, TeamIndex teamIndex,
+      void Function(int level) onScoreClicked) {
     // return each score widget we want to use
+    var pingPongMatch = match as PingPongMatch;
     return PingPongScoreWidget(
-      team: teamIndex,
+      rounds:
+          pingPongMatch.getDisplayPoint(PingPongScore.LEVEL_ROUND, teamIndex),
+      points:
+          pingPongMatch.getDisplayPoint(PingPongScore.LEVEL_POINT, teamIndex),
       onScoreClicked: onScoreClicked,
     );
   }

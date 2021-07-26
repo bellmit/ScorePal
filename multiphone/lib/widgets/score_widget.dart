@@ -4,8 +4,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_setup.dart';
 
 abstract class ScoreWidget extends StatelessWidget {
-  final TeamIndex team;
-  const ScoreWidget({Key key, @required this.team}) : super(key: key);
+  const ScoreWidget({Key key}) : super(key: key);
 
   Widget createBox(
     BuildContext context,

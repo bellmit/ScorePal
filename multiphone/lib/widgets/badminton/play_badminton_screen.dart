@@ -26,11 +26,15 @@ class PlayBadmintonScreen extends PlayMatchScreen {
   }
 
   @override
-  Widget createScoreWidget(
-      TeamIndex teamIndex, void Function(int level) onScoreClicked) {
+  Widget createScoreWidget(ActiveMatch match, TeamIndex teamIndex,
+      void Function(int level) onScoreClicked) {
     // return each score widget we want to use
+    var badmintonMatch = match as BadmintonMatch;
     return BadmintonScoreWidget(
-      team: teamIndex,
+      games:
+          badmintonMatch.getDisplayPoint(BadmintonScore.LEVEL_GAME, teamIndex),
+      points:
+          badmintonMatch.getDisplayPoint(BadmintonScore.LEVEL_POINT, teamIndex),
       onScoreClicked: onScoreClicked,
     );
   }

@@ -1,25 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/tennis/tennis_match.dart';
+import 'package:multiphone/match/point.dart';
 import 'package:multiphone/match/tennis/tennis_score.dart';
-import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/score_widget.dart';
-import 'package:provider/provider.dart';
 
 class TennisScoreWidget extends ScoreWidget {
   final void Function(int level) onScoreClicked;
+  final Point sets;
+  final Point games;
+  final Point points;
   const TennisScoreWidget({
     Key key,
-    @required TeamIndex team,
+    @required this.sets,
+    @required this.games,
+    @required this.points,
     this.onScoreClicked,
-  }) : super(key: key, team: team);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // get the active match running
-    TennisMatch match = Provider.of<ActiveMatch>(context, listen: false);
     return Row(
       children: [
         // split the row into the smaller controls
@@ -32,17 +32,13 @@ class TennisScoreWidget extends ScoreWidget {
               createBox(
                 context,
                 Values(context).strings.title_tennis_sets,
-                match
-                    .getDisplayPoint(TennisScore.LEVEL_SET, team)
-                    .displayString(context),
+                sets.displayString(context),
                 () => onScoreClicked(TennisScore.LEVEL_SET),
               ),
               createBox(
                 context,
                 Values(context).strings.title_tennis_games,
-                match
-                    .getDisplayPoint(TennisScore.LEVEL_GAME, team)
-                    .displayString(context),
+                games.displayString(context),
                 () => onScoreClicked(TennisScore.LEVEL_GAME),
               ),
             ],
@@ -53,9 +49,7 @@ class TennisScoreWidget extends ScoreWidget {
           child: createBox(
             context,
             Values(context).strings.title_tennis_points,
-            match
-                .getDisplayPoint(TennisScore.LEVEL_POINT, team)
-                .displayString(context),
+            points.displayString(context),
             () => onScoreClicked(TennisScore.LEVEL_POINT),
           ),
         ),

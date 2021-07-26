@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/badminton/badminton_match.dart';
 import 'package:multiphone/match/badminton/badminton_score.dart';
+import 'package:multiphone/match/point.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/score_widget.dart';
@@ -10,11 +11,14 @@ import 'package:provider/provider.dart';
 
 class BadmintonScoreWidget extends ScoreWidget {
   final void Function(int level) onScoreClicked;
+  final Point games;
+  final Point points;
   const BadmintonScoreWidget({
     Key key,
-    @required TeamIndex team,
+    @required this.games,
+    @required this.points,
     this.onScoreClicked,
-  }) : super(key: key, team: team);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +35,7 @@ class BadmintonScoreWidget extends ScoreWidget {
               createBox(
                 context,
                 Values(context).strings.title_badminton_games,
-                match
-                    .getDisplayPoint(BadmintonScore.LEVEL_GAME, team)
-                    .displayString(context),
+                games.displayString(context),
                 () => onScoreClicked(BadmintonScore.LEVEL_GAME),
               ),
             ],
@@ -44,9 +46,7 @@ class BadmintonScoreWidget extends ScoreWidget {
           child: createBox(
             context,
             Values(context).strings.title_badminton_points,
-            match
-                .getDisplayPoint(BadmintonScore.LEVEL_POINT, team)
-                .displayString(context),
+            points.displayString(context),
             () => onScoreClicked(BadmintonScore.LEVEL_POINT),
           ),
         ),

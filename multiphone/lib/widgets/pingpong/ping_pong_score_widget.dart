@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_score.dart';
+import 'package:multiphone/match/point.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/score_widget.dart';
@@ -10,11 +11,15 @@ import 'package:provider/provider.dart';
 
 class PingPongScoreWidget extends ScoreWidget {
   final void Function(int level) onScoreClicked;
+  final Point rounds;
+  final Point points;
+
   const PingPongScoreWidget({
     Key key,
-    @required TeamIndex team,
+    @required this.rounds,
+    @required this.points,
     this.onScoreClicked,
-  }) : super(key: key, team: team);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +36,7 @@ class PingPongScoreWidget extends ScoreWidget {
               createBox(
                 context,
                 Values(context).strings.title_ping_pong_rounds,
-                match
-                    .getDisplayPoint(PingPongScore.LEVEL_ROUND, team)
-                    .displayString(context),
+                rounds.displayString(context),
                 () => onScoreClicked(PingPongScore.LEVEL_ROUND),
               ),
             ],
@@ -44,9 +47,7 @@ class PingPongScoreWidget extends ScoreWidget {
           child: createBox(
             context,
             Values(context).strings.title_ping_pong_points,
-            match
-                .getDisplayPoint(PingPongScore.LEVEL_POINT, team)
-                .displayString(context),
+            points.displayString(context),
             () => onScoreClicked(PingPongScore.LEVEL_POINT),
           ),
         ),

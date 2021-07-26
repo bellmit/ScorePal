@@ -29,11 +29,14 @@ class PlayTennisScreen extends PlayMatchScreen {
   }
 
   @override
-  Widget createScoreWidget(
-      TeamIndex teamIndex, void Function(int level) onScoreClicked) {
+  Widget createScoreWidget(ActiveMatch match, TeamIndex teamIndex,
+      void Function(int level) onScoreClicked) {
     // return each score widget we want to use
+    var tennisMatch = match as TennisMatch;
     return TennisScoreWidget(
-      team: teamIndex,
+      sets: tennisMatch.getDisplayPoint(TennisScore.LEVEL_SET, teamIndex),
+      games: tennisMatch.getDisplayPoint(TennisScore.LEVEL_GAME, teamIndex),
+      points: tennisMatch.getDisplayPoint(TennisScore.LEVEL_POINT, teamIndex),
       onScoreClicked: onScoreClicked,
     );
   }

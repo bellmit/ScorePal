@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 abstract class PlayMatchScreen extends StatelessWidget {
   PlayMatchScreen();
 
-  Widget createScoreWidget(
-      TeamIndex teamIndex, void Function(int level) onScoreClicked);
+  Widget createScoreWidget(ActiveMatch match, TeamIndex teamIndex,
+      void Function(int level) onScoreClicked);
 
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level);
 
@@ -32,26 +32,30 @@ abstract class PlayMatchScreen extends StatelessWidget {
           );
         },
         // the main screen, outside of the setup consumer, shows the match details
-        child: Consumer<ActiveMatch>(builder: (ctx, match, child) {
-          return Expanded(
-            child: Column(
-              children: [
-                Flexible(
-                  child: createScoreWidget(
-                    TeamIndex.T_ONE,
-                    (level) => onScoreClicked(match, TeamIndex.T_ONE, level),
+        child: Consumer<ActiveMatch>(
+          builder: (ctx, match, child) {
+            return Expanded(
+              child: Column(
+                children: [
+                  Flexible(
+                    child: createScoreWidget(
+                      match,
+                      TeamIndex.T_ONE,
+                      (level) => onScoreClicked(match, TeamIndex.T_ONE, level),
+                    ),
                   ),
-                ),
-                Flexible(
-                  child: createScoreWidget(
-                    TeamIndex.T_TWO,
-                    (level) => onScoreClicked(match, TeamIndex.T_TWO, level),
+                  Flexible(
+                    child: createScoreWidget(
+                      match,
+                      TeamIndex.T_TWO,
+                      (level) => onScoreClicked(match, TeamIndex.T_TWO, level),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        }),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
