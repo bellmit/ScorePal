@@ -14,7 +14,6 @@ class PlayTennisScreen extends PlayMatchScreen {
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level) {
     // so a score was clicked, call the proper function
     TennisMatch tennisMatch = match as TennisMatch;
-    print('$level clicked');
     switch (level) {
       case TennisScore.LEVEL_POINT:
         tennisMatch.incrementPoint(team);

@@ -35,10 +35,18 @@ abstract class ScoreWidget extends StatelessWidget {
                 Expanded(
                   child: FittedBox(
                     fit: BoxFit.contain,
-                    child: Text(
-                      points,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Theme.of(context).accentColor),
+                    child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 200),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return ScaleTransition(child: child, scale: animation);
+                      },
+                      child: Text(
+                        points,
+                        key: ValueKey<String>(points),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Theme.of(context).accentColor),
+                      ),
                     ),
                   ),
                 ),
