@@ -25,7 +25,8 @@ abstract class Score<S extends ActiveSetup> {
 
   // default access, make the users go through the match class to access the score
   Score(S setup, int pointsLevels)
-      : _points = List.filled(pointsLevels, List<int>.filled(teamCount, null)),
+      : _points =
+            List.generate(pointsLevels, (index) => List.filled(teamCount, 0)),
         _pointsHistory = List.filled(pointsLevels, null),
         state = ScoreState(),
         setup = setup,

@@ -125,11 +125,11 @@
 
     "speak_all": "all",
     "speak_number_all": "%1$d {1} all",
-    "display_zero": " 0",
+    "display_zero": "0",
     "speak_zero": "zero",
     "speak_zeros": "zeros",
     "speak_zero_all": "zero all",
-    "display_love": " 0",
+    "display_love": "0",
     "speak_love": "love",
     "speak_love_all": "love all",
     "display_15": "15",

@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/screens/auth_screen.dart';
@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // global providers because they are simple enough to setup
+        // and this way we won't forget
         ChangeNotifierProvider(create: (ctx) => Players()),
         ChangeNotifierProvider(create: (ctx) => Sports()),
         ChangeNotifierProxyProvider<Sports, ActiveSelection>(

@@ -7,18 +7,24 @@ abstract class ScoreWidget extends StatelessWidget {
   final TeamIndex team;
   const ScoreWidget({Key key, @required this.team}) : super(key: key);
 
-  Widget createBox(BuildContext context, String title, String points) {
+  Widget createBox(
+    BuildContext context,
+    String title,
+    String points,
+    void onClicked(),
+  ) {
     return Padding(
       padding: const EdgeInsets.all(Values.default_space),
       child: AspectRatio(
         aspectRatio: 1,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColorDark,
-            borderRadius: BorderRadius.circular(Values.default_radius),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(Values.default_space),
+        child: InkWell(
+          onTap: onClicked,
+          child: Container(
+            // this is the main container for the box of points
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorDark,
+              borderRadius: BorderRadius.circular(Values.default_radius),
+            ),
             child: Column(
               children: [
                 Text(

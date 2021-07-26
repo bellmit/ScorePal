@@ -135,7 +135,7 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
     notifyListeners();
   }
 
-  void incrementGame(TeamIndex team) {
+  void incrementRound(TeamIndex team) {
     // reset the last state
     score.resetState();
     // affect the change
