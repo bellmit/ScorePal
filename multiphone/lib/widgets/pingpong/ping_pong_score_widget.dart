@@ -13,11 +13,13 @@ class PingPongScoreWidget extends ScoreWidget {
   final void Function(int level) onScoreClicked;
   final Point rounds;
   final Point points;
+  final bool isServing;
 
   const PingPongScoreWidget({
     Key key,
     @required this.rounds,
     @required this.points,
+    @required this.isServing,
     this.onScoreClicked,
   }) : super(key: key);
 
@@ -37,6 +39,7 @@ class PingPongScoreWidget extends ScoreWidget {
                 context,
                 Values(context).strings.title_ping_pong_rounds,
                 rounds.displayString(context),
+                false,
                 () => onScoreClicked(PingPongScore.LEVEL_ROUND),
               ),
             ],
@@ -48,6 +51,7 @@ class PingPongScoreWidget extends ScoreWidget {
             context,
             Values(context).strings.title_ping_pong_points,
             points.displayString(context),
+            isServing,
             () => onScoreClicked(PingPongScore.LEVEL_POINT),
           ),
         ),

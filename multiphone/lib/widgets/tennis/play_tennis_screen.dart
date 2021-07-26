@@ -36,6 +36,7 @@ class PlayTennisScreen extends PlayMatchScreen {
       sets: tennisMatch.getDisplayPoint(TennisScore.LEVEL_SET, teamIndex),
       games: tennisMatch.getDisplayPoint(TennisScore.LEVEL_GAME, teamIndex),
       points: tennisMatch.getDisplayPoint(TennisScore.LEVEL_POINT, teamIndex),
+      isServing: match.getServingTeam() == teamIndex,
       onScoreClicked: onScoreClicked,
     );
   }

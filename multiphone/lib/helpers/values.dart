@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Values {
+  static const int animation_duration_rapid_ms = 200;
   static const int animation_duration_ms = 500;
   static const double default_space = 8;
   static const double default_radius = 12;

@@ -10,11 +10,13 @@ class TennisScoreWidget extends ScoreWidget {
   final Point sets;
   final Point games;
   final Point points;
+  final bool isServing;
   const TennisScoreWidget({
     Key key,
     @required this.sets,
     @required this.games,
     @required this.points,
+    @required this.isServing,
     this.onScoreClicked,
   }) : super(key: key);
 
@@ -33,12 +35,14 @@ class TennisScoreWidget extends ScoreWidget {
                 context,
                 Values(context).strings.title_tennis_sets,
                 sets.displayString(context),
+                false,
                 () => onScoreClicked(TennisScore.LEVEL_SET),
               ),
               createBox(
                 context,
                 Values(context).strings.title_tennis_games,
                 games.displayString(context),
+                false,
                 () => onScoreClicked(TennisScore.LEVEL_GAME),
               ),
             ],
@@ -50,6 +54,7 @@ class TennisScoreWidget extends ScoreWidget {
             context,
             Values(context).strings.title_tennis_points,
             points.displayString(context),
+            isServing,
             () => onScoreClicked(TennisScore.LEVEL_POINT),
           ),
         ),

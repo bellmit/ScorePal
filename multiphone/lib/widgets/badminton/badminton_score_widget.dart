@@ -13,10 +13,12 @@ class BadmintonScoreWidget extends ScoreWidget {
   final void Function(int level) onScoreClicked;
   final Point games;
   final Point points;
+  final bool isServing;
   const BadmintonScoreWidget({
     Key key,
     @required this.games,
     @required this.points,
+    @required this.isServing,
     this.onScoreClicked,
   }) : super(key: key);
 
@@ -36,6 +38,7 @@ class BadmintonScoreWidget extends ScoreWidget {
                 context,
                 Values(context).strings.title_badminton_games,
                 games.displayString(context),
+                false,
                 () => onScoreClicked(BadmintonScore.LEVEL_GAME),
               ),
             ],
@@ -47,6 +50,7 @@ class BadmintonScoreWidget extends ScoreWidget {
             context,
             Values(context).strings.title_badminton_points,
             points.displayString(context),
+            isServing,
             () => onScoreClicked(BadmintonScore.LEVEL_POINT),
           ),
         ),

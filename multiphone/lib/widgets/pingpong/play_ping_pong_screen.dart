@@ -35,6 +35,7 @@ class PlayPingPongScreen extends PlayMatchScreen {
           pingPongMatch.getDisplayPoint(PingPongScore.LEVEL_ROUND, teamIndex),
       points:
           pingPongMatch.getDisplayPoint(PingPongScore.LEVEL_POINT, teamIndex),
+      isServing: match.getServingTeam() == teamIndex,
       onScoreClicked: onScoreClicked,
     );
   }

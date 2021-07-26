@@ -35,6 +35,7 @@ class PlayBadmintonScreen extends PlayMatchScreen {
           badmintonMatch.getDisplayPoint(BadmintonScore.LEVEL_GAME, teamIndex),
       points:
           badmintonMatch.getDisplayPoint(BadmintonScore.LEVEL_POINT, teamIndex),
+      isServing: match.getServingTeam() == teamIndex,
       onScoreClicked: onScoreClicked,
     );
   }
