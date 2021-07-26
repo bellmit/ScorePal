@@ -42,25 +42,51 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => Sports()),
         ChangeNotifierProxyProvider<Sports, ActiveSelection>(
           // this proxy is called after the specified sports object is build
-          update: (ctx, sports, previousMatch) => ActiveSelection(sports),
-          create: (ctx) => ActiveSelection(null),
+          update: (ctx, sports, previousMatch) {
+            print(
+                'updating selection with ${sports == null || sports.available == null ? '0' : sports.available.length} sports');
+            return ActiveSelection(sports);
+          },
+          create: (ctx) {
+            print('creating null active selection');
+            return ActiveSelection(null);
+          },
         ),
         ChangeNotifierProxyProvider<ActiveSelection, ActiveSetup>(
           // this proxy is called after the specified active match object is build
-          update: (ctx, activeMatch, previousSetup) =>
-              // create the correct match setup from the sport
-              activeMatch.sport.createSetup(),
+          update: (ctx, activeMatch, previousSetup) {
+            // create the correct match setup from the sport
+            print(
+                'creating a new setup for the sport of ${activeMatch.sport == null ? 'null' : activeMatch.sport.id}');
+            return activeMatch.sport.createSetup();
+          },
           // create an empty one initially - needs the active match setting
-          create: (ctx) => null,
+          create: (ctx) {
+            print('creating a null setup, no sport selected at this time');
+            return null;
+          },
         ),
         ChangeNotifierProxyProvider<ActiveSetup, ActiveMatch>(
             update: (ctx, setup, previousMatch) {
-          // leave the match alone, but update it
-          previousMatch.applyChangedMatchSettings();
-          return previousMatch;
+          if (previousMatch == null ||
+              setup.sport.id != previousMatch.getSport().id) {
+            // this is a change in sport, create the new match needed
+            print(
+                'new setup as switching sport to ${setup.sport == null ? 'null' : setup.sport.id}');
+            return setup.sport.createMatch(setup);
+          } else {
+            // this is the same sport, just update the match running
+            print('applying a setup change to the previous match');
+            previousMatch.applyChangedMatchSettings();
+            // and return the same
+            return previousMatch;
+          }
         }, create: (ctx) {
-          // we are wanting to create a new match each time the setup changes?
-          return Provider.of<ActiveSelection>(ctx, listen: false).startMatch();
+          // this is the first match created - create it for the selected setup
+          var setup = Provider.of<ActiveSetup>(ctx, listen: false);
+          print(
+              'creating first match of ${setup.sport == null ? 'null' : setup.sport.id}');
+          return setup.sport.createMatch(setup);
         }),
       ],
       child: MaterialApp(

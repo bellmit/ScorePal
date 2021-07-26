@@ -23,8 +23,6 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   void _startMatch() {
     // start playing the selected match then, just get the match as-is
     final match = Provider.of<ActiveSelection>(context, listen: false);
-    // this is the match placeholder, but we need to create one to start the match
-    match.startMatch();
     // and navigate to the match screen
     Navigator.of(context).pushNamed(match.sport.playNavPath);
   }

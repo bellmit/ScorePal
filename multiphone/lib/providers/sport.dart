@@ -72,7 +72,7 @@ class Sports with ChangeNotifier {
   static int index(Sport sport) {
     List<Sport> validSports = _validSports();
     for (int i = 0; i < validSports.length; ++i) {
-      if (sport == validSports[i]) {
+      if (sport.id == validSports[i].id) {
         return i;
       }
     }

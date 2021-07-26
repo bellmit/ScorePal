@@ -32,6 +32,7 @@ abstract class Score<S extends ActiveSetup> {
         setup = setup,
         _history = ScoreHistory() {
     // make sure everything starts off the same each time
+    print('new ${setup.sport.id} score created');
     resetScore();
   }
 
