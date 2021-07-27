@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
 
 class PlayerNameWidget extends StatefulWidget {
   final void Function(String) onTextChanged;
   final void Function() onPlayerSelectedToServe;
+  final bool isPlayerServer;
   final List<Contact> availableOpponents;
   final String hintText;
 
@@ -13,6 +15,7 @@ class PlayerNameWidget extends StatefulWidget {
     @required this.hintText,
     @required this.availableOpponents,
     @required this.onPlayerSelectedToServe,
+    @required this.isPlayerServer,
     @required this.onTextChanged,
   }) : super(key: key);
 
@@ -166,8 +169,18 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
               // and inform the widget this was pressed
               widget.onPlayerSelectedToServe();
             },
-            icon: Icon(
-              Icons.play_for_work,
+            icon: AnimatedSwitcher(
+              duration:
+                  const Duration(milliseconds: Values.animation_duration_ms),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return ScaleTransition(child: child, scale: animation);
+              },
+              child: SvgPicture.asset(
+                widget.isPlayerServer
+                    ? 'images/svg/player-serving.svg'
+                    : 'images/svg/player-receiving-backhand.svg',
+                key: ValueKey<bool>(widget.isPlayerServer),
+              ),
             ),
           )
         ],

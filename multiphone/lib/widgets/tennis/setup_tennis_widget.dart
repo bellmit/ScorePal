@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_names_widget.dart';
 import 'package:multiphone/widgets/tennis/select_games_widget.dart';
 import 'package:multiphone/widgets/tennis/select_sets_widget.dart';
 import 'package:multiphone/widgets/tennis/select_sudden_death_widget.dart';
 import 'package:multiphone/widgets/tennis/select_tie_final_widget.dart';
+import 'package:provider/provider.dart';
 
 class SetupTennisWidget extends StatefulWidget {
   const SetupTennisWidget({Key key}) : super(key: key);
@@ -54,7 +56,9 @@ class _SetupTennisWidgetState extends State<SetupTennisWidget> {
               ),
             ],
           ),
-          PlayerNamesWidget(),
+          PlayerNamesWidget(
+              startingServer: Provider.of<ActiveSetup>(context, listen: false)
+                  .startingServer),
           InfoBarWidget(title: Values(context).strings.heading_advanced),
           Padding(
             padding: advancedHeadingPadding,

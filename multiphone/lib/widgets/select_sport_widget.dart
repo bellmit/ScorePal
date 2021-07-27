@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
@@ -12,7 +13,11 @@ class SelectSportWidget extends SelectItemListWidget {
   List<SelectItemWidget> items(BuildContext context) {
     return Provider.of<Sports>(context, listen: false).available.map((e) {
       // for each sport, return a widget representing it
-      return SelectItemWidget(icon: e.icon, text: e.title(context));
+      return SelectItemWidget(
+          icon: SvgPicture.asset(
+            e.icon,
+          ),
+          text: e.title(context));
     }).toList();
   }
 

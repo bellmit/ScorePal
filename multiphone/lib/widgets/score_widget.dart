@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/providers/active_setup.dart';
 
 abstract class ScoreWidget extends StatelessWidget {
   const ScoreWidget({Key key}) : super(key: key);

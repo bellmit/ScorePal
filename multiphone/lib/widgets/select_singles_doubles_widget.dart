@@ -4,6 +4,7 @@ import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectSinglesDoublesWidget extends SelectItemListWidget {
   final Function(MatchSinglesDoubles) onSinglesDoublesChanged;
@@ -18,12 +19,16 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: Icons.one_k,
+        icon: SvgPicture.asset(
+          'images/svg/player-receiving-forehand.svg',
+        ),
         text: values.strings.tennis_singles,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: Icons.five_k,
+        icon: SvgPicture.asset(
+          'images/svg/player-receiving-doubles.svg',
+        ),
         text: values.strings.tennis_doubles,
         iconSize: Values.image_medium,
       ),

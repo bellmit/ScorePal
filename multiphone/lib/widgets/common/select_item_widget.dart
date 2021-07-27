@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 
 class SelectItemWidget extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final String text;
   final double iconSize;
   const SelectItemWidget(
@@ -19,9 +19,10 @@ class SelectItemWidget extends StatelessWidget {
       children: [
         FittedBox(
           fit: BoxFit.contain,
-          child: Icon(
-            icon,
-            size: iconSize,
+          child: Container(
+            height: iconSize,
+            width: iconSize,
+            child: icon,
           ),
         ),
         FittedBox(

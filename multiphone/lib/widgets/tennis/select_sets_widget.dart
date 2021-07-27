@@ -5,6 +5,7 @@ import 'package:multiphone/match/tennis/tennis_match_setup.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectSetsWidget extends SelectItemListWidget {
   const SelectSetsWidget({Key key})
@@ -18,17 +19,23 @@ class SelectSetsWidget extends SelectItemListWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: Icons.one_k,
+        icon: SvgPicture.asset(
+          'images/svg/tennis-ball-one.svg',
+        ),
         text: values.strings.tennis_one_set,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: Icons.three_k,
+        icon: SvgPicture.asset(
+          'images/svg/tennis-ball-three.svg',
+        ),
         text: values.strings.tennis_three_sets,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: Icons.five_k,
+        icon: SvgPicture.asset(
+          'images/svg/tennis-ball-five.svg',
+        ),
         text: values.strings.tennis_five_sets,
         iconSize: Values.image_medium,
       ),

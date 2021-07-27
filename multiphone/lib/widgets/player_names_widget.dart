@@ -11,19 +11,25 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class PlayerNamesWidget extends StatefulWidget {
-  const PlayerNamesWidget({Key key}) : super(key: key);
+  final PlayerIndex startingServer;
+  const PlayerNamesWidget({Key key, @required this.startingServer})
+      : super(key: key);
 
   @override
-  _PlayerNamesWidgetState createState() => _PlayerNamesWidgetState();
+  _PlayerNamesWidgetState createState() =>
+      _PlayerNamesWidgetState(startingServer);
 }
 
 class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
     with TickerProviderStateMixin {
   bool _showPartners = false;
+  PlayerIndex _servingPlayer = PlayerIndex.P_ONE;
 
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
   Animation<double> _opacityAnimation;
+
+  _PlayerNamesWidgetState(this._servingPlayer);
 
   @override
   void initState() {
@@ -65,6 +71,10 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
     // update the starting server in the settings
     Provider.of<ActiveSetup>(context, listen: false).startingServer =
         playerIndex;
+    // and change our state to match this
+    setState(() {
+      _servingPlayer = playerIndex;
+    });
   }
 
   Widget _createPlayerEntries(List<Contact> contacts) {
@@ -75,6 +85,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
           hintText: Values(context).strings.player_one,
           onTextChanged: (newName) =>
               _onPlayerNameChanged(newName, PlayerIndex.P_ONE),
+          isPlayerServer: _servingPlayer == PlayerIndex.P_ONE,
           onPlayerSelectedToServe: () => _onServerSelected(PlayerIndex.P_ONE),
           availableOpponents: contacts,
         ),
@@ -92,6 +103,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                 hintText: Values(context).strings.partner_one,
                 onTextChanged: (newName) =>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_ONE),
+                isPlayerServer: _servingPlayer == PlayerIndex.PT_ONE,
                 onPlayerSelectedToServe: () =>
                     _onServerSelected(PlayerIndex.PT_ONE),
                 availableOpponents: contacts,
@@ -104,6 +116,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
           hintText: Values(context).strings.player_two,
           onTextChanged: (newName) =>
               _onPlayerNameChanged(newName, PlayerIndex.P_TWO),
+          isPlayerServer: _servingPlayer == PlayerIndex.P_TWO,
           onPlayerSelectedToServe: () => _onServerSelected(PlayerIndex.P_TWO),
           availableOpponents: contacts,
         ),
@@ -121,6 +134,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                 hintText: Values(context).strings.partner_two,
                 onTextChanged: (newName) =>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_TWO),
+                isPlayerServer: _servingPlayer == PlayerIndex.PT_TWO,
                 onPlayerSelectedToServe: () =>
                     _onServerSelected(PlayerIndex.PT_TWO),
                 availableOpponents: contacts,

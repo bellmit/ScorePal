@@ -1,13 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/badminton/badminton_match.dart';
 import 'package:multiphone/match/badminton/badminton_score.dart';
 import 'package:multiphone/match/point.dart';
-import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/score_widget.dart';
-import 'package:provider/provider.dart';
 
 class BadmintonScoreWidget extends ScoreWidget {
   final void Function(int level) onScoreClicked;
@@ -24,7 +20,6 @@ class BadmintonScoreWidget extends ScoreWidget {
 
   @override
   Widget build(BuildContext context) {
-    BadmintonMatch match = Provider.of<ActiveMatch>(context, listen: false);
     return Row(
       children: [
         // split the row into the smaller controls

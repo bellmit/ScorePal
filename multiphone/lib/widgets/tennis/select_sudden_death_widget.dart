@@ -5,6 +5,7 @@ import 'package:multiphone/match/tennis/tennis_match_setup.dart';
 import 'package:multiphone/widgets/common/select_item_checked_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
   const SelectSuddenDeathWidget({Key key})
@@ -18,7 +19,9 @@ class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: Icons.one_k,
+        icon: SvgPicture.asset(
+          'images/svg/deuce-sudden-death.svg',
+        ),
         text: values.strings.tennis_sudden_death_deuce_sel,
         iconSize: Values.image_medium,
       ),

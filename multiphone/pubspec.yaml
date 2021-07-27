@@ -25,11 +25,12 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  provider: ^4.0.0
+  provider: ^5.0.0
   intl: ^0.17.0
   async: ^2.6.1
   shared_preferences: ^2.0.6
   image_picker: ^0.8.1+4
+  flutter_svg: ^0.22.0
   # contacts to autocomplete players
   flutter_contacts: ^1.1.0+3
   # permissions
@@ -38,8 +39,8 @@ dependencies:
   # firestore things
   firebase_core: ^1.3.0
   cloud_firestore: ^2.3.0
-  firebase_auth: ^2.0.0
-  firebase_storage: ^9.0.0
+  firebase_auth: ^3.0.1
+  firebase_storage: ^10.0.1
   firebase_messaging: ^10.0.3
 
 
@@ -51,6 +52,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.0
+  intl_utils: ^2.4.0
+
 
 flutter_icons:
   android: true
@@ -76,9 +79,61 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - images/img/badminton.jpg
+    - images/img/ping_pong.jpg
+    - images/img/points.jpg
+    - images/img/squash.jpg
+    - images/img/tennis.jpg
+  # and SVG assets please
+    - images/svg/badminton.svg
+    - images/svg/badminton-shuttle-large.svg
+    - images/svg/badminton_shuttle_five.svg
+    - images/svg/badminton_shuttle_one.svg
+    - images/svg/badminton_shuttle_three.svg
+    - images/svg/click-double.svg
+    - images/svg/click-long.svg
+    - images/svg/click-single.svg
+    - images/svg/control-them.svg
+    - images/svg/control-we.svg
+    - images/svg/deuce-sudden-death.svg
+    - images/svg/eleven_points.svg
+    - images/svg/eighteen_points.svg
+    - images/svg/fifteen_points.svg
+    - images/svg/flic-one.svg
+    - images/svg/flic-two.svg
+    - images/svg/match-settings.svg
+    - images/svg/media-remote.svg
+    - images/svg/nineteen_points.svg
+    - images/svg/ping-pong.svg
+    - images/svg/ping-pong-ball-five.svg
+    - images/svg/ping-pong-ball-large.svg
+    - images/svg/ping-pong-ball-one.svg
+    - images/svg/ping-pong-ball-three.svg
+    - images/svg/player-receiving-backhand.svg
+    - images/svg/player-receiving-backhand-filled.svg
+    - images/svg/player-receiving-doubles.svg
+    - images/svg/player-receiving-forehand.svg
+    - images/svg/player-serving.svg
+    - images/svg/player-serving-doubles.svg
+    - images/svg/player-serving-filled.svg
+    - images/svg/player-singles.svg
+    - images/svg/score-match.svg
+    - images/svg/score-points.svg
+    - images/svg/team-one.svg
+    - images/svg/team-one-me.svg
+    - images/svg/team-one-notitle.svg
+    - images/svg/team-two.svg
+    - images/svg/team-two-notitle.svg
+    - images/svg/tennis.svg
+    - images/svg/tennis-ball-five.svg
+    - images/svg/tennis-ball-four.svg
+    - images/svg/tennis-ball-large.svg
+    - images/svg/tennis-ball-one.svg
+    - images/svg/tennis-ball-six.svg
+    - images/svg/tennis-ball-three.svg
+    - images/svg/tie-break.svg
+    - images/svg/twenty_one_points.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

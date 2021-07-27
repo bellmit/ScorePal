@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_names_widget.dart';
 import 'package:multiphone/widgets/pingpong/select_rounds_widget.dart';
 import 'package:multiphone/widgets/pingpong/select_points_widget.dart';
+import 'package:provider/provider.dart';
 
 class SetupPingPongWidget extends StatefulWidget {
   const SetupPingPongWidget({Key key}) : super(key: key);
@@ -52,7 +54,9 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
               ),
             ],
           ),
-          PlayerNamesWidget(),
+          PlayerNamesWidget(
+              startingServer: Provider.of<ActiveSetup>(context, listen: false)
+                  .startingServer),
           InfoBarWidget(title: Values(context).strings.heading_advanced),
           Padding(
             padding: advancedHeadingPadding,

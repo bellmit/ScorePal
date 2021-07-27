@@ -26,7 +26,7 @@ class Sport {
   final SportType type;
   final String id;
   final String Function(BuildContext context) title;
-  final IconData icon;
+  final String icon;
   final String image;
   final String playNavPath;
   final Widget Function(BuildContext) createSetupWidget;
@@ -85,8 +85,8 @@ class Sports with ChangeNotifier {
         type: SportType.TENNIS,
         id: "Tennis",
         title: (ctx) => Values(ctx).strings.sport_tennis,
-        icon: Icons.ac_unit,
-        image: 'tennis.jpg',
+        icon: 'images/svg/tennis.svg',
+        image: 'images/img/tennis.jpg',
         playNavPath: PlayTennisScreen.routeName,
         createSetupWidget: (ctx) => SetupTennisWidget(),
         createSetup: () => TennisMatchSetup(),
@@ -96,8 +96,8 @@ class Sports with ChangeNotifier {
         type: SportType.BADMINTON,
         id: "Badminton",
         title: (ctx) => Values(ctx).strings.sport_badminton,
-        icon: Icons.phone,
-        image: 'badminton.jpg',
+        icon: 'images/svg/badminton.svg',
+        image: 'images/img/badminton.jpg',
         playNavPath: PlayBadmintonScreen.routeName,
         createSetupWidget: (ctx) => SetupBadmintonWidget(),
         createSetup: () => BadmintonMatchSetup(),
@@ -107,8 +107,8 @@ class Sports with ChangeNotifier {
         type: SportType.PING_PONG,
         id: "Ping Pong",
         title: (ctx) => Values(ctx).strings.sport_ping_pong,
-        icon: Icons.face,
-        image: 'ping_pong.jpg',
+        icon: 'images/svg/ping-pong.svg',
+        image: 'images/img/ping_pong.jpg',
         playNavPath: PlayPingPongScreen.routeName,
         createSetupWidget: (ctx) => SetupPingPongWidget(),
         createSetup: () => PingPongMatchSetup(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/badminton/badminton_match_setup.dart';
@@ -18,17 +19,23 @@ class SelectPointsWidget extends SelectItemListWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: Icons.one_k,
+        icon: SvgPicture.asset(
+          'images/svg/eleven_points.svg',
+        ),
         text: values.strings.badminton_eleven_points_per_game,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: Icons.three_k,
+        icon: SvgPicture.asset(
+          'images/svg/fifteen_points.svg',
+        ),
         text: values.strings.badminton_fifteen_points_per_game,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: Icons.five_k,
+        icon: SvgPicture.asset(
+          'images/svg/twenty_one_points.svg',
+        ),
         text: values.strings.badminton_twenty_one_points_per_game,
         iconSize: Values.image_medium,
       ),
