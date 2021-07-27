@@ -138,7 +138,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
       // no contacts allowed
       return [];
     } else {
-      return await FlutterContacts.getContacts();
+      return await FlutterContacts.getContacts(withThumbnail: true);
     }
   }
 
