@@ -162,27 +162,36 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
           Expanded(
             child: _createAutoComplete(context),
           ),
-          IconButton(
-            onPressed: () {
-              // close the keyboard then please
-              FocusScope.of(context).requestFocus(FocusNode());
-              // and inform the widget this was pressed
-              widget.onPlayerSelectedToServe();
-            },
-            icon: AnimatedSwitcher(
-              duration:
-                  const Duration(milliseconds: Values.animation_duration_ms),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return ScaleTransition(child: child, scale: animation);
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: widget.isPlayerServer
+                  ? Theme.of(context).accentColor
+                  : Colors.transparent,
+            ),
+            child: IconButton(
+              onPressed: () {
+                // close the keyboard then please
+                FocusScope.of(context).requestFocus(FocusNode());
+                // and inform the widget this was pressed
+                widget.onPlayerSelectedToServe();
               },
-              child: SvgPicture.asset(
-                widget.isPlayerServer
-                    ? 'images/svg/player-serving.svg'
-                    : 'images/svg/player-receiving-backhand.svg',
-                key: ValueKey<bool>(widget.isPlayerServer),
+              icon: AnimatedSwitcher(
+                duration:
+                    const Duration(milliseconds: Values.animation_duration_ms),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(child: child, scale: animation);
+                },
+                child: SvgPicture.asset(
+                  widget.isPlayerServer
+                      ? 'images/svg/player-serving.svg'
+                      : 'images/svg/player-receiving-backhand.svg',
+                  color: Theme.of(context).primaryColorDark,
+                  key: ValueKey<bool>(widget.isPlayerServer),
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
