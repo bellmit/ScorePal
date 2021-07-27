@@ -69,8 +69,13 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
 
   void _onServerSelected(PlayerIndex playerIndex) {
     // update the starting server in the settings
-    Provider.of<ActiveSetup>(context, listen: false).startingServer =
-        playerIndex;
+    print('${playerIndex.index} is now starting serve');
+    var setup = Provider.of<ActiveSetup>(context, listen: false);
+    // set the server to start
+    setup.startingServer = playerIndex;
+    // but this just sets the starting server for the team they are in,
+    // from the setup we also want to set their team starting
+    setup.firstServingTeam = setup.getPlayerTeam(playerIndex);
     // and change our state to match this
     setState(() {
       _servingPlayer = playerIndex;
