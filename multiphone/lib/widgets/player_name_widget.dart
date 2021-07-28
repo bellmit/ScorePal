@@ -34,7 +34,9 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
   void initState() {
     super.initState();
     // listen for the user entering a nice name
-    _textEditingController.text = widget.initialText;
+    if (widget.initialText != widget.hintText) {
+      _textEditingController.text = widget.initialText;
+    }
     _textEditingController.addListener(_textChanged);
   }
 
