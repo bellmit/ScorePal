@@ -31,6 +31,7 @@ dependencies:
   shared_preferences: ^2.0.6
   image_picker: ^0.8.1+4
   flutter_svg: ^0.22.0
+  localstore: ^1.2.0
   # contacts to autocomplete players
   flutter_contacts: ^1.1.0+3
   # permissions

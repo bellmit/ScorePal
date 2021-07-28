@@ -82,15 +82,14 @@ class TennisMatchSetup extends ActiveSetup {
 
   @override
   Map<String, Object> getData() {
-    return {
-      ...super.getData(),
-      ...{
-        'sets': setsValue(_sets),
-        'games': gamesValue(_games),
-        'finalSetTie': _finalSetTieGame,
-        'deuceDeath': _isSuddenDeathOnDeuce,
-      },
-    };
+    final data = super.getData();
+    // add ours
+    data['sets'] = setsValue(_sets);
+    data['games'] = gamesValue(_games);
+    data['finalSetTie'] = _finalSetTieGame;
+    data['deuceDeath'] = _isSuddenDeathOnDeuce;
+    // and return
+    return data;
   }
 
   @override

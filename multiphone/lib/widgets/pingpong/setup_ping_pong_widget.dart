@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_names_widget.dart';
 import 'package:multiphone/widgets/pingpong/select_rounds_widget.dart';
@@ -15,6 +17,8 @@ class SetupPingPongWidget extends StatefulWidget {
 }
 
 class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
+  PingPongMatchSetup _setup;
+
   Widget _createAdvancedTitle(String title) {
     return Expanded(
       child: Padding(
@@ -30,6 +34,21 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // get our setup
+    _setup =
+        Provider.of<ActiveSetup>(context, listen: false) as PingPongMatchSetup;
+    if (null != _setup) {
+      _setup.loadLastSetupData().then((value) {
+        setState(() {
+          _setup = value;
+        });
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // get the sport for the icon etc
     const advancedHeadingPadding = const EdgeInsets.only(
@@ -40,6 +59,8 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
     return Container(
       width: double.infinity,
       child: Column(
+        // we need a key for the data that changes when the setup changes
+        key: ValueKey<String>(_setup.id),
         children: [
           Row(
             children: <Widget>[
@@ -50,13 +71,23 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
               ),
               Padding(
                 padding: EdgeInsets.all(Values.default_space),
-                child: SelectRoundsWidget(),
+                child: SelectRoundsWidget(
+                  rounds: _setup.rounds,
+                  onRoundsChanged: (value) => _setup.rounds = value,
+                ),
               ),
             ],
           ),
           PlayerNamesWidget(
-              startingServer: Provider.of<ActiveSetup>(context, listen: false)
-                  .startingServer),
+            playerNames: [
+              _setup.getPlayerName(PlayerIndex.P_ONE, context),
+              _setup.getPlayerName(PlayerIndex.P_TWO, context),
+              _setup.getPlayerName(PlayerIndex.PT_ONE, context),
+              _setup.getPlayerName(PlayerIndex.PT_TWO, context),
+            ],
+            startingServer: _setup.startingServer,
+            singlesDoubles: _setup.singlesDoubles,
+          ),
           InfoBarWidget(title: Values(context).strings.heading_advanced),
           Padding(
             padding: advancedHeadingPadding,
@@ -65,7 +96,10 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
                 _createAdvancedTitle(
                   Values(context).strings.ping_pong_number_points_per_round,
                 ),
-                SelectPointsWidget(),
+                SelectPointsWidget(
+                  points: _setup.points,
+                  onPointsChanged: (value) => _setup.points = value,
+                ),
               ],
             ),
           ),

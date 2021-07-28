@@ -105,14 +105,13 @@ class BadmintonMatchSetup extends ActiveSetup {
 
   @override
   Map<String, Object> getData() {
-    return {
-      ...super.getData(),
-      ...{
-        'games': gamesValue(_games),
-        'points': pointsValue(_points),
-        'decdng': deciderValue(_decidingPoint),
-      },
-    };
+    final data = super.getData();
+    // add ours
+    data['games'] = gamesValue(_games);
+    data['points'] = pointsValue(_points);
+    data['decdng'] = deciderValue(_decidingPoint);
+    // and return
+    return data;
   }
 
   @override

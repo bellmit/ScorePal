@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/badminton/badminton_match_setup.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_names_widget.dart';
 import 'package:multiphone/widgets/badminton/select_games_widget.dart';
@@ -15,6 +17,8 @@ class SetupBadmintonWidget extends StatefulWidget {
 }
 
 class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
+  BadmintonMatchSetup _setup;
+
   Widget _createAdvancedTitle(String title) {
     return Expanded(
       child: Padding(
@@ -30,6 +34,21 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // get our setup
+    _setup =
+        Provider.of<ActiveSetup>(context, listen: false) as BadmintonMatchSetup;
+    if (null != _setup) {
+      _setup.loadLastSetupData().then((value) {
+        setState(() {
+          _setup = value;
+        });
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // get the sport for the icon etc
     const advancedHeadingPadding = const EdgeInsets.only(
@@ -40,6 +59,8 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
     return Container(
       width: double.infinity,
       child: Column(
+        // we need a key for the data that changes when the setup changes
+        key: ValueKey<String>(_setup.id),
         children: [
           Row(
             children: <Widget>[
@@ -50,13 +71,23 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
               ),
               Padding(
                 padding: EdgeInsets.all(Values.default_space),
-                child: SelectGamesWidget(),
+                child: SelectGamesWidget(
+                  games: _setup.games,
+                  onGamesChanged: (value) => _setup.games = value,
+                ),
               ),
             ],
           ),
           PlayerNamesWidget(
-              startingServer: Provider.of<ActiveSetup>(context, listen: false)
-                  .startingServer),
+            playerNames: [
+              _setup.getPlayerName(PlayerIndex.P_ONE, context),
+              _setup.getPlayerName(PlayerIndex.P_TWO, context),
+              _setup.getPlayerName(PlayerIndex.PT_ONE, context),
+              _setup.getPlayerName(PlayerIndex.PT_TWO, context),
+            ],
+            startingServer: _setup.startingServer,
+            singlesDoubles: _setup.singlesDoubles,
+          ),
           InfoBarWidget(title: Values(context).strings.heading_advanced),
           Padding(
             padding: advancedHeadingPadding,
@@ -65,7 +96,10 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
                 _createAdvancedTitle(
                   Values(context).strings.badminton_number_points_per_game,
                 ),
-                SelectPointsWidget(),
+                SelectPointsWidget(
+                  points: _setup.points,
+                  onPointsChanged: (value) => _setup.points = value,
+                ),
               ],
             ),
           ),

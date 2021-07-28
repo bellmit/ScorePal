@@ -9,9 +9,11 @@ class PlayerNameWidget extends StatefulWidget {
   final bool isPlayerServer;
   final List<Contact> availableOpponents;
   final String hintText;
+  final String initialText;
 
   const PlayerNameWidget({
     Key key,
+    @required this.initialText,
     @required this.hintText,
     @required this.availableOpponents,
     @required this.onPlayerSelectedToServe,
@@ -32,6 +34,7 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
   void initState() {
     super.initState();
     // listen for the user entering a nice name
+    _textEditingController.text = widget.initialText;
     _textEditingController.addListener(_textChanged);
   }
 

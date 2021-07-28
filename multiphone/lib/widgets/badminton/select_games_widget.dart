@@ -8,8 +8,13 @@ import 'package:multiphone/widgets/common/select_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class SelectGamesWidget extends SelectItemListWidget {
-  const SelectGamesWidget({Key key})
-      : super(
+  final BadmintonGames games;
+  final void Function(BadmintonGames) onGamesChanged;
+  const SelectGamesWidget({
+    Key key,
+    @required this.games,
+    @required this.onGamesChanged,
+  }) : super(
           key: key,
           itemSize: Values.select_item_size_medium,
         );
@@ -45,38 +50,31 @@ class SelectGamesWidget extends SelectItemListWidget {
   @override
   int getInitialSelection(BuildContext context) {
     // the initial selection is handled by the active match's setup
-    var setup = Provider.of<ActiveSetup>(context, listen: false);
-    if (setup is BadmintonMatchSetup) {
-      // this is correct
-      switch (setup.games) {
-        case BadmintonGames.one:
-          return 0;
-        case BadmintonGames.three:
-          return 1;
-        case BadmintonGames.five:
-          return 2;
-      }
+    switch (games) {
+      case BadmintonGames.one:
+        return 0;
+      case BadmintonGames.three:
+        return 1;
+      case BadmintonGames.five:
+        return 2;
+      default:
+        return 1;
     }
-    print('the badminton widget shouldn\'t show unless badminton is selected');
-    return 0;
   }
 
   @override
   void onSelectionChanged(BuildContext context, int newSelection) {
     // the user just selected which number of games to play in badminton
-    var setup = Provider.of<ActiveSetup>(context, listen: false);
-    if (setup is BadmintonMatchSetup) {
-      switch (newSelection) {
-        case 0:
-          setup.games = BadmintonGames.one;
-          break;
-        case 1:
-          setup.games = BadmintonGames.three;
-          break;
-        case 2:
-          setup.games = BadmintonGames.five;
-          break;
-      }
+    switch (newSelection) {
+      case 0:
+        onGamesChanged(BadmintonGames.one);
+        break;
+      case 1:
+        onGamesChanged(BadmintonGames.three);
+        break;
+      case 2:
+        onGamesChanged(BadmintonGames.five);
+        break;
     }
   }
 }

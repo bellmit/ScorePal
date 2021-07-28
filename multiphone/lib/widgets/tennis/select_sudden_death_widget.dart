@@ -8,8 +8,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
-  const SelectSuddenDeathWidget({Key key})
-      : super(
+  final bool isSuddenDeath;
+  final void Function(bool) onSuddenDeathChanged;
+  const SelectSuddenDeathWidget({
+    Key key,
+    @required this.isSuddenDeath,
+    @required this.onSuddenDeathChanged,
+  }) : super(
           key: key,
           itemSize: Values.select_item_size_medium,
         );
@@ -30,22 +35,12 @@ class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
 
   @override
   bool getInitialSelection(BuildContext context, int index) {
-    // the initial selection is handled by the active match's setup
-    var setup = Provider.of<ActiveSetup>(context, listen: false);
-    if (setup is TennisMatchSetup) {
-      // this is correct
-      return setup.isSuddenDeathOnDeuce;
-    }
-    print('the tennis widget shouldn\'t show unless tennis is selected');
-    return false;
+    return isSuddenDeath;
   }
 
   @override
   void onSelectionChanged(BuildContext context, int index, bool isSelected) {
     // the user just selected to do a sudden death instead of deuce
-    var setup = Provider.of<ActiveSetup>(context, listen: false);
-    if (setup is TennisMatchSetup) {
-      setup.isSuddenDeathOnDeuce = isSelected;
-    }
+    onSuddenDeathChanged(isSelected);
   }
 }

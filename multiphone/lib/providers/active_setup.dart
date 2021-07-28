@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:localstore/localstore.dart';
 import 'package:multiphone/match/team_namer.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
@@ -16,11 +17,15 @@ enum TeamIndex {
 abstract class ActiveSetup with ChangeNotifier {
   MatchSinglesDoubles _singlesDoubles = MatchSinglesDoubles.singles;
 
+  static const setupCollection = 'setups';
+  static const lastSetupPrefix = 'last';
+
   final List<String> _playerNames =
       List<String>.filled(PlayerIndex.values.length, '');
 
   TeamNamer _teamNamer;
   final Sport sport;
+  String _id;
 
   TeamIndex _firstServingTeam = TeamIndex.T_ONE;
   final List<PlayerIndex> _firstServers = [
@@ -28,8 +33,35 @@ abstract class ActiveSetup with ChangeNotifier {
     PlayerIndex.P_TWO
   ];
 
-  ActiveSetup(this.sport) {
+  ActiveSetup(this.sport)
+      : _id = '${sport.id}_${DateTime.now().toIso8601String()}' {
+    // set the team namer as required
     _teamNamer = TeamNamer(this);
+  }
+
+  get id {
+    return _id;
+  }
+
+  Future<ActiveSetup> loadLastSetupData() async {
+    // let's get the data
+    final defaultData = await Localstore.instance
+        .collection(setupCollection)
+        .doc('${lastSetupPrefix}_${this.sport.id}')
+        .get();
+    if (defaultData != null && defaultData['data'] != null) {
+      // have the document, load ths data from this
+      setData(defaultData['data']);
+    }
+    return this;
+  }
+
+  Future<dynamic> saveAsLastSetupData() {
+    // just send this off and hope it worked
+    return Localstore.instance
+        .collection(setupCollection)
+        .doc('${lastSetupPrefix}_${this.sport.id}')
+        .set(getAsJSON());
   }
 
   Map<String, Object> getAsJSON() {
@@ -52,16 +84,35 @@ abstract class ActiveSetup with ChangeNotifier {
   }
 
   Map<String, Object> getData() {
-    final data = {};
+    // save all our data
+    final data = Map<String, Object>();
+    // the ID, why not
+    data['id'] = id;
     for (int i = 0; i < _playerNames.length; ++i) {
       data['player${i + 1}'] = _playerNames[i];
+    }
+    // also if we are singles / doubles
+    data['singles'] = _singlesDoubles == MatchSinglesDoubles.singles;
+    data['first_team'] = _firstServingTeam.index;
+    for (int i = 0; i < _firstServers.length; ++i) {
+      data['server${i + 1}'] = _firstServers[i].index;
     }
     return data;
   }
 
   void setData(Map<String, Object> data) {
+    // Id first
+    _id = data['id'];
     for (int i = 0; i < _playerNames.length; ++i) {
       _playerNames[i] = data['player${i + 1}'];
+    }
+    // singles / doubles
+    _singlesDoubles = data['singles']
+        ? MatchSinglesDoubles.singles
+        : MatchSinglesDoubles.doubles;
+    _firstServingTeam = TeamIndex.values[data['first_team']];
+    for (int i = 0; i < _firstServers.length; ++i) {
+      _firstServers[i] = PlayerIndex.values[data['server${i + 1}']];
     }
   }
 

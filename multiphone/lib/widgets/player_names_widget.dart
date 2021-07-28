@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -11,25 +13,31 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class PlayerNamesWidget extends StatefulWidget {
+  final List<String> playerNames;
   final PlayerIndex startingServer;
-  const PlayerNamesWidget({Key key, @required this.startingServer})
-      : super(key: key);
+  final MatchSinglesDoubles singlesDoubles;
+  const PlayerNamesWidget({
+    Key key,
+    @required this.playerNames,
+    @required this.startingServer,
+    @required this.singlesDoubles,
+  }) : super(key: key);
 
   @override
-  _PlayerNamesWidgetState createState() =>
-      _PlayerNamesWidgetState(startingServer);
+  _PlayerNamesWidgetState createState() => _PlayerNamesWidgetState(
+      startingServer, singlesDoubles == MatchSinglesDoubles.doubles);
 }
 
 class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
     with TickerProviderStateMixin {
-  bool _showPartners = false;
+  bool _showPartners;
   PlayerIndex _servingPlayer = PlayerIndex.P_ONE;
 
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
   Animation<double> _opacityAnimation;
 
-  _PlayerNamesWidgetState(this._servingPlayer);
+  _PlayerNamesWidgetState(this._servingPlayer, this._showPartners);
 
   @override
   void initState() {
@@ -53,6 +61,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
       parent: _controller,
       curve: Curves.easeInOut,
     ));
+
+    _showPartnerNames(_showPartners);
   }
 
   @override
@@ -65,6 +75,12 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
     // update the player name in the settings
     Provider.of<ActiveSetup>(context, listen: false)
         .setPlayerName(playerIndex, playerName);
+  }
+
+  void _onSinglesDoublesChanged(MatchSinglesDoubles singlesDoubles) {
+    // update the player name in the settings
+    Provider.of<ActiveSetup>(context, listen: false).singlesDoubles =
+        singlesDoubles;
   }
 
   void _onServerSelected(PlayerIndex playerIndex) {
@@ -87,6 +103,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
       children: [
         InfoBarWidget(title: Values(context).strings.team_one),
         PlayerNameWidget(
+          initialText: widget.playerNames[PlayerIndex.P_ONE.index],
           hintText: Values(context).strings.player_one,
           onTextChanged: (newName) =>
               _onPlayerNameChanged(newName, PlayerIndex.P_ONE),
@@ -105,6 +122,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
             child: SlideTransition(
               position: _slideAnimation,
               child: PlayerNameWidget(
+                initialText: widget.playerNames[PlayerIndex.PT_ONE.index],
                 hintText: Values(context).strings.partner_one,
                 onTextChanged: (newName) =>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_ONE),
@@ -118,6 +136,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
         ),
         InfoBarWidget(title: Values(context).strings.team_two),
         PlayerNameWidget(
+          initialText: widget.playerNames[PlayerIndex.P_TWO.index],
           hintText: Values(context).strings.player_two,
           onTextChanged: (newName) =>
               _onPlayerNameChanged(newName, PlayerIndex.P_TWO),
@@ -136,6 +155,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
             child: SlideTransition(
               position: _slideAnimation,
               child: PlayerNameWidget(
+                initialText: widget.playerNames[PlayerIndex.PT_TWO.index],
                 hintText: Values(context).strings.partner_two,
                 onTextChanged: (newName) =>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_TWO),
@@ -183,8 +203,15 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
             Padding(
               padding: EdgeInsets.all(Values.default_space),
               child: SelectSinglesDoublesWidget(
-                onSinglesDoublesChanged: (value) =>
-                    _showPartnerNames(value == MatchSinglesDoubles.doubles),
+                onSinglesDoublesChanged: (value) {
+                  // put this data back on the setup
+                  _onSinglesDoublesChanged(value);
+                  // properly show the partner names
+                  _showPartnerNames(value == MatchSinglesDoubles.doubles);
+                },
+                singlesDoubles: _showPartners
+                    ? MatchSinglesDoubles.doubles
+                    : MatchSinglesDoubles.singles,
               ),
             ),
             FutureBuilder(

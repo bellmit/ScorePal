@@ -126,16 +126,15 @@ class PingPongMatchSetup extends ActiveSetup {
 
   @override
   Map<String, Object> getData() {
-    return {
-      ...super.getData(),
-      ...{
-        'rounds': roundsValue(_rounds),
-        'points': pointsValue(_points),
-        'expMins': expediteMinutesValue(_expediteMinutes),
-        'expPts': expeditePointsValue(_expeditePoints),
-        'expOn': _isExpediteEnabled,
-      }
-    };
+    final data = super.getData();
+    // add ours
+    data['rounds'] = roundsValue(_rounds);
+    data['points'] = pointsValue(_points);
+    data['expMins'] = expediteMinutesValue(_expediteMinutes);
+    data['expPts'] = expeditePointsValue(_expeditePoints);
+    data['expOn'] = _isExpediteEnabled;
+    // and return
+    return data;
   }
 
   @override

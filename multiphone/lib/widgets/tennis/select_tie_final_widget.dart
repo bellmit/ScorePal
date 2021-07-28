@@ -8,8 +8,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectTieFinalWidget extends SelectItemCheckedWidget {
-  const SelectTieFinalWidget({Key key})
-      : super(
+  final bool isTieInFinalSet;
+  final void Function(bool) onTieChanged;
+  const SelectTieFinalWidget({
+    Key key,
+    @required this.isTieInFinalSet,
+    @required this.onTieChanged,
+  }) : super(
           key: key,
           itemSize: Values.select_item_size_medium,
         );
@@ -31,21 +36,12 @@ class SelectTieFinalWidget extends SelectItemCheckedWidget {
   @override
   bool getInitialSelection(BuildContext context, int index) {
     // the initial selection is handled by the active match's setup
-    var setup = Provider.of<ActiveSetup>(context, listen: false);
-    if (setup is TennisMatchSetup) {
-      // this is correct
-      return setup.tieInFinalSet;
-    }
-    print('the tennis widget shouldn\'t show unless tennis is selected');
-    return false;
+    return isTieInFinalSet;
   }
 
   @override
   void onSelectionChanged(BuildContext context, int index, bool isSelected) {
     // the user just selected to play a tie in the final
-    var setup = Provider.of<ActiveSetup>(context, listen: false);
-    if (setup is TennisMatchSetup) {
-      setup.tieInFinalSet = isSelected;
-    }
+    onTieChanged(isSelected);
   }
 }
