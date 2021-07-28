@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Values {
   static const primaryColor = Color(0xFF308038);
-  static const primaryLightColor = Color(0xFF62b064);
+  static const primaryLightColor = Color(0xAA62b064);
   static const primaryLightColorFaded = Color(0xFF7062b064);
   static const primaryDarkColor = Color(0xFF00530d);
   static const secondaryColor = Color(0xFFdcfd50);

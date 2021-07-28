@@ -29,7 +29,8 @@ class _SelectItemCheckedWidgetState extends State<SelectItemCheckedWidget> {
   Widget build(BuildContext context) {
     // get the items we will be adding to the buttons
     var selectItems = widget.items(context);
-    const borderRadius = BorderRadius.all(Radius.circular(10));
+    const borderRadius =
+        BorderRadius.all(Radius.circular(Values.default_radius));
     if (_isSelected.length != selectItems.length) {
       // setup the initial selection from the widget
       for (int i = 0; i < selectItems.length; ++i) {

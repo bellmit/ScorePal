@@ -55,6 +55,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             height: Values.default_space,
           ),
           Card(
+            color: Values.primaryLightColor,
             child: Consumer<ActiveSetup>(
               builder: (ctx, matchSetup, child) {
                 // this changes as the active match changes
@@ -69,12 +70,12 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 );
               },
               // the child of the consumer always is there, make it the play button
-              child: IconButton(
-                onPressed: _startMatch,
-                color: Theme.of(context).primaryColorDark,
-                iconSize: Values.image_large,
-                icon: Icon(
-                  Icons.play_circle,
+              child: Padding(
+                padding: EdgeInsets.all(Values.default_space),
+                child: FloatingActionButton(
+                  onPressed: _startMatch,
+                  child: const Icon(Icons.play_arrow),
+                  backgroundColor: Theme.of(context).accentColor,
                 ),
               ),
             ),

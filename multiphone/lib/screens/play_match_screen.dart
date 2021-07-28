@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
-import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:provider/provider.dart';
 
 abstract class PlayMatchScreen extends StatelessWidget {
