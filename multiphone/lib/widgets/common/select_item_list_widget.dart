@@ -69,8 +69,8 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
         },
         isSelected: _isSelected,
         constraints: BoxConstraints.expand(
-          width: widget.itemSize + Values.border_width,
-          height: widget.itemSize + Values.border_width,
+          width: widget.itemSize,
+          height: widget.itemSize,
         ),
         renderBorder: false,
         selectedColor: Theme.of(context).accentColor,
