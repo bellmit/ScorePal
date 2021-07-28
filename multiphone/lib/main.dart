@@ -102,9 +102,24 @@ class MyApp extends StatelessWidget {
           Locale('fr', ''), // French, no country code
         ],
         theme: ThemeData(
-            // This is the theme of your application.
-            primarySwatch: Colors.green,
-            accentColor: Colors.amberAccent),
+          // This is the theme of your application.
+          scaffoldBackgroundColor: Values.primaryTextColor,
+          backgroundColor: Values.primaryTextColor,
+          primaryColor: Values.primaryColor,
+          primaryColorLight: Values.primaryLightColor,
+          primaryColorDark: Values.primaryDarkColor,
+          accentColor: Values.secondaryLightColor,
+          // Define the default font family.
+          fontFamily: 'Georgia',
+
+          // Define the default TextTheme. Use this to specify the default
+          // text styling for headlines, titles, bodies of text, and more.
+          textTheme: const TextTheme(
+            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+          ),
+        ),
         home: FutureBuilder(
           // Initialize FlutterFire:
           future: _initialization,

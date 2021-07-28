@@ -41,6 +41,9 @@ class _SelectItemCheckedWidgetState extends State<SelectItemCheckedWidget> {
       padding: EdgeInsets.zero,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
+        border: Border.all(
+            color: Theme.of(context).primaryColorDark,
+            width: Values.border_width),
         borderRadius: borderRadius,
       ),
       child: ToggleButtons(
@@ -57,7 +60,7 @@ class _SelectItemCheckedWidgetState extends State<SelectItemCheckedWidget> {
         isSelected: _isSelected,
         constraints: BoxConstraints.expand(
             width: widget.itemSize, height: widget.itemSize),
-        renderBorder: true,
+        renderBorder: false,
         selectedColor: Theme.of(context).accentColor,
         fillColor: Theme.of(context).primaryColor,
         borderRadius: borderRadius,

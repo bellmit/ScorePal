@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:multiphone/helpers/values.dart';
 
 abstract class ScoreWidget extends StatelessWidget {
@@ -83,10 +84,8 @@ abstract class ScoreWidget extends StatelessWidget {
                             ? Values.image_small
                             : 0,
                         height: Values.image_small,
-                        decoration: new BoxDecoration(
-                          color: Theme.of(context).accentColor,
-                          shape: BoxShape.circle,
-                        ),
+                        child: SvgPicture.asset(
+                            'images/svg/tennis-ball-large.svg'),
                       ),
                     ),
                   ),

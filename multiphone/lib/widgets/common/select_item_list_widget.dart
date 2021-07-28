@@ -43,6 +43,9 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
       padding: EdgeInsets.zero,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
+        border: Border.all(
+            color: Theme.of(context).primaryColorDark,
+            width: Values.border_width),
         borderRadius: borderRadius,
       ),
       child: ToggleButtons(
@@ -66,8 +69,10 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
         },
         isSelected: _isSelected,
         constraints: BoxConstraints.expand(
-            width: widget.itemSize, height: widget.itemSize),
-        renderBorder: true,
+          width: widget.itemSize + Values.border_width,
+          height: widget.itemSize + Values.border_width,
+        ),
+        renderBorder: false,
         selectedColor: Theme.of(context).accentColor,
         fillColor: Theme.of(context).primaryColor,
         borderRadius: borderRadius,
