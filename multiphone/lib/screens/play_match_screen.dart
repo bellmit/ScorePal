@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/screens/playing_team_widget.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -20,42 +21,39 @@ abstract class PlayMatchScreen extends StatelessWidget {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     return Scaffold(
-      body: Consumer<ActiveSetup>(
-        builder: (ctx, setup, child) {
-          // when we have the setup we can setup the static(ish) data on this screen
+      body: Consumer<ActiveMatch>(
+        builder: (ctx, match, child) {
           return Column(
             children: [
-              InfoBarWidget(title: setup.getTeamName(TeamIndex.T_ONE, context)),
-              child,
-              InfoBarWidget(title: setup.getTeamName(TeamIndex.T_TWO, context)),
+              // this is the bar for team one player and partner
+              PlayingTeamWidget(match: match, team: TeamIndex.T_ONE),
+              Expanded(
+                child: Column(
+                  children: [
+                    Flexible(
+                      child: createScoreWidget(
+                        match,
+                        TeamIndex.T_ONE,
+                        (level) =>
+                            onScoreClicked(match, TeamIndex.T_ONE, level),
+                      ),
+                    ),
+                    Flexible(
+                      child: createScoreWidget(
+                        match,
+                        TeamIndex.T_TWO,
+                        (level) =>
+                            onScoreClicked(match, TeamIndex.T_TWO, level),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // this is the bar for team two player and partner
+              PlayingTeamWidget(match: match, team: TeamIndex.T_TWO),
             ],
           );
         },
-        // the main screen, outside of the setup consumer, shows the match details
-        child: Consumer<ActiveMatch>(
-          builder: (ctx, match, child) {
-            return Expanded(
-              child: Column(
-                children: [
-                  Flexible(
-                    child: createScoreWidget(
-                      match,
-                      TeamIndex.T_ONE,
-                      (level) => onScoreClicked(match, TeamIndex.T_ONE, level),
-                    ),
-                  ),
-                  Flexible(
-                    child: createScoreWidget(
-                      match,
-                      TeamIndex.T_TWO,
-                      (level) => onScoreClicked(match, TeamIndex.T_TWO, level),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
       ),
     );
   }
