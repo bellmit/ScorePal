@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:multiphone/match/team_namer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Preferences with ChangeNotifier {
+class Preferences {
   final SharedPreferences prefs;
 
   Preferences._create(this.prefs) {
@@ -17,7 +16,7 @@ class Preferences with ChangeNotifier {
   TeamNamingMode get defaultNamingMode {
     try {
       int value = prefs.getInt('default_naming_mode');
-      return TeamNamingMode.values[value];
+      return TeamNamingMode.values[value ?? TeamNamingMode.SURNAME_INITIAL];
     } catch (error) {
       // fine that it doesn't exist, return the default
       return TeamNamingMode.SURNAME_INITIAL;
@@ -31,7 +30,7 @@ class Preferences with ChangeNotifier {
   bool get isFirebaseLoginDesired {
     // get the data direct from the preferences class
     try {
-      return prefs.getBool('is_firebase_login');
+      return prefs.getBool('is_firebase_login') ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;
@@ -44,7 +43,7 @@ class Preferences with ChangeNotifier {
 
   bool get isControlTeams {
     try {
-      return prefs.getBool("isControlTeams");
+      return prefs.getBool("isControlTeams") ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;
@@ -57,7 +56,7 @@ class Preferences with ChangeNotifier {
 
   bool get isControlVol {
     try {
-      return prefs.getBool("isControlVol");
+      return prefs.getBool("isControlVol") ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;
@@ -70,7 +69,7 @@ class Preferences with ChangeNotifier {
 
   bool get isControlMedia {
     try {
-      return prefs.getBool("isControlMedia");
+      return prefs.getBool("isControlMedia") ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;
@@ -79,7 +78,7 @@ class Preferences with ChangeNotifier {
 
   bool get isAllowMedia {
     try {
-      return prefs.getBool("isAllowMedia");
+      return prefs.getBool("isAllowMedia") ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;
@@ -92,7 +91,7 @@ class Preferences with ChangeNotifier {
 
   bool get isControlFlic1 {
     try {
-      return prefs.getBool("isControlFlic1");
+      return prefs.getBool("isControlFlic1") ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;
@@ -105,7 +104,7 @@ class Preferences with ChangeNotifier {
 
   bool get isControlFlic2 {
     try {
-      return prefs.getBool("isControlFlic2");
+      return prefs.getBool("isControlFlic2") ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;
@@ -126,7 +125,7 @@ class Preferences with ChangeNotifier {
 
   bool get soundButtonClick {
     try {
-      return prefs.getBool("isSoundBtnClick");
+      return prefs.getBool("isSoundBtnClick") ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;
@@ -139,7 +138,7 @@ class Preferences with ChangeNotifier {
 
   bool get soundActionSpeak {
     try {
-      return prefs.getBool("isSoundActionSpeak");
+      return prefs.getBool("isSoundActionSpeak") ?? true;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return true;
@@ -152,7 +151,7 @@ class Preferences with ChangeNotifier {
 
   bool get soundAnnounceChange {
     try {
-      return prefs.getBool("isSoundAnncChange");
+      return prefs.getBool("isSoundAnncChange") ?? true;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return true;
@@ -165,7 +164,7 @@ class Preferences with ChangeNotifier {
 
   bool get soundUseSpeakingNames {
     try {
-      return prefs.getBool("isSoundUseSpeakingNames");
+      return prefs.getBool("isSoundUseSpeakingNames") ?? true;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return true;
@@ -178,7 +177,7 @@ class Preferences with ChangeNotifier {
 
   int get soundAnnounceVolume {
     try {
-      return prefs.getInt("isSoundAnncVol");
+      return prefs.getInt("isSoundAnncVol") ?? -1;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return -1;
@@ -191,7 +190,7 @@ class Preferences with ChangeNotifier {
 
   bool get soundAnnounceChangePoints {
     try {
-      return prefs.getBool("isSoundAnncChangePt");
+      return prefs.getBool("isSoundAnncChangePt") ?? true;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return true;
@@ -204,7 +203,7 @@ class Preferences with ChangeNotifier {
 
   bool get soundAnnounceChangeEnds {
     try {
-      return prefs.getBool("isSoundAnncChangeEnd");
+      return prefs.getBool("isSoundAnncChangeEnd") ?? true;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return true;
@@ -217,7 +216,7 @@ class Preferences with ChangeNotifier {
 
   bool get soundAnnounceChangeServer {
     try {
-      return prefs.getBool("isSoundAnncChangeSvr");
+      return prefs.getBool("isSoundAnncChangeSvr") ?? true;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return true;
@@ -230,7 +229,7 @@ class Preferences with ChangeNotifier {
 
   bool get soundAnnounceChangeScore {
     try {
-      return prefs.getBool("isSoundAnncChangeScore");
+      return prefs.getBool("isSoundAnncChangeScore") ?? false;
     } catch (error) {
       // fine that it doesn't exist, return the default
       return false;

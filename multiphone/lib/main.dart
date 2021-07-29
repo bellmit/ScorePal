@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_selection.dart';
@@ -39,8 +40,9 @@ class MyApp extends StatelessWidget {
       providers: [
         // global providers because they are simple enough to setup
         // and this way we won't forget
-        ChangeNotifierProvider(create: (ctx) => Players()),
-        ChangeNotifierProvider(create: (ctx) => Sports()),
+        ChangeNotifierProvider<Players>(create: (ctx) => Players()),
+        ChangeNotifierProvider<Sports>(create: (ctx) => Sports()),
+        ChangeNotifierProvider<SpeakService>(create: (ctx) => SpeakService()),
         ChangeNotifierProxyProvider<Sports, ActiveSelection>(
           // this proxy is called after the specified sports object is build
           update: (ctx, sports, previousMatch) {

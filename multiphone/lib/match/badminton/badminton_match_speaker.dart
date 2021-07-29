@@ -13,13 +13,10 @@ class BadmintonMatchSpeaker extends MatchSpeaker<BadmintonMatch> {
   String createPointsPhrase(BadmintonMatch match, BuildContext context,
       TeamIndex changeTeam, int level) {
     BadmintonMatchSetup setup = match.getSetup();
-    String message = '';
-    String teamOneString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
-    String teamTwoString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
-    String changeTeamString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, changeTeam);
+    StringBuilder message = StringBuilder();
+    String teamOneString = getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
+    String teamTwoString = getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
+    String changeTeamString = getSpeakingTeamName(context, setup, changeTeam);
     switch (level) {
       case BadmintonScore.LEVEL_POINT:
         // the points changed, announce the points
@@ -99,10 +96,8 @@ class BadmintonMatchSpeaker extends MatchSpeaker<BadmintonMatch> {
     int receiverPoints =
         match.getPoint(BadmintonScore.LEVEL_POINT, teamReceiving);
 
-    String serverString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, teamServing);
-    String receiverString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, teamReceiving);
+    String serverString = getSpeakingTeamName(context, setup, teamServing);
+    String receiverString = getSpeakingTeamName(context, setup, teamReceiving);
 
     String message;
     if (serverPoints + receiverPoints > 0) {
@@ -114,7 +109,7 @@ class BadmintonMatchSpeaker extends MatchSpeaker<BadmintonMatch> {
       int serverGames = match.getPoint(BadmintonScore.LEVEL_GAME, teamServing);
       int receiverGames =
           match.getPoint(BadmintonScore.LEVEL_GAME, teamReceiving);
-      String messageBuilder = '';
+      StringBuilder messageBuilder = StringBuilder();
       if (serverGames + receiverGames > 0) {
         // announce the games
         appendPause(

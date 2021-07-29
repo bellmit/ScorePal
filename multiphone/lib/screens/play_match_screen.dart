@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
@@ -62,6 +63,30 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         // animate this out
         controller.reverse();
       });
+    }
+    _speakMatchChange(context, match);
+  }
+
+  void _speakMatchChange(BuildContext context, ActiveMatch match) {
+    final state = match.score.state;
+    final speakService = Provider.of<SpeakService>(context, listen: false);
+    if (!state.isChanged(ScoreChange.incrementRedo)) {
+      // this is not during a 'redo' so we need to process and display this change
+      if (match != null) {
+        // so speak this state
+        speakService.speak(match.getSpokenStateMessage(context));
+      }
+      //TODO handle play tracking
+      /*
+      if (null != playTracker) {
+        // every time the points change we want to check to see if we have ended or not
+        playTracker.handlePlayEnding();
+      }
+      // update any open notification with this new match data
+      if (null != matchNotification) {
+        matchNotification.updateNotification(activeMatch);
+      }
+       */
     }
   }
 

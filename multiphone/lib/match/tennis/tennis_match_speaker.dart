@@ -68,9 +68,8 @@ class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
       TennisMatch match, BuildContext context, TeamIndex changeTeam) {
     TennisMatchSetup setup = match.getSetup();
     // create the announcement of the set result on this match
-    String changeTeamString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, changeTeam);
-    String message = '';
+    String changeTeamString = getSpeakingTeamName(context, setup, changeTeam);
+    StringBuilder message = StringBuilder();
 
     appendPause(
         message, TennisPoint.game.speakString(context), Point.K_SPEAKING_PAUSE);
@@ -91,11 +90,9 @@ class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
       TennisMatch match, BuildContext context, TeamIndex changeTeam) {
     TennisMatchSetup setup = match.getSetup();
     // create the announcement of the set result on this match
-    String teamOneString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
-    String teamTwoString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
-    String message = '';
+    String teamOneString = getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
+    String teamTwoString = getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
+    StringBuilder message = StringBuilder();
 
     if (null != match && !match.isMatchOver()) {
       // match isn't over, want to read out the sets we have one
@@ -163,10 +160,8 @@ class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
       TennisMatch match, BuildContext context, TeamIndex changeTeam) {
     TennisMatchSetup setup = match.getSetup();
     // create the announcement of games on this match
-    String changeTeamString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, changeTeam);
-    String message = '';
-
+    String changeTeamString = getSpeakingTeamName(context, setup, changeTeam);
+    StringBuilder message = StringBuilder();
     appendPause(
         message, TennisPoint.game.speakString(context), Point.K_SPEAKING_PAUSE);
     append(message, changeTeamString);
@@ -177,13 +172,10 @@ class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
       TennisMatch match, BuildContext context, TeamIndex changeTeam) {
     TennisMatchSetup setup = match.getSetup();
     // create the announcement of games on this match
-    String teamOneString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
-    String teamTwoString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
-    String changeTeamString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, changeTeam);
-    String message = '';
+    String teamOneString = getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
+    String teamTwoString = getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
+    String changeTeamString = getSpeakingTeamName(context, setup, changeTeam);
+    StringBuilder message = StringBuilder();
     // so we want to say the games as they stand
     append(message, Point.K_SPEAKING_PAUSE_LONG);
 
@@ -227,15 +219,13 @@ class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
       TennisMatch match, BuildContext context, TeamIndex changeTeam) {
     TennisMatchSetup setup = match.getSetup();
     // create the announcement of points on this match
-    String teamOneString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
-    String teamTwoString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
+    String teamOneString = getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
+    String teamTwoString = getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
     Point t1Point =
         match.getDisplayPoint(TennisScore.LEVEL_POINT, TeamIndex.T_ONE);
     Point t2Point =
         match.getDisplayPoint(TennisScore.LEVEL_POINT, TeamIndex.T_TWO);
-    String message = '';
+    StringBuilder message = StringBuilder();
 
     if (t1Point == TennisPoint.advantage) {
       // read advantage team one
@@ -300,10 +290,8 @@ class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
     int serverPoints = match.getPoint(TennisScore.LEVEL_POINT, teamServing);
     int receiverPoints = match.getPoint(TennisScore.LEVEL_POINT, teamReceiving);
 
-    String serverString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, teamServing);
-    String receiverString =
-        MatchSpeaker.getSpeakingTeamName(context, setup, teamReceiving);
+    String serverString = getSpeakingTeamName(context, setup, teamServing);
+    String receiverString = getSpeakingTeamName(context, setup, teamReceiving);
 
     String message;
     if (serverPoints + receiverPoints > 0) {
@@ -314,7 +302,7 @@ class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
       // no points scored, are there any games?
       int serverGames = match.getGames(teamServing, -1).val();
       int receiverGames = match.getGames(teamReceiving, -1).val();
-      String messageBuilder = '';
+      StringBuilder messageBuilder = StringBuilder();
       if (serverGames + receiverGames > 0) {
         // announce the games
         appendPause(
