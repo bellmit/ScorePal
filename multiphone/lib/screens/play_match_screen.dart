@@ -7,6 +7,7 @@ import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:wakelock/wakelock.dart';
 
 abstract class PlayMatchScreen extends StatefulWidget {
   PlayMatchScreen();
@@ -14,8 +15,11 @@ abstract class PlayMatchScreen extends StatefulWidget {
   @override
   _PlayMatchScreenState createState() => _PlayMatchScreenState();
 
-  Widget createScoreWidget(ActiveMatch match, TeamIndex teamIndex,
-      void Function(int level) onScoreClicked);
+  Widget createScoreWidget(
+    ActiveMatch match,
+    TeamIndex teamIndex,
+    void Function(int level) onScoreClicked,
+  );
 
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level);
 }
@@ -24,19 +28,35 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     with SingleTickerProviderStateMixin {
   String _description = '';
 
-  AnimationController controller;
-  Animation<Offset> offset;
+  AnimationController _controller;
+  Animation<Offset> _offset;
 
   @override
   void initState() {
     super.initState();
 
-    controller = AnimationController(
-        vsync: this,
-        duration: Duration(milliseconds: Values.animation_duration_ms));
+    // keep this screen on
+    Wakelock.enable();
+    // create the animation controlling things
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: Values.animation_duration_ms),
+    );
+    // and the offset to slide in the latest message
+    _offset = Tween<Offset>(
+      begin: Offset(-1.0, 0.0),
+      end: Offset.zero,
+    ).animate(_controller);
+  }
 
-    offset = Tween<Offset>(begin: Offset(-1.0, 0.0), end: Offset.zero)
-        .animate(controller);
+  @override
+  void dispose() {
+    // release all the created things
+    _controller.dispose();
+    // release the lock
+    Wakelock.disable();
+    // and dispose
+    super.dispose();
   }
 
   void _processScoreChange(ActiveMatch match, TeamIndex team, int level) {
@@ -51,7 +71,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     }
     if (description.isNotEmpty) {
       // there is something to show, animate the control in to show it
-      controller.forward();
+      _controller.forward();
       // change this state then to show the text
       setState(() {
         _description = description;
@@ -61,7 +81,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         Duration(milliseconds: Values.display_duration_ms),
       ).then((v) {
         // animate this out
-        controller.reverse();
+        _controller.reverse();
       });
     }
     // and do the speaking from the screen
@@ -135,7 +155,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
               Align(
                 alignment: Alignment.center,
                 child: SlideTransition(
-                  position: offset,
+                  position: _offset,
                   child: Center(
                     child: FractionallySizedBox(
                         heightFactor: 0.2,

@@ -11,9 +11,7 @@ enum TtsState { playing, stopped, paused, continued }
 
 class SpeakService with ChangeNotifier {
   final FlutterTts flutterTts;
-  String language;
   String engine;
-  bool isCurrentLanguageInstalled = false;
 
   TtsState _ttsState = TtsState.stopped;
 
@@ -65,14 +63,21 @@ class SpeakService with ChangeNotifier {
     });
   }
 
-  Future _getDefaultEngine() async {
-    var engine = await flutterTts.getDefaultEngine;
-    if (engine != null) {
-      Log.debug(engine);
-    }
+  @override
+  void dispose() {
+    super.dispose();
+    flutterTts.stop();
   }
 
-  Future speak(String message) async {
+  Future<String> _getDefaultEngine() async {
+    engine = await flutterTts.getDefaultEngine;
+    if (engine != null) {
+      Log.debug('Flutter TTS: $engine');
+    }
+    return engine;
+  }
+
+  Future<void> speak(String message) async {
     final preferences = await Preferences.create();
     final volume = preferences.soundAnnounceVolume.clamp(0.0, 1.0);
     Log.debug('speaking the following (vol:$volume): "$message"');
@@ -83,65 +88,16 @@ class SpeakService with ChangeNotifier {
     // stop any previous message
     await stop();
     // and speak the new one
-    return flutterTts.speak(message ?? '');
+    await flutterTts.speak(message ?? '');
   }
 
-  Future stop() async {
+  Future<void> stop() async {
     var result = await flutterTts.stop();
     if (result == 1) ttsState = TtsState.stopped;
   }
 
-  Future pause() async {
+  Future<void> pause() async {
     var result = await flutterTts.pause();
     if (result == 1) ttsState = TtsState.paused;
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    flutterTts.stop();
-  }
-
-  /*
-  Widget _volume() {
-    return Slider(
-        value: volume,
-        onChanged: (newVolume) {
-          setState(() => volume = newVolume);
-        },
-        min: 0.0,
-        max: 1.0,
-        divisions: 10,
-        label: "Volume: $volume");
-  }
-
-  Widget _pitch() {
-    return Slider(
-      value: pitch,
-      onChanged: (newPitch) {
-        setState(() => pitch = newPitch);
-      },
-      min: 0.5,
-      max: 2.0,
-      divisions: 15,
-      label: "Pitch: $pitch",
-      activeColor: Colors.red,
-    );
-  }
-
-  Widget _rate() {
-    return Slider(
-      value: rate,
-      onChanged: (newRate) {
-        setState(() => rate = newRate);
-      },
-      min: 0.0,
-      max: 1.0,
-      divisions: 10,
-      label: "Rate: $rate",
-      activeColor: Colors.green,
-    );
-  }
-
-  */
 }
