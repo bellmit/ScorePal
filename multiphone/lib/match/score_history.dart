@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:multiphone/helpers/class_stack.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/providers/active_setup.dart';
 
 enum Importance {
@@ -107,7 +108,7 @@ class ScoreHistory {
       } else {
         // just one-to-one
         pointHistory.add(value.team.index);
-        print(
+        Log.error(
             "the levelStraightPoints should have the points at each level that constitute a win");
       }
     }

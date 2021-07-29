@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/sport.dart';
 
@@ -49,7 +50,7 @@ class MatchId {
       try {
         played = fileDateFormat.parse(dateString);
       } catch (error) {
-        print("Failed to create the match date from the match id " +
+        Log.error("Failed to create the match date from the match id " +
             matchId +
             error.toString());
       }
@@ -69,7 +70,7 @@ class MatchId {
       try {
         sport = Sports.fromId(sportString);
       } catch (error) {
-        print("Failed to create the sport from the match id " +
+        Log.error("Failed to create the sport from the match id " +
             matchId +
             error.toString());
       }

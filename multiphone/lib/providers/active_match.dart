@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/point.dart';
@@ -90,8 +91,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
       // and return this top level object
       return topLevel;
     } catch (error) {
-      // TODO Auto-generated catch block
-      print(error);
+      Log.error(error);
       return null;
     }
   }
@@ -103,8 +103,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
       // and set our data from this
       restoreFromJSON(dataObject, topLevel['ver']);
     } catch (error) {
-      // TODO Auto-generated catch block
-      print(error);
+      Log.error(error);
     }
   }
 

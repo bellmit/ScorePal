@@ -95,11 +95,9 @@ class PingPongScore extends Score<PingPongMatchSetup> {
     return point;
   }
 
-/**
- * only call this privately as a game is won by winning points to prevent it going in the history
- * as some user entry that they won the set
- * @param team is the team that has won the game
- */
+/// only call this privately as a game is won by winning points to prevent it going in the history
+/// as some user entry that they won the set
+/// @param team is the team that has won the game
   void incrementRound(TeamIndex team) {
     // add one to the rounds already stored
     int rounds = super.getPoint(LEVEL_ROUND, team) + 1;

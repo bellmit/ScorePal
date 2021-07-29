@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -85,7 +83,6 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
 
   void _onServerSelected(PlayerIndex playerIndex) {
     // update the starting server in the settings
-    print('${playerIndex.index} is now starting serve');
     var setup = Provider.of<ActiveSetup>(context, listen: false);
     // set the server to start
     setup.startingServer = playerIndex;

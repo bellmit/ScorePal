@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_selection.dart';
@@ -43,12 +44,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<Sports, ActiveSelection>(
           // this proxy is called after the specified sports object is build
           update: (ctx, sports, previousMatch) {
-            print(
+            Log.debug(
                 'updating selection with ${sports == null || sports.available == null ? '0' : sports.available.length} sports');
             return ActiveSelection(sports);
           },
           create: (ctx) {
-            print('creating null active selection');
+            Log.debug('creating null active selection');
             return ActiveSelection(null);
           },
         ),
@@ -56,13 +57,13 @@ class MyApp extends StatelessWidget {
           // this proxy is called after the specified active match object is build
           update: (ctx, activeMatch, previousSetup) {
             // create the correct match setup from the sport
-            print(
+            Log.debug(
                 'creating a new setup for the sport of ${activeMatch.sport == null ? 'null' : activeMatch.sport.id}');
             return activeMatch.sport.createSetup();
           },
           // create an empty one initially - needs the active match setting
           create: (ctx) {
-            print('creating a null setup, no sport selected at this time');
+            Log.debug('creating a null setup, no sport selected at this time');
             return null;
           },
         ),
@@ -71,12 +72,12 @@ class MyApp extends StatelessWidget {
           if (previousMatch == null ||
               setup.sport.id != previousMatch.getSport().id) {
             // this is a change in sport, create the new match needed
-            print(
+            Log.debug(
                 'new setup as switching sport to ${setup.sport == null ? 'null' : setup.sport.id}');
             return setup.sport.createMatch(setup);
           } else {
             // this is the same sport, just update the match running
-            print('applying a setup change to the previous match');
+            Log.debug('applying a setup change to the previous match');
             previousMatch.applyChangedMatchSettings();
             // and return the same
             return previousMatch;
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
         }, create: (ctx) {
           // this is the first match created - create it for the selected setup
           var setup = Provider.of<ActiveSetup>(ctx, listen: false);
-          print(
+          Log.debug(
               'creating first match of ${setup.sport == null ? 'null' : setup.sport.id}');
           return setup.sport.createMatch(setup);
         }),

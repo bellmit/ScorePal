@@ -134,10 +134,7 @@ abstract class ActiveSetup with ChangeNotifier {
     if (name == null || name.isEmpty) {
       name = _teamNamer.getDefaultPlayerName(player, context);
     }
-    if (startingServer == player) {
-      //TODO - we probably want to show who's serving somehow
-      //name += ' (*)';
-    }
+    // return the name
     return name;
   }
 

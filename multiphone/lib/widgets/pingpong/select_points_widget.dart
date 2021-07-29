@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/ping_pong/ping_pong_point.dart';
-import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
-import 'package:provider/provider.dart';
 
 class SelectPointsWidget extends SelectItemListWidget {
   final PingPongPoints points;
