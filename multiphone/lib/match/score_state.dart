@@ -46,7 +46,7 @@ class ScoreState {
     _levelChanged = -1;
   }
 
-  get isEmpty {
+  bool get isEmpty {
     return _currentState == ScoreChange.none.val;
   }
 
