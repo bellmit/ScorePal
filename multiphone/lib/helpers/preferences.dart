@@ -1,3 +1,4 @@
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/team_namer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,10 +14,31 @@ class Preferences {
     return Preferences._create(await SharedPreferences.getInstance());
   }
 
+  bool _getBool(String key, bool varDefault) {
+    // this is wrapped to do it safely
+    try {
+      return prefs.getBool(key) ?? varDefault;
+    } catch (error) {
+      Log.error('Failed to get $key from prefs $error');
+      return varDefault;
+    }
+  }
+
+  int _getInt(String key, int varDefault) {
+    // this is wrapped to do it safely
+    try {
+      return prefs.getInt(key) ?? varDefault;
+    } catch (error) {
+      Log.error('Failed to get $key from prefs $error');
+      return varDefault;
+    }
+  }
+
   TeamNamingMode get defaultNamingMode {
     try {
-      int value = prefs.getInt('default_naming_mode');
-      return TeamNamingMode.values[value ?? TeamNamingMode.SURNAME_INITIAL];
+      int value =
+          _getInt('default_naming_mode', TeamNamingMode.SURNAME_INITIAL.index);
+      return TeamNamingMode.values[value];
     } catch (error) {
       // fine that it doesn't exist, return the default
       return TeamNamingMode.SURNAME_INITIAL;
@@ -29,12 +51,7 @@ class Preferences {
 
   bool get isFirebaseLoginDesired {
     // get the data direct from the preferences class
-    try {
-      return prefs.getBool('is_firebase_login') ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('is_firebase_login', false);
   }
 
   set isFirebaseLoginDesired(bool newValue) {
@@ -42,12 +59,7 @@ class Preferences {
   }
 
   bool get isControlTeams {
-    try {
-      return prefs.getBool("isControlTeams") ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('isControlTeams', false);
   }
 
   set isControlTeams(bool value) {
@@ -55,12 +67,7 @@ class Preferences {
   }
 
   bool get isControlVol {
-    try {
-      return prefs.getBool("isControlVol") ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('isControlVol', false);
   }
 
   set isControlVol(bool value) {
@@ -68,21 +75,11 @@ class Preferences {
   }
 
   bool get isControlMedia {
-    try {
-      return prefs.getBool("isControlMedia") ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('isControlMedia', false);
   }
 
   bool get isAllowMedia {
-    try {
-      return prefs.getBool("isAllowMedia") ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('isAllowMedia', false);
   }
 
   set isControlMedia(bool value) {
@@ -90,12 +87,7 @@ class Preferences {
   }
 
   bool get isControlFlic1 {
-    try {
-      return prefs.getBool("isControlFlic1") ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('isControlFlic1', false);
   }
 
   set isControlFlic1(bool value) {
@@ -103,12 +95,7 @@ class Preferences {
   }
 
   bool get isControlFlic2 {
-    try {
-      return prefs.getBool("isControlFlic2") ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('isControlFlic2', false);
   }
 
   set isControlFlic2(bool value) {
@@ -124,12 +111,7 @@ class Preferences {
   }
 
   bool get soundButtonClick {
-    try {
-      return prefs.getBool("isSoundBtnClick") ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('isSoundBtnClick', false);
   }
 
   set soundActionSpeak(bool value) {
@@ -137,12 +119,7 @@ class Preferences {
   }
 
   bool get soundActionSpeak {
-    try {
-      return prefs.getBool("isSoundActionSpeak") ?? true;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return true;
-    }
+    return _getBool('isSoundActionSpeak', true);
   }
 
   set soundAnnounceChange(bool value) {
@@ -150,38 +127,23 @@ class Preferences {
   }
 
   bool get soundAnnounceChange {
-    try {
-      return prefs.getBool("isSoundAnncChange") ?? true;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return true;
-    }
-  }
-
-  set soundAnnounceVolume(int value) {
-    prefs.setInt("isSoundAnncVol", value);
+    return _getBool('isSoundAnncChange', true);
   }
 
   bool get soundUseSpeakingNames {
-    try {
-      return prefs.getBool("isSoundUseSpeakingNames") ?? true;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return true;
-    }
+    return _getBool('isSoundUseSpeakingNames', true);
   }
 
   set soundUseSpeakingNames(bool value) {
     prefs.setBool("isSoundUseSpeakingNames", value);
   }
 
-  int get soundAnnounceVolume {
-    try {
-      return prefs.getInt("isSoundAnncVol") ?? -1;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return -1;
-    }
+  double get soundAnnounceVolume {
+    return _getInt('isSoundAnncVol', 10) / 10.0;
+  }
+
+  set soundAnnounceVolume(double value) {
+    prefs.setInt("isSoundAnncVol", (value * 10).floor());
   }
 
   set soundAnnounceChangePoints(bool value) {
@@ -189,12 +151,7 @@ class Preferences {
   }
 
   bool get soundAnnounceChangePoints {
-    try {
-      return prefs.getBool("isSoundAnncChangePt") ?? true;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return true;
-    }
+    return _getBool('isSoundAnncChangePt', true);
   }
 
   set soundAnnounceChangeEnds(bool value) {
@@ -202,12 +159,7 @@ class Preferences {
   }
 
   bool get soundAnnounceChangeEnds {
-    try {
-      return prefs.getBool("isSoundAnncChangeEnd") ?? true;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return true;
-    }
+    return _getBool('isSoundAnncChangeEnd', true);
   }
 
   set soundAnnounceChangeServer(bool value) {
@@ -215,12 +167,7 @@ class Preferences {
   }
 
   bool get soundAnnounceChangeServer {
-    try {
-      return prefs.getBool("isSoundAnncChangeSvr") ?? true;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return true;
-    }
+    return _getBool('isSoundAnncChangeSvr', true);
   }
 
   set soundAnnounceChangeScore(bool value) {
@@ -228,11 +175,6 @@ class Preferences {
   }
 
   bool get soundAnnounceChangeScore {
-    try {
-      return prefs.getBool("isSoundAnncChangeScore") ?? false;
-    } catch (error) {
-      // fine that it doesn't exist, return the default
-      return false;
-    }
+    return _getBool('isSoundAnncChangeScore', false);
   }
 }

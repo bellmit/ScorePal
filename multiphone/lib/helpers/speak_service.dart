@@ -4,16 +4,15 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/preferences.dart';
+import 'package:multiphone/helpers/values.dart';
 
 enum TtsState { playing, stopped, paused, continued }
 
 class SpeakService with ChangeNotifier {
-  FlutterTts flutterTts;
+  final FlutterTts flutterTts;
   String language;
   String engine;
-  double volume = 0.5;
-  double pitch = 1.0;
-  double rate = 0.5;
   bool isCurrentLanguageInstalled = false;
 
   TtsState _ttsState = TtsState.stopped;
@@ -33,9 +32,7 @@ class SpeakService with ChangeNotifier {
   bool get isAndroid => !kIsWeb && Platform.isAndroid;
   bool get isWeb => kIsWeb;
 
-  SpeakService() {
-    flutterTts = FlutterTts();
-
+  SpeakService() : flutterTts = FlutterTts() {
     if (isAndroid) {
       _getDefaultEngine();
     }
@@ -76,17 +73,17 @@ class SpeakService with ChangeNotifier {
   }
 
   Future speak(String message) async {
-    Log.debug('speaking $message');
+    final preferences = await Preferences.create();
+    final volume = preferences.soundAnnounceVolume.clamp(0.0, 1.0);
+    Log.debug('speaking the following (vol:$volume): "$message"');
     await flutterTts.setVolume(volume);
-    await flutterTts.setSpeechRate(rate);
-    await flutterTts.setPitch(pitch);
+    await flutterTts.setSpeechRate(Values.speaking_rate);
+    await flutterTts.setPitch(Values.speaking_pitch);
 
-    if (message != null) {
-      if (message.isNotEmpty) {
-        await flutterTts.awaitSpeakCompletion(true);
-        await flutterTts.speak(message);
-      }
-    }
+    // stop any previous message
+    await stop();
+    // and speak the new one
+    return flutterTts.speak(message ?? '');
   }
 
   Future stop() async {

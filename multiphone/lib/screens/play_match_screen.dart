@@ -49,13 +49,13 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
       // this change is good, do we want to show this?
       description = match.getStateDescription(context, state.getState());
     }
-    // change this state then to show the text (or cleared text)
-    setState(() {
-      _description = description;
-    });
     if (description.isNotEmpty) {
       // there is something to show, animate the control in to show it
       controller.forward();
+      // change this state then to show the text
+      setState(() {
+        _description = description;
+      });
       // only want to show this for a duration of time
       Future.delayed(
         Duration(milliseconds: Values.display_duration_ms),
@@ -64,6 +64,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         controller.reverse();
       });
     }
+    // and do the speaking from the screen
     _speakMatchChange(context, match);
   }
 

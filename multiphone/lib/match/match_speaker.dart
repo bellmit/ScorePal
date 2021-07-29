@@ -21,11 +21,12 @@ class StringBuilder {
 }
 
 abstract class MatchSpeaker<T extends ActiveMatch> {
+  final Future<Preferences> initialized;
   Preferences prefs;
 
-  MatchSpeaker() {
+  MatchSpeaker() : initialized = Preferences.create() {
     // private constructor
-    Preferences.create().then((value) => prefs = value);
+    initialized.then((value) => prefs = value);
   }
 
   String createPointsPhrase(

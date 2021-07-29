@@ -34,6 +34,9 @@ class Values {
   static const double font_size_title = 18;
   static const double font_size_subtitle = 12;
 
+  static const double speaking_pitch = 1.0;
+  static const double speaking_rate = 0.5;
+
   static const double select_item_size_medium = 72;
   static const double select_item_size_large = 92;
 
