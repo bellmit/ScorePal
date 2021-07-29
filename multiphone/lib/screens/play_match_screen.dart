@@ -19,9 +19,24 @@ abstract class PlayMatchScreen extends StatefulWidget {
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level);
 }
 
-class _PlayMatchScreenState extends State<PlayMatchScreen> {
-  bool _showScoreChange = false;
+class _PlayMatchScreenState extends State<PlayMatchScreen>
+    with SingleTickerProviderStateMixin {
   String _description = '';
+
+  AnimationController controller;
+  Animation<Offset> offset;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: Values.animation_duration_ms));
+
+    offset = Tween<Offset>(begin: Offset(-1.0, 0.0), end: Offset.zero)
+        .animate(controller);
+  }
 
   void _processScoreChange(ActiveMatch match, TeamIndex team, int level) {
     // make the derived class change our score
@@ -33,11 +48,21 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
       // this change is good, do we want to show this?
       description = match.getStateDescription(context, state.getState());
     }
-    // change this state then
+    // change this state then to show the text (or cleared text)
     setState(() {
       _description = description;
-      _showScoreChange = _description != null && _description.isNotEmpty;
     });
+    if (description.isNotEmpty) {
+      // there is something to show, animate the control in to show it
+      controller.forward();
+      // only want to show this for a duration of time
+      Future.delayed(
+        Duration(milliseconds: Values.display_duration_ms),
+      ).then((v) {
+        // animate this out
+        controller.reverse();
+      });
+    }
   }
 
   @override
@@ -81,21 +106,28 @@ class _PlayMatchScreenState extends State<PlayMatchScreen> {
                   PlayingTeamWidget(match: match, team: TeamIndex.T_TWO),
                 ],
               ),
-              if (_showScoreChange)
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.all(Values.default_space),
-                    width: double.infinity,
-                    height: Values.image_large * 2,
-                    child: Card(
-                      borderOnForeground: true,
-                      child: Center(
-                        child: Text(_description),
-                      ),
-                      color: Theme.of(context).primaryColor,
-                    ),
+              Align(
+                alignment: Alignment.center,
+                child: SlideTransition(
+                  position: offset,
+                  child: Center(
+                    child: FractionallySizedBox(
+                        heightFactor: 0.2,
+                        widthFactor: 0.8,
+                        child: Card(
+                          borderOnForeground: true,
+                          child: Padding(
+                            padding: EdgeInsets.all(Values.default_space),
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(_description),
+                            ),
+                          ),
+                          color: Theme.of(context).primaryColor,
+                        )),
                   ),
                 ),
+              ),
             ],
           );
         },

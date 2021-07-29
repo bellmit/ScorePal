@@ -22,6 +22,7 @@ class Values {
   static const circular_progress_default_title = Color(0xFF62b064);
   static const circular_progress_default_subtitle = Color(0xFF62b064);
 
+  static const int display_duration_ms = 3000;
   static const int animation_duration_rapid_ms = 200;
   static const int animation_duration_ms = 500;
   static const double default_space = 8;
