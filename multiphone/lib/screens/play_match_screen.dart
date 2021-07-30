@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
@@ -25,6 +26,8 @@ abstract class PlayMatchScreen extends StatefulWidget {
   );
 
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level);
+
+  String getEndingRoute();
 }
 
 class _PlayMatchScreenState extends State<PlayMatchScreen>
@@ -70,15 +73,31 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     ).animate(_optionsController);
   }
 
+  void _releaseLocks() {
+    Log.debug("releasing locks");
+    // release the lock
+    Wakelock.disable();
+    // and put the overlays back
+    SystemChrome.setEnabledSystemUIOverlays(
+        [SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  }
+
+  @override
+  void deactivate() {
+    print("deactivate");
+    _releaseLocks();
+    super.deactivate();
+  }
+
   @override
   void dispose() {
     // release all the created things
     _messageController.dispose();
     _optionsController.dispose();
+    // release any locks we asked for
+    _releaseLocks();
     // and the tracker
     _playTracker.destroy(true);
-    // release the lock
-    Wakelock.disable();
     // and dispose
     super.dispose();
   }
@@ -132,6 +151,17 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     switch (option) {
       case PlayMatchOptions.resume:
         _showPauseOptions(false);
+        break;
+      case PlayMatchOptions.end_match:
+        // navigate away from this screen
+        Navigator.pushNamed(context, widget.getEndingRoute());
+        break;
+      case PlayMatchOptions.concede_one:
+      case PlayMatchOptions.concede_two:
+      case PlayMatchOptions.show_history:
+      case PlayMatchOptions.show_settings:
+      case PlayMatchOptions.show_match_settings:
+        Log.error('not implemented this yet');
         break;
     }
   }
@@ -234,6 +264,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                         right: Values.default_space,
                         bottom: Values.team_names_widget_height),
                     child: PlayMatchOptionsWidget(
+                      sportSvgPath: match.getSport().icon,
                       matchDescription:
                           match.getDescription(DescriptionLevel.SHORT, context),
                       teamOneName: match

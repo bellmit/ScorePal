@@ -149,7 +149,7 @@ class TennisScore extends Score<TennisMatchSetup> {
   }
 
   bool isSetTieBreak(int setIndex) {
-    return tieBreakSets.contains(setIndex.toString());
+    return tieBreakSets.contains(setIndex);
   }
 
   int getBreakPoints(TeamIndex team) {

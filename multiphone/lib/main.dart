@@ -11,9 +11,12 @@ import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/widgets/badminton/end_badminton_screen.dart';
 import 'package:multiphone/widgets/badminton/play_badminton_screen.dart';
+import 'package:multiphone/widgets/pingpong/end_ping_pong_screen.dart';
 import 'package:multiphone/widgets/pingpong/play_ping_pong_screen.dart';
 import 'package:multiphone/screens/setup_match_screen.dart';
+import 'package:multiphone/widgets/tennis/end_tennis_screen.dart';
 import 'package:multiphone/widgets/tennis/play_tennis_screen.dart';
 import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/screens/splash_screen.dart';
@@ -154,8 +157,11 @@ class MyApp extends StatelessWidget {
           SetupMatchScreen.routeName: (ctx) => SetupMatchScreen(),
           SettingsScreen.routeName: (ctx) => SettingsScreen(),
           PlayTennisScreen.routeName: (ctx) => PlayTennisScreen(),
+          EndTennisScreen.routeName: (ctx) => EndTennisScreen(),
           PlayBadmintonScreen.routeName: (ctx) => PlayBadmintonScreen(),
+          EndBadmintonScreen.routeName: (ctx) => EndBadmintonScreen(),
           PlayPingPongScreen.routeName: (ctx) => PlayPingPongScreen(),
+          EndPingPongScreen.routeName: (ctx) => EndPingPongScreen(),
         },
       ),
     );

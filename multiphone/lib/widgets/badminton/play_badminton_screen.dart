@@ -5,11 +5,17 @@ import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/badminton/badminton_score_widget.dart';
 import 'package:multiphone/screens/play_match_screen.dart';
+import 'package:multiphone/widgets/badminton/end_badminton_screen.dart';
 
 class PlayBadmintonScreen extends PlayMatchScreen {
   static const String routeName = "/play-badminton";
 
   PlayBadmintonScreen();
+
+  @override
+  String getEndingRoute() {
+    return EndBadmintonScreen.routeName;
+  }
 
   @override
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level) {

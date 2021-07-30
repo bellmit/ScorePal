@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/common/heading_widget.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
+import 'package:multiphone/widgets/match_summary_title_widget.dart';
 
 enum PlayMatchOptions {
   resume,
@@ -15,6 +15,7 @@ enum PlayMatchOptions {
 }
 
 class PlayMatchOptionsWidget extends StatelessWidget {
+  final String sportSvgPath;
   final String matchDescription;
   final String teamOneName;
   final String teamTwoName;
@@ -22,6 +23,7 @@ class PlayMatchOptionsWidget extends StatelessWidget {
 
   const PlayMatchOptionsWidget({
     Key key,
+    @required this.sportSvgPath,
     @required this.matchDescription,
     @required this.teamOneName,
     @required this.teamTwoName,
@@ -45,29 +47,8 @@ class PlayMatchOptionsWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             InfoBarWidget(title: values.strings.match_options),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: Values.default_space,
-                right: Values.default_space,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SvgPicture.asset(
-                    'images/svg/tennis.svg',
-                    height: Values.image_medium,
-                    width: Values.image_medium,
-                  ),
-                  Expanded(
-                    child: Text(
-                      matchDescription,
-                      style:
-                          TextStyle(color: Theme.of(context).primaryColorDark),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            MatchSummaryTitleWidget(
+                svgPath: sportSvgPath, description: matchDescription),
             ElevatedButton.icon(
               style: optionsButtonStyle,
               onPressed: () => onOptionSelected(PlayMatchOptions.end_match),

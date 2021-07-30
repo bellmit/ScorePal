@@ -4,11 +4,17 @@ import 'package:multiphone/match/tennis/tennis_score.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/play_match_screen.dart';
+import 'package:multiphone/widgets/tennis/end_tennis_screen.dart';
 import 'package:multiphone/widgets/tennis/tennis_score_widget.dart';
 
 class PlayTennisScreen extends PlayMatchScreen {
   static const String routeName = "/play-tennis";
   PlayTennisScreen();
+
+  @override
+  String getEndingRoute() {
+    return EndTennisScreen.routeName;
+  }
 
   @override
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level) {
