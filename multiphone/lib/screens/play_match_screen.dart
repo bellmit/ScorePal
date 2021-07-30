@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
+import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
@@ -27,6 +29,7 @@ abstract class PlayMatchScreen extends StatefulWidget {
 class _PlayMatchScreenState extends State<PlayMatchScreen>
     with SingleTickerProviderStateMixin {
   String _description = '';
+  MatchPlayTracker _playTracker;
 
   AnimationController _controller;
   Animation<Offset> _offset;
@@ -34,6 +37,11 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   @override
   void initState() {
     super.initState();
+
+    // get the match as-is to track it (it will change but there will only be one)
+    ActiveMatch match = Provider.of<ActiveMatch>(context, listen: false);
+    // new match - new tracker
+    _playTracker = MatchPlayTracker(match);
 
     // keep this screen on
     Wakelock.enable();
@@ -53,6 +61,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   void dispose() {
     // release all the created things
     _controller.dispose();
+    _playTracker.destroy(true);
     // release the lock
     Wakelock.disable();
     // and dispose
@@ -60,54 +69,33 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   }
 
   void _processScoreChange(ActiveMatch match, TeamIndex team, int level) {
-    // make the derived class change our score
-    widget.onScoreClicked(match, team, level);
-    // and also show any change in score we need to show
-    final state = match.score.state;
-    var description = '';
-    if (!state.isEmpty && !state.isChanged(ScoreChange.incrementRedo)) {
-      // this change is good, do we want to show this?
-      description = match.getStateDescription(context, state.getState());
-    }
-    if (description.isNotEmpty) {
-      // there is something to show, animate the control in to show it
-      _controller.forward();
-      // change this state then to show the text
-      setState(() {
-        _description = description;
-      });
-      // only want to show this for a duration of time
-      Future.delayed(
-        Duration(milliseconds: Values.display_duration_ms),
-      ).then((v) {
-        // animate this out
-        _controller.reverse();
-      });
-    }
-    // and do the speaking from the screen
-    _speakMatchChange(context, match);
-  }
-
-  void _speakMatchChange(BuildContext context, ActiveMatch match) {
-    final state = match.score.state;
-    final speakService = Provider.of<SpeakService>(context, listen: false);
-    if (!state.isChanged(ScoreChange.incrementRedo)) {
-      // this is not during a 'redo' so we need to process and display this change
-      if (match != null) {
-        // so speak this state
-        speakService.speak(match.getSpokenStateMessage(context));
+    if (!match.isMatchOver()) {
+      // make the derived class change our score
+      widget.onScoreClicked(match, team, level);
+      // have the tracker process this then please
+      _playTracker.processScoreChange(context);
+      // and also show any change in score we need to show
+      final state = match.score.state;
+      var description = '';
+      if (!state.isEmpty && !state.isChanged(ScoreChange.incrementRedo)) {
+        // this change is good, do we want to show this?
+        description = match.getStateDescription(context, state.getState());
       }
-      //TODO handle play tracking
-      /*
-      if (null != playTracker) {
-        // every time the points change we want to check to see if we have ended or not
-        playTracker.handlePlayEnding();
+      if (description.isNotEmpty) {
+        // there is something to show, animate the control in to show it
+        _controller.forward();
+        // change this state then to show the text
+        setState(() {
+          _description = description;
+        });
+        // only want to show this for a duration of time
+        Future.delayed(
+          Duration(milliseconds: Values.display_duration_ms),
+        ).then((v) {
+          // animate this out
+          _controller.reverse();
+        });
       }
-      // update any open notification with this new match data
-      if (null != matchNotification) {
-        matchNotification.updateNotification(activeMatch);
-      }
-       */
     }
   }
 

@@ -18,12 +18,14 @@ abstract class ScoreWidget extends StatelessWidget {
         aspectRatio: 1,
         child: InkWell(
           onTap: onClicked,
-          child: Container(
-              // this is the main container for the box of points
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColorDark,
-                borderRadius: BorderRadius.circular(Values.default_radius),
+          child: Card(
+              color: Theme.of(context).primaryColorDark,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.all(Radius.circular(Values.default_radius)),
               ),
+              elevation:
+                  onClicked == null ? 0 : Theme.of(context).cardTheme.elevation,
               child: Stack(
                 alignment: Alignment.topRight,
                 children: [

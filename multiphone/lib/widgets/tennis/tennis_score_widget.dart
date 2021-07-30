@@ -35,7 +35,7 @@ class TennisScoreWidget extends ScoreWidget {
                 Values(context).strings.title_tennis_sets,
                 sets.displayString(context),
                 false,
-                () => onScoreClicked(TennisScore.LEVEL_SET),
+                null, //() => onScoreClicked(TennisScore.LEVEL_SET),
               ),
               createBox(
                 context,
