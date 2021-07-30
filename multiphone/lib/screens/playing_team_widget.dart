@@ -23,7 +23,7 @@ class PlayingTeamWidget extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.all(Values.default_space),
         width: double.infinity,
-        height: Values.image_medium,
+        height: Values.team_names_widget_height,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

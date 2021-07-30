@@ -78,6 +78,11 @@ class SpeakService with ChangeNotifier {
   }
 
   Future<void> speak(String message) async {
+    if (null == message || message.isEmpty) {
+      // nothing to say, stop any previous message
+      stop();
+      return;
+    }
     final preferences = await Preferences.create();
     final volume = preferences.soundAnnounceVolume.clamp(0.0, 1.0);
     Log.debug('speaking the following (vol:$volume): "$message"');

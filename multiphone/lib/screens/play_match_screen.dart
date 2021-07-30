@@ -68,6 +68,14 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     super.dispose();
   }
 
+  void _undoLastPoint(ActiveMatch match) {
+    match.undoLastPoint();
+    // have the tracker process this then please
+    _playTracker.processScoreChange(context);
+  }
+
+  void _stopMatch() {}
+
   void _processScoreChange(ActiveMatch match, TeamIndex team, int level) {
     if (!match.isMatchOver()) {
       // make the derived class change our score
@@ -162,6 +170,28 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                   ),
                 ),
               ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      right: Values.default_space,
+                      bottom: Values.team_names_widget_height),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FloatingActionButton(
+                        onPressed: () => _undoLastPoint(match),
+                        child: Icon(Icons.undo),
+                      ),
+                      SizedBox(width: Values.default_space),
+                      FloatingActionButton(
+                        onPressed: _stopMatch,
+                        child: Icon(Icons.stop),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           );
         },

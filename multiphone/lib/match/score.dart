@@ -134,7 +134,7 @@ abstract class Score<S extends ActiveSetup> {
     // so instead we are being lazy and using the power of the device you are on. ie, reset
     // the score and re-populate based on the history
     HistoryValue historyValue;
-    if (false == this._history.isEmpty()) {
+    if (false == this._history.isEmpty) {
       // pop the last point from the history
       historyValue = _history.pop();
       // and restore the history that remains
