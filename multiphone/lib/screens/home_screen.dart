@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Text('Matches played'),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: ValueKey<String>('play_match'),
         onPressed: () {
           Navigator.of(context).pushNamed(SetupMatchScreen.routeName);
         },

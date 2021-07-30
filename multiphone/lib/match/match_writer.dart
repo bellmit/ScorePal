@@ -20,7 +20,7 @@ enum DescriptionLevel {
 class MatchWriter<T extends ActiveMatch> {
   final NumberFormat minutesFormat = NumberFormat("00");
   final DateFormat timeFormat = DateFormat('hh:mm');
-  final DateFormat dateFormat = DateFormat('dd MMM YYYY');
+  final DateFormat dateFormat = DateFormat('dd MMM yyyy');
 
   String getDescription(T match, DescriptionLevel level, BuildContext context) {
     // return the correct one

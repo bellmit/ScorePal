@@ -28,6 +28,7 @@ class Values {
   static const double default_space = 8;
   static const double default_radius = 12;
   static const double border_width = 1;
+  static const double image_icon = 24;
   static const double image_small = 32;
   static const double image_medium = 48;
   static const double image_large = 64;
@@ -56,7 +57,7 @@ class Values {
       return baseString;
     else {
       for (int i = 0; i < args.length; ++i)
-        baseString = baseString.replaceAll("{$i}", args[i]);
+        baseString = baseString.replaceAll("{$i}", args[i].toString());
       return baseString;
     }
   }

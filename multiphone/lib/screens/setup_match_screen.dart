@@ -73,6 +73,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
               child: Padding(
                 padding: EdgeInsets.all(Values.default_space),
                 child: FloatingActionButton(
+                  heroTag: ValueKey<String>('play_match'),
                   onPressed: _startMatch,
                   child: const Icon(Icons.play_arrow),
                   backgroundColor: Theme.of(context).accentColor,

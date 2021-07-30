@@ -8,6 +8,7 @@ import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
+import 'package:multiphone/widgets/play_match_options_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -27,12 +28,15 @@ abstract class PlayMatchScreen extends StatefulWidget {
 }
 
 class _PlayMatchScreenState extends State<PlayMatchScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   String _description = '';
   MatchPlayTracker _playTracker;
 
-  AnimationController _controller;
-  Animation<Offset> _offset;
+  AnimationController _messageController;
+  Animation<Offset> _messageOffset;
+
+  AnimationController _optionsController;
+  Animation<Offset> _optionsOffset;
 
   @override
   void initState() {
@@ -46,21 +50,32 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     // keep this screen on
     Wakelock.enable();
     // create the animation controlling things
-    _controller = AnimationController(
+    _messageController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: Values.animation_duration_ms),
+    );
+    _optionsController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: Values.animation_duration_ms),
     );
     // and the offset to slide in the latest message
-    _offset = Tween<Offset>(
+    _messageOffset = Tween<Offset>(
       begin: Offset(-1.0, 0.0),
       end: Offset.zero,
-    ).animate(_controller);
+    ).animate(_messageController);
+    // and the offset to slide in the options
+    _optionsOffset = Tween<Offset>(
+      begin: Offset(1.0, 0.0),
+      end: Offset.zero,
+    ).animate(_optionsController);
   }
 
   @override
   void dispose() {
     // release all the created things
-    _controller.dispose();
+    _messageController.dispose();
+    _optionsController.dispose();
+    // and the tracker
     _playTracker.destroy(true);
     // release the lock
     Wakelock.disable();
@@ -74,7 +89,13 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     _playTracker.processScoreChange(context);
   }
 
-  void _stopMatch() {}
+  void _showPauseOptions(bool show) {
+    if (show) {
+      _optionsController.forward();
+    } else {
+      _optionsController.reverse();
+    }
+  }
 
   void _processScoreChange(ActiveMatch match, TeamIndex team, int level) {
     if (!match.isMatchOver()) {
@@ -91,7 +112,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
       }
       if (description.isNotEmpty) {
         // there is something to show, animate the control in to show it
-        _controller.forward();
+        _messageController.forward();
         // change this state then to show the text
         setState(() {
           _description = description;
@@ -101,9 +122,17 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
           Duration(milliseconds: Values.display_duration_ms),
         ).then((v) {
           // animate this out
-          _controller.reverse();
+          _messageController.reverse();
         });
       }
+    }
+  }
+
+  void _onMatchOptionSelected(PlayMatchOptions option) {
+    switch (option) {
+      case PlayMatchOptions.resume:
+        _showPauseOptions(false);
+        break;
     }
   }
 
@@ -151,7 +180,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
               Align(
                 alignment: Alignment.center,
                 child: SlideTransition(
-                  position: _offset,
+                  position: _messageOffset,
                   child: Center(
                     child: FractionallySizedBox(
                         heightFactor: 0.2,
@@ -180,18 +209,44 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FloatingActionButton(
+                        heroTag: ValueKey<String>('undo_point'),
                         onPressed: () => _undoLastPoint(match),
                         child: Icon(Icons.undo),
                       ),
                       SizedBox(width: Values.default_space),
                       FloatingActionButton(
-                        onPressed: _stopMatch,
-                        child: Icon(Icons.stop),
+                        heroTag: ValueKey<String>('pause_match'),
+                        onPressed: () => _showPauseOptions(true),
+                        child: Icon(Icons.more_vert),
                       ),
                     ],
                   ),
                 ),
-              )
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: SlideTransition(
+                  position: _optionsOffset,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: Values.team_names_widget_height,
+                        left: Values.default_space,
+                        right: Values.default_space,
+                        bottom: Values.team_names_widget_height),
+                    child: PlayMatchOptionsWidget(
+                      matchDescription:
+                          match.getDescription(DescriptionLevel.SHORT, context),
+                      teamOneName: match
+                          .getSetup()
+                          .getTeamName(TeamIndex.T_ONE, context),
+                      teamTwoName: match
+                          .getSetup()
+                          .getTeamName(TeamIndex.T_TWO, context),
+                      onOptionSelected: _onMatchOptionSelected,
+                    ),
+                  ),
+                ),
+              ),
             ],
           );
         },

@@ -35,6 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Text('Change Settings'),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: ValueKey<String>('play_match'),
         onPressed: () {
           Navigator.of(context).pushNamed(SetupMatchScreen.routeName);
         },

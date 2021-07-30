@@ -1,0 +1,174 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/heading_widget.dart';
+import 'package:multiphone/widgets/common/info_bar_widget.dart';
+
+enum PlayMatchOptions {
+  resume,
+  end_match,
+  concede_one,
+  concede_two,
+  show_history,
+  show_settings,
+  show_match_settings
+}
+
+class PlayMatchOptionsWidget extends StatelessWidget {
+  final String matchDescription;
+  final String teamOneName;
+  final String teamTwoName;
+  final void Function(PlayMatchOptions) onOptionSelected;
+
+  const PlayMatchOptionsWidget({
+    Key key,
+    @required this.matchDescription,
+    @required this.teamOneName,
+    @required this.teamTwoName,
+    @required this.onOptionSelected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final optionsButtonStyle = ElevatedButton.styleFrom(
+      primary: Theme.of(context).primaryColorDark,
+      onPrimary: Theme.of(context).accentColor,
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(20.0),
+      ),
+    );
+    final values = Values(context);
+    return Card(
+      elevation: 10,
+      margin: EdgeInsets.only(left: Values.image_small),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            InfoBarWidget(title: values.strings.match_options),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: Values.default_space,
+                right: Values.default_space,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SvgPicture.asset(
+                    'images/svg/tennis.svg',
+                    height: Values.image_medium,
+                    width: Values.image_medium,
+                  ),
+                  Expanded(
+                    child: Text(
+                      matchDescription,
+                      style:
+                          TextStyle(color: Theme.of(context).primaryColorDark),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ElevatedButton.icon(
+              style: optionsButtonStyle,
+              onPressed: () => onOptionSelected(PlayMatchOptions.end_match),
+              icon: Icon(Icons.stop),
+              label: Text(values.strings.match_end),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: Values.default_space,
+                right: Values.default_space,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Flexible(
+                    child: ElevatedButton.icon(
+                      style: optionsButtonStyle,
+                      onPressed: () =>
+                          onOptionSelected(PlayMatchOptions.concede_one),
+                      icon: Icon(Icons.upgrade),
+                      label: Expanded(
+                        child: Text(
+                          values.construct(
+                              values.strings.match_concede, [teamOneName]),
+                          maxLines: null,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: Values.default_space,
+                  ),
+                  Flexible(
+                    child: ElevatedButton.icon(
+                      style: optionsButtonStyle,
+                      onPressed: () =>
+                          onOptionSelected(PlayMatchOptions.concede_two),
+                      icon: Icon(Icons.upgrade),
+                      label: Expanded(
+                        child: Text(
+                          values.construct(
+                              values.strings.match_concede, [teamTwoName]),
+                          maxLines: null,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: Values.image_medium),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: Values.default_space,
+                  right: Values.default_space,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ElevatedButton.icon(
+                      style: optionsButtonStyle,
+                      onPressed: () =>
+                          onOptionSelected(PlayMatchOptions.show_history),
+                      icon: Icon(Icons.history),
+                      label: Text(values.strings.match_history),
+                    ),
+                    ElevatedButton.icon(
+                      style: optionsButtonStyle,
+                      onPressed: () =>
+                          onOptionSelected(PlayMatchOptions.show_settings),
+                      icon: Icon(Icons.settings),
+                      label: Text(values.strings.match_app_settings),
+                    ),
+                    ElevatedButton.icon(
+                      style: optionsButtonStyle,
+                      onPressed: () =>
+                          onOptionSelected(PlayMatchOptions.show_settings),
+                      icon: SvgPicture.asset(
+                        'images/svg/match-settings.svg',
+                        height: Values.image_icon,
+                        width: Values.image_icon,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      label: Text(values.strings.match_change_setup),
+                    ),
+                    ElevatedButton.icon(
+                      style: optionsButtonStyle,
+                      onPressed: () =>
+                          onOptionSelected(PlayMatchOptions.resume),
+                      icon: Icon(Icons.play_arrow),
+                      label: Text(values.strings.match_resume),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
