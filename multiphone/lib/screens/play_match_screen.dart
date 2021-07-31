@@ -150,7 +150,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   void _onMatchOptionSelected(PlayMatchOptions option) {
     switch (option) {
       case PlayMatchOptions.resume:
-        _showPauseOptions(false);
+        // do nothing, the options screen will always return
         break;
       case PlayMatchOptions.end_match:
         // navigate away from this screen
@@ -162,6 +162,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         Log.error('not implemented this yet');
         break;
     }
+    // and hide the options screen
+    _showPauseOptions(false);
   }
 
   @override
@@ -258,7 +260,6 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                   child: Padding(
                     padding: EdgeInsets.only(
                         top: Values.team_names_widget_height,
-                        left: Values.default_space,
                         right: Values.default_space,
                         bottom: Values.team_names_widget_height),
                     child: PlayMatchOptionsWidget(

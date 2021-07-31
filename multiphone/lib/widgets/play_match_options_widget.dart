@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
+import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
 
 enum PlayMatchOptions {
@@ -57,13 +58,6 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                     ElevatedButton.icon(
                       style: optionsButtonStyle,
                       onPressed: () =>
-                          onOptionSelected(PlayMatchOptions.end_match),
-                      icon: Icon(Icons.stop),
-                      label: Text(values.strings.match_end),
-                    ),
-                    ElevatedButton.icon(
-                      style: optionsButtonStyle,
-                      onPressed: () =>
                           onOptionSelected(PlayMatchOptions.show_history),
                       icon: Icon(Icons.history),
                       label: Text(values.strings.match_history),
@@ -75,7 +69,6 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                       icon: Icon(Icons.settings),
                       label: Text(values.strings.match_app_settings),
                     ),
-                    Expanded(child: Row(child: )),
                     ElevatedButton.icon(
                       style: optionsButtonStyle,
                       onPressed: () =>
@@ -88,13 +81,31 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                       ),
                       label: Text(values.strings.match_change_setup),
                     ),
-                    ElevatedButton.icon(
-                      style: optionsButtonStyle,
-                      onPressed: () =>
-                          onOptionSelected(PlayMatchOptions.resume),
-                      icon: Icon(Icons.play_arrow),
-                      label: Text(values.strings.match_resume),
+                    LineBreakWidget(height: Values.image_small),
+                    Container(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton.icon(
+                            style: optionsButtonStyle,
+                            onPressed: () =>
+                                onOptionSelected(PlayMatchOptions.end_match),
+                            icon: Icon(Icons.stop),
+                            label: Text(values.strings.match_end),
+                          ),
+                          const SizedBox(width: Values.default_space),
+                          ElevatedButton.icon(
+                            style: optionsButtonStyle,
+                            onPressed: () =>
+                                onOptionSelected(PlayMatchOptions.resume),
+                            icon: Icon(Icons.play_arrow),
+                            label: Text(values.strings.match_resume),
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(height: Values.default_space),
                   ],
                 ),
               ),

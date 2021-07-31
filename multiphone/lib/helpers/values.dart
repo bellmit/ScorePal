@@ -26,6 +26,7 @@ class Values {
   static const int animation_duration_rapid_ms = 200;
   static const int animation_duration_ms = 500;
   static const double default_space = 8;
+  static const double line_width = 1.5;
   static const double default_radius = 12;
   static const double border_width = 1;
   static const double image_icon = 24;

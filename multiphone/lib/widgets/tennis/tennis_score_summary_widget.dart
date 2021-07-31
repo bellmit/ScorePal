@@ -6,9 +6,9 @@ import 'package:multiphone/match/tennis/tennis_score.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/match_score_summary.dart';
 
-class TennisScoreSummary extends MatchScoreSummary {
+class TennisScoreSummaryWidget extends MatchScoreSummary {
   final TennisMatch match;
-  const TennisScoreSummary({
+  const TennisScoreSummaryWidget({
     Key key,
     @required this.match,
     @required teamOneName,
@@ -22,6 +22,7 @@ class TennisScoreSummary extends MatchScoreSummary {
   @override
   int getScoreCount() {
     // if we haven't finished, there are points currently in play
+    return match.getPlayedSets() + (!match.score.isMatchOver() ? 1 : 0);
     return TennisMatchSetup.setsValue(match.getSetup().sets) +
         (!match.score.isMatchOver() ? 1 : 0);
   }

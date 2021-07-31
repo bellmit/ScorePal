@@ -4,7 +4,7 @@ import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
-import 'package:multiphone/widgets/tennis/tennis_score_summary.dart';
+import 'package:multiphone/widgets/tennis/tennis_score_summary_widget.dart';
 import 'package:provider/provider.dart';
 
 abstract class EndMatchScreen extends StatefulWidget {
@@ -67,61 +67,62 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: Values.default_space,
-                    right: Values.default_space,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Flexible(
-                        child: ElevatedButton.icon(
-                          style: buttonStyle,
-                          onPressed: () {},
-                          icon: Icon(Icons.upgrade),
-                          label: Expanded(
-                            child: Text(
-                              values.construct(values.strings.match_concede, [
-                                match
-                                    .getSetup()
-                                    .getTeamName(TeamIndex.T_ONE, ctx)
-                              ]),
-                              maxLines: null,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: Values.default_space,
-                      ),
-                      Flexible(
-                        child: ElevatedButton.icon(
-                          style: buttonStyle,
-                          onPressed: () {},
-                          icon: Icon(Icons.upgrade),
-                          label: Expanded(
-                            child: Text(
-                              values.construct(values.strings.match_concede, [
-                                match
-                                    .getSetup()
-                                    .getTeamName(TeamIndex.T_TWO, ctx)
-                              ]),
-                              maxLines: null,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                TennisScoreSummary(
+                TennisScoreSummaryWidget(
                   match: match,
                   teamOneName:
                       match.getSetup().getTeamName(TeamIndex.T_ONE, ctx),
                   teamTwoName:
                       match.getSetup().getTeamName(TeamIndex.T_TWO, ctx),
                 ),
+                if (!match.score.isMatchOver())
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: Values.default_space,
+                      right: Values.default_space,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Flexible(
+                          child: ElevatedButton.icon(
+                            style: buttonStyle,
+                            onPressed: () {},
+                            icon: Icon(Icons.upgrade),
+                            label: Expanded(
+                              child: Text(
+                                values.construct(values.strings.match_concede, [
+                                  match
+                                      .getSetup()
+                                      .getTeamName(TeamIndex.T_ONE, ctx)
+                                ]),
+                                maxLines: null,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: Values.default_space,
+                        ),
+                        Flexible(
+                          child: ElevatedButton.icon(
+                            style: buttonStyle,
+                            onPressed: () {},
+                            icon: Icon(Icons.upgrade),
+                            label: Expanded(
+                              child: Text(
+                                values.construct(values.strings.match_concede, [
+                                  match
+                                      .getSetup()
+                                      .getTeamName(TeamIndex.T_TWO, ctx)
+                                ]),
+                                maxLines: null,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           );
