@@ -111,8 +111,8 @@ abstract class Score<S extends ActiveSetup> {
     state.reset();
   }
 
-  void concedeMatch(TeamIndex team) {
-    _conceded[team.index] = true;
+  void concedeMatch(TeamIndex team, {isConcede = true}) {
+    _conceded[team.index] = isConcede;
   }
 
   bool isTeamConceded(TeamIndex team) {

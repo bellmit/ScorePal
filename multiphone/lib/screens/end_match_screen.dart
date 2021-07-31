@@ -35,6 +35,12 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
     _acceptMatch(match);
   }
 
+  void _undoMatchConcede(ActiveMatch match) {
+    TeamIndex.values.forEach((element) {
+      match.score.concedeMatch(element, isConcede: false);
+    });
+  }
+
   void _deleteMatch(ActiveMatch match) {
     //TODO discard and end this match now
   }
@@ -104,7 +110,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                             style: buttonStyle,
                             onPressed: () =>
                                 _concedeMatch(match, TeamIndex.T_ONE),
-                            icon: Icon(Icons.upgrade),
+                            icon: Icon(Icons.thumb_down_alt),
                             label: Expanded(
                               child: Text(
                                 values.construct(values.strings.match_concede, [
@@ -125,7 +131,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                             style: buttonStyle,
                             onPressed: () =>
                                 _concedeMatch(match, TeamIndex.T_ONE),
-                            icon: Icon(Icons.upgrade),
+                            icon: Icon(Icons.thumb_down_alt),
                             label: Expanded(
                               child: Text(
                                 values.construct(values.strings.match_concede, [
@@ -139,6 +145,21 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                if (match.score.isMatchConceded)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: Values.default_space,
+                      right: Values.default_space,
+                    ),
+                    child: ElevatedButton.icon(
+                      style: buttonStyle,
+                      onPressed: () => _undoMatchConcede(match),
+                      icon: Icon(Icons.undo),
+                      label: Text(
+                        values.strings.match_concede_undo,
+                      ),
                     ),
                   ),
               ],

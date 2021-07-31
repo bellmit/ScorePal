@@ -166,6 +166,7 @@
     "match_delete": "Delete Match",
     "match_options": "Match Options",
     "match_concede": "{0} concede match",
+    "match_concede_undo": "Undo match retirement",
     "match_history": "View Match History",
     "match_change_setup": "Change Match Setup",
     "match_app_settings": "App Settings",
