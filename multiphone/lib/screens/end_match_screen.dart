@@ -28,6 +28,21 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
     super.dispose();
   }
 
+  void _concedeMatch(ActiveMatch match, TeamIndex team) {
+    // have this team concede
+    match.score.concedeMatch(team);
+    // and this is a tacit acceptance of the result
+    _acceptMatch(match);
+  }
+
+  void _deleteMatch(ActiveMatch match) {
+    //TODO discard and end this match now
+  }
+
+  void _acceptMatch(ActiveMatch match) {
+    //TODO save and close this match now then
+  }
+
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
@@ -52,13 +67,13 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                   children: [
                     ElevatedButton.icon(
                       style: buttonStyle,
-                      onPressed: () {},
+                      onPressed: () => _deleteMatch(match),
                       icon: Icon(Icons.delete),
                       label: Text(values.strings.match_delete),
                     ),
                     ElevatedButton.icon(
                       style: buttonStyle,
-                      onPressed: () {},
+                      onPressed: () => _acceptMatch(match),
                       icon: Icon(Icons.add),
                       label: Text(values.strings.match_accept),
                     ),
@@ -68,8 +83,12 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                   match: match,
                   teamOneName:
                       match.getSetup().getTeamName(TeamIndex.T_ONE, ctx),
+                  isTeamOneConceded:
+                      match.score.isTeamConceded(TeamIndex.T_ONE),
                   teamTwoName:
                       match.getSetup().getTeamName(TeamIndex.T_TWO, ctx),
+                  isTeamTwoConceded:
+                      match.score.isTeamConceded(TeamIndex.T_TWO),
                 ),
                 if (!match.score.isMatchOver())
                   Padding(
@@ -83,7 +102,8 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                         Flexible(
                           child: ElevatedButton.icon(
                             style: buttonStyle,
-                            onPressed: () {},
+                            onPressed: () =>
+                                _concedeMatch(match, TeamIndex.T_ONE),
                             icon: Icon(Icons.upgrade),
                             label: Expanded(
                               child: Text(
@@ -103,7 +123,8 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                         Flexible(
                           child: ElevatedButton.icon(
                             style: buttonStyle,
-                            onPressed: () {},
+                            onPressed: () =>
+                                _concedeMatch(match, TeamIndex.T_ONE),
                             icon: Icon(Icons.upgrade),
                             label: Expanded(
                               child: Text(

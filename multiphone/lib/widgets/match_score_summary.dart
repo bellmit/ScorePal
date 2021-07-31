@@ -4,10 +4,14 @@ import 'package:multiphone/helpers/values.dart';
 abstract class MatchScoreSummary extends StatelessWidget {
   final String teamOneName;
   final String teamTwoName;
+  final bool isTeamOneConceded;
+  final bool isTeamTwoConceded;
   const MatchScoreSummary({
     Key key,
     @required this.teamOneName,
     @required this.teamTwoName,
+    @required this.isTeamOneConceded,
+    @required this.isTeamTwoConceded,
   }) : super(key: key);
 
   int getScoreCount();
@@ -58,13 +62,14 @@ abstract class MatchScoreSummary extends StatelessWidget {
     );
   }
 
-  Widget _createTeamTitle(BuildContext context, String title) {
+  Widget _createTeamTitle(BuildContext context, String title, bool isConceded) {
     return Flexible(
       flex: 2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _createHeading(context, ''),
+          _createHeading(
+              context, isConceded ? Values(context).strings.team_conceded : ''),
           Text(
             title,
             textAlign: TextAlign.start,
@@ -88,7 +93,7 @@ abstract class MatchScoreSummary extends StatelessWidget {
         children: [
           Row(
             children: <Widget>[
-              _createTeamTitle(context, teamOneName),
+              _createTeamTitle(context, teamOneName, isTeamOneConceded),
               ...List.generate(
                 scoreCount,
                 (index) => _createPoint(
@@ -101,7 +106,7 @@ abstract class MatchScoreSummary extends StatelessWidget {
           ),
           Row(
             children: <Widget>[
-              _createTeamTitle(context, teamTwoName),
+              _createTeamTitle(context, teamTwoName, isTeamTwoConceded),
               ...List.generate(
                 scoreCount,
                 (index) => _createPoint(

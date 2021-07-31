@@ -13,24 +13,36 @@ class TennisScoreSummaryWidget extends MatchScoreSummary {
     @required this.match,
     @required teamOneName,
     @required teamTwoName,
+    @required isTeamOneConceded,
+    @required isTeamTwoConceded,
   }) : super(
           key: key,
           teamOneName: teamOneName,
           teamTwoName: teamTwoName,
+          isTeamOneConceded: isTeamOneConceded,
+          isTeamTwoConceded: isTeamTwoConceded,
         );
 
   @override
   int getScoreCount() {
     // if we haven't finished, there are points currently in play
-    return match.getPlayedSets() + (!match.score.isMatchOver() ? 1 : 0);
-    return TennisMatchSetup.setsValue(match.getSetup().sets) +
-        (!match.score.isMatchOver() ? 1 : 0);
+    var scoreCount = match.getPlayedSets();
+    // so that is the sets we played and completed... are we playing one?
+    if (match.getPlayedGames(scoreCount) > 0) {
+      // there are some games in the latest set
+      ++scoreCount;
+    }
+    if (!match.score.isMatchOver(isCheckConceded: false)) {
+      // the match isn't over - we have some points to show too
+      ++scoreCount;
+    }
+    return scoreCount;
   }
 
   @override
   String getScore(BuildContext context, int index, int row) {
     var setIndex = index;
-    if (!match.score.isMatchOver()) {
+    if (!match.score.isMatchOver(isCheckConceded: false)) {
       // want the points currently in play for this row
       if (index == 0) {
         // just return the points for the current match (correct team)
@@ -52,7 +64,7 @@ class TennisScoreSummaryWidget extends MatchScoreSummary {
   String getScoreTitle(BuildContext context, int index, int row) {
     final values = Values(context);
     var setIndex = index;
-    if (!match.score.isMatchOver()) {
+    if (!match.score.isMatchOver(isCheckConceded: false)) {
       if (index == 0) {
         return row == 0 ? values.strings.points : '';
       }

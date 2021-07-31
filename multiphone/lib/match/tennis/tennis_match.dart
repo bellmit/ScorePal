@@ -122,6 +122,10 @@ class TennisMatch extends ActiveMatch<TennisMatchSetup, TennisScore> {
     return score.getPlayedSets();
   }
 
+  int getPlayedGames(int setIndex) {
+    return score.getPlayedGames(setIndex);
+  }
+
   bool isSetTieBreak(int setIndex) {
     return score.isSetTieBreak(setIndex);
   }

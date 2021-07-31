@@ -42,6 +42,9 @@ class BadmintonScore extends Score<BadmintonMatchSetup> {
 
   @override
   bool isMatchOver() {
+    if (isMatchConceded) {
+      return true;
+    }
     bool isMatchOver = false;
     int targetGames = ((getScoreGoal() + 1.0) / 2.0).floor();
     // return if a player has reached the number of games required (this is just over half)

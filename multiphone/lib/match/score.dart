@@ -16,6 +16,7 @@ abstract class Score<S extends ActiveSetup> {
   final List<List<List<int>>> _pointsHistory;
 
   final List<bool> _playingEnd = List.filled(teamCount, null);
+  final List<bool> _conceded = List.filled(teamCount, false);
 
   final ScoreState state;
   final S setup;
@@ -108,6 +109,24 @@ abstract class Score<S extends ActiveSetup> {
       _pointsHistory[i] = null;
     }
     state.reset();
+  }
+
+  void concedeMatch(TeamIndex team) {
+    _conceded[team.index] = true;
+  }
+
+  bool isTeamConceded(TeamIndex team) {
+    return _conceded[team.index];
+  }
+
+  bool get isMatchConceded {
+    for (int i = 0; i < _conceded.length; ++i) {
+      if (_conceded[i]) {
+        // someone conceded
+        return true;
+      }
+    }
+    return false;
   }
 
   int getLevels() {
@@ -283,6 +302,12 @@ abstract class Score<S extends ActiveSetup> {
   bool isTeamServerChangeAllowed();
 
   TeamIndex getWinner(int level) {
+    // first check to see if anyone conceded
+    if (isMatchConceded) {
+      // someone quit - the winner is the one that didn't
+      return TeamIndex.values
+          .firstWhere((element) => _conceded[element.index] == false);
+    }
     int topTeam = 0;
     List<int> finalScore;
     while (level >= 0) {

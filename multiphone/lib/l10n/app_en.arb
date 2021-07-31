@@ -178,6 +178,7 @@
     "tie_display": "({0}-{1})",
     "correction": "Correction…",
     "results": "Results",
+    "team_conceded": "Retired",
 
     "scoreSummaryLevel": "Level {0}",
     "scoreSummaryOneLine": "{0} {2} — {3} {1}",

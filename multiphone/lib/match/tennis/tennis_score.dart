@@ -58,7 +58,10 @@ class TennisScore extends Score<TennisMatchSetup> {
   }
 
   @override
-  bool isMatchOver() {
+  bool isMatchOver({bool isCheckConceded = true}) {
+    if (isCheckConceded && isMatchConceded) {
+      return true;
+    }
     bool isMatchOver = false;
     TennisSets setsToPlay = setup.sets;
     // return if a player has reached the number of sets required (this is just over half)
