@@ -3,6 +3,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
 import 'package:multiphone/widgets/tennis/tennis_score_summary_widget.dart';
 import 'package:provider/provider.dart';
@@ -39,14 +40,26 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
     TeamIndex.values.forEach((element) {
       match.score.concedeMatch(element, isConcede: false);
     });
+    // and pop this page back to the match
+    Navigator.of(context).pop();
   }
 
   void _deleteMatch(ActiveMatch match) {
     //TODO discard and end this match now
+
+    _navigateHome();
   }
 
   void _acceptMatch(ActiveMatch match) {
     //TODO save and close this match now then
+
+    _navigateHome();
+  }
+
+  void _navigateHome() {
+    // remove all routes and replace with the home screen one
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        HomeScreen.routeName, (Route<dynamic> route) => false);
   }
 
   @override
