@@ -31,11 +31,8 @@ class PlayMatchOptionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final optionsButtonStyle = ElevatedButton.styleFrom(
-      primary: Theme.of(context).primaryColorDark,
-      onPrimary: Theme.of(context).accentColor,
-    );
     final values = Values(context);
+    final optionsButtonStyle = values.optionButtonStyle;
     return Card(
       elevation: 10,
       margin: EdgeInsets.only(left: Values.image_medium),

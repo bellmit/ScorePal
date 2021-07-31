@@ -30,11 +30,8 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final buttonStyle = ElevatedButton.styleFrom(
-      primary: Theme.of(context).primaryColorDark,
-      onPrimary: Theme.of(context).accentColor,
-    );
     final values = Values(context);
+    final buttonStyle = values.optionButtonStyle;
     return Scaffold(
       appBar: AppBar(
         title: Text(values.strings.match_end),

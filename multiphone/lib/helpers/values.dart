@@ -48,6 +48,13 @@ class Values {
   final BuildContext context;
   const Values(this.context);
 
+  ButtonStyle get optionButtonStyle {
+    return ElevatedButton.styleFrom(
+      primary: Theme.of(context).primaryColorDark,
+      onPrimary: Theme.of(context).accentColor,
+    );
+  }
+
   /// return the localisations of all our strings
   AppLocalizations get strings {
     return AppLocalizations.of(context);
