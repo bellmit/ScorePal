@@ -156,8 +156,6 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         // navigate away from this screen
         Navigator.pushNamed(context, widget.getEndingRoute());
         break;
-      case PlayMatchOptions.concede_one:
-      case PlayMatchOptions.concede_two:
       case PlayMatchOptions.show_history:
       case PlayMatchOptions.show_settings:
       case PlayMatchOptions.show_match_settings:

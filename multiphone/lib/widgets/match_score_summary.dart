@@ -81,6 +81,7 @@ abstract class MatchScoreSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scoreCount = getScoreCount();
     return Padding(
       padding: const EdgeInsets.all(Values.default_space),
       child: Column(
@@ -89,7 +90,7 @@ abstract class MatchScoreSummary extends StatelessWidget {
             children: <Widget>[
               _createTeamTitle(context, teamOneName),
               ...List.generate(
-                getScoreCount(),
+                scoreCount,
                 (index) => _createPoint(
                   context,
                   getScoreTitle(context, index, 0),
@@ -102,7 +103,7 @@ abstract class MatchScoreSummary extends StatelessWidget {
             children: <Widget>[
               _createTeamTitle(context, teamTwoName),
               ...List.generate(
-                getScoreCount(),
+                scoreCount,
                 (index) => _createPoint(
                   context,
                   getScoreTitle(context, index, 1),
