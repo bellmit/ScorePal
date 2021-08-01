@@ -1,3 +1,4 @@
+import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/point.dart';
@@ -20,8 +21,9 @@ class TennisMatch extends ActiveMatch<TennisMatchSetup, TennisScore> {
     return data;
   }
 
-  void setData(Map<String, Object> data) {
-    super.setData(data);
+  @override
+  void setData(MatchId matchId, Map<String, Object> data) {
+    super.setData(matchId, data);
     //and set any from ours that we saved in here
   }
 

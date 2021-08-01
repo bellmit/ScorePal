@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:localstore/localstore.dart' as LocalStore;
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
+import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
@@ -18,7 +19,7 @@ enum MatchPersistenceState {
 }
 
 enum MatchPersistenceSyncState {
-  untried,
+  dirty,
   stored,
   failed,
 }
@@ -30,15 +31,16 @@ class MatchPersistence with ChangeNotifier {
 
   static final DateFormat dateKey = DateFormat("yyyy-MM");
 
+  User _user;
+
   MatchPersistence() {
     // listen to firebase in here and sync everything that is
     // stored locally there too
     FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user == null) {
-        // not logged in
-      } else {
-        // are now logged in, sync all our data
-        _syncDataWithFirebase(user);
+      _user = user;
+      if (_user != null) {
+        // are now logged in, sync all our data to the store
+        _syncDataToFirebase();
       }
     });
   }
@@ -81,8 +83,8 @@ class MatchPersistence with ChangeNotifier {
 
   static String syncString(MatchPersistenceSyncState state) {
     switch (state) {
-      case MatchPersistenceSyncState.untried:
-        return 'untried';
+      case MatchPersistenceSyncState.dirty:
+        return 'dirty';
       case MatchPersistenceSyncState.stored:
         return 'stored';
       case MatchPersistenceSyncState.failed:
@@ -94,26 +96,26 @@ class MatchPersistence with ChangeNotifier {
 
   static MatchPersistenceSyncState fromSyncString(String state) {
     switch (state) {
-      case 'untried':
-        return MatchPersistenceSyncState.untried;
+      case 'dirty':
+        return MatchPersistenceSyncState.dirty;
       case 'stored':
         return MatchPersistenceSyncState.stored;
       case 'failed':
         return MatchPersistenceSyncState.failed;
       default:
-        return MatchPersistenceSyncState.untried;
+        return MatchPersistenceSyncState.dirty;
     }
   }
 
-  void _syncDataWithFirebase(User user) {
-    // get all our data locally that is not stored
-    final fbCollection = FirebaseFirestore.instance
-        .collection(usersCollection)
-        .doc(user.uid)
-        .collection(matchCollection);
+  void _syncDataToFirebase() {
+    if (null == _user) {
+      Log.error('Cannot sync data to firebase as there is no user logged in');
+      return;
+    }
+    // get everything that's local and different and send to firebase then
     LocalStore.Localstore.instance
         .collection(matchCollection)
-        .where('sync', isEqualTo: syncString(MatchPersistenceSyncState.untried))
+        .where('sync', isEqualTo: syncString(MatchPersistenceSyncState.dirty))
         .get()
         .then((matches) {
       if (null != matches) {
@@ -124,17 +126,36 @@ class MatchPersistence with ChangeNotifier {
           if (key.startsWith('/$matchCollection/')) {
             key = key.replaceFirst('/$matchCollection/', '');
           }
-          // set this data into the firebase collection then
-          fbCollection.doc(key).set(value).then((dataSet) {
-            // this worked - the data in the local store is synced now
-            _changeSyncStatus(key, value, MatchPersistenceSyncState.stored);
-          }).onError((error, stackTrace) {
-            Log.error(error);
-            // this failed, change this state to not try it again for now
-            _changeSyncStatus(key, value, MatchPersistenceSyncState.failed);
-          });
+          // and store this data
+          _storeFirebaseData(key, value);
         });
       }
+      // so we sent everything, why not get it all back again to this local
+      // data while we are at it
+      _syncDataFromFirebase();
+    });
+  }
+
+  void _storeFirebaseData(String matchId, Map<String, Object> data) {
+    if (null == _user) {
+      Log.error('Cannot store data in firebase as there is no user logged in');
+      return;
+    }
+    // send all our data to firebase now then
+    final fbCollection = FirebaseFirestore.instance
+        .collection(usersCollection)
+        .doc(_user.uid)
+        .collection(matchCollection);
+    // if this works then the sync state on this data will be different
+    data['sync'] = syncString(MatchPersistenceSyncState.stored);
+    // set this data into the firebase collection then
+    fbCollection.doc(matchId).set(data).then((dataSet) {
+      // this worked - the data in the local store is synced now
+      _changeSyncStatus(matchId, data, MatchPersistenceSyncState.stored);
+    }).onError((error, stackTrace) {
+      Log.error(error);
+      // this failed, change this state to not try it again for now
+      _changeSyncStatus(matchId, data, MatchPersistenceSyncState.failed);
     });
   }
 
@@ -149,6 +170,41 @@ class MatchPersistence with ChangeNotifier {
         .set(data, LocalStore.SetOptions(merge: true));
   }
 
+  void _syncDataFromFirebase() {
+    // let's just get the last few (quite a few) and in descending id order
+    FirebaseFirestore.instance
+        .collection(usersCollection)
+        .doc(_user.uid)
+        .collection(matchCollection)
+        .orderBy('id', descending: true)
+        .limit(Values.firebase_fetch_limit)
+        .get()
+        .then((value) {
+      if (null != value && null != value.docs && value.docs.length > 0) {
+        // have a snapshot of everything from firebase
+        value.docs.forEach((element) {
+          // just push this to the local store if it doesn't exist
+          LocalStore.Localstore.instance
+              .collection(matchCollection)
+              .doc(element.id)
+              .get()
+              .then((value) {
+            // tried to get the doc of this id
+            if (value == null) {
+              // not got this match
+              LocalStore.Localstore.instance
+                  .collection(matchCollection)
+                  .doc(element.id)
+                  .set(element.data());
+            }
+          });
+        });
+        // and this is a change to this store, we have more data now
+        notifyListeners();
+      }
+    });
+  }
+
   Future<Sport> getLastActiveSport() async {
     final preferences = await Preferences.create();
     return preferences.lastActiveSport;
@@ -160,8 +216,9 @@ class MatchPersistence with ChangeNotifier {
     final matchId = MatchId.create(match);
     return {
       'ver': 1,
+      'id': matchId.toString(),
       'state': stateString(state),
-      'sync': syncString(MatchPersistenceSyncState.untried),
+      'sync': syncString(MatchPersistenceSyncState.dirty),
       'date': dateKey.format(matchId.getDate()),
       'sport': setup.sport.id,
       'setup': setup.getData(),
@@ -171,7 +228,8 @@ class MatchPersistence with ChangeNotifier {
 
   ActiveMatch _createMatchFromJson(Map<String, Object> topLevel) {
     // what is this, get the sport from the JSON object;
-    Sport sport = Sports.fromId(topLevel['sport'] as String);
+    final sport = Sports.fromId(topLevel['sport'] as String);
+    final matchId = MatchId(topLevel['id']);
     // and create the setup for this
     ActiveSetup setup = sport.createSetup();
     // setup the setup from the data stored against the match
@@ -179,7 +237,7 @@ class MatchPersistence with ChangeNotifier {
     // and the match
     ActiveMatch match = sport.createMatch(setup);
     // set our data from this data under the top level
-    match.setData(topLevel['data']);
+    match.setData(matchId, topLevel['data']);
     // and return this now it's setup properly
     return match;
   }
@@ -193,8 +251,9 @@ class MatchPersistence with ChangeNotifier {
         .get();
     if (defaultData != null && defaultData['data'] != null) {
       // have the document, load ths data from this
+      final matchId = MatchId(defaultData['id']);
       setup.setData(defaultData['setup']);
-      match.setData(defaultData['data']);
+      match.setData(matchId, defaultData['data']);
     } else {
       Log.error('default match data isn\'t valid for ${setup.sport.id}');
     }
@@ -222,20 +281,27 @@ class MatchPersistence with ChangeNotifier {
         .set(_getMatchAsJSON(match, MatchPersistenceState.lastActive));
   }
 
-  Future<dynamic> deleteMatchData(ActiveMatch match) {
+  void deleteMatchData(ActiveMatch match) {
     // we don't delete though - what we do is save as state == deleted
-    return saveMatchData(match, state: MatchPersistenceState.deleted);
+    saveMatchData(match, state: MatchPersistenceState.deleted);
   }
 
-  Future<dynamic> saveMatchData(ActiveMatch match,
+  void saveMatchData(ActiveMatch match,
       {MatchPersistenceState state = MatchPersistenceState.backup}) {
     // save the match data as specified in the correct state
     final matchId = MatchId.create(match);
+    final matchData = _getMatchAsJSON(match, state);
     // just send this off and hope it worked
-    return LocalStore.Localstore.instance
+    LocalStore.Localstore.instance
         .collection(matchCollection)
         .doc(matchId.toString())
-        .set(_getMatchAsJSON(match, state));
+        .set(matchData)
+        .then((value) {
+      // this was stored locally - let's take the opportunity to send to firebase
+      if (null != _user) {
+        _storeFirebaseData(matchId.toString(), matchData);
+      }
+    });
   }
 
   Future<Map<String, dynamic>> _getMatchesForDate(DateTime date) async {
@@ -271,7 +337,11 @@ class MatchPersistence with ChangeNotifier {
     // this is a good map of matches, but will contain deleted, last, etc
     if (null != state) {
       final stateString = MatchPersistence.stateString(state);
-      documents.removeWhere((key, value) => value['state'] != stateString);
+      documents.removeWhere((key, value) =>
+          value['state'] != stateString || value['sport'] == null);
+    } else {
+      // remove all those nasty ones without a sport set in the bad data
+      documents.removeWhere((key, value) => value['sport'] == null);
     }
     // and convert everything that's left into actual active matches for the caller
     return documents

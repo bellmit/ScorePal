@@ -50,7 +50,8 @@ class SetupPersistence {
       // have the document, load ths data from this
       setup.setData(defaultData['data']);
     } else {
-      Log.error('default match setup data isn\'t valid for ${setup.sport.id}');
+      Log.debug(
+          'default match setup data ${defaultData == null ? null : defaultData} isn\'t valid for ${setup.sport.id}');
     }
     return setup;
   }

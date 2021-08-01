@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
@@ -29,8 +30,9 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
     return data;
   }
 
-  void setData(Map<String, Object> data) {
-    super.setData(data);
+  @override
+  void setData(MatchId matchId, Map<String, Object> data) {
+    super.setData(matchId, data);
     //and set any from ours that we saved in here
   }
 

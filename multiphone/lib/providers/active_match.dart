@@ -77,7 +77,6 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   Map<String, Object> getData() {
     // save all our data
     final data = Map<String, Object>();
-    data["id"] = MatchId.create(this).toString();
     data["secs"] = _matchTimePlayed;
     // most importantly store the score so we can re-establish the state of this match
     // when we reload it
@@ -86,9 +85,8 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     return data;
   }
 
-  void setData(Map<String, Object> data) {
+  void setData(MatchId matchId, Map<String, Object> data) {
     // Id first
-    MatchId matchId = MatchId(data["id"]);
     _dateMatchStarted = matchId.getDate();
     _matchTimePlayed = data["secs"];
     //this.playedLocation = LocationWrapper().deserialiseFromString(data.getString("locn")).content;
