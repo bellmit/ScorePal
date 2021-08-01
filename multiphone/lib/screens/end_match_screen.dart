@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/widgets/match_score_summary.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
-import 'package:multiphone/widgets/tennis/tennis_score_summary_widget.dart';
 import 'package:provider/provider.dart';
 
 abstract class EndMatchScreen extends StatefulWidget {
@@ -13,6 +14,9 @@ abstract class EndMatchScreen extends StatefulWidget {
 
   @override
   _EndMatchScreenState createState() => _EndMatchScreenState();
+
+  MatchScoreSummary createScoreSummaryWidget(
+      BuildContext context, ActiveMatch match);
 }
 
 class _EndMatchScreenState extends State<EndMatchScreen> {
@@ -45,14 +49,17 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
   }
 
   void _deleteMatch(ActiveMatch match) {
-    //TODO discard and end this match now
-
+    // discard and end this match now
+    MatchPersistence().deleteMatchData(match);
+    // and send us home
     _navigateHome();
   }
 
   void _acceptMatch(ActiveMatch match) {
-    //TODO save and close this match now then
-
+    // save and close this match now then
+    MatchPersistence()
+        .saveMatchData(match, state: MatchPersistenceState.accepted);
+    // and go home
     _navigateHome();
   }
 
@@ -98,17 +105,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                     ),
                   ],
                 ),
-                TennisScoreSummaryWidget(
-                  match: match,
-                  teamOneName:
-                      match.getSetup().getTeamName(TeamIndex.T_ONE, ctx),
-                  isTeamOneConceded:
-                      match.score.isTeamConceded(TeamIndex.T_ONE),
-                  teamTwoName:
-                      match.getSetup().getTeamName(TeamIndex.T_TWO, ctx),
-                  isTeamTwoConceded:
-                      match.score.isTeamConceded(TeamIndex.T_TWO),
-                ),
+                widget.createScoreSummaryWidget(ctx, match),
                 if (!match.score.isMatchOver())
                   Padding(
                     padding: const EdgeInsets.only(

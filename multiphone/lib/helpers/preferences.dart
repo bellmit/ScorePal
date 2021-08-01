@@ -1,5 +1,6 @@
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/team_namer.dart';
+import 'package:multiphone/providers/sport.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
@@ -34,6 +35,16 @@ class Preferences {
     }
   }
 
+  String _getString(String key, String varDefault) {
+    // this is wrapped to do it safely
+    try {
+      return prefs.getString(key) ?? varDefault;
+    } catch (error) {
+      Log.error('Failed to get $key from prefs $error');
+      return varDefault;
+    }
+  }
+
   TeamNamingMode get defaultNamingMode {
     try {
       int value =
@@ -47,6 +58,21 @@ class Preferences {
 
   set defaultNamingMode(TeamNamingMode value) {
     prefs.setInt('default_naming_mode', value.index);
+  }
+
+  Sport get lastActiveSport {
+    try {
+      String value =
+          _getString('default_sport', Sports.sport(SportType.TENNIS).id);
+      return Sports.fromId(value);
+    } catch (error) {
+      // fine that it doesn't exist, return the default
+      return Sports.sport(SportType.TENNIS);
+    }
+  }
+
+  set lastActiveSport(Sport value) {
+    prefs.setString('default_sport', value.id);
   }
 
   bool get isFirebaseLoginDesired {

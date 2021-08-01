@@ -18,16 +18,17 @@ class PingPongScore extends Score<PingPongMatchSetup> {
   PingPongScore(PingPongMatchSetup setup) : super(setup, K_LEVELS);
 
   @override
-  void storeJSONData(Map<String, Object> data) {
-    super.storeJSONData(data);
-// store our data in this object too - only things that will not be recreated when
-// the score is replayed in this match - ie, very little
+  Map<String, Object> getData() {
+    final data = super.getData();
+    // store our data in this object too - only things that will not be recreated when
+    // the score is replayed in this match - ie, very little
+    return data;
   }
 
-  void restoreFromJSON(Map<String, Object> data, int version,
-      void Function() onPointIncremented) {
-    super.restoreFromJSON(data, version, onPointIncremented);
-    // and get our data from this object that we stored here
+  void restoreFromData(
+      Map<String, Object> data, void Function() onPointIncremented) {
+    super.restoreFromData(data, onPointIncremented);
+    // and restore any of our special data in here
   }
 
   @override

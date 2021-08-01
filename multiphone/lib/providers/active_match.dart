@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/point.dart';
@@ -75,60 +74,32 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     _isDataPersisted = false;
   }
 
-  Map<String, Object> getAsJSON() {
-    Map<String, Object> dataObject = Map<String, Object>();
-    try {
-      // store all our data into this object
-      storeJSONData(dataObject);
-      // and put this in a top-level named object of the classname
-      Map<String, Object> topLevel = Map<String, Object>();
-      // version it
-      topLevel["ver"] = 1;
-      // store the sport so we can create the proper classes from it
-      topLevel["sport"] = _setup.sport.id;
-      // and the actual data
-      topLevel["data"] = dataObject;
-      // and return this top level object
-      return topLevel;
-    } catch (error) {
-      Log.error(error);
-      return null;
-    }
-  }
-
-  void setFromJSON(Map<String, Object> topLevel) {
-    try {
-      // get data object
-      Map<String, Object> dataObject = topLevel['data'];
-      // and set our data from this
-      restoreFromJSON(dataObject, topLevel['ver']);
-    } catch (error) {
-      Log.error(error);
-    }
-  }
-
-  void storeJSONData(Map<String, Object> data) {
+  Map<String, Object> getData() {
+    // save all our data
+    final data = Map<String, Object>();
     data["id"] = MatchId.create(this).toString();
     data["secs"] = _matchTimePlayed;
-    //data["locn"] =  LocationWrapper(playedLocation).serialiseToString());
     // most importantly store the score so we can re-establish the state of this match
     // when we reload it
-    Map<String, Object> scoreJSON = Map<String, Object>();
-    _score.storeJSONData(scoreJSON);
-    data["score"] = scoreJSON;
+    data["score"] = _score.getData();
+    // and return the data
+    return data;
   }
 
-  void restoreFromJSON(Map<String, Object> data, int version) {
+  void setData(Map<String, Object> data) {
+    // Id first
     MatchId matchId = MatchId(data["id"]);
     _dateMatchStarted = matchId.getDate();
     _matchTimePlayed = data["secs"];
     //this.playedLocation = LocationWrapper().deserialiseFromString(data.getString("locn")).content;
     // most importantly we want to put the score in. Then we can replay the score to
     // put the state of this match back to how it was when we saved it
-    _score.restoreFromJSON(data["score"], version, () {
+    _score.restoreFromData(data["score"], () {
       // every time a point is incremented inform listeners
       notifyListeners();
     });
+    // this, obviously, changes the data
+    notifyListeners();
   }
 
   bool isMatchPlayStarted() {

@@ -31,6 +31,20 @@ class TennisScore extends Score<TennisMatchSetup> {
   TennisScore(TennisMatchSetup setup) : super(setup, K_LEVELS);
 
   @override
+  Map<String, Object> getData() {
+    final data = super.getData();
+    // store our data in this object too - only things that will not be recreated when
+    // the score is replayed in this match - ie, very little
+    return data;
+  }
+
+  void restoreFromData(
+      Map<String, Object> data, void Function() onPointIncremented) {
+    super.restoreFromData(data, onPointIncremented);
+    // and restore any of our special data in here
+  }
+
+  @override
   int getScoreGoal() {
     return TennisMatchSetup.setsValue(setup.sets);
   }

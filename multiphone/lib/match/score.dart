@@ -43,7 +43,9 @@ abstract class Score<S extends ActiveSetup> {
     this.state.reset();
   }
 
-  void storeJSONData(Map<String, Object> data) {
+  Map<String, Object> getData() {
+    // save all our data
+    final data = Map<String, Object>();
     // we only need to store the data that cannot be re-established from the settings
     // so basically just the actual score data
     data["pts"] = this
@@ -74,14 +76,16 @@ abstract class Score<S extends ActiveSetup> {
     }
     // and put this in the JSON
     data["scr"] = levelsArray;
+    // and return this
+    return data;
   }
 
-  void restoreFromJSON(Map<String, Object> data, int version,
-      void Function() onPointIncremented) {
+  void restoreFromData(
+      Map<String, Object> data, void Function() onPointIncremented) {
     // all we did was store the raw score points, restore from this data
     String pointsString = data["pts"] as String;
     this._history.clear();
-    this._history.restorePointHistoryFromString(pointsString);
+    this._history.restorePointHistoryFromString(HistoryString(pointsString));
     // now we have the history restored, we can restore the score from it
     restorePointHistory(onPointIncremented);
   }

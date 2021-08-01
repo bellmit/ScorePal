@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:localstore/localstore.dart';
 import 'package:multiphone/match/team_namer.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
@@ -16,9 +15,6 @@ enum TeamIndex {
 
 abstract class ActiveSetup with ChangeNotifier {
   MatchSinglesDoubles _singlesDoubles = MatchSinglesDoubles.singles;
-
-  static const setupCollection = 'setups';
-  static const lastSetupPrefix = 'last';
 
   final List<String> _playerNames =
       List<String>.filled(PlayerIndex.values.length, '');
@@ -41,46 +37,6 @@ abstract class ActiveSetup with ChangeNotifier {
 
   get id {
     return _id;
-  }
-
-  Future<ActiveSetup> loadLastSetupData() async {
-    // let's get the data
-    final defaultData = await Localstore.instance
-        .collection(setupCollection)
-        .doc('${lastSetupPrefix}_${this.sport.id}')
-        .get();
-    if (defaultData != null && defaultData['data'] != null) {
-      // have the document, load ths data from this
-      setData(defaultData['data']);
-    }
-    return this;
-  }
-
-  Future<dynamic> saveAsLastSetupData() {
-    // just send this off and hope it worked
-    return Localstore.instance
-        .collection(setupCollection)
-        .doc('${lastSetupPrefix}_${this.sport.id}')
-        .set(getAsJSON());
-  }
-
-  Map<String, Object> getAsJSON() {
-    return {
-      'ver': 1,
-      'sport': sport.type.index,
-      'data': getData(),
-    };
-  }
-
-  static ActiveSetup createFromJson(Map<String, Object> topLevel) {
-    // what is this, get the sport from the JSON object;
-    Sport sport = Sports.find(topLevel['sport'] as int);
-    // and create the setup for this
-    ActiveSetup setup = sport.createSetup();
-    // set our data from this data under the top level
-    setup.setData(topLevel['data']);
-    // and return this now it's setup properly
-    return setup;
   }
 
   Map<String, Object> getData() {
@@ -114,6 +70,8 @@ abstract class ActiveSetup with ChangeNotifier {
     for (int i = 0; i < _firstServers.length; ++i) {
       _firstServers[i] = PlayerIndex.values[data['server${i + 1}']];
     }
+    // this, obviously, changes the data
+    notifyListeners();
   }
 
   List<int> getStraightPointsToWin();

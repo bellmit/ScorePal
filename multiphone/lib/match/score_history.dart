@@ -37,6 +37,11 @@ class HistoryValue {
   }
 }
 
+class HistoryString {
+  String string;
+  HistoryString(String string) : string = string;
+}
+
 class ScoreHistory {
   static Importance fromValue(level) {
     return level <= 0
@@ -157,7 +162,7 @@ class ScoreHistory {
     return recDataString.toString();
   }
 
-  void restorePointHistoryFromString(String pointHistoryString) {
+  void restorePointHistoryFromString(HistoryString pointHistoryString) {
     // the value before the colon is the number of subsequent values
     int noHistoricPoints = extractValueToColon(pointHistoryString);
     int dataCounter = 0;
@@ -182,33 +187,33 @@ class ScoreHistory {
     }
   }
 
-  int extractHistoryValue(String recDataString) {
+  int extractHistoryValue(HistoryString recDataString) {
     // get the string as a double char value
     String hexString = extractChars(2, recDataString);
     return int.parse(hexString, radix: 32);
   }
 
-  int extractValueToColon(String recDataString) {
-    int colonIndex = recDataString.indexOf(":");
+  int extractValueToColon(HistoryString recDataString) {
+    int colonIndex = recDataString.string.indexOf(":");
     if (colonIndex == -1) {
       throw new Exception('String index is out of bounds, no : discovered');
     }
     // extract this data as a string
     String extracted = extractChars(colonIndex, recDataString);
     // and the colon
-    recDataString = recDataString.substring(1);
+    recDataString.string = recDataString.string.substring(1);
     // return the data as an integer
     return int.parse(extracted);
   }
 
-  String extractChars(int charsLength, String recDataString) {
+  String extractChars(int charsLength, HistoryString recDataString) {
     String extracted;
-    if (recDataString.length >= charsLength) {
-      extracted = recDataString.substring(0, charsLength);
+    if (recDataString.string.length >= charsLength) {
+      extracted = recDataString.string.substring(0, charsLength);
     } else {
       throw new Exception('String index is out of bounds');
     }
-    recDataString = recDataString.substring(charsLength);
+    recDataString.string = recDataString.string.substring(charsLength);
     return extracted;
   }
 }

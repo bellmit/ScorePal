@@ -4,12 +4,12 @@ import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/sport.dart';
 
 class MatchId {
-  static final DateFormat fileDateFormat = DateFormat("yyyyMMddHHmmss");
+  static final DateFormat fileDateFormat = DateFormat("yyyy-MM-dd-HH:mm:ss");
 
   final String _idString;
 
-  static MatchId create(ActiveMatch match) =>
-      MatchId(fileDateFormat.format(match.getDateMatchStarted()) +
+  static MatchId create(ActiveMatch match) => MatchId(
+      fileDateFormat.format(match.getDateMatchStarted() ?? DateTime.now()) +
           "_" +
           match.getSport().id);
 

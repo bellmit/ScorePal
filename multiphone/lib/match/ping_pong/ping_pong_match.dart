@@ -21,16 +21,17 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
           PingPongMatchWriter(),
         );
 
-  @override
-  void storeJSONData(Map<String, Object> data) {
-    super.storeJSONData(data);
-// store our data in this object too - only things that will not be recreated when
-// the score is replayed in this match - ie, very little
+  Map<String, Object> getData() {
+    final data = super.getData();
+    // put any of our data into this map
+
+    // and return the data
+    return data;
   }
 
-  void restoreFromJSON(Map<String, Object> data, int version) {
-    super.restoreFromJSON(data, version);
-// and get our data from this object that we stored here
+  void setData(Map<String, Object> data) {
+    super.setData(data);
+    //and set any from ours that we saved in here
   }
 
   @override

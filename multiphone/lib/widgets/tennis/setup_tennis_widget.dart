@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/tennis/tennis_match_setup.dart';
 import 'package:multiphone/providers/active_setup.dart';
@@ -42,7 +43,7 @@ class _SetupTennisWidgetState extends State<SetupTennisWidget> {
     _setup =
         Provider.of<ActiveSetup>(context, listen: false) as TennisMatchSetup;
     if (null != _setup) {
-      _setup.loadLastSetupData().then((value) {
+      SetupPersistence().loadLastSetupData(_setup).then((value) {
         setState(() {
           _setup = value;
         });
