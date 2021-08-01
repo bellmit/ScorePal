@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:localstore/localstore.dart';
+import 'package:localstore/localstore.dart' as LocalStore;
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/match/match_id.dart';
@@ -14,17 +17,37 @@ enum MatchPersistenceState {
   lastActive,
 }
 
-enum MatchPersistanceSyncState {
+enum MatchPersistenceSyncState {
   untried,
   stored,
   failed,
 }
 
-class MatchPersistence {
+class MatchPersistence with ChangeNotifier {
+  static const usersCollection = 'users';
   static const matchCollection = 'matches';
   static const lastActivePrefix = 'active';
 
   static final DateFormat dateKey = DateFormat("yyyy-MM");
+
+  MatchPersistence() {
+    // listen to firebase in here and sync everything that is
+    // stored locally there too
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user == null) {
+        // not logged in
+      } else {
+        // are now logged in, sync all our data
+        _syncDataWithFirebase(user);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // stop listening to firebase then
+    super.dispose();
+  }
 
   static String stateString(MatchPersistenceState state) {
     switch (state) {
@@ -56,30 +79,74 @@ class MatchPersistence {
     }
   }
 
-  static String syncString(MatchPersistanceSyncState state) {
+  static String syncString(MatchPersistenceSyncState state) {
     switch (state) {
-      case MatchPersistanceSyncState.untried:
+      case MatchPersistenceSyncState.untried:
         return 'untried';
-      case MatchPersistanceSyncState.stored:
+      case MatchPersistenceSyncState.stored:
         return 'stored';
-      case MatchPersistanceSyncState.failed:
+      case MatchPersistenceSyncState.failed:
         return 'failed';
       default:
         return 'untried';
     }
   }
 
-  static MatchPersistanceSyncState fromSyncString(String state) {
+  static MatchPersistenceSyncState fromSyncString(String state) {
     switch (state) {
       case 'untried':
-        return MatchPersistanceSyncState.untried;
+        return MatchPersistenceSyncState.untried;
       case 'stored':
-        return MatchPersistanceSyncState.stored;
+        return MatchPersistenceSyncState.stored;
       case 'failed':
-        return MatchPersistanceSyncState.failed;
+        return MatchPersistenceSyncState.failed;
       default:
-        return MatchPersistanceSyncState.untried;
+        return MatchPersistenceSyncState.untried;
     }
+  }
+
+  void _syncDataWithFirebase(User user) {
+    // get all our data locally that is not stored
+    final fbCollection = FirebaseFirestore.instance
+        .collection(usersCollection)
+        .doc(user.uid)
+        .collection(matchCollection);
+    LocalStore.Localstore.instance
+        .collection(matchCollection)
+        .where('sync', isEqualTo: syncString(MatchPersistenceSyncState.untried))
+        .get()
+        .then((matches) {
+      if (null != matches) {
+        // we have a map of all the data locally that has no UID in firebase
+        matches.forEach((key, value) {
+          // the key is the local key, the value is the map of data to send to fb
+          // but the local store returns the key of the entire path!
+          if (key.startsWith('/$matchCollection/')) {
+            key = key.replaceFirst('/$matchCollection/', '');
+          }
+          // set this data into the firebase collection then
+          fbCollection.doc(key).set(value).then((dataSet) {
+            // this worked - the data in the local store is synced now
+            _changeSyncStatus(key, value, MatchPersistenceSyncState.stored);
+          }).onError((error, stackTrace) {
+            Log.error(error);
+            // this failed, change this state to not try it again for now
+            _changeSyncStatus(key, value, MatchPersistenceSyncState.failed);
+          });
+        });
+      }
+    });
+  }
+
+  void _changeSyncStatus(String matchId, Map<String, Object> data,
+      MatchPersistenceSyncState state) {
+    // change the sync state
+    data['sync'] = syncString(state);
+    // and send the data out to the local score
+    LocalStore.Localstore.instance
+        .collection(matchCollection)
+        .doc(matchId)
+        .set(data, LocalStore.SetOptions(merge: true));
   }
 
   Future<Sport> getLastActiveSport() async {
@@ -94,7 +161,7 @@ class MatchPersistence {
     return {
       'ver': 1,
       'state': stateString(state),
-      'sync': syncString(MatchPersistanceSyncState.untried),
+      'sync': syncString(MatchPersistenceSyncState.untried),
       'date': dateKey.format(matchId.getDate()),
       'sport': setup.sport.id,
       'setup': setup.getData(),
@@ -120,7 +187,7 @@ class MatchPersistence {
   Future<ActiveMatch> loadLastMatchData(ActiveMatch match) async {
     // just get the last match data and put into the already loaded match
     final setup = match.getSetup();
-    final defaultData = await Localstore.instance
+    final defaultData = await LocalStore.Localstore.instance
         .collection(matchCollection)
         .doc('${lastActivePrefix}_${setup.sport.id}')
         .get();
@@ -129,7 +196,7 @@ class MatchPersistence {
       setup.setData(defaultData['setup']);
       match.setData(defaultData['data']);
     } else {
-      Log.error('default match setup data isn\'t valid for ${setup.sport.id}');
+      Log.error('default match data isn\'t valid for ${setup.sport.id}');
     }
     return match;
   }
@@ -149,7 +216,7 @@ class MatchPersistence {
   Future<dynamic> saveAsLastActiveMatch(ActiveMatch match) {
     final setup = match.getSetup();
     // just send this off and hope it worked
-    return Localstore.instance
+    return LocalStore.Localstore.instance
         .collection(matchCollection)
         .doc('${lastActivePrefix}_${setup.sport.id}')
         .set(_getMatchAsJSON(match, MatchPersistenceState.lastActive));
@@ -165,14 +232,14 @@ class MatchPersistence {
     // save the match data as specified in the correct state
     final matchId = MatchId.create(match);
     // just send this off and hope it worked
-    return Localstore.instance
+    return LocalStore.Localstore.instance
         .collection(matchCollection)
         .doc(matchId.toString())
         .set(_getMatchAsJSON(match, state));
   }
 
   Future<Map<String, dynamic>> _getMatchesForDate(DateTime date) async {
-    return Localstore.instance
+    return LocalStore.Localstore.instance
         .collection(matchCollection)
         .where('date', isEqualTo: dateKey.format(date))
         .get();

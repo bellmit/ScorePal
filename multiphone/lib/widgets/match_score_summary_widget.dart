@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 
-abstract class MatchScoreSummary extends StatelessWidget {
+abstract class MatchScoreSummaryWidget extends StatelessWidget {
   final String teamOneName;
   final String teamTwoName;
   final bool isTeamOneConceded;
   final bool isTeamTwoConceded;
-  const MatchScoreSummary({
+  const MatchScoreSummaryWidget({
     Key key,
     @required this.teamOneName,
     @required this.teamTwoName,

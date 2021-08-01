@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/match/badminton/badminton_match.dart';
-import 'package:multiphone/widgets/match_score_summary.dart';
+import 'package:multiphone/widgets/match_score_summary_widget.dart';
 
-class BadmintonScoreSummaryWidget extends MatchScoreSummary {
+class BadmintonScoreSummaryWidget extends MatchScoreSummaryWidget {
   final BadmintonMatch match;
   const BadmintonScoreSummaryWidget({
     Key key,

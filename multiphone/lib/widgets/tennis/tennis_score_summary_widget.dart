@@ -3,9 +3,9 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/tennis/tennis_match.dart';
 import 'package:multiphone/match/tennis/tennis_score.dart';
 import 'package:multiphone/providers/active_setup.dart';
-import 'package:multiphone/widgets/match_score_summary.dart';
+import 'package:multiphone/widgets/match_score_summary_widget.dart';
 
-class TennisScoreSummaryWidget extends MatchScoreSummary {
+class TennisScoreSummaryWidget extends MatchScoreSummaryWidget {
   final TennisMatch match;
   const TennisScoreSummaryWidget({
     Key key,

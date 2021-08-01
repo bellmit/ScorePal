@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/end_match_screen.dart';
-import 'package:multiphone/widgets/match_score_summary.dart';
+import 'package:multiphone/widgets/match_score_summary_widget.dart';
 import 'package:multiphone/widgets/tennis/tennis_score_summary_widget.dart';
 
 class EndTennisScreen extends EndMatchScreen {
@@ -11,7 +11,7 @@ class EndTennisScreen extends EndMatchScreen {
   EndTennisScreen();
 
   @override
-  MatchScoreSummary createScoreSummaryWidget(
+  MatchScoreSummaryWidget createScoreSummaryWidget(
     BuildContext context,
     ActiveMatch match,
   ) {

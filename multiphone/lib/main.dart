@@ -7,6 +7,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/screens/auth_screen.dart';
@@ -45,6 +46,8 @@ class MyApp extends StatelessWidget {
         // and this way we won't forget
         ChangeNotifierProvider<Players>(create: (ctx) => Players()),
         ChangeNotifierProvider<Sports>(create: (ctx) => Sports()),
+        ChangeNotifierProvider<MatchPersistence>(
+            create: (ctx) => MatchPersistence()),
         ChangeNotifierProvider<SpeakService>(create: (ctx) => SpeakService()),
         ChangeNotifierProxyProvider<Sports, ActiveSelection>(
           // this proxy is called after the specified sports object is build

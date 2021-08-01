@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/match_persistence.dart';
+import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/setup_match_screen.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/';
@@ -34,28 +35,33 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: SideDrawer(
           menuItems: MenuItem.mainMenuItems(context),
           currentPath: HomeScreen.routeName),
-      body: FutureBuilder(
-        future: MatchPersistence().getMatches(null),
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data == null) {
-              return Center(child: Text('no data'));
-            }
-            // return the list of data
-            Iterable<ActiveMatch> matches = snapshot.data.values;
-            return ListView.builder(
-                itemCount: matches.length,
-                itemBuilder: (ctx, index) {
-                  final match = matches.elementAt(index);
-                  return ListTile(
-                    title: Text(match.getSport().id),
-                    subtitle:
-                        Text(match.getDescription(DescriptionLevel.SHORT, ctx)),
-                  );
-                });
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
+      body: Consumer<MatchPersistence>(
+        // consume the persistence class to show the matches as they load
+        builder: (ctx, matchPersistence, child) {
+          return FutureBuilder(
+            future: MatchPersistence().getMatches(null),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.data == null) {
+                  return Center(child: Text('no data'));
+                }
+                // return the list of data
+                Iterable<ActiveMatch> matches = snapshot.data.values;
+                return ListView.builder(
+                    itemCount: matches.length,
+                    itemBuilder: (ctx, index) {
+                      final match = matches.elementAt(index);
+                      return ListTile(
+                        title: Text(match.getSport().id),
+                        subtitle: Text(
+                            match.getDescription(DescriptionLevel.SHORT, ctx)),
+                      );
+                    });
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            },
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(

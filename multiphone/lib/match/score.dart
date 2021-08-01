@@ -55,6 +55,8 @@ abstract class Score<S extends ActiveSetup> {
     // we don't need to store the points at all (they are re-created from the points) but
     // other apps (a website maybe) might want to skip that and just have the resuts. So, to
     // be nice, we can put them in the JSON
+
+    /*
     List levelsArray = [];
     for (int i = 0; i < _pointsHistory.length; ++i) {
       var level = _pointsHistory[i];
@@ -75,7 +77,7 @@ abstract class Score<S extends ActiveSetup> {
       }
     }
     // and put this in the JSON
-    data["scr"] = levelsArray;
+    data["scr"] = levelsArray;*/
     // and return this
     return data;
   }

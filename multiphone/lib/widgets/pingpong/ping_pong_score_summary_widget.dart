@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match.dart';
-import 'package:multiphone/widgets/match_score_summary.dart';
+import 'package:multiphone/widgets/match_score_summary_widget.dart';
 
-class PingPongScoreSummaryWidget extends MatchScoreSummary {
+class PingPongScoreSummaryWidget extends MatchScoreSummaryWidget {
   final PingPongMatch match;
   const PingPongScoreSummaryWidget({
     Key key,

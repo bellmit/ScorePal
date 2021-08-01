@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/match_persistence.dart';
+import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/home_screen.dart';
-import 'package:multiphone/widgets/match_score_summary.dart';
+import 'package:multiphone/widgets/match_score_summary_widget.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ abstract class EndMatchScreen extends StatefulWidget {
   @override
   _EndMatchScreenState createState() => _EndMatchScreenState();
 
-  MatchScoreSummary createScoreSummaryWidget(
+  MatchScoreSummaryWidget createScoreSummaryWidget(
       BuildContext context, ActiveMatch match);
 }
 
@@ -50,14 +50,15 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
 
   void _deleteMatch(ActiveMatch match) {
     // discard and end this match now
-    MatchPersistence().deleteMatchData(match);
+    Provider.of<MatchPersistence>(context, listen: false)
+        .deleteMatchData(match);
     // and send us home
     _navigateHome();
   }
 
   void _acceptMatch(ActiveMatch match) {
     // save and close this match now then
-    MatchPersistence()
+    Provider.of<MatchPersistence>(context, listen: false)
         .saveMatchData(match, state: MatchPersistenceState.accepted);
     // and go home
     _navigateHome();
