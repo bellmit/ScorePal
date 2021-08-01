@@ -95,8 +95,6 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     _optionsController.dispose();
     // release any locks we asked for
     _releaseLocks();
-    // and the tracker
-    _playTracker.destroy(true);
     // and dispose
     super.dispose();
   }

@@ -3,6 +3,7 @@ import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/match_persistence.dart';
 import 'package:provider/provider.dart';
 
 class MatchPlayTracker {
@@ -19,13 +20,6 @@ class MatchPlayTracker {
       match.setDateMatchStarted(_playStarted);
     }
     //TODO we can set the location of the match here too!
-  }
-
-  void destroy(bool isStoreResults) {
-    // closing this down - store things here then
-    if (isStoreResults) {
-      storeMatchResults(true, false);
-    }
   }
 
   void processScoreChange(BuildContext context) {
@@ -45,8 +39,22 @@ class MatchPlayTracker {
       // this is not during a 'redo' so we need to process and display this change
       speakService.speak(match.getSpokenStateMessage(context));
     }
+    // and the amount of time we have played please
+    if (null != _playStarted) {
+      // and add the time played in this session to the active match
+      int activityTime = getTimePlayed();
+      if (activityTime > 0) {
+        match.addMatchTimePlayed(activityTime);
+      }
+      // now we added these time, we need to not add them again, reset the
+      // play started time to be now
+      _playStarted = DateTime.now();
+    }
     // every time the points change we want to check to see if we have ended or not
     _handlePlayEnding();
+    // and finally, let's be aggressive and store this match everytime it changes
+    Provider.of<MatchPersistence>(context, listen: false)
+        .saveAsLastActiveMatch(match);
     // and any notification
     _handleNotificationUpdate();
   }
@@ -71,21 +79,6 @@ class MatchPlayTracker {
     return timePlayed;
   }
 
-  void storeCurrentState(bool areResultsAccepted) {
-    if (null != _playStarted) {
-      // and add the time played in this session to the active match
-      int activityTime = getTimePlayed();
-      if (activityTime > 0) {
-        match.addMatchTimePlayed(activityTime);
-      }
-      // now we added these time, we need to not add them again, reset the
-      // play started time to be now
-      _playStarted = DateTime.now();
-    }
-    // store the match results
-    storeMatchResults(true, areResultsAccepted);
-  }
-
   int getTimePlayed() {
     if (null == _playStarted) {
       return 0;
@@ -103,27 +96,6 @@ class MatchPlayTracker {
       // and add the time played in seconds to the active match
       return (diff / 1000.0).floor();
     }
-  }
-
-  void storeMatchResults(bool storeIfPersisted, bool areResultsAccepted) {
-    //TODO set the location of this active match
-    /*Location currentLocation = getCurrentLocation();
-      if (null != currentLocation) {
-        activeMatch.setPlayedLocation(currentLocation);
-      }*/
-    //TODO store the results of the match we started
-    /*MatchPersistenceManager persistenceManager = MatchPersistenceManager.GetInstance();
-      if (storeIfPersisted || false == persistenceManager.isMatchDataPersisted(match)) {
-        // we are forcing a save, or the data is different, so save
-        if (areResultsAccepted) {
-          // accept the results
-          persistenceManager.saveAcceptedMatchToFile(match);
-        }
-        else {
-          // just save the results as they are
-          persistenceManager.saveMatchToFile(match);
-        }
-    }*/
   }
 
   void _handlePlayEnding() {
