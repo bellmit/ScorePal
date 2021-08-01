@@ -39,7 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
         // consume the persistence class to show the matches as they load
         builder: (ctx, matchPersistence, child) {
           return FutureBuilder(
-            future: MatchPersistence().getMatches(null),
+            future:
+                MatchPersistence().getMatches(MatchPersistenceState.accepted),
             builder: (ctx, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data == null) {
@@ -54,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return ListTile(
                         title: Text(match.getSport().id),
                         subtitle: Text(
-                            match.getDescription(DescriptionLevel.SHORT, ctx)),
+                            match.getDescription(DescriptionLevel.LONG, ctx)),
                       );
                     });
               } else {

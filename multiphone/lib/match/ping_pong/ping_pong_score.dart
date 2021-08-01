@@ -55,8 +55,8 @@ class PingPongScore extends Score<PingPongMatchSetup> {
   }
 
   @override
-  bool isMatchOver() {
-    if (isMatchConceded) {
+  bool isMatchOver({bool isCheckConceded = true}) {
+    if (isCheckConceded && isMatchConceded) {
       return true;
     }
     bool isMatchOver = false;
@@ -77,6 +77,14 @@ class PingPongScore extends Score<PingPongMatchSetup> {
 
   int getRounds(TeamIndex team) {
     return super.getPoint(LEVEL_ROUND, team);
+  }
+
+  int getPlayedRounds() {
+    int playedRounds = 0;
+    for (int i = 0; i < Score.teamCount; ++i) {
+      playedRounds += getRounds(TeamIndex.values[i]);
+    }
+    return playedRounds;
   }
 
   bool isTeamServerChangeAllowed() {

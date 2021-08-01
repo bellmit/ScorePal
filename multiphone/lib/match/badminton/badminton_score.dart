@@ -42,8 +42,8 @@ class BadmintonScore extends Score<BadmintonMatchSetup> {
   }
 
   @override
-  bool isMatchOver() {
-    if (isMatchConceded) {
+  bool isMatchOver({bool isCheckConceded = true}) {
+    if (isCheckConceded && isMatchConceded) {
       return true;
     }
     bool isMatchOver = false;
@@ -64,6 +64,14 @@ class BadmintonScore extends Score<BadmintonMatchSetup> {
 
   int getGames(TeamIndex team) {
     return super.getPoint(LEVEL_GAME, team);
+  }
+
+  int getPlayedGames() {
+    int playedGames = 0;
+    for (int i = 0; i < Score.teamCount; ++i) {
+      playedGames += getGames(TeamIndex.values[i]);
+    }
+    return playedGames;
   }
 
   bool isTeamServerChangeAllowed() {

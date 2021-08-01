@@ -303,7 +303,7 @@ abstract class Score<S extends ActiveSetup> {
 
   int getScoreGoal();
 
-  bool isMatchOver();
+  bool isMatchOver({bool isCheckConceded = true});
 
   bool isTeamServerChangeAllowed();
 

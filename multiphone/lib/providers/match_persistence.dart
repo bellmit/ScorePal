@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -195,12 +197,15 @@ class MatchPersistence with ChangeNotifier {
               LocalStore.Localstore.instance
                   .collection(matchCollection)
                   .doc(element.id)
-                  .set(element.data());
+                  .set(element.data())
+                  .then((value) {
+                // this is a change in the collection of matches we can show
+                notifyListeners();
+              });
             }
           });
         });
         // and this is a change to this store, we have more data now
-        notifyListeners();
       }
     });
   }
@@ -344,7 +349,10 @@ class MatchPersistence with ChangeNotifier {
       documents.removeWhere((key, value) => value['sport'] == null);
     }
     // and convert everything that's left into actual active matches for the caller
-    return documents
+    final matches = documents
         .map((key, value) => MapEntry(key, _createMatchFromJson(value)));
+    // and return this sorted nicely (with the most recent on the top please)
+    return SplayTreeMap<String, ActiveMatch>.from(
+        matches, (key1, key2) => key2.compareTo(key1));
   }
 }

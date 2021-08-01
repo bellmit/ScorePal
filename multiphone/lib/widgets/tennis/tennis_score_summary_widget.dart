@@ -65,7 +65,7 @@ class TennisScoreSummaryWidget extends MatchScoreSummaryWidget {
     var setIndex = index;
     if (!match.score.isMatchOver(isCheckConceded: false)) {
       if (index == 0) {
-        return row == 0 ? values.strings.points : '';
+        return row == 0 ? values.strings.title_tennis_points : '';
       }
       // the set index is one lower than the score index then
       --setIndex;
