@@ -16,7 +16,6 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
 
   DateTime _dateMatchStarted;
   int _matchTimePlayed;
-  bool _isDataPersisted = false;
 
   MatchSpeaker _speaker;
   MatchWriter _writer;
@@ -30,8 +29,6 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     // and the time played
     _matchTimePlayed = 0;
     _dateMatchStarted = DateTime.now();
-    // this data is not saved yet
-    _isDataPersisted = false;
   }
 
   TScore get score {
@@ -45,8 +42,6 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     _score.resetScore();
     // and the time played
     _matchTimePlayed = 0;
-    // this data is not saved yet
-    _isDataPersisted = false;
     // inform listeners so they can set the player who is starting serve, location etc.
     notifyListeners();
   }
@@ -70,8 +65,6 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
 
   void addMatchTimePlayed(int timePlayed) {
     _matchTimePlayed += timePlayed;
-    // this data is not saved yet
-    _isDataPersisted = false;
   }
 
   Map<String, Object> getData() {
@@ -127,14 +120,6 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
 
   Sport getSport() {
     return _setup.sport;
-  }
-
-  bool isDataPersisted() {
-    return _isDataPersisted;
-  }
-
-  void setDataPersisted() {
-    _isDataPersisted = true;
   }
 
   DateTime getDateMatchStarted() {
