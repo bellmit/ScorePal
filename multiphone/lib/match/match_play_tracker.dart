@@ -92,9 +92,7 @@ class MatchPlayTracker {
         playEndedMs = _playEnded.millisecondsSinceEpoch;
       }
       // Calculate difference in milliseconds
-      var diff = playEndedMs - _playStarted.millisecondsSinceEpoch;
-      // and add the time played in seconds to the active match
-      return (diff / 1000.0).floor();
+      return playEndedMs - _playStarted.millisecondsSinceEpoch;
     }
   }
 

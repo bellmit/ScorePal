@@ -48,7 +48,7 @@ class BadmintonMatchWriter extends MatchWriter<BadmintonMatch> {
   String getDescriptionShort(BadmintonMatch match, BuildContext context) {
     BadmintonMatchSetup setup = match.getSetup();
     // return a nice description
-    int minutesPlayed = (match.getMatchTimePlayed() / 60.0).floor();
+    int minutesPlayed = (match.getMatchTimePlayed() / 60000.0).floor();
     int hoursPlayed = (minutesPlayed / 60.0).floor();
     minutesPlayed = minutesPlayed - (hoursPlayed * 60);
     DateTime matchPlayedDate = match.getDateMatchStarted();
@@ -69,7 +69,7 @@ class BadmintonMatchWriter extends MatchWriter<BadmintonMatch> {
   String getDescriptionLong(BadmintonMatch match, BuildContext context) {
     BadmintonMatchSetup setup = match.getSetup();
     // get the basic description
-    int minutesPlayed = (match.getMatchTimePlayed() / 60.0).floor();
+    int minutesPlayed = (match.getMatchTimePlayed() / 60000.0).floor();
     int hoursPlayed = (minutesPlayed / 60.0).floor();
     minutesPlayed = minutesPlayed - (hoursPlayed * 60);
     DateTime matchPlayedDate = match.getDateMatchStarted();

@@ -128,8 +128,11 @@ class MatchPersistence with ChangeNotifier {
           if (key.startsWith('/$matchCollection/')) {
             key = key.replaceFirst('/$matchCollection/', '');
           }
-          // and store this data
-          _storeFirebaseData(key, value);
+          if (value['state'] == stateString(MatchPersistenceState.accepted)) {
+            // this is an accepted score - send this to firebase
+            // we don't want to store deleted or anything else really thank you
+            _storeFirebaseData(key, value);
+          }
         });
       }
       // so we sent everything, why not get it all back again to this local
@@ -173,6 +176,7 @@ class MatchPersistence with ChangeNotifier {
   }
 
   void _syncDataFromFirebase() {
+    //TODO don't do this quite as much as sending as will always get a load of data from firebase
     // let's just get the last few (quite a few) and in descending id order
     FirebaseFirestore.instance
         .collection(usersCollection)

@@ -66,7 +66,7 @@ class TennisMatchWriter extends MatchWriter<TennisMatch> {
       return "";
     }
     // return a nice description
-    int minutesPlayed = (match.getMatchTimePlayed() / 60.0).floor();
+    int minutesPlayed = (match.getMatchTimePlayed() / 60000.0).floor();
     int hoursPlayed = (minutesPlayed / 60.0).floor();
     minutesPlayed = minutesPlayed - (hoursPlayed * 60);
     DateTime matchPlayedDate = match.getDateMatchStarted();
@@ -90,7 +90,7 @@ class TennisMatchWriter extends MatchWriter<TennisMatch> {
       return "";
     }
     // get the basic description
-    int minutesPlayed = (match.getMatchTimePlayed() / 60.0).floor();
+    int minutesPlayed = (match.getMatchTimePlayed() / 60000.0).floor();
     int hoursPlayed = (minutesPlayed / 60.0).floor();
     minutesPlayed = minutesPlayed - (hoursPlayed * 60);
     DateTime matchPlayedDate = match.getDateMatchStarted();

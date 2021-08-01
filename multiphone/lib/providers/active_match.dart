@@ -63,14 +63,14 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     _score.describeLastPoint(state, description);
   }
 
-  void addMatchTimePlayed(int timePlayed) {
-    _matchTimePlayed += timePlayed;
+  void addMatchTimePlayed(int msPlayed) {
+    _matchTimePlayed += msPlayed;
   }
 
   Map<String, Object> getData() {
     // save all our data
     final data = Map<String, Object>();
-    data["secs"] = _matchTimePlayed;
+    data["secs"] = (_matchTimePlayed / 1000.0).floor();
     // most importantly store the score so we can re-establish the state of this match
     // when we reload it
     data["score"] = _score.getData();
@@ -81,7 +81,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   void setData(MatchId matchId, Map<String, Object> data) {
     // Id first
     _dateMatchStarted = matchId.getDate();
-    _matchTimePlayed = data["secs"];
+    _matchTimePlayed = (data["secs"] as int) * 1000;
     //this.playedLocation = LocationWrapper().deserialiseFromString(data.getString("locn")).content;
     // most importantly we want to put the score in. Then we can replay the score to
     // put the state of this match back to how it was when we saved it
