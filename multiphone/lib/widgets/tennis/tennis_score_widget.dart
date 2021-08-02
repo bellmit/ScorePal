@@ -35,6 +35,7 @@ class TennisScoreWidget extends ScoreWidget {
                 Values(context).strings.title_tennis_sets,
                 sets.displayString(context),
                 false,
+                'images/svg/tennis-ball-large.svg',
                 null, //() => onScoreClicked(TennisScore.LEVEL_SET),
               ),
               createBox(
@@ -42,6 +43,7 @@ class TennisScoreWidget extends ScoreWidget {
                 Values(context).strings.title_tennis_games,
                 games.displayString(context),
                 false,
+                'images/svg/tennis-ball-large.svg',
                 () => onScoreClicked(TennisScore.LEVEL_GAME),
               ),
             ],
@@ -54,6 +56,7 @@ class TennisScoreWidget extends ScoreWidget {
             Values(context).strings.title_tennis_points,
             points.displayString(context),
             isServing,
+            'images/svg/tennis-ball-large.svg',
             () => onScoreClicked(TennisScore.LEVEL_POINT),
           ),
         ),

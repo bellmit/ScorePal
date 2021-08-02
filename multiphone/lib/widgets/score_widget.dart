@@ -10,6 +10,7 @@ abstract class ScoreWidget extends StatelessWidget {
     String title,
     String points,
     bool isServer,
+    String serveSvg,
     void onClicked(),
   ) {
     return Padding(
@@ -69,6 +70,31 @@ abstract class ScoreWidget extends StatelessWidget {
                       ],
                     ),
                   ),
+                  if (onClicked != null)
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: FractionallySizedBox(
+                        child: Padding(
+                          padding: const EdgeInsets.all(Values.default_space),
+                          child: Container(
+                            height: Values.image_icon,
+                            width: Values.image_icon,
+                            decoration: new BoxDecoration(
+                              color: Theme.of(context)
+                                  .accentColor
+                                  .withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: Theme.of(context)
+                                  .accentColor
+                                  .withOpacity(0.2),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.all(Values.default_space),
                     child: AnimatedSwitcher(
@@ -86,8 +112,7 @@ abstract class ScoreWidget extends StatelessWidget {
                             ? Values.image_small
                             : 0,
                         height: Values.image_small,
-                        child: SvgPicture.asset(
-                            'images/svg/tennis-ball-large.svg'),
+                        child: SvgPicture.asset(serveSvg),
                       ),
                     ),
                   ),
