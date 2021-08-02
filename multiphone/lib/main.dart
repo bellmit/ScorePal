@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
               return selectedMatch.getSetup();
             } else {
               // create the correct match setup from the sport, this makes the selection not have a match selected
-              activeSelection.selectedMatch = null;
+              activeSelection.selectMatch(null, true);
               Log.debug(
                   'creating a new setup for the sport of ${activeSelection.sport == null ? 'null' : activeSelection.sport.id}');
               // and create the new setup
@@ -99,16 +99,17 @@ class MyApp extends StatelessWidget {
                 'using the active selected match ${MatchId.create(selectedMatch).toString()}');
             return selectedMatch;
           } else if (previousMatch == null ||
-              setup.sport.id != previousMatch.getSport().id) {
+              setup.sport.id != previousMatch.getSport().id ||
+              activeSelection.isCreateNextMatchNew) {
             // this is a change in sport, create the new match needed
             Log.debug(
                 'new setup as switching sport to ${setup.sport == null ? 'null' : setup.sport.id}');
-            activeSelection.selectedMatch = null;
+            activeSelection.selectMatch(null, false);
             // and return a new match that the provider will inform people about
             return setup.sport.createMatch(setup);
           } else {
             // don't let there be a selected one, we are using the previous one
-            activeSelection.selectedMatch = null;
+            activeSelection.selectMatch(null, false);
             // this is the same sport, just update the match running
             Log.debug('applying a setup change to the previous match');
             previousMatch.applyChangedMatchSettings();

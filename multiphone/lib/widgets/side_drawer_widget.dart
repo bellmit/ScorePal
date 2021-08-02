@@ -2,9 +2,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/screens/setup_match_screen.dart';
 import 'package:multiphone/widgets/user_details_widget.dart';
+import 'package:provider/provider.dart';
 
 class MenuItem {
   final String name;
@@ -46,6 +48,10 @@ class SideDrawer extends StatelessWidget {
       : super(key: key);
 
   void _onItemSelected(BuildContext context, MenuItem item) {
+    // clear any current selection on the selection provider (want a new one)
+    Provider.of<ActiveSelection>(context, listen: false)
+        .selectMatch(null, true);
+    // and show the screen to start a new one
     Navigator.of(context).pushNamed(item.navPath);
   }
 

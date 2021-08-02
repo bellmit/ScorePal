@@ -31,8 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
     switch (option) {
       case PlayedMatchSummaryMenuItem.resume:
         // select this on the selection provider
-        Provider.of<ActiveSelection>(context, listen: false).selectedMatch =
-            match;
+        Provider.of<ActiveSelection>(context, listen: false)
+            .selectMatch(match, false);
         // and show the playing screen for this
         Navigator.of(context).pushNamed(match.getSport().playNavPath);
         break;
@@ -131,6 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         heroTag: ValueKey<String>('play_match'),
         onPressed: () {
+          // clear any current selection on the selection provider (want a new one)
+          Provider.of<ActiveSelection>(context, listen: false)
+              .selectMatch(null, true);
+          // and show the screen to start a new one
           Navigator.of(context).pushNamed(SetupMatchScreen.routeName);
         },
         child: const Icon(Icons.play_arrow),

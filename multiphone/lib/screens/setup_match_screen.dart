@@ -102,9 +102,9 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       ),
                     ),
                     Consumer<ActiveSelection>(
-                      builder: (ctx, activeMatch, child) {
+                      builder: (ctx, activeSelection, child) {
                         // create the correct widget to setup the sport here then
-                        return activeMatch.sport.createSetupWidget(ctx);
+                        return activeSelection.sport.createSetupWidget(ctx);
                       },
                     ),
                   ],

@@ -226,11 +226,11 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
   }
 
   void append(StringBuilder message, String spokenMessage) {
-    appendPause(message, spokenMessage, "");
+    appendPause(message, spokenMessage, ' ');
   }
 
   void appendInt(StringBuilder message, int spokenNumber) {
-    appendPause(message, spokenNumber.toString(), "");
+    appendPause(message, spokenNumber.toString(), ' ');
   }
 
   void appendIntPause(StringBuilder message, int spokenNumber, String pause) {

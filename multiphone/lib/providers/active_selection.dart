@@ -5,6 +5,7 @@ import 'package:multiphone/providers/sport.dart';
 class ActiveSelection with ChangeNotifier {
   Sport _sport;
   ActiveMatch _selectedMatch;
+  bool _isCreateNextMatchNew = false;
 
   ActiveSelection(Sports sports) {
     // just use the first available valid sport as our default
@@ -15,12 +16,19 @@ class ActiveSelection with ChangeNotifier {
     return _selectedMatch;
   }
 
-  set selectedMatch(ActiveMatch match) {
+  void selectMatch(ActiveMatch match, bool isCreateNextNew) {
     _selectedMatch = match;
+    _isCreateNextMatchNew = isCreateNextNew;
     if (_selectedMatch != null) {
+      // which changes the sport
+      _sport = _selectedMatch.getSport();
       // and inform listeners
       notifyListeners();
     }
+  }
+
+  bool get isCreateNextMatchNew {
+    return _isCreateNextMatchNew;
   }
 
   Sport get sport {

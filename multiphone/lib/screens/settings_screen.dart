@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/screens/setup_match_screen.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String routeName = '/settings';
@@ -37,6 +39,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       floatingActionButton: FloatingActionButton(
         heroTag: ValueKey<String>('play_match'),
         onPressed: () {
+          // clear any current selection on the selection provider (want a new one)
+          Provider.of<ActiveSelection>(context, listen: false)
+              .selectMatch(null, true);
+          // and show the screen to start a new one
           Navigator.of(context).pushNamed(SetupMatchScreen.routeName);
         },
         child: const Icon(Icons.play_arrow),
