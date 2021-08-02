@@ -39,49 +39,56 @@ class TennisScoreSummaryWidget extends MatchScoreSummaryWidget {
   }
 
   @override
-  String getScore(BuildContext context, int index, int row) {
+  MatchScoreSummaryItem getScoreItem(BuildContext context, int index, int row) {
     var setIndex = index;
+    String points = '';
+    bool isWinner;
+    String title = '';
+    final values = Values(context);
     if (!match.score.isMatchOver(isCheckConceded: false)) {
-      // want the points currently in play for this row
+      // the match is over - we are showing the first col as points
       if (index == 0) {
         // just return the points for the current match (correct team)
-        return match
+        points = match
             .getDisplayPoint(TennisScore.LEVEL_POINT,
                 row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO)
             .displayString(context);
+        // and show that these are points
+        title = row == 0 ? values.strings.title_tennis_points : '';
       }
       // the set index is one lower than the score index then
       --setIndex;
     }
-    // return the games for each set
-    return match.score
-        .getGames(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, setIndex)
-        .toString();
-  }
-
-  @override
-  String getScoreTitle(BuildContext context, int index, int row) {
-    final values = Values(context);
-    var setIndex = index;
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
-      if (index == 0) {
-        return row == 0 ? values.strings.title_tennis_points : '';
+    if (points.isEmpty) {
+      // return the games for each set
+      points = match.score
+          .getGames(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, setIndex)
+          .toString();
+      // and we want to show the winner of this set
+      if (setIndex < match.score.getPlayedSets()) {
+        // only showing the winner of the sets
+        final tOneGames = match.score.getGames(TeamIndex.T_ONE, setIndex);
+        final tTwoGames = match.score.getGames(TeamIndex.T_TWO, setIndex);
+        isWinner = row == 0 ? (tOneGames > tTwoGames) : (tTwoGames > tOneGames);
       }
-      // the set index is one lower than the score index then
-      --setIndex;
     }
-    if (row == 0) {
-      return values
-          .construct(values.strings.display_set_number, [setIndex + 1]);
-    } else if (match.score.isSetTieBreak(setIndex)) {
-      // this was a tie set
-      final setPoints = match.score
-          .getSetPoints(setIndex, match.score.getPlayedGames(setIndex) - 1);
-      return values.construct(values.strings.tie_display, [
-        setPoints.first,
-        setPoints.last,
-      ]);
+    if (title.isEmpty) {
+      // by default the title is constructed to be the set title
+      if (row == 0) {
+        title =
+            values.construct(values.strings.display_set_number, [setIndex + 1]);
+      } else if (match.score.isSetTieBreak(setIndex)) {
+        // the title is about the tie-break that occurred
+        final setPoints = match.score
+            .getSetPoints(setIndex, match.score.getPlayedGames(setIndex) - 1);
+        title = values.construct(values.strings.tie_display, [
+          setPoints.first,
+          setPoints.last,
+        ]);
+      }
     }
-    return '';
+    // and return all the data collected
+    return MatchScoreSummaryItem(
+        score: points, title: title, isWinner: isWinner);
   }
 }

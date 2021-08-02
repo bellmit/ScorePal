@@ -34,25 +34,33 @@ class PingPongScoreSummaryWidget extends MatchScoreSummaryWidget {
   }
 
   @override
-  String getScore(BuildContext context, int index, int row) {
+  MatchScoreSummaryItem getScoreItem(BuildContext context, int index, int row) {
     // return the points for each round
-    return match.score
+    String points = match.score
         .getRoundPoints(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, index)
         .toString();
-  }
-
-  @override
-  String getScoreTitle(BuildContext context, int index, int row) {
+    // and calculate the correct title for this
     final values = Values(context);
-    if (row == 1) {
-      // no titles on the second row
-      return '';
-    } else if (!match.score.isMatchOver(isCheckConceded: false) &&
+    String title;
+    bool isWinner;
+    if (!match.score.isMatchOver(isCheckConceded: false) &&
         index == match.score.getPlayedRounds()) {
       // the match isn't over - and this is the current round
-      return values.strings.title_ping_pong_points;
+      if (row == 0) {
+        title = values.strings.title_ping_pong_points;
+      }
     } else {
-      return values.construct(values.strings.display_round_number, [index + 1]);
+      // this is a finished game
+      title =
+          values.construct(values.strings.display_round_number, [index + 1]);
+      // for which we can show who won
+      final tOneRounds = match.score.getRoundPoints(TeamIndex.T_ONE, index);
+      final tTwoRounds = match.score.getRoundPoints(TeamIndex.T_TWO, index);
+      isWinner =
+          row == 0 ? (tOneRounds > tTwoRounds) : (tTwoRounds > tOneRounds);
     }
+    // and return all the data collected
+    return MatchScoreSummaryItem(
+        score: points, title: title, isWinner: isWinner);
   }
 }

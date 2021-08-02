@@ -34,25 +34,32 @@ class BadmintonScoreSummaryWidget extends MatchScoreSummaryWidget {
   }
 
   @override
-  String getScore(BuildContext context, int index, int row) {
+  MatchScoreSummaryItem getScoreItem(BuildContext context, int index, int row) {
     // return the points for each game
-    return match.score
+    String points = match.score
         .getGamePoints(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, index)
         .toString();
-  }
-
-  @override
-  String getScoreTitle(BuildContext context, int index, int row) {
+    // and calculate the correct title for this
     final values = Values(context);
-    if (row == 1) {
-      // no titles on the second row
-      return '';
-    } else if (!match.score.isMatchOver(isCheckConceded: false) &&
+    String title;
+    bool isWinner;
+    if (!match.score.isMatchOver(isCheckConceded: false) &&
         index == match.score.getPlayedGames()) {
       // the match isn't over - and this is the current game
-      return values.strings.title_badminton_points;
+      if (row == 0) {
+        title = values.strings.title_badminton_points;
+      }
     } else {
-      return values.construct(values.strings.display_round_number, [index + 1]);
+      // this is a finished game
+      title = values.construct(values.strings.display_game_number, [index + 1]);
+      // for which we can show who won
+      final tOnePoints = match.score.getGamePoints(TeamIndex.T_ONE, index);
+      final tTwoPoints = match.score.getGamePoints(TeamIndex.T_TWO, index);
+      isWinner =
+          row == 0 ? (tOnePoints > tTwoPoints) : (tTwoPoints > tOnePoints);
     }
+    // and return all the data collected
+    return MatchScoreSummaryItem(
+        score: points, title: title, isWinner: isWinner);
   }
 }

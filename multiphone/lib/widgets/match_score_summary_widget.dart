@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 
+class MatchScoreSummaryItem {
+  final String score;
+  final String title;
+  final bool isWinner;
+  MatchScoreSummaryItem({this.score, this.title, this.isWinner});
+}
+
 abstract class MatchScoreSummaryWidget extends StatelessWidget {
   final String teamOneName;
   final String teamTwoName;
@@ -15,8 +22,7 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
   }) : super(key: key);
 
   int getScoreCount();
-  String getScore(BuildContext context, int index, int row);
-  String getScoreTitle(BuildContext context, int index, int row);
+  MatchScoreSummaryItem getScoreItem(BuildContext context, int index, int row);
 
   Widget _createHeading(BuildContext context, String title) {
     return Center(
@@ -33,13 +39,13 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
     );
   }
 
-  Widget _createPoint(BuildContext context, String title, String point) {
+  Widget _createPoint(BuildContext context, MatchScoreSummaryItem item) {
     return Flexible(
       flex: 1,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _createHeading(context, title ?? ''),
+          _createHeading(context, item.title ?? ''),
           AspectRatio(
             aspectRatio: 1,
             child: Card(
@@ -52,7 +58,13 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(Values.default_space),
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: Text(point),
+                  child: Text(
+                    item.score,
+                    style: TextStyle(
+                        fontWeight: item.isWinner ?? false
+                            ? FontWeight.bold
+                            : FontWeight.normal),
+                  ),
                 ),
               ),
             ),
@@ -98,8 +110,7 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
                 scoreCount,
                 (index) => _createPoint(
                   context,
-                  getScoreTitle(context, index, 0),
-                  getScore(context, index, 0),
+                  getScoreItem(context, index, 0),
                 ),
               ),
             ],
@@ -111,8 +122,7 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
                 scoreCount,
                 (index) => _createPoint(
                   context,
-                  getScoreTitle(context, index, 1),
-                  getScore(context, index, 1),
+                  getScoreItem(context, index, 1),
                 ),
               ),
             ],
