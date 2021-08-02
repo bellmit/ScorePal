@@ -90,7 +90,7 @@ class BadmintonScore extends Score<BadmintonMatchSetup> {
         gameIndex < 0 ||
         gameIndex >= pointResults.length) {
       // there is no history for this game, return the current games instead
-      toReturn = super.getPoint(LEVEL_GAME, team);
+      toReturn = super.getPoint(LEVEL_POINT, team);
     } else {
       List<int> gamePoints = pointResults.elementAt(gameIndex);
       toReturn = gamePoints[team.index];

@@ -103,7 +103,7 @@ class PingPongScore extends Score<PingPongMatchSetup> {
         roundIndex < 0 ||
         roundIndex >= pointResults.length) {
       // there is no history for this round, return the current rounds instead
-      toReturn = super.getPoint(LEVEL_ROUND, team);
+      toReturn = super.getPoint(LEVEL_POINT, team);
     } else {
       List<int> roundPoints = pointResults.elementAt(roundIndex);
       toReturn = roundPoints[team.index];

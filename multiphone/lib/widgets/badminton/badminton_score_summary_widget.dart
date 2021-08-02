@@ -35,41 +35,24 @@ class BadmintonScoreSummaryWidget extends MatchScoreSummaryWidget {
 
   @override
   String getScore(BuildContext context, int index, int row) {
-    var gameIndex = index;
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
-      // want the points currently in play for this row
-      if (index == 0) {
-        // just return the points for the current match (correct team)
-        return match
-            .getDisplayPoint(BadmintonScore.LEVEL_POINT,
-                row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO)
-            .displayString(context);
-      }
-      // the game index is one lower than the score index then
-      --gameIndex;
-    }
     // return the points for each game
     return match.score
-        .getGamePoints(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, gameIndex)
+        .getGamePoints(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, index)
         .toString();
   }
 
   @override
   String getScoreTitle(BuildContext context, int index, int row) {
     final values = Values(context);
-    var gameIndex = index;
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
-      if (index == 0) {
-        return row == 0 ? values.strings.title_badminton_points : '';
-      }
-      // the game index is one lower than the score index then
-      --gameIndex;
+    if (row == 1) {
+      // no titles on the second row
+      return '';
+    } else if (!match.score.isMatchOver(isCheckConceded: false) &&
+        index == match.score.getPlayedGames()) {
+      // the match isn't over - and this is the current game
+      return values.strings.title_badminton_points;
+    } else {
+      return values.construct(values.strings.display_round_number, [index + 1]);
     }
-    if (row == 0) {
-      return values
-          .construct(values.strings.display_game_number, [gameIndex + 1]);
-    }
-    // finally, if here then there's no title to show
-    return '';
   }
 }

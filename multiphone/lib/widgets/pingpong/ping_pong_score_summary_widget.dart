@@ -35,42 +35,24 @@ class PingPongScoreSummaryWidget extends MatchScoreSummaryWidget {
 
   @override
   String getScore(BuildContext context, int index, int row) {
-    var roundIndex = index;
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
-      // want the points currently in play for this row
-      if (index == 0) {
-        // just return the points for the current match (correct team)
-        return match
-            .getDisplayPoint(PingPongScore.LEVEL_POINT,
-                row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO)
-            .displayString(context);
-      }
-      // the round index is one lower than the score index then
-      --roundIndex;
-    }
     // return the points for each round
     return match.score
-        .getRoundPoints(
-            row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, roundIndex)
+        .getRoundPoints(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, index)
         .toString();
   }
 
   @override
   String getScoreTitle(BuildContext context, int index, int row) {
     final values = Values(context);
-    var roundIndex = index;
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
-      if (index == 0) {
-        return row == 0 ? values.strings.title_ping_pong_points : '';
-      }
-      // the round index is one lower than the score index then
-      --roundIndex;
+    if (row == 1) {
+      // no titles on the second row
+      return '';
+    } else if (!match.score.isMatchOver(isCheckConceded: false) &&
+        index == match.score.getPlayedRounds()) {
+      // the match isn't over - and this is the current round
+      return values.strings.title_ping_pong_points;
+    } else {
+      return values.construct(values.strings.display_round_number, [index + 1]);
     }
-    if (row == 0) {
-      return values
-          .construct(values.strings.display_round_number, [roundIndex + 1]);
-    }
-    // finally, if here then there's no title to show
-    return '';
   }
 }
