@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<SpeakService>(create: (ctx) => SpeakService()),
         ChangeNotifierProxyProvider<Sports, ActiveSelection>(
           // this proxy is called after the specified sports object is build
-          update: (ctx, sports, previousMatch) {
+          update: (ctx, sports, previousSelection) {
             Log.debug(
                 'updating selection with ${sports == null || sports.available == null ? '0' : sports.available.length} sports');
             return ActiveSelection(sports);
@@ -63,11 +64,21 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<ActiveSelection, ActiveSetup>(
           // this proxy is called after the specified active match object is build
-          update: (ctx, activeMatch, previousSetup) {
-            // create the correct match setup from the sport
-            Log.debug(
-                'creating a new setup for the sport of ${activeMatch.sport == null ? 'null' : activeMatch.sport.id}');
-            return activeMatch.sport.createSetup();
+          update: (ctx, activeSelection, previousSetup) {
+            final ActiveMatch selectedMatch = activeSelection.selectedMatch;
+            if (selectedMatch != null) {
+              // there is an active match running, this is the setup to use then
+              Log.debug(
+                  'using the setup from the active selected match ${MatchId.create(selectedMatch).toString()}');
+              return selectedMatch.getSetup();
+            } else {
+              // create the correct match setup from the sport, this makes the selection not have a match selected
+              activeSelection.selectedMatch = null;
+              Log.debug(
+                  'creating a new setup for the sport of ${activeSelection.sport == null ? 'null' : activeSelection.sport.id}');
+              // and create the new setup
+              return activeSelection.sport.createSetup();
+            }
           },
           // create an empty one initially - needs the active match setting
           create: (ctx) {
@@ -77,13 +88,27 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<ActiveSetup, ActiveMatch>(
             update: (ctx, setup, previousMatch) {
-          if (previousMatch == null ||
+          // this setup might change when the selection selects an active match
+          final activeSelection =
+              Provider.of<ActiveSelection>(ctx, listen: false);
+          final selectedMatch = activeSelection.selectedMatch;
+          if (null != selectedMatch) {
+            // just always use the selected match
+            selectedMatch.applyChangedMatchSettings();
+            Log.debug(
+                'using the active selected match ${MatchId.create(selectedMatch).toString()}');
+            return selectedMatch;
+          } else if (previousMatch == null ||
               setup.sport.id != previousMatch.getSport().id) {
             // this is a change in sport, create the new match needed
             Log.debug(
                 'new setup as switching sport to ${setup.sport == null ? 'null' : setup.sport.id}');
+            activeSelection.selectedMatch = null;
+            // and return a new match that the provider will inform people about
             return setup.sport.createMatch(setup);
           } else {
+            // don't let there be a selected one, we are using the previous one
+            activeSelection.selectedMatch = null;
             // this is the same sport, just update the match running
             Log.debug('applying a setup change to the previous match');
             previousMatch.applyChangedMatchSettings();

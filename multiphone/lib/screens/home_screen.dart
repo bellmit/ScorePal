@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/match_id.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
@@ -29,8 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // deal with this being selected for the match
     switch (option) {
       case PlayedMatchSummaryMenuItem.resume:
-        //TODO want to resume the match
-        Log.debug("need to implement this resume match");
+        // select this on the selection provider
+        Provider.of<ActiveSelection>(context, listen: false).selectedMatch =
+            match;
+        // and show the playing screen for this
+        Navigator.of(context).pushNamed(match.getSport().playNavPath);
         break;
       case PlayedMatchSummaryMenuItem.share:
         //TODO want to share the match
