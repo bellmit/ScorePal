@@ -42,7 +42,7 @@ class MatchPlayTracker {
     // and the amount of time we have played please
     if (null != _playStarted) {
       // and add the time played in this session to the active match
-      int activityTime = getTimePlayed();
+      int activityTime = getTimePlayedMs();
       if (activityTime > 0) {
         match.addMatchTimePlayed(activityTime);
       }
@@ -70,16 +70,16 @@ class MatchPlayTracker {
     }
   }
 
-  int getMatchTimePlayed() {
-    int timePlayed = match == null ? 0 : match.getMatchTimePlayed();
-    int activityTime = getTimePlayed();
+  int getMatchTimePlayedMs() {
+    int timePlayed = match == null ? 0 : match.getMatchTimePlayedMs();
+    int activityTime = getTimePlayedMs();
     if (activityTime >= 0) {
       timePlayed += activityTime;
     }
     return timePlayed;
   }
 
-  int getTimePlayed() {
+  int getTimePlayedMs() {
     if (null == _playStarted) {
       return 0;
     } else {

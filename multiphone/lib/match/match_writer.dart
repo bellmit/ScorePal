@@ -65,7 +65,7 @@ class MatchWriter<T extends ActiveMatch> {
       return "";
     }
     // return a nice description
-    int minutesPlayed = (match.getMatchTimePlayed() / 60000.0).floor();
+    int minutesPlayed = (match.getMatchTimePlayedMs() / 60000.0).floor();
     int hoursPlayed = (minutesPlayed / 60.0).floor();
     minutesPlayed = minutesPlayed - (hoursPlayed * 60);
     DateTime matchPlayedDate = match.getDateMatchStarted();
@@ -87,7 +87,7 @@ class MatchWriter<T extends ActiveMatch> {
       return "";
     }
     // return a nice description
-    int minutesPlayed = (match.getMatchTimePlayed() / 60000.0).floor();
+    int minutesPlayed = (match.getMatchTimePlayedMs() / 60000.0).floor();
     int hoursPlayed = (minutesPlayed / 60.0).floor();
     minutesPlayed = minutesPlayed - (hoursPlayed * 60);
     DateTime matchPlayedDate = match.getDateMatchStarted();

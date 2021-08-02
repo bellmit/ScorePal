@@ -15,7 +15,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   TSetup _setup;
 
   DateTime _dateMatchStarted;
-  int _matchTimePlayed;
+  int _matchTimePlayedMs;
 
   MatchSpeaker _speaker;
   MatchWriter _writer;
@@ -27,7 +27,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
         _speaker = speaker,
         _writer = writer {
     // and the time played
-    _matchTimePlayed = 0;
+    _matchTimePlayedMs = 0;
     _dateMatchStarted = DateTime.now();
   }
 
@@ -41,7 +41,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     // the position and server and stuff will have changed on the teams, reset them here
     _score.resetScore();
     // and the time played
-    _matchTimePlayed = 0;
+    _matchTimePlayedMs = 0;
     // inform listeners so they can set the player who is starting serve, location etc.
     notifyListeners();
   }
@@ -64,13 +64,13 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   }
 
   void addMatchTimePlayed(int msPlayed) {
-    _matchTimePlayed += msPlayed;
+    _matchTimePlayedMs += msPlayed;
   }
 
   Map<String, Object> getData() {
     // save all our data
     final data = Map<String, Object>();
-    data["secs"] = (_matchTimePlayed / 1000.0).floor();
+    data["secs"] = (_matchTimePlayedMs / 1000.0).floor();
     // most importantly store the score so we can re-establish the state of this match
     // when we reload it
     data["score"] = _score.getData();
@@ -81,7 +81,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   void setData(MatchId matchId, Map<String, Object> data) {
     // Id first
     _dateMatchStarted = matchId.getDate();
-    _matchTimePlayed = (data["secs"] as int) * 1000;
+    _matchTimePlayedMs = (data["secs"] as int) * 1000;
     //this.playedLocation = LocationWrapper().deserialiseFromString(data.getString("locn")).content;
     // most importantly we want to put the score in. Then we can replay the score to
     // put the state of this match back to how it was when we saved it
@@ -110,8 +110,8 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     return _score.isMatchOver();
   }
 
-  int getMatchTimePlayed() {
-    return _matchTimePlayed;
+  int getMatchTimePlayedMs() {
+    return _matchTimePlayedMs;
   }
 
   TSetup getSetup() {
