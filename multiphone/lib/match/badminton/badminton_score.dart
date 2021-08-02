@@ -74,6 +74,30 @@ class BadmintonScore extends Score<BadmintonMatchSetup> {
     return playedGames;
   }
 
+  int getPlayedPoints(int gameIndex) {
+    int playedPoints = 0;
+    for (int i = 0; i < Score.teamCount; ++i) {
+      playedPoints += getGamePoints(TeamIndex.values[i], gameIndex);
+    }
+    return playedPoints;
+  }
+
+  int getGamePoints(TeamIndex team, int gameIndex) {
+    // get the games for the set index specified
+    int toReturn;
+    List<List<int>> pointResults = super.getPointHistory(LEVEL_POINT);
+    if (null == pointResults ||
+        gameIndex < 0 ||
+        gameIndex >= pointResults.length) {
+      // there is no history for this game, return the current games instead
+      toReturn = super.getPoint(LEVEL_GAME, team);
+    } else {
+      List<int> gamePoints = pointResults.elementAt(gameIndex);
+      toReturn = gamePoints[team.index];
+    }
+    return toReturn;
+  }
+
   bool isTeamServerChangeAllowed() {
     return _isTeamServerChangeAllowed;
   }

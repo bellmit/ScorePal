@@ -147,6 +147,8 @@
     "display_game": "game",
     "speak_game": "game",
     "display_set_number": "Set {0}",
+    "display_game_number": "Game {0}",
+    "display_round_number": "Round {0}",
     "display_set": "set",
     "display_round": "round",
     "speak_set": "set",

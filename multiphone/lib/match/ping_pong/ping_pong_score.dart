@@ -87,6 +87,30 @@ class PingPongScore extends Score<PingPongMatchSetup> {
     return playedRounds;
   }
 
+  int getPlayedPoints(int roundIndex) {
+    int playedPoints = 0;
+    for (int i = 0; i < Score.teamCount; ++i) {
+      playedPoints += getRoundPoints(TeamIndex.values[i], roundIndex);
+    }
+    return playedPoints;
+  }
+
+  int getRoundPoints(TeamIndex team, int roundIndex) {
+    // get the rounds for the set index specified
+    int toReturn;
+    List<List<int>> pointResults = super.getPointHistory(LEVEL_POINT);
+    if (null == pointResults ||
+        roundIndex < 0 ||
+        roundIndex >= pointResults.length) {
+      // there is no history for this round, return the current rounds instead
+      toReturn = super.getPoint(LEVEL_ROUND, team);
+    } else {
+      List<int> roundPoints = pointResults.elementAt(roundIndex);
+      toReturn = roundPoints[team.index];
+    }
+    return toReturn;
+  }
+
   bool isTeamServerChangeAllowed() {
     return _isTeamServerChangeAllowed;
   }

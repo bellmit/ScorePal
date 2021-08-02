@@ -24,42 +24,52 @@ class BadmintonScoreSummaryWidget extends MatchScoreSummaryWidget {
 
   @override
   int getScoreCount() {
-    // if we haven't finished, we want to show the points, else just the games
-    return 1 + (match.score.isMatchOver(isCheckConceded: false) ? 0 : 1);
+    // if we haven't finished, there are points currently in play
+    var scoreCount = match.score.getPlayedGames();
+    if (!match.score.isMatchOver(isCheckConceded: false)) {
+      // the match isn't over - we have some current points to show too
+      ++scoreCount;
+    }
+    return scoreCount;
   }
 
   @override
   String getScore(BuildContext context, int index, int row) {
-    switch (index) {
-      case 0:
-        // first column is the games each team has won
+    var gameIndex = index;
+    if (!match.score.isMatchOver(isCheckConceded: false)) {
+      // want the points currently in play for this row
+      if (index == 0) {
+        // just return the points for the current match (correct team)
         return match
-            .getDisplayGame(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO)
+            .getDisplayPoint(BadmintonScore.LEVEL_POINT,
+                row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO)
             .displayString(context);
-      case 1:
-        // and this is the current points
-        return match
-            .getTeamDisplayPoint(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO)
-            .displayString(context);
+      }
+      // the game index is one lower than the score index then
+      --gameIndex;
     }
-    // shouldn't get here
-    return '';
+    // return the points for each game
+    return match.score
+        .getGamePoints(row == 0 ? TeamIndex.T_ONE : TeamIndex.T_TWO, gameIndex)
+        .toString();
   }
 
   @override
   String getScoreTitle(BuildContext context, int index, int row) {
-    if (row == 1) {
-      // this is the title between the boxes (for a tie display)
-      return '';
+    final values = Values(context);
+    var gameIndex = index;
+    if (!match.score.isMatchOver(isCheckConceded: false)) {
+      if (index == 0) {
+        return row == 0 ? values.strings.title_badminton_points : '';
+      }
+      // the game index is one lower than the score index then
+      --gameIndex;
     }
-    switch (index) {
-      case 0:
-        // this is the games
-        return Values(context).strings.title_badminton_games;
-      case 1:
-        // this is the points
-        return Values(context).strings.title_badminton_points;
+    if (row == 0) {
+      return values
+          .construct(values.strings.display_game_number, [gameIndex + 1]);
     }
+    // finally, if here then there's no title to show
     return '';
   }
 }
