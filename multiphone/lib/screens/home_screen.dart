@@ -37,11 +37,43 @@ class _HomeScreenState extends State<HomeScreen> {
         Log.debug("need to implement this share match");
         break;
       case PlayedMatchSummaryMenuItem.delete:
-        // call on the provider to delete the match, should update this widget list
-        Provider.of<MatchPersistence>(context, listen: false)
-            .deleteMatchData(match);
+        // this is called from a menu item, still want to remove
+        // this from the list though
+        if (null != matches) {
+          final index = matches.indexOf(match);
+          if (index >= 0) {
+            _deleteMatch(match, index);
+          }
+        }
         break;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // get our matches to show from the persistence provider
+    Provider.of<MatchPersistence>(context, listen: false)
+        .getMatches(MatchPersistenceState.accepted)
+        .then((value) => {
+              // have the matches back here, set them locally
+              setState(() {
+                matches = List.of(value.values);
+              })
+            });
+  }
+
+  void _deleteMatch(ActiveMatch match, int index) {
+    // remove the match from the list to remove from view
+    setState(() {
+      matches.removeAt(index);
+    });
+    // delete the match using the provider so it's actually done
+    Provider.of<MatchPersistence>(context, listen: false)
+        .deleteMatchData(match);
+    // Then show a snackbar to inform the user that this worked ok
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(Values(context).strings.match_deleted)));
   }
 
   @override
@@ -55,69 +87,43 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(values.strings.title),
         leading: IconButton(
             onPressed: () => _scaffoldKey.currentState.openDrawer(),
-            icon: Icon(Icons.more_vert)),
+            icon: const Icon(Icons.more_vert)),
       ),
       drawer: SideDrawer(
           menuItems: MenuItem.mainMenuItems(context),
           currentPath: HomeScreen.routeName),
-      body: Consumer<MatchPersistence>(
-        // consume the persistence class to show the matches as they load
-        builder: (ctx, matchPersistence, child) {
-          return FutureBuilder(
-            future:
-                MatchPersistence().getMatches(MatchPersistenceState.accepted),
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.data == null) {
-                  return Center(child: Text('no data'));
-                }
-                // return the list of data
-                matches = List.of(snapshot.data.values);
-                return ListView.builder(
-                    itemCount: matches.length,
-                    itemBuilder: (ctx, index) {
-                      final match = matches.elementAt(index);
-                      return Dismissible(
-                        direction: DismissDirection.startToEnd,
-                        background: Container(
-                          color: Colors.red,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.only(left: Values.default_space),
-                              child: Icon(Icons.delete),
-                            ),
-                          ),
-                        ),
-                        // Each Dismissible must contain a Key. Keys allow Flutter to
-                        // uniquely identify widgets.
-                        key: Key(MatchId.create(match).toString()),
-                        // Provide a function that tells the app
-                        // what to do after an item has been swiped away.
-                        onDismissed: (direction) {
-                          // Remove the item from the data source.
-                          setState(() {
-                            matches.removeAt(index);
-                          });
-                          // Then show a snackbar.
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('match dismissed')));
-                        },
-                        child: PlayedMatchSummaryWidget(
-                          match: match,
-                          onMenuItemSelected: (option) =>
-                              _onMatchMenuItemSelected(match, option),
-                        ),
-                      );
-                    });
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
-          );
-        },
-      ),
+      body: ListView.builder(
+          itemCount: matches == null ? 0 : matches.length,
+          itemBuilder: (ctx, index) {
+            final match = matches.elementAt(index);
+            return Dismissible(
+              direction: DismissDirection.startToEnd,
+              background: Container(
+                color: Values.deleteColor,
+                child: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: const Padding(
+                    padding: const EdgeInsets.only(left: Values.default_space),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Values.secondaryTextColor,
+                    ),
+                  ),
+                ),
+              ),
+              // Each Dismissible must contain a Key. Keys allow Flutter to
+              // uniquely identify widgets.
+              key: Key(MatchId.create(match).toString()),
+              // Provide a function that tells the app
+              // what to do after an item has been swiped away.
+              onDismissed: (direction) => _deleteMatch(match, index),
+              child: PlayedMatchSummaryWidget(
+                match: match,
+                onMenuItemSelected: (option) =>
+                    _onMatchMenuItemSelected(match, option),
+              ),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         heroTag: ValueKey<String>('play_match'),
         onPressed: () {

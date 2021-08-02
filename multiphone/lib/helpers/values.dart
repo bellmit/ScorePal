@@ -15,7 +15,7 @@ class Values {
 
   static const teamOneColor = Color(0xFFdcfd50);
   static const teamTwoColor = Color(0xFFffff84);
-  static const deleteColor = Color(0xFFff1084);
+  static const deleteColor = Color(0xFFff1010);
 
   static const circular_progress_default_progress = Color(0xFFffff84);
   static const circular_progress_default_background = Color(0xFF00530d);

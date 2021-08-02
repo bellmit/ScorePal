@@ -170,6 +170,7 @@
     "match_end": "End Match",
     "match_accept": "Accept Results",
     "match_delete": "Delete Match",
+    "match_deleted": "Match deleted",
     "match_share": "Share Match",
     "match_options": "Match Options",
     "match_concede": "{0} concede match",
