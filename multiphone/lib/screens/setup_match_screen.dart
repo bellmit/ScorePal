@@ -41,8 +41,9 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             icon: Icon(Icons.more_vert)),
       ),
       drawer: SideDrawer(
-          menuItems: MenuItem.mainMenuItems(context),
-          currentPath: SetupMatchScreen.routeName),
+        menuItems: MenuItem.mainMenuItems(context),
+        currentSelection: MenuItem.menuPlay,
+      ),
       body: Column(
         children: [
           const SizedBox(

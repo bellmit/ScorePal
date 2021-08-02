@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/match_id.dart';
-import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/screens/setup_match_screen.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
@@ -30,11 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // deal with this being selected for the match
     switch (option) {
       case PlayedMatchSummaryMenuItem.resume:
-        // select this on the selection provider
-        Provider.of<ActiveSelection>(context, listen: false)
-            .selectMatch(match, false);
-        // and show the playing screen for this
-        Navigator.of(context).pushNamed(match.getSport().playNavPath);
+        MatchPlayTracker.resumePreviousMatch(match, context);
         break;
       case PlayedMatchSummaryMenuItem.share:
         //TODO want to share the match
@@ -94,8 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.more_vert)),
       ),
       drawer: SideDrawer(
-          menuItems: MenuItem.mainMenuItems(context),
-          currentPath: HomeScreen.routeName),
+        menuItems: MenuItem.mainMenuItems(context),
+        currentSelection: MenuItem.menuHome,
+      ),
       body: ListView.builder(
           itemCount: matches == null ? 0 : matches.length,
           itemBuilder: (ctx, index) {
@@ -131,11 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         heroTag: ValueKey<String>('play_match'),
         onPressed: () {
-          // clear any current selection on the selection provider (want a new one)
-          Provider.of<ActiveSelection>(context, listen: false)
-              .selectMatch(null, true);
-          // and show the screen to start a new one
-          Navigator.of(context).pushNamed(SetupMatchScreen.routeName);
+          // make the helper call to setup a new match and navigate to the screen
+          MatchPlayTracker.setupNewMatch(context);
         },
         child: const Icon(Icons.play_arrow),
         backgroundColor: Theme.of(context).accentColor,

@@ -2,39 +2,40 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/providers/active_selection.dart';
-import 'package:multiphone/screens/home_screen.dart';
-import 'package:multiphone/screens/setup_match_screen.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/widgets/user_details_widget.dart';
-import 'package:provider/provider.dart';
 
 class MenuItem {
   final String name;
   final int index;
   final IconData icon;
-  final String navPath;
-  const MenuItem({this.index, this.icon, this.name, this.navPath});
+  final void Function(BuildContext) onSelected;
+  const MenuItem({this.index, this.icon, this.name, this.onSelected});
+
+  static const menuHome = 0;
+  static const menuPlay = 1;
+  static const menuSettings = 2;
 
   static List<MenuItem> mainMenuItems(BuildContext context) {
     var values = Values(context);
     return <MenuItem>[
       MenuItem(
-        index: 0,
+        index: menuHome,
         icon: Icons.home,
         name: values.strings.option_matches,
-        navPath: HomeScreen.routeName,
+        onSelected: (context) => MatchPlayTracker.navHome(context),
       ),
       MenuItem(
-        index: 1,
+        index: menuPlay,
         icon: Icons.play_arrow,
         name: values.strings.option_play,
-        navPath: SetupMatchScreen.routeName,
+        onSelected: (context) => MatchPlayTracker.setupNewMatch(context),
       ),
       MenuItem(
-        index: 2,
+        index: menuSettings,
         icon: Icons.settings,
         name: values.strings.option_settings,
-        navPath: '/settings',
+        onSelected: (context) => MatchPlayTracker.navTo('settings', context),
       ),
     ];
   }
@@ -42,18 +43,10 @@ class MenuItem {
 
 class SideDrawer extends StatelessWidget {
   final List<MenuItem> menuItems;
-  final String currentPath;
+  final int currentSelection;
 
-  const SideDrawer({Key key, this.menuItems, this.currentPath})
+  const SideDrawer({Key key, this.menuItems, this.currentSelection})
       : super(key: key);
-
-  void _onItemSelected(BuildContext context, MenuItem item) {
-    // clear any current selection on the selection provider (want a new one)
-    Provider.of<ActiveSelection>(context, listen: false)
-        .selectMatch(null, true);
-    // and show the screen to start a new one
-    Navigator.of(context).pushNamed(item.navPath);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +67,7 @@ class SideDrawer extends StatelessWidget {
           ),
           // and the list of panels, as list tiles
           ...menuItems.map((e) {
-            var isSelected = e.navPath == currentPath;
+            var isSelected = e.index == currentSelection;
             return ListTile(
               selected: isSelected,
               selectedTileColor: theme.primaryColorLight,
@@ -87,7 +80,7 @@ class SideDrawer extends StatelessWidget {
                       color: isSelected
                           ? theme.primaryColorDark
                           : theme.primaryColor)),
-              onTap: () => _onItemSelected(context, e),
+              onTap: () => e.onSelected(context),
             );
           }).toList(),
         ],

@@ -3,7 +3,10 @@ import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/match_persistence.dart';
+import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/screens/setup_match_screen.dart';
 import 'package:provider/provider.dart';
 
 class MatchPlayTracker {
@@ -20,6 +23,30 @@ class MatchPlayTracker {
       match.setDateMatchStarted(_playStarted);
     }
     //TODO we can set the location of the match here too!
+  }
+
+  static void navTo(String route, BuildContext context) {
+    Navigator.of(context).pushNamed(route);
+  }
+
+  static void navHome(BuildContext context) {
+    navTo(HomeScreen.routeName, context);
+  }
+
+  static void setupNewMatch(BuildContext context) {
+    // clear any current selection on the selection provider (want a new one)
+    Provider.of<ActiveSelection>(context, listen: false)
+        .selectMatch(null, true);
+    // and show the screen to start a new one
+    navTo(SetupMatchScreen.routeName, context);
+  }
+
+  static void resumePreviousMatch(ActiveMatch match, BuildContext context) {
+    // select this on the selection provider
+    Provider.of<ActiveSelection>(context, listen: false)
+        .selectMatch(match, false);
+    // and show the playing screen for this
+    navTo(match.getSport().playNavPath, context);
   }
 
   void processScoreChange(BuildContext context) {
