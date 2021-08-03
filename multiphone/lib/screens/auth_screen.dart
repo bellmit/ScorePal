@@ -56,12 +56,9 @@ class _AuthScreenState extends State<AuthScreen> {
       if (error.message != null) {
         message = error.message;
       }
-      Scaffold.of(ctx).showSnackBar(
-        SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(message),
-          backgroundColor: Theme.of(context).errorColor,
-        ),
-      );
+          backgroundColor: Theme.of(context).errorColor));
       setState(() {
         _isAuthenticating = false;
       });

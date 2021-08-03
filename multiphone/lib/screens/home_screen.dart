@@ -6,7 +6,6 @@ import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
-import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/play_new_match_widget.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';

@@ -15,7 +15,7 @@
     "@option_matches": {
       "description": "The home screen title (matches summary)"
     },
-    "option_play": "Play",
+    "option_play": "New Match",
     "@option_play": {
       "description": "The second home screen title (play a new match)"
     },
