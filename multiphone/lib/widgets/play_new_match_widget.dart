@@ -13,13 +13,17 @@ class PlayNewMatchWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-              padding: EdgeInsets.only(
-                  left: Values.default_space, right: Values.default_space),
+            padding: EdgeInsets.only(
+                left: Values.default_space, right: Values.default_space),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Values.default_radius),
               child: Image.asset(
                 'images/img/tennis.jpg',
                 height: Values.image_large,
                 width: Values.image_large,
-              )),
+              ),
+            ),
+          ),
           Expanded(
             child: Text(
               "Why not play a match to get started...",
