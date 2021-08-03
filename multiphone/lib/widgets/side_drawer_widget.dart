@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
+import 'package:multiphone/screens/settings_screen.dart';
+import 'package:multiphone/screens/trash_screen.dart';
 import 'package:multiphone/widgets/user_details_widget.dart';
 
 class MenuItem {
@@ -15,9 +17,10 @@ class MenuItem {
   static const menuHome = 0;
   static const menuPlay = 1;
   static const menuSettings = 2;
+  static const menuTrash = 3;
 
   static List<MenuItem> mainMenuItems(BuildContext context) {
-    var values = Values(context);
+    final values = Values(context);
     return <MenuItem>[
       MenuItem(
         index: menuHome,
@@ -35,7 +38,15 @@ class MenuItem {
         index: menuSettings,
         icon: Icons.settings,
         name: values.strings.option_settings,
-        onSelected: (context) => MatchPlayTracker.navTo('settings', context),
+        onSelected: (context) =>
+            MatchPlayTracker.navTo(SettingsScreen.routeName, context),
+      ),
+      MenuItem(
+        index: menuTrash,
+        icon: Icons.delete_outline,
+        name: values.strings.option_trash,
+        onSelected: (context) =>
+            MatchPlayTracker.navTo(TrashScreen.routeName, context),
       ),
     ];
   }
@@ -50,7 +61,7 @@ class SideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -67,7 +78,7 @@ class SideDrawer extends StatelessWidget {
           ),
           // and the list of panels, as list tiles
           ...menuItems.map((e) {
-            var isSelected = e.index == currentSelection;
+            final isSelected = e.index == currentSelection;
             return ListTile(
               selected: isSelected,
               selectedTileColor: theme.primaryColorLight,

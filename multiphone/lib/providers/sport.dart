@@ -83,7 +83,7 @@ class Sports with ChangeNotifier {
     return [
       Sport(
         type: SportType.TENNIS,
-        id: "Tennis",
+        id: "tennis",
         title: (ctx) => Values(ctx).strings.sport_tennis,
         icon: 'images/svg/tennis.svg',
         image: 'images/img/tennis.jpg',
@@ -94,7 +94,7 @@ class Sports with ChangeNotifier {
       ),
       Sport(
         type: SportType.BADMINTON,
-        id: "Badminton",
+        id: "badminton",
         title: (ctx) => Values(ctx).strings.sport_badminton,
         icon: 'images/svg/badminton.svg',
         image: 'images/img/badminton.jpg',
@@ -105,7 +105,7 @@ class Sports with ChangeNotifier {
       ),
       Sport(
         type: SportType.PING_PONG,
-        id: "Ping Pong",
+        id: "pingpong",
         title: (ctx) => Values(ctx).strings.sport_ping_pong,
         icon: 'images/svg/ping-pong.svg',
         image: 'images/img/ping_pong.jpg',

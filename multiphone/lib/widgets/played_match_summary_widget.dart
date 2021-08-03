@@ -12,9 +12,9 @@ import 'package:multiphone/widgets/tennis/tennis_score_summary_widget.dart';
 
 class PlayedMatchSummaryWidget extends StatefulWidget {
   final ActiveMatch match;
-  final void Function(PlayedMatchSummaryMenuItem option) onMenuItemSelected;
+  final Widget popupMenu;
   const PlayedMatchSummaryWidget(
-      {Key key, @required this.match, @required this.onMenuItemSelected})
+      {Key key, @required this.match, this.popupMenu})
       : super(key: key);
 
   @override
@@ -22,36 +22,15 @@ class PlayedMatchSummaryWidget extends StatefulWidget {
       _PlayedMatchSummaryWidgetState();
 }
 
-enum PlayedMatchSummaryMenuItem {
-  delete,
-  resume,
-  share,
-}
-
 class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
   bool _isExpanded = false;
+
+  _PlayedMatchSummaryWidgetState();
 
   void _toggleMore() {
     setState(() {
       _isExpanded = !_isExpanded;
     });
-  }
-
-  PopupMenuItem<PlayedMatchSummaryMenuItem> createMenuItem(
-      PlayedMatchSummaryMenuItem item, IconData icon, String title) {
-    return PopupMenuItem<PlayedMatchSummaryMenuItem>(
-      value: item,
-      child: Row(
-        children: [
-          Icon(icon, color: Theme.of(context).primaryColorDark),
-          SizedBox(width: Values.default_space),
-          Text(
-            title,
-            style: TextStyle(color: Theme.of(context).primaryColorDark),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _createScoreSummaryWidget(BuildContext context) {
@@ -132,27 +111,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                     ),
                   ),
                 ),
-                PopupMenuButton<PlayedMatchSummaryMenuItem>(
-                  onSelected: widget.onMenuItemSelected,
-                  itemBuilder: (ctx) =>
-                      <PopupMenuEntry<PlayedMatchSummaryMenuItem>>[
-                    createMenuItem(
-                      PlayedMatchSummaryMenuItem.resume,
-                      Icons.play_arrow,
-                      values.strings.played_match_menu_resume,
-                    ),
-                    createMenuItem(
-                      PlayedMatchSummaryMenuItem.delete,
-                      Icons.delete,
-                      values.strings.played_match_menu_delete,
-                    ),
-                    createMenuItem(
-                      PlayedMatchSummaryMenuItem.share,
-                      Icons.share,
-                      values.strings.played_match_menu_share,
-                    ),
-                  ],
-                ),
+                if (null != widget.popupMenu) widget.popupMenu,
               ],
             ),
             Padding(

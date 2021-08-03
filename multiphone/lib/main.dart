@@ -13,6 +13,7 @@ import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/screens/trash_screen.dart';
 import 'package:multiphone/widgets/badminton/end_badminton_screen.dart';
 import 'package:multiphone/widgets/badminton/play_badminton_screen.dart';
 import 'package:multiphone/widgets/pingpong/end_ping_pong_screen.dart';
@@ -185,6 +186,7 @@ class MyApp extends StatelessWidget {
           AuthScreen.routeName: (ctx) => AuthScreen(),
           SetupMatchScreen.routeName: (ctx) => SetupMatchScreen(),
           SettingsScreen.routeName: (ctx) => SettingsScreen(),
+          TrashScreen.routeName: (ctx) => TrashScreen(),
           PlayTennisScreen.routeName: (ctx) => PlayTennisScreen(),
           EndTennisScreen.routeName: (ctx) => EndTennisScreen(),
           PlayBadmintonScreen.routeName: (ctx) => PlayBadmintonScreen(),

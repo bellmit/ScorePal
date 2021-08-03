@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:collection';
 
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -34,11 +36,12 @@ class MatchPersistence with ChangeNotifier {
   static final DateFormat dateKey = DateFormat("yyyy-MM");
 
   User _user;
+  StreamSubscription<User> _userSubscription;
 
   MatchPersistence() {
     // listen to firebase in here and sync everything that is
     // stored locally there too
-    FirebaseAuth.instance.authStateChanges().listen((user) {
+    _userSubscription = FirebaseAuth.instance.authStateChanges().listen((user) {
       _user = user;
       if (_user != null) {
         // are now logged in, sync all our data to the store
@@ -47,9 +50,17 @@ class MatchPersistence with ChangeNotifier {
     });
   }
 
+  bool get isUserLoggedOn {
+    return null != _user;
+  }
+
   @override
   void dispose() {
     // stop listening to firebase then
+    if (null != _userSubscription) {
+      _userSubscription.cancel();
+    }
+    // and the base class please
     super.dispose();
   }
 
@@ -288,6 +299,29 @@ class MatchPersistence with ChangeNotifier {
         .collection(matchCollection)
         .doc('${lastActivePrefix}_${setup.sport.id}')
         .set(_getMatchAsJSON(match, MatchPersistenceState.lastActive));
+  }
+
+  void wipeMatchData(ActiveMatch match) {
+    // this is the actual delete - from the local store and the remote firebase store
+    final matchId = MatchId.create(match);
+    // just request that it gets done
+    LocalStore.Localstore.instance
+        .collection(matchCollection)
+        .doc(matchId.toString())
+        .delete()
+        .onError((error, stackTrace) =>
+            Log.error('failed to delete from the local store $error'));
+    // and firebase!
+    if (null != _user) {
+      FirebaseFirestore.instance
+          .collection(usersCollection)
+          .doc(_user.uid)
+          .collection(matchCollection)
+          .doc(matchId.toString())
+          .delete()
+          .onError((error, stackTrace) =>
+              Log.error('failed to delete from the firebase store $error'));
+    }
   }
 
   void deleteMatchData(ActiveMatch match) {
