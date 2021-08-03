@@ -82,11 +82,20 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(Values.default_radius),
+                  child: Image.asset(
+                    widget.match.getSport().image,
+                    height: Values.image_large,
+                    width: Values.image_large,
+                  ),
+                ),
+                /*
                 SvgPicture.asset(
                   widget.match.getSport().icon,
                   height: Values.image_medium,
                   width: Values.image_medium,
-                ),
+                ),*/
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(left: Values.default_space),
@@ -115,10 +124,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: Values.default_space,
-                  right: Values.default_space,
-                  top: Values.default_space),
+              padding: EdgeInsets.only(top: Values.default_space),
               child: ScoreHeadlineWidget(match: widget.match),
             ),
             Align(
