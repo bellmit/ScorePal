@@ -50,6 +50,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_tts: ^3.2.2
   wakelock: ^0.5.2
+  url_launcher: ^6.0.9
 
 dev_dependencies:
   flutter_test:

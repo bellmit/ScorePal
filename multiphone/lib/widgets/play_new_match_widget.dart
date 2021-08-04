@@ -26,7 +26,7 @@ class PlayNewMatchWidget extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              "Why not play a match to get started...",
+              Values(context).strings.description_play_new_match,
               maxLines: 3,
               style: TextStyle(
                   fontSize: Values.font_size_title,

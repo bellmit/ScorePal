@@ -67,6 +67,11 @@
     "@team_two" : {
       "description": "The default name for this team"
     },
+
+    "description_play_new_match": "Why not play a match to get started...",
+    "description_purchase_flic": "Scorepal works best when you control it via a bluetooth button...\nHint: get a metal clip to attach to your shorts!",
+    "action_purchase_flic": "Purchase Flic2",
+
     "title_setup_tennis": "{0} vs {1} in a {2} set match of tennis...",
     "title_tennis_sets": "Sets",
     "title_tennis_games": "Games",
@@ -241,6 +246,8 @@
     "error_sport_not_found": "{0} is not a valid sport to play, sorry.",
 
     "warning_logon_to_delete": "You need to sign in for any changes to also be made online...",
-    "warning_no_matches_to_delete": "You haven't any deleted matches..."
+    "warning_no_matches_to_delete": "You haven't any deleted matches...",
+
+    "error_navigating_to_flic": "Sorry, for some reason I couldn't get to the store, please browse yourself to 'www.flic.io for your own button!"
     
 }

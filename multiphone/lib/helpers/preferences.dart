@@ -128,6 +128,32 @@ class Preferences {
     prefs.setBool("isControlFlic2", value);
   }
 
+  DateTime getAdvertDismissedUntil(String key) {
+    final result = _getString('dismiss_$key', '');
+    if (result == null || result.isEmpty) {
+      return null;
+    } else {
+      return DateTime.tryParse(result);
+    }
+  }
+
+  bool isAdvertDismissed(String key) {
+    DateTime dismissed = getAdvertDismissedUntil(key);
+    return dismissed != null && dismissed.isAfter(DateTime.now());
+  }
+
+  void setAdvertDismissed(String key) {
+    var date = DateTime.now();
+    if (date.month == 12) {
+      // this is december, move to jan next year
+      date = DateTime(date.year + 1, 1, date.day);
+    } else {
+      // just go forward a month
+      date = DateTime(date.year, date.month + 1, date.day);
+    }
+    prefs.setString('dismiss_$key', date.toIso8601String());
+  }
+
   bool isLogging() {
     return true;
   }

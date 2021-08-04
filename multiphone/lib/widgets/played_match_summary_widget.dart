@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';

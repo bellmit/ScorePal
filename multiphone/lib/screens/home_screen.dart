@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/providers/match_persistence.dart';
@@ -9,6 +10,7 @@ import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/play_new_match_widget.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
+import 'package:multiphone/widgets/purchase_flic_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,9 @@ class HomeScreen extends BaseNavScreen {
 
 class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
   List<ActiveMatch> matches;
+
+  static const playMatchCardKey = 'advert_card_play_match';
+  static const purchaseFlicCardKey = 'advert_purchase_flic';
 
   @override
   String getScreenTitle(Values values) {
@@ -47,6 +52,43 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
                 matches = List.of(value.values);
               })
             });
+  }
+
+  Future<List<Widget>> _createAdvertCards() async {
+    List<Widget> cards = [];
+    // need the preferences
+    final prefs = await Preferences.create();
+    if ((matches == null || matches.length <= 0) &&
+        !prefs.isAdvertDismissed(playMatchCardKey)) {
+      // no matches, let them play one to start up
+      cards.add(Dismissible(
+        direction: DismissDirection.startToEnd,
+        // Each Dismissible must contain a Key. Keys allow Flutter to
+        // uniquely identify widgets.
+        key: Key(playMatchCardKey),
+        // Provide a function that tells the app
+        // what to do after an item has been swiped away.
+        onDismissed: (direction) => prefs.setAdvertDismissed(playMatchCardKey),
+        child: PlayNewMatchWidget(),
+      ));
+    }
+    if (!prefs.isControlFlic1 &&
+        !prefs.isControlFlic2 &&
+        !prefs.isAdvertDismissed(purchaseFlicCardKey)) {
+      // they are not using flic!
+      cards.add(Dismissible(
+        direction: DismissDirection.startToEnd,
+        // Each Dismissible must contain a Key. Keys allow Flutter to
+        // uniquely identify widgets.
+        key: Key(purchaseFlicCardKey),
+        // Provide a function that tells the app
+        // what to do after an item has been swiped away.
+        onDismissed: (direction) =>
+            prefs.setAdvertDismissed(purchaseFlicCardKey),
+        child: PurchaseFlicWidget(),
+      ));
+    }
+    return cards;
   }
 
   void _onMatchMenuItemSelected(
@@ -111,7 +153,19 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
     return Container(
       child: Column(
         children: [
-          if (matches == null || matches.length <= 0) PlayNewMatchWidget(),
+          FutureBuilder(
+            future: _createAdvertCards(),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                // have a list of cards
+                return Column(children: snapshot.data);
+              } else {
+                // no cards
+                return Container();
+              }
+            },
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: matches == null ? 0 : matches.length,
