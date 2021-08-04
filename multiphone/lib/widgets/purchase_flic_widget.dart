@@ -46,7 +46,6 @@ class PurchaseFlicWidget extends StatelessWidget {
                 children: [
                   Text(
                     values.strings.description_purchase_flic,
-                    maxLines: 3,
                     style: TextStyle(
                         fontSize: Values.font_size_title,
                         color: Theme.of(context).primaryColorDark),

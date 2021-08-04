@@ -18,6 +18,10 @@ abstract class BaseNavScreenState<T extends BaseNavScreen> extends State<T> {
     return null;
   }
 
+  Widget buildBottomNavigationBar(BuildContext context) {
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     // get the values to get strings from
@@ -37,6 +41,7 @@ abstract class BaseNavScreenState<T extends BaseNavScreen> extends State<T> {
       ),
       body: buildScreenBody(context),
       floatingActionButton: buildFloatingActionButton(context),
+      bottomNavigationBar: buildBottomNavigationBar(context),
     );
   }
 }

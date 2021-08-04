@@ -36,6 +36,7 @@ class Values {
   static const double image_medium = 48;
   static const double image_large = 64;
   static const double font_size_title = 18;
+  static const double font_size_title2 = 16;
   static const double font_size_subtitle = 12;
 
   static const double team_names_widget_height = 48;
