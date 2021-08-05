@@ -39,20 +39,24 @@ class PurchaseFlicWidget extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(Values.default_space),
+              padding: const EdgeInsets.only(top: Values.default_space),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    values.strings.description_purchase_flic,
-                    style: TextStyle(
-                        fontSize: Values.font_size_title,
-                        color: Theme.of(context).primaryColorDark),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      values.strings.description_purchase_flic,
+                      style: TextStyle(
+                          fontSize: Values.font_size_title,
+                          color: Theme.of(context).primaryColorDark),
+                    ),
                   ),
-                  TextButton(
-                      onPressed: () => _navUserToPurchaseFlic(context),
-                      child: Text(values.strings.action_purchase_flic)),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: TextButton(
+                        onPressed: () => _navUserToPurchaseFlic(context),
+                        child: Text(values.strings.action_purchase_flic)),
+                  ),
                 ],
               ),
             ),
