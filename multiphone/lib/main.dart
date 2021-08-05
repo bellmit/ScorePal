@@ -11,6 +11,7 @@ import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
+import 'package:multiphone/screens/attributions_screen.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/screens/trash_screen.dart';
@@ -187,6 +188,7 @@ class MyApp extends StatelessWidget {
           SetupMatchScreen.routeName: (ctx) => SetupMatchScreen(),
           SettingsScreen.routeName: (ctx) => SettingsScreen(),
           TrashScreen.routeName: (ctx) => TrashScreen(),
+          AttributionsScreen.routeName: (ctx) => AttributionsScreen(),
           PlayTennisScreen.routeName: (ctx) => PlayTennisScreen(),
           EndTennisScreen.routeName: (ctx) => EndTennisScreen(),
           PlayBadmintonScreen.routeName: (ctx) => PlayBadmintonScreen(),

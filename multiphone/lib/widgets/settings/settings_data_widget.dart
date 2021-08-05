@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
+import 'package:multiphone/screens/attributions_screen.dart';
+import 'package:multiphone/screens/trash_screen.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
@@ -70,7 +73,7 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
           values.strings.title_manage_deleted,
           values.strings.explain_manage_deleted,
           values.strings.button_view,
-          () => Log.debug('switched'),
+          () => MatchPlayTracker.navTo(TrashScreen.routeName, context),
         ),
         createDataRow(
           context,
@@ -78,7 +81,7 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
           values.strings.title_attributions,
           values.strings.explain_attributions,
           values.strings.button_view,
-          () => Log.debug('switched'),
+          () => MatchPlayTracker.navTo(AttributionsScreen.routeName, context),
         ),
       ],
     );

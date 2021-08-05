@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
+import 'package:multiphone/screens/attributions_screen.dart';
 import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/screens/trash_screen.dart';
 import 'package:multiphone/widgets/user_details_widget.dart';
@@ -18,6 +19,7 @@ class MenuItem {
   static const menuPlay = 1;
   static const menuSettings = 2;
   static const menuTrash = 3;
+  static const menuAttributions = 4;
 
   static List<MenuItem> mainMenuItems(BuildContext context) {
     final values = Values(context);
@@ -47,6 +49,13 @@ class MenuItem {
         name: values.strings.option_trash,
         onSelected: (context) =>
             MatchPlayTracker.navTo(TrashScreen.routeName, context),
+      ),
+      MenuItem(
+        index: menuAttributions,
+        icon: Icons.photo_library,
+        name: values.strings.option_attributions,
+        onSelected: (context) =>
+            MatchPlayTracker.navTo(AttributionsScreen.routeName, context),
       ),
     ];
   }
