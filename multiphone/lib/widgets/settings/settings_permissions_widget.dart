@@ -23,15 +23,24 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
     // get the defaults to show
 
     // get permissions to enable the values as expected
-    Permission.location.isGranted.then((value) => setState(() {
-          _isLocation = value;
-        }));
-    Permission.contacts.isGranted.then((value) => setState(() {
-          _isContacts = value;
-        }));
-    Permission.bluetooth.isGranted.then((value) => setState(() {
-          _isBluetooth = value;
-        }));
+    Permission.location.isGranted
+        .then((value) => setState(() {
+              _isLocation = value;
+            }))
+        .onError((error, stackTrace) =>
+            Log.error('failed to check location permissions $error'));
+    Permission.contacts.isGranted
+        .then((value) => setState(() {
+              _isContacts = value;
+            }))
+        .onError((error, stackTrace) =>
+            Log.error('failed to check contact permissions $error'));
+    Permission.bluetooth.isGranted
+        .then((value) => setState(() {
+              _isBluetooth = value;
+            }))
+        .onError((error, stackTrace) =>
+            Log.error('failed to check bluetooth permissions $error'));
 
     //TODO cannot revoke permissions - just show a 'on' button somehow instead of a switch?
   }
@@ -43,25 +52,33 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        createHeading(values.strings.title_permissions),
         createSwitchingRow(
           context,
           createIcon(Icons.near_me),
           values.strings.title_permission_location,
           values.strings.explain_permission_location,
-          (value) => Permission.location.request().then((value) => setState(() {
-                _isLocation = value.isGranted;
-              })),
+          (value) => Permission.location
+              .request()
+              .then((value) => setState(() {
+                    _isLocation = value.isGranted;
+                  }))
+              .onError((error, stackTrace) =>
+                  Log.error('failed to request location permissions $error')),
           isSelected: _isLocation,
         ),
+        createHeading(values.strings.title_permissions),
         createSwitchingRow(
           context,
           createIcon(Icons.contact_mail),
           values.strings.title_permission_contacts,
           values.strings.explain_permission_contacts,
-          (value) => Permission.contacts.request().then((value) => setState(() {
-                _isContacts = value.isGranted;
-              })),
+          (value) => Permission.contacts
+              .request()
+              .then((value) => setState(() {
+                    _isContacts = value.isGranted;
+                  }))
+              .onError((error, stackTrace) =>
+                  Log.error('failed to request contact permissions $error')),
           isSelected: _isContacts,
         ),
         createSwitchingRow(
@@ -69,10 +86,13 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
           createIcon(Icons.bluetooth),
           values.strings.title_permission_bluetooth,
           values.strings.explain_permission_bluetooth,
-          (value) =>
-              Permission.bluetooth.request().then((value) => setState(() {
+          (value) => Permission.bluetooth
+              .request()
+              .then((value) => setState(() {
                     _isBluetooth = value.isGranted;
-                  })),
+                  }))
+              .onError((error, stackTrace) =>
+                  Log.error('failed to request bluetooth permissions $error')),
           isSelected: _isBluetooth,
         ),
       ],
