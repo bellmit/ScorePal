@@ -73,7 +73,6 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
-    final buttonStyle = values.optionButtonStyle;
     return Scaffold(
       appBar: AppBar(
         title: Text(values.strings.match_end),
@@ -93,13 +92,13 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton.icon(
-                      style: buttonStyle,
+                      style: values.optionButtonStyle,
                       onPressed: () => _deleteMatch(match),
                       icon: Icon(Icons.delete),
                       label: Text(values.strings.match_delete),
                     ),
                     ElevatedButton.icon(
-                      style: buttonStyle,
+                      style: values.optionButtonStyle,
                       onPressed: () => _acceptMatch(match),
                       icon: Icon(Icons.add),
                       label: Text(values.strings.match_accept),
@@ -118,7 +117,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                       children: [
                         Flexible(
                           child: ElevatedButton.icon(
-                            style: buttonStyle,
+                            style: values.optionButtonStyle,
                             onPressed: () =>
                                 _concedeMatch(match, TeamIndex.T_ONE),
                             icon: Icon(Icons.thumb_down_alt),
@@ -139,7 +138,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                         ),
                         Flexible(
                           child: ElevatedButton.icon(
-                            style: buttonStyle,
+                            style: values.optionButtonStyle,
                             onPressed: () =>
                                 _concedeMatch(match, TeamIndex.T_ONE),
                             icon: Icon(Icons.thumb_down_alt),
@@ -165,7 +164,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                       right: Values.default_space,
                     ),
                     child: ElevatedButton.icon(
-                      style: buttonStyle,
+                      style: values.optionButtonStyle,
                       onPressed: () => _undoMatchConcede(match),
                       icon: Icon(Icons.undo),
                       label: Text(

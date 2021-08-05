@@ -51,6 +51,8 @@ class _SettingsSoundsGeneralWidgetState
                       style: contentTextStyle,
                     ),
                     Slider(
+                      activeColor: theme.primaryColor,
+                      inactiveColor: theme.primaryColorLight,
                       min: 0,
                       max: 1,
                       divisions: 10,

@@ -256,7 +256,7 @@
     "explain_account_not_signed_in": "You are currently not logged in, all your data will remain local and not be stored remotely. Consider signing in to back up scores and calculate your match victories etc.",
     "explain_account_signedin": "You are currently logged in so you have access to everything, including your match history.",
     "title_permissions": "Permissions",
-    "title_permission_location": "Store Locations",
+    "title_permission_location": "Query Location",
     "explain_permission_location": "This is needed to talk to and use bluetooth buttons to change score.",
     "title_permission_contacts": "Access Contacts",
     "explain_permission_contacts": "This is needed to select players from your list of contacts.",

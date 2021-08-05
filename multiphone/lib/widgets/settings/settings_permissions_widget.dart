@@ -52,6 +52,7 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        createHeading(values.strings.title_permissions),
         createSwitchingRow(
           context,
           createIcon(Icons.near_me),
@@ -66,7 +67,6 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
                   Log.error('failed to request location permissions $error')),
           isSelected: _isLocation,
         ),
-        createHeading(values.strings.title_permissions),
         createSwitchingRow(
           context,
           createIcon(Icons.contact_mail),

@@ -71,6 +71,7 @@ class SettingsWidgetMixin {
                       child: createHeading2(title),
                     ),
                     Switch(
+                      activeColor: theme.primaryColor,
                       value: isSelected,
                       onChanged: onSwitch,
                     ),

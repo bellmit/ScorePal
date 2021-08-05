@@ -32,7 +32,6 @@ class PlayMatchOptionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
-    final optionsButtonStyle = values.optionButtonStyle;
     return Card(
       elevation: 10,
       margin: EdgeInsets.only(left: Values.image_medium),
@@ -53,21 +52,21 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     ElevatedButton.icon(
-                      style: optionsButtonStyle,
+                      style: values.optionButtonStyle,
                       onPressed: () =>
                           onOptionSelected(PlayMatchOptions.show_history),
                       icon: Icon(Icons.history),
                       label: Text(values.strings.match_history),
                     ),
                     ElevatedButton.icon(
-                      style: optionsButtonStyle,
+                      style: values.optionButtonStyle,
                       onPressed: () =>
                           onOptionSelected(PlayMatchOptions.show_settings),
                       icon: Icon(Icons.settings),
                       label: Text(values.strings.match_app_settings),
                     ),
                     ElevatedButton.icon(
-                      style: optionsButtonStyle,
+                      style: values.optionButtonStyle,
                       onPressed: () =>
                           onOptionSelected(PlayMatchOptions.show_settings),
                       icon: SvgPicture.asset(
@@ -85,7 +84,7 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton.icon(
-                            style: optionsButtonStyle,
+                            style: values.optionButtonStyle,
                             onPressed: () =>
                                 onOptionSelected(PlayMatchOptions.end_match),
                             icon: Icon(Icons.stop),
@@ -93,7 +92,7 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                           ),
                           const SizedBox(width: Values.default_space),
                           ElevatedButton.icon(
-                            style: optionsButtonStyle,
+                            style: values.optionButtonStyle,
                             onPressed: () =>
                                 onOptionSelected(PlayMatchOptions.resume),
                             icon: Icon(Icons.play_arrow),

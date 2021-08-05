@@ -42,8 +42,7 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
           Align(
             alignment: Alignment.topRight,
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
+              style: values.optionButtonStyle,
               onPressed: _wipeData,
               child: Text(values.strings.title_wipe_all_data),
             ),
