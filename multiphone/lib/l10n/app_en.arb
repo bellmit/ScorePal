@@ -75,6 +75,7 @@
     "description_play_new_match": "Why not play a match to get started...",
     "description_purchase_flic": "Scorepal works best when you control it via a bluetooth button...\nHint: get a metal clip to attach to your shorts!",
     "action_purchase_flic": "Purchase Flic2",
+    "description_sign_in_scorepal": "Scorepal works best when you sign in; your matches are backed up to your own space in the cloud.",
 
     "title_setup_tennis": "{0} vs {1} in a {2} set match of tennis...",
     "title_tennis_sets": "Sets",

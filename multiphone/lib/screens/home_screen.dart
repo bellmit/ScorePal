@@ -7,10 +7,11 @@ import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
-import 'package:multiphone/widgets/play_new_match_widget.dart';
+import 'package:multiphone/widgets/adverts/play_new_match_widget.dart';
+import 'package:multiphone/widgets/adverts/signin_scorepal_widget.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
-import 'package:multiphone/widgets/purchase_flic_widget.dart';
+import 'package:multiphone/widgets/adverts/purchase_flic_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
 
   static const playMatchCardKey = 'advert_card_play_match';
   static const purchaseFlicCardKey = 'advert_purchase_flic';
+  static const signInScorepalCardKey = 'advert_sign_in_scorepal';
 
   @override
   String getScreenTitle(Values values) {
@@ -58,6 +60,21 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
     List<Widget> cards = [];
     // need the preferences
     final prefs = await Preferences.create();
+    if (!Provider.of<MatchPersistence>(context, listen: false).isUserLoggedOn &&
+        !prefs.isAdvertDismissed(signInScorepalCardKey)) {
+      // poke them to log on / sign in
+      cards.add(Dismissible(
+        direction: DismissDirection.startToEnd,
+        // Each Dismissible must contain a Key. Keys allow Flutter to
+        // uniquely identify widgets.
+        key: Key(signInScorepalCardKey),
+        // Provide a function that tells the app
+        // what to do after an item has been swiped away.
+        onDismissed: (direction) =>
+            prefs.setAdvertDismissed(signInScorepalCardKey),
+        child: SignInScorepalWidget(),
+      ));
+    }
     if ((matches == null || matches.length <= 0) &&
         !prefs.isAdvertDismissed(playMatchCardKey)) {
       // no matches, let them play one to start up
