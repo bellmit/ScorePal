@@ -50,5 +50,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+    <string>BLE Permissions are needed to access your remote controls to change score</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>BLE Permissions are needed to access your remote controls to change score</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Location Permissions are needed to access your remote controls to change score</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Location Permissions are needed to access your remote controls to change score</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Location Permissions are needed to access your remote controls to change score</string>
 </dict>
 </plist>
