@@ -1,14 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/settings/select_control_widget.dart';
 import 'package:multiphone/widgets/settings/select_flic_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsControlsFlicWidget extends StatefulWidget {
-  SettingsControlsFlicWidget({Key key}) : super(key: key);
+  final Preferences prefs;
+  SettingsControlsFlicWidget({Key key, @required this.prefs}) : super(key: key);
 
   @override
   _SettingsControlsFlicWidgetState createState() =>
@@ -20,14 +19,24 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
   bool _isFlicOne = false;
   bool _isFlicTwo = false;
 
+  @override
+  void initState() {
+    super.initState();
+    // get the defaults to show
+    _isFlicOne = widget.prefs.isControlFlic1;
+    _isFlicTwo = widget.prefs.isControlFlic2;
+  }
+
   void _onFlicChanged(FlicButton button, bool isSelected) {
     setState(() {
       switch (button) {
         case FlicButton.one:
           _isFlicOne = isSelected;
+          widget.prefs.isControlFlic1 = _isFlicOne;
           break;
         case FlicButton.two:
           _isFlicTwo = isSelected;
+          widget.prefs.isControlFlic2 = _isFlicTwo;
           break;
       }
     });
@@ -100,11 +109,10 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
         Padding(
           padding: const EdgeInsets.only(top: Values.default_space),
           child: Center(
-            child: Expanded(
-              child: Text(
-                values.strings.explain_flicSmartButtonRecommendation,
-                style: contentTextStyle,
-              ),
+            child: Text(
+              values.strings.explain_flicSmartButtonRecommendation,
+              style: contentTextStyle,
+              textAlign: TextAlign.center,
             ),
           ),
         ),

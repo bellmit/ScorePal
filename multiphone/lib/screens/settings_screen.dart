@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
-import 'package:multiphone/widgets/common/heading_widget.dart';
 import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/settings/settings_controls_flic_widget.dart';
 import 'package:multiphone/widgets/settings/select_control_type_widget.dart';
@@ -35,6 +35,7 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
 
   StreamSubscription<User> _userSubscription;
   User _user;
+  Future<Preferences> _prefsFuture;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -55,6 +56,8 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
   @override
   void initState() {
     super.initState();
+    // pop out to get our preferences
+    _prefsFuture = Preferences.create();
 
     // also listen for changes to we change if they do log in again
     _userSubscription = FirebaseAuth.instance.authStateChanges().listen((user) {
@@ -82,22 +85,22 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
     });
   }
 
-  List<Widget> _getSettingsWidgets() {
+  List<Widget> _getSettingsWidgets(Preferences prefs) {
     switch (_selectedIndex) {
       case 0:
         return [
-          SettingsSoundsGeneralWidget(),
+          SettingsSoundsGeneralWidget(prefs: prefs),
           const LineBreakWidget(),
-          SettingsSoundsAnnouncementsWidget(),
+          SettingsSoundsAnnouncementsWidget(prefs: prefs),
           const LineBreakWidget(),
         ];
       case 1:
         return [
-          SelectControlTypeWidget(),
+          SelectControlTypeWidget(prefs: prefs),
           const LineBreakWidget(),
-          SettingsControlsFlicWidget(),
+          SettingsControlsFlicWidget(prefs: prefs),
           const LineBreakWidget(),
-          SettingsControlsVolumeWidget(),
+          SettingsControlsVolumeWidget(prefs: prefs),
           const LineBreakWidget(),
         ];
       case 2:
@@ -156,9 +159,20 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
           top: Values.default_space,
           right: Values.default_space),
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: _getSettingsWidgets(),
+        child: FutureBuilder<Preferences>(
+          future: _prefsFuture,
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _getSettingsWidgets(snapshot.data),
+              );
+            } else {
+              // no data
+              return Container();
+            }
+          },
         ),
       ),
     );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/common/select_item_checked_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectVolumeControlWidget extends SelectItemCheckedWidget {
   final bool isVolControlSelected;

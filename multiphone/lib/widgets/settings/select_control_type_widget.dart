@@ -1,13 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/settings/select_control_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SelectControlTypeWidget extends StatefulWidget {
-  SelectControlTypeWidget({Key key}) : super(key: key);
+  final Preferences prefs;
+  SelectControlTypeWidget({Key key, @required this.prefs}) : super(key: key);
 
   @override
   _SelectControlTypeWidgetState createState() =>
@@ -16,13 +16,18 @@ class SelectControlTypeWidget extends StatefulWidget {
 
 class _SelectControlTypeWidgetState extends State<SelectControlTypeWidget>
     with SettingsWidgetMixin {
-  ControlType _selectedType = ControlType.meThem;
+  ControlType _selectedType;
+
+  @override
+  void initState() {
+    super.initState();
+    // get the defaults to show
+    _selectedType = widget.prefs.controlType;
+  }
 
   void _onControlTypeChanged(ControlType type) {
-    Log.debug('handle control input type changing');
-    setState(() {
-      _selectedType = type;
-    });
+    // push this data back out to the preferences
+    widget.prefs.controlType = type;
   }
 
   Widget createClickExplainRow(String image, String content) {

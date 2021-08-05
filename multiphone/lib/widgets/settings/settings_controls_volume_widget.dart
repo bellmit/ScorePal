@@ -1,15 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/settings/select_control_widget.dart';
-import 'package:multiphone/widgets/settings/select_flic_widget.dart';
 import 'package:multiphone/widgets/settings/select_volume_control_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsControlsVolumeWidget extends StatefulWidget {
-  SettingsControlsVolumeWidget({Key key}) : super(key: key);
+  final Preferences prefs;
+  SettingsControlsVolumeWidget({Key key, @required this.prefs})
+      : super(key: key);
 
   @override
   _SettingsControlsVolumeWidgetState createState() =>
@@ -20,10 +18,11 @@ class _SettingsControlsVolumeWidgetState
     extends State<SettingsControlsVolumeWidget> with SettingsWidgetMixin {
   bool _isVolControl = false;
 
-  void _onVolControlChanged(bool isSelected) {
-    setState(() {
-      _isVolControl = isSelected;
-    });
+  @override
+  void initState() {
+    super.initState();
+    // get the defaults to show
+    _isVolControl = widget.prefs.isControlVol;
   }
 
   @override
@@ -40,7 +39,8 @@ class _SettingsControlsVolumeWidgetState
               padding: const EdgeInsets.only(right: Values.default_space),
               child: SelectVolumeControlWidget(
                 isVolControlSelected: _isVolControl,
-                onVolControlChanged: _onVolControlChanged,
+                onVolControlChanged: (value) =>
+                    widget.prefs.isControlVol = value,
               ),
             ),
             Expanded(

@@ -1,6 +1,7 @@
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/team_namer.dart';
 import 'package:multiphone/providers/sport.dart';
+import 'package:multiphone/widgets/settings/select_control_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences {
@@ -58,6 +59,26 @@ class Preferences {
 
   set defaultNamingMode(TeamNamingMode value) {
     prefs.setInt('default_naming_mode', value.index);
+  }
+
+  ControlType get controlType {
+    switch (_getInt('control_type', 0)) {
+      case 0:
+        return ControlType.meThem;
+      default:
+        return ControlType.serverReceiver;
+    }
+  }
+
+  set controlType(ControlType type) {
+    switch (type) {
+      case ControlType.meThem:
+        prefs.setInt('control_type', 0);
+        break;
+      default:
+        prefs.setInt('control_type', 1);
+        break;
+    }
   }
 
   Sport get lastActiveSport {
