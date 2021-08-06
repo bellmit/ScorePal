@@ -20,44 +20,7 @@ class SetupMatchScreen extends StatefulWidget {
 class _SetupMatchScreenState extends State<SetupMatchScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  Widget _buildSelectionControls(BuildContext context) {
-    return OrientationBuilder(builder: (ctx, orientation) {
-      Log.debug(orientation);
-      Log.debug('media query says ${MediaQuery.of(context).orientation}');
-      if (MediaQuery.of(context).orientation == Orientation.portrait) {
-        // vertical arranged
-        return Column(
-          children: [
-            const SizedBox(
-              height: Values.default_space,
-            ),
-            SelectSportWidget(),
-            const SizedBox(
-              height: Values.default_space,
-            ),
-            SetupMatchSummaryWidget(),
-          ],
-        );
-      } else {
-        // horizontally arranged
-        return Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                top: Values.default_space,
-                left: Values.default_space,
-                right: Values.default_space,
-              ),
-              child: SelectSportWidget(),
-            ),
-            Expanded(
-              child: SetupMatchSummaryWidget(),
-            ),
-          ],
-        );
-      }
-    });
-  }
+  bool _keyboardShowing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +41,17 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       ),
       body: Column(
         children: [
-          const SizedBox(
-            height: Values.default_space,
-          ),
-          SetupMatchSummaryWidget(),
-          LineBreakWidget(),
+          // only show the summary when the keyboard isn't up and editing something
+          if (MediaQuery.of(context).viewInsets.bottom == 0)
+            Column(
+              children: [
+                const SizedBox(
+                  height: Values.default_space,
+                ),
+                SetupMatchSummaryWidget(),
+                LineBreakWidget(),
+              ],
+            ),
           // listen to changes to the sports to show the currently selected sport
           Expanded(
             child: Card(

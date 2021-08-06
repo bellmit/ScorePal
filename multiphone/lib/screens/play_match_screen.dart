@@ -163,6 +163,78 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     _showPauseOptions(false);
   }
 
+  Widget _createScoreDisplay(ActiveMatch match, Orientation orientation) {
+    if (orientation == Orientation.portrait) {
+      return Column(
+        children: [
+          // this is the bar for team one player and partner
+          PlayingTeamWidget(match: match, team: TeamIndex.T_ONE),
+          Expanded(
+            child: Column(
+              children: [
+                Flexible(
+                  child: widget.createScoreWidget(
+                    match,
+                    TeamIndex.T_ONE,
+                    (level) =>
+                        _processScoreChange(match, TeamIndex.T_ONE, level),
+                  ),
+                ),
+                Flexible(
+                  child: widget.createScoreWidget(
+                    match,
+                    TeamIndex.T_TWO,
+                    (level) =>
+                        _processScoreChange(match, TeamIndex.T_TWO, level),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // this is the bar for team two player and partner
+          PlayingTeamWidget(match: match, team: TeamIndex.T_TWO),
+        ],
+      );
+    } else {
+      return Row(
+        children: [
+          Flexible(
+            flex: 1,
+            child: Column(
+              children: [
+                PlayingTeamWidget(match: match, team: TeamIndex.T_ONE),
+                Expanded(
+                  child: widget.createScoreWidget(
+                    match,
+                    TeamIndex.T_ONE,
+                    (level) =>
+                        _processScoreChange(match, TeamIndex.T_ONE, level),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Flexible(
+            flex: 1,
+            child: Column(
+              children: [
+                PlayingTeamWidget(match: match, team: TeamIndex.T_TWO),
+                Expanded(
+                  child: widget.createScoreWidget(
+                    match,
+                    TeamIndex.T_TWO,
+                    (level) =>
+                        _processScoreChange(match, TeamIndex.T_TWO, level),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // To make this screen full screen.
@@ -170,111 +242,89 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     return Scaffold(
-      body: Consumer<ActiveMatch>(
-        builder: (ctx, match, child) {
-          return Stack(
-            children: [
-              Column(
+      body: OrientationBuilder(
+        builder: (ctx, orientation) {
+          return Consumer<ActiveMatch>(
+            builder: (ctx, match, child) {
+              return Stack(
                 children: [
-                  // this is the bar for team one player and partner
-                  PlayingTeamWidget(match: match, team: TeamIndex.T_ONE),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Flexible(
-                          child: widget.createScoreWidget(
-                            match,
-                            TeamIndex.T_ONE,
-                            (level) => _processScoreChange(
-                                match, TeamIndex.T_ONE, level),
-                          ),
-                        ),
-                        Flexible(
-                          child: widget.createScoreWidget(
-                            match,
-                            TeamIndex.T_TWO,
-                            (level) => _processScoreChange(
-                                match, TeamIndex.T_TWO, level),
-                          ),
-                        ),
-                      ],
+                  _createScoreDisplay(match, orientation),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SlideTransition(
+                      position: _messageOffset,
+                      child: Center(
+                        child: FractionallySizedBox(
+                            heightFactor: 0.2,
+                            widthFactor: 0.8,
+                            child: Card(
+                              borderOnForeground: true,
+                              child: Padding(
+                                padding: EdgeInsets.all(Values.default_space),
+                                child: FittedBox(
+                                  fit: BoxFit.fitWidth,
+                                  child: Text(_description),
+                                ),
+                              ),
+                              color: Theme.of(context).primaryColor,
+                            )),
+                      ),
                     ),
                   ),
-                  // this is the bar for team two player and partner
-                  PlayingTeamWidget(match: match, team: TeamIndex.T_TWO),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          right: Values.default_space,
+                          bottom: orientation == Orientation.portrait
+                              // when we are in portrait, the buttons want to be above the bottom team's name
+                              ? Values.team_names_widget_height
+                              : Values.default_space),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          FloatingActionButton(
+                            heroTag: ValueKey<String>('undo_point'),
+                            onPressed: () => _undoLastPoint(match),
+                            child: Icon(Icons.undo),
+                          ),
+                          SizedBox(width: Values.default_space),
+                          FloatingActionButton(
+                            heroTag: ValueKey<String>('pause_match'),
+                            onPressed: () => _showPauseOptions(true),
+                            child: Icon(Icons.more_vert),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: SlideTransition(
+                      position: _optionsOffset,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: Values.team_names_widget_height,
+                            right: Values.default_space,
+                            bottom: Values.team_names_widget_height),
+                        child: PlayMatchOptionsWidget(
+                          sportSvgPath: match.getSport().icon,
+                          matchDescription: match.getDescription(
+                              DescriptionLevel.SHORT, context),
+                          teamOneName: match
+                              .getSetup()
+                              .getTeamName(TeamIndex.T_ONE, context),
+                          teamTwoName: match
+                              .getSetup()
+                              .getTeamName(TeamIndex.T_TWO, context),
+                          onOptionSelected: _onMatchOptionSelected,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: SlideTransition(
-                  position: _messageOffset,
-                  child: Center(
-                    child: FractionallySizedBox(
-                        heightFactor: 0.2,
-                        widthFactor: 0.8,
-                        child: Card(
-                          borderOnForeground: true,
-                          child: Padding(
-                            padding: EdgeInsets.all(Values.default_space),
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Text(_description),
-                            ),
-                          ),
-                          color: Theme.of(context).primaryColor,
-                        )),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      right: Values.default_space,
-                      bottom: Values.team_names_widget_height),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      FloatingActionButton(
-                        heroTag: ValueKey<String>('undo_point'),
-                        onPressed: () => _undoLastPoint(match),
-                        child: Icon(Icons.undo),
-                      ),
-                      SizedBox(width: Values.default_space),
-                      FloatingActionButton(
-                        heroTag: ValueKey<String>('pause_match'),
-                        onPressed: () => _showPauseOptions(true),
-                        child: Icon(Icons.more_vert),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: SlideTransition(
-                  position: _optionsOffset,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        top: Values.team_names_widget_height,
-                        right: Values.default_space,
-                        bottom: Values.team_names_widget_height),
-                    child: PlayMatchOptionsWidget(
-                      sportSvgPath: match.getSport().icon,
-                      matchDescription:
-                          match.getDescription(DescriptionLevel.SHORT, context),
-                      teamOneName: match
-                          .getSetup()
-                          .getTeamName(TeamIndex.T_ONE, context),
-                      teamTwoName: match
-                          .getSetup()
-                          .getTeamName(TeamIndex.T_TWO, context),
-                      onOptionSelected: _onMatchOptionSelected,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              );
+            },
           );
         },
       ),
