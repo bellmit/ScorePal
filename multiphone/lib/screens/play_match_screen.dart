@@ -10,6 +10,7 @@ import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
 import 'package:multiphone/screens/settings_screen.dart';
+import 'package:multiphone/widgets/common/confirm_dialog.dart';
 import 'package:multiphone/widgets/play_match_options_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
@@ -146,8 +147,23 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     }
   }
 
-  void _onMatchOptionSelected(PlayMatchOptions option) {
+  void _onMatchOptionSelected(PlayMatchOptions option, BuildContext context) {
     switch (option) {
+      case PlayMatchOptions.clear:
+        final values = Values(context);
+        confirmDialog(
+          context,
+          title: values.strings.match_clear,
+          content: values.strings.match_clear_confirm,
+          textOK: values.strings.confirm_yes,
+          textCancel: values.strings.confirm_no,
+        ).then((value) {
+          if (value) {
+            // they said yes
+            _playTracker.clearMatchData();
+          }
+        });
+        break;
       case PlayMatchOptions.resume:
         // do nothing, the options screen will always return
         break;
@@ -158,11 +174,12 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
       case PlayMatchOptions.show_history:
         break;
       case PlayMatchOptions.show_settings:
-        // jump to the app settings
+        // jump to the app settings without showing the side bar so they have to come back after
         MatchPlayTracker.navTo(SettingsScreen.routeName, context,
             arguments: {SettingsScreen.argShowSidebar: false});
         break;
       case PlayMatchOptions.show_match_settings:
+        // show the settings without the option to change sports or play new
         MatchPlayTracker.navTo(ChangeMatchSetupScreen.routeName, context);
         break;
     }
@@ -324,7 +341,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                           teamTwoName: match
                               .getSetup()
                               .getTeamName(TeamIndex.T_TWO, context),
-                          onOptionSelected: _onMatchOptionSelected,
+                          onOptionSelected: (value) =>
+                              _onMatchOptionSelected(value, context),
                         ),
                       ),
                     ),

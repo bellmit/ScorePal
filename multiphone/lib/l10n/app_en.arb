@@ -193,6 +193,8 @@
     "match_options": "Match Options",
     "match_concede": "{0} concede match",
     "match_concede_undo": "Undo match retirement",
+    "match_clear": "Reset match",
+    "match_clear_confirm": "Are you sure you want to lose all your points so far?",
     "match_history": "View Match History",
     "match_change_setup": "Change Match Setup",
     "match_app_settings": "App Settings",
@@ -225,6 +227,9 @@
 
     "show_more" : "show more",
     "show_less" : "show less",
+    "confirm_yes" : "Yes",
+    "confirm_no" : "No",
+    "confirm_default": "Are you sure continue?",
 
     "action_nothing": "No action",
     "action_ptServer": "Point Server",

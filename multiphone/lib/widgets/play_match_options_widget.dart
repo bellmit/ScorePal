@@ -6,6 +6,7 @@ import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
 
 enum PlayMatchOptions {
+  clear,
   resume,
   end_match,
   show_history,
@@ -51,6 +52,12 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    ElevatedButton.icon(
+                      style: values.optionButtonStyle,
+                      onPressed: () => onOptionSelected(PlayMatchOptions.clear),
+                      icon: Icon(Icons.clear_all),
+                      label: Text(values.strings.match_clear),
+                    ),
                     ElevatedButton.icon(
                       style: values.optionButtonStyle,
                       onPressed: () =>

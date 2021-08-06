@@ -49,6 +49,11 @@ class MatchPlayTracker {
     navTo(match.getSport().playNavPath, context);
   }
 
+  void clearMatchData() {
+    // reset everything
+    match.resetMatch();
+  }
+
   void processScoreChange(BuildContext context) {
     final state = match.score.state;
     if (state.isChanged(ScoreChange.increment) ||
