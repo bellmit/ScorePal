@@ -31,6 +31,11 @@ class PlayingTeamWidget extends StatelessWidget {
               flex: 1,
               child: Row(
                 children: [
+                  if (match.isTeamConceded(team))
+                    Padding(
+                      padding: const EdgeInsets.all(Values.default_space),
+                      child: Text(Values(context).strings.team_conceded),
+                    ),
                   ServerImageWidget(isServing: servingPlayer == player),
                   const SizedBox(
                     width: Values.default_space,
