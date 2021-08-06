@@ -72,10 +72,7 @@ class TennisScore extends Score<TennisMatchSetup> {
   }
 
   @override
-  bool isMatchOver({bool isCheckConceded = true}) {
-    if (isCheckConceded && isMatchConceded) {
-      return true;
-    }
+  bool isScoreCompleted() {
     bool isMatchOver = false;
     TennisSets setsToPlay = setup.sets;
     // return if a player has reached the number of sets required (this is just over half)
@@ -339,7 +336,7 @@ class TennisScore extends Score<TennisMatchSetup> {
         tieBreakSets.add(getPlayedSets());
       }
     }
-    if (false == isMatchOver()) {
+    if (false == isScoreCompleted()) {
       // every game we alternate the server
       changeServer();
       if (_isInTieBreak && null == _tieBreakServer) {

@@ -55,10 +55,7 @@ class PingPongScore extends Score<PingPongMatchSetup> {
   }
 
   @override
-  bool isMatchOver({bool isCheckConceded = true}) {
-    if (isCheckConceded && isMatchConceded) {
-      return true;
-    }
+  bool isScoreCompleted() {
     bool isMatchOver = false;
     int targetRounds = ((getScoreGoal() + 1.0) / 2.0).floor();
     // return if a player has reached the number of rounds required (this is just over half)
@@ -195,7 +192,7 @@ class PingPongScore extends Score<PingPongMatchSetup> {
     // no longer expediting, new round
     _isExpediteSystemInEffect = false;
 
-    if (false == isMatchOver()) {
+    if (false == isScoreCompleted()) {
       // every game we change ends
       changeEnds();
     }

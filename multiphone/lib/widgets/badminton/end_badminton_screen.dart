@@ -18,9 +18,9 @@ class EndBadmintonScreen extends EndMatchScreen {
     return BadmintonScoreSummaryWidget(
       match: match,
       teamOneName: match.getSetup().getTeamName(TeamIndex.T_ONE, context),
-      isTeamOneConceded: match.score.isTeamConceded(TeamIndex.T_ONE),
+      isTeamOneConceded: match.isTeamConceded(TeamIndex.T_ONE),
       teamTwoName: match.getSetup().getTeamName(TeamIndex.T_TWO, context),
-      isTeamTwoConceded: match.score.isTeamConceded(TeamIndex.T_TWO),
+      isTeamTwoConceded: match.isTeamConceded(TeamIndex.T_TWO),
     );
   }
 }

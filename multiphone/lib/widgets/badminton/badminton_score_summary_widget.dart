@@ -25,7 +25,7 @@ class BadmintonScoreSummaryWidget extends MatchScoreSummaryWidget {
   int getScoreCount() {
     // if we haven't finished, there are points currently in play
     var scoreCount = match.score.getPlayedGames();
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
+    if (!match.isMatchOver(isCheckConceded: false)) {
       // the match isn't over - we have some current points to show too
       ++scoreCount;
     }
@@ -42,7 +42,7 @@ class BadmintonScoreSummaryWidget extends MatchScoreSummaryWidget {
     final values = Values(context);
     String title;
     bool isWinner;
-    if (!match.score.isMatchOver(isCheckConceded: false) &&
+    if (!match.isMatchOver(isCheckConceded: false) &&
         index == match.score.getPlayedGames()) {
       // the match isn't over - and this is the current game
       if (row == 0) {

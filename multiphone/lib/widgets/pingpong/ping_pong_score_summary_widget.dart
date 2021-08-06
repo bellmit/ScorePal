@@ -25,7 +25,7 @@ class PingPongScoreSummaryWidget extends MatchScoreSummaryWidget {
   int getScoreCount() {
     // if we haven't finished, there are points currently in play
     var scoreCount = match.score.getPlayedRounds();
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
+    if (!match.isMatchOver(isCheckConceded: false)) {
       // the match isn't over - we have some current points to show too
       ++scoreCount;
     }
@@ -42,7 +42,7 @@ class PingPongScoreSummaryWidget extends MatchScoreSummaryWidget {
     final values = Values(context);
     String title;
     bool isWinner;
-    if (!match.score.isMatchOver(isCheckConceded: false) &&
+    if (!match.isMatchOver(isCheckConceded: false) &&
         index == match.score.getPlayedRounds()) {
       // the match isn't over - and this is the current round
       if (row == 0) {

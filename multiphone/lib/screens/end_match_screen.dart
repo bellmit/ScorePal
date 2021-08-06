@@ -35,14 +35,14 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
 
   void _concedeMatch(ActiveMatch match, TeamIndex team) {
     // have this team concede
-    match.score.concedeMatch(team);
+    match.concedeMatch(team);
     // and this is a tacit acceptance of the result
     _acceptMatch(match);
   }
 
   void _undoMatchConcede(ActiveMatch match) {
     TeamIndex.values.forEach((element) {
-      match.score.concedeMatch(element, isConcede: false);
+      match.concedeMatch(element, isConcede: false);
     });
     // and pop this page back to the match
     Navigator.of(context).pop();
@@ -106,7 +106,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                   ],
                 ),
                 widget.createScoreSummaryWidget(ctx, match),
-                if (!match.score.isMatchOver())
+                if (!match.isMatchOver())
                   Padding(
                     padding: const EdgeInsets.only(
                       left: Values.default_space,
@@ -157,7 +157,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                       ],
                     ),
                   ),
-                if (match.score.isMatchConceded)
+                if (match.isMatchConceded)
                   Padding(
                     padding: const EdgeInsets.only(
                       left: Values.default_space,

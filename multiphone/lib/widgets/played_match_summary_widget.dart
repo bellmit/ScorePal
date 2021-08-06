@@ -39,30 +39,30 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
           match: widget.match,
           teamOneName:
               widget.match.getSetup().getTeamName(TeamIndex.T_ONE, context),
-          isTeamOneConceded: widget.match.score.isTeamConceded(TeamIndex.T_ONE),
+          isTeamOneConceded: widget.match.isTeamConceded(TeamIndex.T_ONE),
           teamTwoName:
               widget.match.getSetup().getTeamName(TeamIndex.T_TWO, context),
-          isTeamTwoConceded: widget.match.score.isTeamConceded(TeamIndex.T_TWO),
+          isTeamTwoConceded: widget.match.isTeamConceded(TeamIndex.T_TWO),
         );
       case SportType.BADMINTON:
         return BadmintonScoreSummaryWidget(
           match: widget.match,
           teamOneName:
               widget.match.getSetup().getTeamName(TeamIndex.T_ONE, context),
-          isTeamOneConceded: widget.match.score.isTeamConceded(TeamIndex.T_ONE),
+          isTeamOneConceded: widget.match.isTeamConceded(TeamIndex.T_ONE),
           teamTwoName:
               widget.match.getSetup().getTeamName(TeamIndex.T_TWO, context),
-          isTeamTwoConceded: widget.match.score.isTeamConceded(TeamIndex.T_TWO),
+          isTeamTwoConceded: widget.match.isTeamConceded(TeamIndex.T_TWO),
         );
       case SportType.PING_PONG:
         return PingPongScoreSummaryWidget(
           match: widget.match,
           teamOneName:
               widget.match.getSetup().getTeamName(TeamIndex.T_ONE, context),
-          isTeamOneConceded: widget.match.score.isTeamConceded(TeamIndex.T_ONE),
+          isTeamOneConceded: widget.match.isTeamConceded(TeamIndex.T_ONE),
           teamTwoName:
               widget.match.getSetup().getTeamName(TeamIndex.T_TWO, context),
-          isTeamTwoConceded: widget.match.score.isTeamConceded(TeamIndex.T_TWO),
+          isTeamTwoConceded: widget.match.isTeamConceded(TeamIndex.T_TWO),
         );
       default:
         return Text('unsupported sport of ${widget.match.getSport().id}');

@@ -11,8 +11,11 @@ import 'package:multiphone/providers/sport.dart';
 
 abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     with ChangeNotifier {
+  // we have the score and the setup to track what we are doing / played
   TScore _score;
   TSetup _setup;
+  // but someone might have conceded the match
+  final List<bool> _conceded = List.filled(TeamIndex.values.length, false);
 
   DateTime _dateMatchStarted;
   int _matchTimePlayedMs;
@@ -71,6 +74,10 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     // save all our data
     final data = Map<String, Object>();
     data["secs"] = (_matchTimePlayedMs / 1000.0).floor();
+    // and if anyone conceded
+    for (int i = 0; i < _conceded.length; ++i) {
+      data['conceded_${i + 1}'] = _conceded[i] ?? false;
+    }
     // most importantly store the score so we can re-establish the state of this match
     // when we reload it
     data["score"] = _score.getData();
@@ -82,6 +89,9 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     // Id first
     _dateMatchStarted = matchId.getDate();
     _matchTimePlayedMs = (data["secs"] as int) * 1000;
+    for (int i = 0; i < _conceded.length; ++i) {
+      _conceded[i] = data['conceded_${i + 1}'] ?? false;
+    }
     //this.playedLocation = LocationWrapper().deserialiseFromString(data.getString("locn")).content;
     // most importantly we want to put the score in. Then we can replay the score to
     // put the state of this match back to how it was when we saved it
@@ -106,8 +116,31 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     return false;
   }
 
-  bool isMatchOver() {
-    return _score.isMatchOver();
+  void concedeMatch(TeamIndex team, {isConcede = true}) {
+    _conceded[team.index] = isConcede;
+  }
+
+  bool isTeamConceded(TeamIndex team) {
+    return _conceded[team.index];
+  }
+
+  bool get isMatchConceded {
+    for (int i = 0; i < _conceded.length; ++i) {
+      if (_conceded[i]) {
+        // someone conceded
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool isMatchOver({bool isCheckConceded = true}) {
+    if (isCheckConceded && isMatchConceded) {
+      return true;
+    } else {
+      // just return if the score is over
+      return _score.isScoreCompleted();
+    }
   }
 
   int getMatchTimePlayedMs() {
@@ -147,7 +180,15 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   }
 
   TeamIndex getMatchWinner() {
-    return _score.getWinner(_score.getLevels() - 1);
+    // first check to see if anyone conceded
+    if (isMatchConceded) {
+      // someone quit - the winner is the one that didn't
+      return TeamIndex.values
+          .firstWhere((element) => _conceded[element.index] == false);
+    } else {
+      // return whoever is winning in the score
+      return _score.getScoreWinner(_score.getLevels() - 1);
+    }
   }
 
   List<HistoryValue> getWinnersHistory() {

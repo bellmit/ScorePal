@@ -31,7 +31,7 @@ class TennisScoreSummaryWidget extends MatchScoreSummaryWidget {
       // there are some games in the latest set
       ++scoreCount;
     }
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
+    if (!match.isMatchOver(isCheckConceded: false)) {
       // the match isn't over - we have some points to show too
       ++scoreCount;
     }
@@ -45,7 +45,7 @@ class TennisScoreSummaryWidget extends MatchScoreSummaryWidget {
     bool isWinner;
     String title = '';
     final values = Values(context);
-    if (!match.score.isMatchOver(isCheckConceded: false)) {
+    if (!match.isMatchOver(isCheckConceded: false)) {
       // the match is over - we are showing the first col as points
       if (index == 0) {
         // just return the points for the current match (correct team)
