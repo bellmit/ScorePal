@@ -63,21 +63,12 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
         // we need a key for the data that changes when the setup changes
         key: ValueKey<String>(_setup.id),
         children: [
-          Row(
-            children: <Widget>[
-              // move over a bit because the parent adds the icon and settings
-              // text to explain what this card is about
-              SizedBox(
-                width: Values.image_large,
-              ),
-              Padding(
-                padding: EdgeInsets.all(Values.default_space),
-                child: SelectGamesWidget(
-                  games: _setup.games,
-                  onGamesChanged: (value) => _setup.games = value,
-                ),
-              ),
-            ],
+          Padding(
+            padding: EdgeInsets.all(Values.default_space),
+            child: SelectGamesWidget(
+              games: _setup.games,
+              onGamesChanged: (value) => _setup.games = value,
+            ),
           ),
           PlayerNamesWidget(
             playerNames: [

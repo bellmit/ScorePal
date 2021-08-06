@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/widgets/common/heading_widget.dart';
+import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
 import 'package:multiphone/widgets/common/subheading_widget.dart';
+import 'package:multiphone/widgets/setup_match_summary_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -20,11 +23,43 @@ class SetupMatchScreen extends StatefulWidget {
 class _SetupMatchScreenState extends State<SetupMatchScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  void _startMatch() {
-    // start playing the selected match then, just get the match as-is
-    final match = Provider.of<ActiveSelection>(context, listen: false);
-    // and navigate to the match screen
-    Navigator.of(context).pushNamed(match.sport.playNavPath);
+  Widget _buildSelectionControls(BuildContext context) {
+    return OrientationBuilder(builder: (ctx, orientation) {
+      Log.debug(orientation);
+      Log.debug('media query says ${MediaQuery.of(context).orientation}');
+      if (MediaQuery.of(context).orientation == Orientation.portrait) {
+        // vertical arranged
+        return Column(
+          children: [
+            const SizedBox(
+              height: Values.default_space,
+            ),
+            SelectSportWidget(),
+            const SizedBox(
+              height: Values.default_space,
+            ),
+            SetupMatchSummaryWidget(),
+          ],
+        );
+      } else {
+        // horizontally arranged
+        return Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                top: Values.default_space,
+                left: Values.default_space,
+                right: Values.default_space,
+              ),
+              child: SelectSportWidget(),
+            ),
+            Expanded(
+              child: SetupMatchSummaryWidget(),
+            ),
+          ],
+        );
+      }
+    });
   }
 
   @override
@@ -47,60 +82,19 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       body: Column(
         children: [
           const SizedBox(
-            width: double.infinity,
             height: Values.default_space,
           ),
-          SelectSportWidget(),
-          const SizedBox(
-            width: double.infinity,
-            height: Values.default_space,
-          ),
-          Card(
-            color: Values.primaryLightColor,
-            child: Consumer<ActiveSetup>(
-              builder: (ctx, matchSetup, child) {
-                // this changes as the active match changes
-                return Row(
-                  children: [
-                    Expanded(
-                        child:
-                            HeadingWidget(title: matchSetup.matchSummary(ctx))),
-                    // and the child of the consumer
-                    child,
-                  ],
-                );
-              },
-              // the child of the consumer always is there, make it the play button
-              child: Padding(
-                padding: EdgeInsets.all(Values.default_space),
-                child: FloatingActionButton(
-                  heroTag: ValueKey<String>('play_match'),
-                  onPressed: _startMatch,
-                  child: const Icon(Icons.play_arrow),
-                  backgroundColor: Theme.of(context).accentColor,
-                ),
-              ),
-            ),
-          ),
+          SetupMatchSummaryWidget(),
+          LineBreakWidget(),
           // listen to changes to the sports to show the currently selected sport
           Expanded(
             child: Card(
               child: SingleChildScrollView(
-                child: Stack(
+                child: Column(
                   children: [
                     Padding(
                       padding: EdgeInsets.all(Values.default_space),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.settings,
-                            color: Theme.of(context).primaryColorDark,
-                            size: Values.image_small,
-                          ),
-                          SubheadingWidget(title: 'Setup'),
-                        ],
-                      ),
+                      child: SelectSportWidget(),
                     ),
                     Consumer<ActiveSelection>(
                       builder: (ctx, activeSelection, child) {
@@ -108,6 +102,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                         return activeSelection.sport.createSetupWidget(ctx);
                       },
                     ),
+                    // and I much prefer scrolling when there is space at the end of the screen
+                    SizedBox(height: Values.image_large),
                   ],
                 ),
               ),

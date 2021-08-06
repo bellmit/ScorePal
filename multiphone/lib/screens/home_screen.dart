@@ -46,7 +46,12 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
   void initState() {
     super.initState();
     // get our matches to show from the persistence provider
-    Provider.of<MatchPersistence>(context, listen: false)
+    _refreshMatches();
+  }
+
+  Future<void> _refreshMatches() {
+    // load the matches and set the state accordingly
+    return Provider.of<MatchPersistence>(context, listen: false)
         .getMatches(MatchPersistenceState.accepted)
         .then((value) => {
               // have the matches back here, set them locally
@@ -54,6 +59,12 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
                 matches = List.of(value.values);
               })
             });
+  }
+
+  void _dismissAdvert(Preferences prefs, String advertId) {
+    // set this change on the preferences, and update our state when it's done
+    prefs.setAdvertDismissed(advertId).then(
+        (value) => setState(() => Log.info('advert $advertId dismissed')));
   }
 
   Future<List<Widget>> _createAdvertCards() async {
@@ -71,7 +82,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
         // Provide a function that tells the app
         // what to do after an item has been swiped away.
         onDismissed: (direction) =>
-            prefs.setAdvertDismissed(signInScorepalCardKey),
+            _dismissAdvert(prefs, signInScorepalCardKey),
         child: SignInScorepalWidget(),
       ));
     }
@@ -85,7 +96,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
         key: Key(playMatchCardKey),
         // Provide a function that tells the app
         // what to do after an item has been swiped away.
-        onDismissed: (direction) => prefs.setAdvertDismissed(playMatchCardKey),
+        onDismissed: (direction) => _dismissAdvert(prefs, playMatchCardKey),
         child: PlayNewMatchWidget(),
       ));
     }
@@ -100,8 +111,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
         key: Key(purchaseFlicCardKey),
         // Provide a function that tells the app
         // what to do after an item has been swiped away.
-        onDismissed: (direction) =>
-            prefs.setAdvertDismissed(purchaseFlicCardKey),
+        onDismissed: (direction) => _dismissAdvert(prefs, purchaseFlicCardKey),
         child: PurchaseFlicWidget(),
       ));
     }
@@ -184,41 +194,44 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
             },
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: matches == null ? 0 : matches.length,
-              itemBuilder: (ctx, index) {
-                final match = matches.elementAt(index);
-                return Dismissible(
-                  direction: DismissDirection.startToEnd,
-                  background: Container(
-                    color: Values.deleteColor,
-                    child: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Padding(
-                        padding:
-                            const EdgeInsets.only(left: Values.default_space),
-                        child: const Icon(
-                          Icons.delete,
-                          color: Values.secondaryTextColor,
+            child: RefreshIndicator(
+              onRefresh: _refreshMatches,
+              child: ListView.builder(
+                itemCount: matches == null ? 0 : matches.length,
+                itemBuilder: (ctx, index) {
+                  final match = matches.elementAt(index);
+                  return Dismissible(
+                    direction: DismissDirection.startToEnd,
+                    background: Container(
+                      color: Values.deleteColor,
+                      child: const Align(
+                        alignment: Alignment.centerLeft,
+                        child: const Padding(
+                          padding:
+                              const EdgeInsets.only(left: Values.default_space),
+                          child: const Icon(
+                            Icons.delete,
+                            color: Values.secondaryTextColor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  // Each Dismissible must contain a Key. Keys allow Flutter to
-                  // uniquely identify widgets.
-                  key: Key(MatchId.create(match).toString()),
-                  // Provide a function that tells the app
-                  // what to do after an item has been swiped away.
-                  onDismissed: (direction) => _deleteMatch(match, index),
-                  child: PlayedMatchSummaryWidget(
-                    match: match,
-                    popupMenu: PlayedMatchPopupMenu(
-                      onMenuItemSelected: (option) =>
-                          _onMatchMenuItemSelected(match, option),
+                    // Each Dismissible must contain a Key. Keys allow Flutter to
+                    // uniquely identify widgets.
+                    key: Key(MatchId.create(match).toString()),
+                    // Provide a function that tells the app
+                    // what to do after an item has been swiped away.
+                    onDismissed: (direction) => _deleteMatch(match, index),
+                    child: PlayedMatchSummaryWidget(
+                      match: match,
+                      popupMenu: PlayedMatchPopupMenu(
+                        onMenuItemSelected: (option) =>
+                            _onMatchMenuItemSelected(match, option),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ],

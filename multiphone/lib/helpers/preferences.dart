@@ -163,7 +163,7 @@ class Preferences {
     return dismissed != null && dismissed.isAfter(DateTime.now());
   }
 
-  void setAdvertDismissed(String key) {
+  Future<bool> setAdvertDismissed(String key) {
     var date = DateTime.now();
     if (date.month == 12) {
       // this is december, move to jan next year
@@ -172,7 +172,7 @@ class Preferences {
       // just go forward a month
       date = DateTime(date.year, date.month + 1, date.day);
     }
-    prefs.setString('dismiss_$key', date.toIso8601String());
+    return prefs.setString('dismiss_$key', date.toIso8601String());
   }
 
   bool isLogging() {
