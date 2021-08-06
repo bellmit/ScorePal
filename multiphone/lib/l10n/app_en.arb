@@ -328,6 +328,7 @@
     "title_control_vol": "Volume",
     "explain_control_vol_hack": "Here's a little hack you might like. Buy a bluetooth media remote or a smartwatch and use it's vol keys to control your phone left on the bench. Search for one with at least a 10m or 30 foot range.",
 
+    "warning_match_change": "Changing the setup of a match already in progress can significantly change the score if you have played points already...",
     "warning_logon_to_delete": "You need to sign in for any changes to also be made online...",
     "warning_no_matches_to_delete": "You haven't any deleted matches...",
 

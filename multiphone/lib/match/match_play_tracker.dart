@@ -25,8 +25,8 @@ class MatchPlayTracker {
     //TODO we can set the location of the match here too!
   }
 
-  static void navTo(String route, BuildContext context) {
-    Navigator.of(context).pushNamed(route);
+  static void navTo(String route, BuildContext context, {Object arguments}) {
+    Navigator.of(context).pushNamed(route, arguments: arguments);
   }
 
   static void navHome(BuildContext context) {

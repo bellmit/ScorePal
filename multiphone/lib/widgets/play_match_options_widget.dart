@@ -67,8 +67,8 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                     ),
                     ElevatedButton.icon(
                       style: values.optionButtonStyle,
-                      onPressed: () =>
-                          onOptionSelected(PlayMatchOptions.show_settings),
+                      onPressed: () => onOptionSelected(
+                          PlayMatchOptions.show_match_settings),
                       icon: SvgPicture.asset(
                         'images/svg/match-settings.svg',
                         height: Values.image_icon,

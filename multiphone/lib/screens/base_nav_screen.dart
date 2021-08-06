@@ -22,6 +22,19 @@ abstract class BaseNavScreenState<T extends BaseNavScreen> extends State<T> {
     return null;
   }
 
+  Widget buildIconMenu(BuildContext context) {
+    return IconButton(
+        onPressed: () => widget.scaffoldKey.currentState.openDrawer(),
+        icon: const Icon(Icons.more_vert));
+  }
+
+  Widget buildSideDrawer(BuildContext context) {
+    return SideDrawer(
+      menuItems: MenuItem.mainMenuItems(context),
+      currentSelection: getMenuSelectionIndex(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // get the values to get strings from
@@ -31,14 +44,9 @@ abstract class BaseNavScreenState<T extends BaseNavScreen> extends State<T> {
       key: widget.scaffoldKey,
       appBar: AppBar(
         title: Text(getScreenTitle(values)),
-        leading: IconButton(
-            onPressed: () => widget.scaffoldKey.currentState.openDrawer(),
-            icon: const Icon(Icons.more_vert)),
+        leading: buildIconMenu(context),
       ),
-      drawer: SideDrawer(
-        menuItems: MenuItem.mainMenuItems(context),
-        currentSelection: getMenuSelectionIndex(),
-      ),
+      drawer: buildSideDrawer(context),
       body: buildScreenBody(context),
       floatingActionButton: buildFloatingActionButton(context),
       bottomNavigationBar: buildBottomNavigationBar(context),

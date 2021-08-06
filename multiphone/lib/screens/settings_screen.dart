@@ -20,6 +20,7 @@ import 'package:multiphone/widgets/side_drawer_widget.dart';
 
 class SettingsScreen extends BaseNavScreen {
   static const String routeName = '/settings';
+  static const String argShowSidebar = 'show_sidebar';
 
   SettingsScreen({Key key})
       : super(key: key, scaffoldKey: GlobalKey(debugLabel: 'settings'));
@@ -30,6 +31,8 @@ class SettingsScreen extends BaseNavScreen {
 
 class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
   int _selectedIndex = 0;
+  bool _isShowSidebar = true;
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
@@ -51,6 +54,39 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
   @override
   int getMenuSelectionIndex() {
     return MenuItem.menuSettings;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // and get the argument if there was one saying whether to create a sidebar or not
+    final arguments =
+        ModalRoute.of(context).settings.arguments as Map<String, Object>;
+    if (arguments != null) {
+      _isShowSidebar =
+          arguments[SettingsScreen.argShowSidebar] ?? _isShowSidebar;
+    }
+    // and let the base build now we have or param set properly
+    return super.build(context);
+  }
+
+  @override
+  Widget buildSideDrawer(BuildContext context) {
+    if (!_isShowSidebar) {
+      // don't build
+      return null;
+    } else {
+      return super.buildSideDrawer(context);
+    }
+  }
+
+  @override
+  Widget buildIconMenu(BuildContext context) {
+    if (!_isShowSidebar) {
+      // don't build
+      return null;
+    } else {
+      return super.buildIconMenu(context);
+    }
   }
 
   @override

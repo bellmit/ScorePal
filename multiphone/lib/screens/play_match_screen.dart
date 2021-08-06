@@ -7,7 +7,9 @@ import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/screens/change_match_setup_screen.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
+import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/widgets/play_match_options_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
@@ -151,12 +153,17 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         break;
       case PlayMatchOptions.end_match:
         // navigate away from this screen
-        Navigator.pushNamed(context, widget.getEndingRoute());
+        MatchPlayTracker.navTo(widget.getEndingRoute(), context);
         break;
       case PlayMatchOptions.show_history:
+        break;
       case PlayMatchOptions.show_settings:
+        // jump to the app settings
+        MatchPlayTracker.navTo(SettingsScreen.routeName, context,
+            arguments: {SettingsScreen.argShowSidebar: false});
+        break;
       case PlayMatchOptions.show_match_settings:
-        Log.error('not implemented this yet');
+        MatchPlayTracker.navTo(ChangeMatchSetupScreen.routeName, context);
         break;
     }
     // and hide the options screen
