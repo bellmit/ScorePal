@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/match/match_id.dart';
@@ -28,7 +29,6 @@ class HomeScreen extends BaseNavScreen {
 class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
   List<ActiveMatch> matches;
 
-  static const playMatchCardKey = 'advert_card_play_match';
   static const purchaseFlicCardKey = 'advert_purchase_flic';
   static const signInScorepalCardKey = 'advert_sign_in_scorepal';
 
@@ -86,19 +86,9 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
         child: SignInScorepalWidget(),
       ));
     }
-    if ((matches == null || matches.length <= 0) &&
-        !prefs.isAdvertDismissed(playMatchCardKey)) {
-      // no matches, let them play one to start up
-      cards.add(Dismissible(
-        direction: DismissDirection.startToEnd,
-        // Each Dismissible must contain a Key. Keys allow Flutter to
-        // uniquely identify widgets.
-        key: Key(playMatchCardKey),
-        // Provide a function that tells the app
-        // what to do after an item has been swiped away.
-        onDismissed: (direction) => _dismissAdvert(prefs, playMatchCardKey),
-        child: PlayNewMatchWidget(),
-      ));
+    if (matches == null || matches.length <= 0) {
+      // no matches, let them play one to start up and don't let them dismiss that
+      cards.add(PlayNewMatchWidget());
     }
     if (!prefs.isControlFlic1 &&
         !prefs.isControlFlic2 &&
@@ -196,39 +186,47 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
           Expanded(
             child: RefreshIndicator(
               onRefresh: _refreshMatches,
-              child: ListView.builder(
-                itemCount: matches == null ? 0 : matches.length,
-                itemBuilder: (ctx, index) {
-                  final match = matches.elementAt(index);
-                  return Dismissible(
-                    direction: DismissDirection.startToEnd,
-                    background: Container(
-                      color: Values.deleteColor,
-                      child: const Align(
-                        alignment: Alignment.centerLeft,
-                        child: const Padding(
-                          padding:
-                              const EdgeInsets.only(left: Values.default_space),
-                          child: const Icon(
-                            Icons.delete,
-                            color: Values.secondaryTextColor,
+              child: OrientationBuilder(
+                builder: (ctx, orientation) {
+                  return StaggeredGridView.countBuilder(
+                    itemCount: matches == null ? 0 : matches.length,
+                    crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
+                    crossAxisSpacing: Values.default_space,
+                    mainAxisSpacing: Values.default_space,
+                    staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
+                    itemBuilder: (BuildContext context, int index) {
+                      final match = matches.elementAt(index);
+                      return Dismissible(
+                        direction: DismissDirection.startToEnd,
+                        background: Container(
+                          color: Values.deleteColor,
+                          child: const Align(
+                            alignment: Alignment.centerLeft,
+                            child: const Padding(
+                              padding: const EdgeInsets.only(
+                                  left: Values.default_space),
+                              child: const Icon(
+                                Icons.delete,
+                                color: Values.secondaryTextColor,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    // Each Dismissible must contain a Key. Keys allow Flutter to
-                    // uniquely identify widgets.
-                    key: Key(MatchId.create(match).toString()),
-                    // Provide a function that tells the app
-                    // what to do after an item has been swiped away.
-                    onDismissed: (direction) => _deleteMatch(match, index),
-                    child: PlayedMatchSummaryWidget(
-                      match: match,
-                      popupMenu: PlayedMatchPopupMenu(
-                        onMenuItemSelected: (option) =>
-                            _onMatchMenuItemSelected(match, option),
-                      ),
-                    ),
+                        // Each Dismissible must contain a Key. Keys allow Flutter to
+                        // uniquely identify widgets.
+                        key: Key(MatchId.create(match).toString()),
+                        // Provide a function that tells the app
+                        // what to do after an item has been swiped away.
+                        onDismissed: (direction) => _deleteMatch(match, index),
+                        child: PlayedMatchSummaryWidget(
+                          match: match,
+                          popupMenu: PlayedMatchPopupMenu(
+                            onMenuItemSelected: (option) =>
+                                _onMatchMenuItemSelected(match, option),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
