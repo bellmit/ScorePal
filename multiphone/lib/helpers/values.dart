@@ -52,8 +52,10 @@ class Values {
   const Values(this.context);
 
   ButtonStyle get optionButtonStyle {
+    final theme = Theme.of(context);
     return ElevatedButton.styleFrom(
-      primary: Theme.of(context).primaryColorDark,
+      primary: theme.primaryColorDark,
+      onPrimary: theme.accentColor,
     );
   }
 
