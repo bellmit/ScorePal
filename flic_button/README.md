@@ -1,6 +1,6 @@
 # flic_button
 
-A new flutter plugin project.
+An interface to the flic button.
 
 ## Getting Started
 

@@ -1,42 +1,20 @@
 #import "FlicButtonPlugin.h"
 
-@implementation PluginCodelabPlugin : NSObject  {
-  int _numKeysDown;
-  FLRSynthRef _synth;
+@implementation FlicButtonPlugin
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+  FlutterMethodChannel* channel = [FlutterMethodChannel
+      methodChannelWithName:@"flic_button"
+            binaryMessenger:[registrar messenger]];
+  FlicButtonPlugin* instance = [[FlicButtonPlugin alloc] init];
+  [registrar addMethodCallDelegate:instance channel:channel];
 }
 
-
-- (instancetype)init {
-  self = [super init];
-  if (self) {
-    _synth = FLRSynthCreate();
-    FLRSynthStart(_synth);
-  }
-  return self;
-}
-
-- (void)dealloc {
-  FLRSynthDestroy(_synth);
-}
-
-
-- (void)handleMethodCall:(FlutterMethodCall *)call
-                  result:(FlutterResult)result {
+- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"getPlatformVersion" isEqualToString:call.method]) {
-    result([@"iOS "
-        stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-  } else if ([@"onKeyDown" isEqualToString:call.method]) {
-    FLRSynthKeyDown(_synth, [call.arguments[0] intValue]);
-    _numKeysDown += 1;
-    result(@(_numKeysDown));
-  } else if ([@"onKeyUp" isEqualToString:call.method]) {
-    FLRSynthKeyUp(_synth, [call.arguments[0] intValue]);
-    
-    _numKeysDown -= 1;
-    result(@(_numKeysDown));
+    result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   } else {
     result(FlutterMethodNotImplemented);
   }
 }
-@end
 
+@end

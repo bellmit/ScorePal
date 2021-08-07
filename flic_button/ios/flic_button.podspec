@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'flic_button'
   s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.summary          = 'An interface to the flic button.'
   s.description      = <<-DESC
-A new flutter plugin project.
+An interface to the flic button.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
