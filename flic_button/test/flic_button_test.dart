@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await FlicButton.platformVersion, '42');
+    expect(await FlicButtonPlugin.platformVersion, '42');
   });
 }

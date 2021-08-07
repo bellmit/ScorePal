@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.flic:flic2lib-android:1.1.0@aar" type="AndroidModuleLibraryType">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6cef8c5a6d8cbc95f1cc2efb74227270/jetified-flic2lib-android-1.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6cef8c5a6d8cbc95f1cc2efb74227270/jetified-flic2lib-android-1.1.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

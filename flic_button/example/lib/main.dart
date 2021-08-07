@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flic_button/flic_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,11 +16,40 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
+  String _flic2Uuid = 'unknown';
+
+  Future<CancelListening>? listener;
+  var flicButtonManager;
 
   @override
   void initState() {
     super.initState();
+
+    flicButtonManager = FlicButtonPlugin();
+    // init background calls from the android service
+    listener = flicButtonManager.startListening((msg) {
+      setState(() {
+        _flic2Uuid = msg;
+      });
+    });
+
     initPlatformState();
+  }
+
+  Future<void> scanForFlic2() async {
+    await Permission.location.request();
+
+    String flic2Uuid;
+    try {
+      flic2Uuid = await FlicButtonPlugin.getFlic2Button ?? 'no flic2';
+    } on PlatformException {
+      flic2Uuid = 'Failed to get flic 2.';
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _flic2Uuid = flic2Uuid;
+    });
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -29,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await FlicButton.platformVersion ?? 'Unknown platform version';
+          await FlicButtonPlugin.platformVersion ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -52,7 +82,16 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            children: [
+              Text('Running on: $_platformVersion and found $_flic2Uuid'),
+              TextButton(
+                  onPressed: () {
+                    listener!.then((value) => value());
+                  },
+                  child: Text('stop listening'))
+            ],
+          ),
         ),
       ),
     );
