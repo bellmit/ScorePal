@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-typedef void CancelListening();
-
 enum Flic2ButtonConnectionState {
   CONNECTION_STATE_DISCONNECTED,
   CONNECTION_STATE_CONNECTING,
@@ -74,12 +72,9 @@ abstract class Flic2Listener {
 
 class FlicButtonPlugin {
   static const String _channelName = 'flic_button';
-  static const String _methodNameInitialize = 'initializeService';
-  static const String _methodNameCancel = 'cancelListening';
+  static const String _methodNameInitialize = 'initializeFlic2';
+  static const String _methodNameDispose = 'disposeFlic2';
   static const String _methodNameCallback = 'callListener';
-
-  static const String _methodNameStartFlic2 = 'startFlic2';
-  static const String _methodNameStopFlic2 = 'stopFlic2';
 
   static const String _methodNameStartFlic2Scan = "startFlic2Scan";
   static const String _methodNameStopFlic2Scan = "stopFlic2Scan";
@@ -109,71 +104,63 @@ class FlicButtonPlugin {
 
   static const MethodChannel _channel = const MethodChannel(_channelName);
 
-  int _nextCallbackId = 0;
-  final Map<int, Object> _callbacksById = Map();
+  Future<bool?>? _invokationFuture;
 
-  Future<void> startFlic2() async {
-    // this just starts the FLIC 2 manager if already started that's ok
-    return _channel.invokeMethod(_methodNameStartFlic2);
-  }
+  final Flic2Listener flic2listener;
 
-  Future<void> stopFlic2() async {
-    // this just stops the FLIC 2 manager if not started that's ok
-    return _channel.invokeMethod(_methodNameStopFlic2);
-  }
-
-  Future<CancelListening> initializeFlic2(Flic2Listener callback) async {
+  FlicButtonPlugin({required this.flic2listener}) {
     // set the callback handler to ours to receive all our data back after
     // initialized
     _channel.setMethodCallHandler(_methodCallHandler);
-    // this will be the ID by which we are identified
-    int currentListenerId = ++_nextCallbackId;
-    // and remember this
-    _callbacksById[currentListenerId] = callback;
-    // and wait for the initialization to be performed with an array of args
-    await _channel.invokeMethod(_methodNameInitialize, [currentListenerId]);
-    // returning the function to call to cancel this listener
-    return () {
-      // called when want to cancel so invoke this method
-      _channel.invokeMethod(_methodNameCancel, [currentListenerId]);
-      // and remove the callback from our list
-      _callbacksById.remove(currentListenerId);
-    };
+    // an invoke the function to initialise the handling of Flic 2
+    _invokationFuture = _channel.invokeMethod<bool>(_methodNameInitialize);
   }
 
-  Future<void> scanForFlic2() async {
+  Future<bool?>? get invokation {
+    return _invokationFuture;
+  }
+
+  Future<bool?> disposeFlic2() async {
+    // this just stops the FLIC 2 manager if not started that's ok
+    return _channel.invokeMethod<bool>(_methodNameDispose);
+  }
+
+  Future<bool?> scanForFlic2() async {
     // scan for flic 2 buttons then please
-    return _channel.invokeMethod(_methodNameStartFlic2Scan);
+    return _channel.invokeMethod<bool>(_methodNameStartFlic2Scan);
   }
 
-  Future<void> cancelScanForFlic2() async {
+  Future<bool?> cancelScanForFlic2() async {
     // scan for flic 2 buttons then please
-    return _channel.invokeMethod(_methodNameStopFlic2Scan);
+    return _channel.invokeMethod<bool>(_methodNameStopFlic2Scan);
   }
 
-  Future<void> connectButton(String buttonUuid) async {
+  Future<bool?> connectButton(String buttonUuid) async {
     // connect this button then please
-    return _channel.invokeMethod(_methodNameConnectButton, [buttonUuid]);
+    return _channel.invokeMethod<bool>(_methodNameConnectButton, [buttonUuid]);
   }
 
-  Future<void> disconnectButton(String buttonUuid) async {
+  Future<bool?> disconnectButton(String buttonUuid) async {
     // disconnect this button then please
-    return _channel.invokeMethod(_methodNameDisconnectButton, [buttonUuid]);
+    return _channel
+        .invokeMethod<bool>(_methodNameDisconnectButton, [buttonUuid]);
   }
 
-  Future<void> forgetButton(String buttonUuid) async {
+  Future<bool?> forgetButton(String buttonUuid) async {
     // forget this button then please
-    return _channel.invokeMethod(_methodNameForgetButton, [buttonUuid]);
+    return _channel.invokeMethod<bool>(_methodNameForgetButton, [buttonUuid]);
   }
 
-  Future<void> listenToFlic2Button(String buttonUuid) async {
+  Future<bool?> listenToFlic2Button(String buttonUuid) async {
     // scan for flic 2 buttons then please
-    return _channel.invokeMethod(_methodNameStartListenToFlic2, [buttonUuid]);
+    return _channel
+        .invokeMethod<bool>(_methodNameStartListenToFlic2, [buttonUuid]);
   }
 
-  Future<void> cancelListenToFlic2Button(String buttonUuid) async {
+  Future<bool?> cancelListenToFlic2Button(String buttonUuid) async {
     // scan for flic 2 buttons then please
-    return _channel.invokeMethod(_methodNameStopListenToFlic2, [buttonUuid]);
+    return _channel
+        .invokeMethod<bool>(_methodNameStopListenToFlic2, [buttonUuid]);
   }
 
   Future<List<Flic2Button>> getFlic2Buttons() async {
@@ -285,59 +272,53 @@ class FlicButtonPlugin {
     // we are interested, the ID of the method determines what is sent back
     switch (call.method) {
       case _methodNameCallback:
-        final id = call.arguments['id'] ?? '';
+        // this is a nice callback from the implementation - call the proper
+        // function that is required then (by the passed data)
         final methodId = call.arguments['method'] ?? '';
         final methodData = call.arguments['data'] ?? '';
         // get the callback that's registered with this ID to call it
-        final callback = _callbacksById[id];
-        if (null == callback) {
-          print('null callback for id of $id');
-        } else {
-          // need to process the arguments properly for each method ID
-          switch (methodId) {
-            case METHOD_FLIC2_DISCOVER_PAIRED:
-              // process this method - have discovered a paired flic 2 button
-              (callback as Flic2Listener)
-                  .onPairedButtonDiscovered(_createFlic2FromData(methodData));
-              break;
-            case METHOD_FLIC2_DISCOVERED:
-              // process this method - have discovered a flic 2 button
-              (callback as Flic2Listener)
-                  .onButtonDiscovered(_createFlic2FromData(methodData));
-              break;
-            case METHOD_FLIC2_CONNECTED:
-              // process this method - have connected a flic 2 button
-              (callback as Flic2Listener).onButtonConnected();
-              break;
-            case METHOD_FLIC2_CONNECTED:
-              // process this method - have found a flic 2 button
-              (callback as Flic2Listener).onButtonFound(methodData);
-              break;
-            case METHOD_FLIC2_CLICK:
-              // process this method - have clicked a flic 2 button
-              (callback as Flic2Listener)
-                  .onButtonClicked(_createFlic2ClickFromData(methodData));
-              break;
-            case METHOD_FLIC2_SCANNING:
-              // process this method - scanning for buttons
-              (callback as Flic2Listener).onScanStarted();
-              break;
-            case METHOD_FLIC2_SCAN_COMPLETE:
-              // process this method - scanning for buttons completed
-              (callback as Flic2Listener).onScanCompleted();
-              break;
-            case METHOD_FLIC2_ERROR:
-              // process this method - scanning for buttons completed
-              (callback as Flic2Listener).onFlic2Error(methodData);
-              break;
-            default:
-              print('unrecognised method callback encountered $methodId');
-              break;
-          }
+        switch (methodId) {
+          case METHOD_FLIC2_DISCOVER_PAIRED:
+            // process this method - have discovered a paired flic 2 button
+            flic2listener
+                .onPairedButtonDiscovered(_createFlic2FromData(methodData));
+            break;
+          case METHOD_FLIC2_DISCOVERED:
+            // process this method - have discovered a flic 2 button
+            flic2listener.onButtonDiscovered(_createFlic2FromData(methodData));
+            break;
+          case METHOD_FLIC2_CONNECTED:
+            // process this method - have connected a flic 2 button
+            flic2listener.onButtonConnected();
+            break;
+          case METHOD_FLIC2_CONNECTED:
+            // process this method - have found a flic 2 button
+            flic2listener.onButtonFound(methodData);
+            break;
+          case METHOD_FLIC2_CLICK:
+            // process this method - have clicked a flic 2 button
+            flic2listener
+                .onButtonClicked(_createFlic2ClickFromData(methodData));
+            break;
+          case METHOD_FLIC2_SCANNING:
+            // process this method - scanning for buttons
+            flic2listener.onScanStarted();
+            break;
+          case METHOD_FLIC2_SCAN_COMPLETE:
+            // process this method - scanning for buttons completed
+            flic2listener.onScanCompleted();
+            break;
+          case METHOD_FLIC2_ERROR:
+            // process this method - scanning for buttons completed
+            flic2listener.onFlic2Error(methodData);
+            break;
+          default:
+            print('unrecognised method callback encountered $methodId');
+            break;
         }
         break;
       default:
-        print('Ignoring unrecognosed invoke from native.');
+        print('Ignoring unrecognosed invoke from native ${call.method}');
         break;
     }
   }

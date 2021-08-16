@@ -24,7 +24,8 @@
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"initializeService" isEqualToString:call.method]) {
         // Prepare callback dictionary
-      if (self->callbackById == nil) self->callbackById = [NSMutableDictionary new];
+      if (self->callbackById == nil)
+        self->callbackById = [NSMutableDictionary new];
       // Get callback id
       NSString* currentListenerId = [(NSNumber*) call.arguments[0] stringValue];
 

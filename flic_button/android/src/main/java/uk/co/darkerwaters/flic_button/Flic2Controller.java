@@ -38,7 +38,7 @@ public class Flic2Controller {
         Flic2Manager.initAndGetInstance(context, new Handler());
     }
 
-    public void startButtonScanning() {
+    public boolean startButtonScanning() {
         // cancel any previous scan
         cancelButtonScan();
         // and start a new one
@@ -74,20 +74,23 @@ public class Flic2Controller {
                 }
             }
         });
+        return true;
     }
 
-    public void cancelButtonScan() {
+    public boolean cancelButtonScan() {
         // cancel any scanning in progress
         callback.onButtonScanningStopped();
         try {
             Flic2Manager manager = Flic2Manager.getInstance();
             if (null != manager) {
                 manager.stopScan();
+                return true;
             }
         }
         catch (Exception e) {
             callback.onError("Failed to stop scan while releasing flick " + e.getMessage());
         }
+        return false;
     }
 
     private void storeButtonData(Flic2Button button) {
@@ -110,7 +113,7 @@ public class Flic2Controller {
         return Flic2Manager.getInstance().getButtonByBdAddr(buttonAddress);
     }
 
-    public void connectButton(String buttonUuid) {
+    public boolean connectButton(String buttonUuid) {
         // get the button to listen to from our map and then listen to it
         Flic2Button button;
         synchronized (buttonsDiscovered) {
@@ -118,13 +121,15 @@ public class Flic2Controller {
         }
         if (null == button) {
             callback.onError("Cannot connect a button as don't recognise the UUID " + buttonUuid);
+            return false;
         } else {
             // and connect to the button
             button.connect();
+            return true;
         }
     }
 
-    public void disconnectButton(String buttonUuid) {
+    public boolean disconnectButton(String buttonUuid) {
         // get the button to listen to from our map and then listen to it
         Flic2Button button;
         synchronized (buttonsDiscovered) {
@@ -132,13 +137,15 @@ public class Flic2Controller {
         }
         if (null == button) {
             callback.onError("Cannot disconnect a button as don't recognise the UUID " + buttonUuid);
+            return false;
         } else {
             // and disconnect from the button
             button.disconnectOrAbortPendingConnection();
+            return true;
         }
     }
 
-    public void forgetButton(String buttonUuid) {
+    public boolean forgetButton(String buttonUuid) {
         // get the button to forget
         Flic2Button button;
         synchronized (buttonsDiscovered) {
@@ -146,13 +153,15 @@ public class Flic2Controller {
         }
         if (null == button) {
             callback.onError("Cannot forget a button as don't recognise the UUID " + buttonUuid);
+            return false;
         } else {
             // and forget this button
             Flic2Manager.getInstance().forgetButton(button);
+            return true;
         }
     }
     
-    public void listenToButton(String buttonUuid) {
+    public boolean listenToButton(String buttonUuid) {
         // get the button to listen to from our map and then listen to it
         Flic2Button button;
         synchronized (buttonsDiscovered) {
@@ -160,6 +169,7 @@ public class Flic2Controller {
         }
         if (null == button) {
             callback.onError("Cannot to listen to a button as don't recognise the UUID " + buttonUuid);
+            return false;
         } else {
             if (button.getConnectionState() == Flic2Button.CONNECTION_STATE_DISCONNECTED) {
                 // to listen to a button we need it connected first, let's assume the caller wants this done
@@ -171,10 +181,11 @@ public class Flic2Controller {
             button.removeListener(buttonListener);
             // and add it back in to listen to each button only once.
             button.addListener(buttonListener);
+            return true;
         }
     }
 
-    public void stopListeningToButton(String buttonUuid) {
+    public boolean stopListeningToButton(String buttonUuid) {
         // get the button to stop listening to from our map and then listen to it
         Flic2Button button;
         synchronized (buttonsDiscovered) {
@@ -182,8 +193,10 @@ public class Flic2Controller {
         }
         if (null == button) {
             callback.onError("Cannot stop listening to a button as don't recognise the UUID " + buttonUuid);
+            return false;
         } else {
             button.removeListener(buttonListener);
+            return true;
         }
     }
 
@@ -197,7 +210,7 @@ public class Flic2Controller {
         }
     };
 
-    public void releaseFlic() {
+    public boolean releaseFlic() {
         // cancel any scanning
         cancelButtonScan();
         // release all the flic 2 listeners on the managers
@@ -212,10 +225,12 @@ public class Flic2Controller {
                         callback.onError("Failed to remove listener on releasing flic " + e.getMessage());
                     }
                 }
+                return true;
             }
         }
         catch (Exception e) {
             callback.onError("Failed to destroy the flic two instance as it was not initialised " + e.getMessage());
         }
+        return false;
     }
 }

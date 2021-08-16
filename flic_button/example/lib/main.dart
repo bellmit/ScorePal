@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:flic_button/flic_button.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,28 +14,20 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> implements Flic2Listener {
   // flic2 starts and isn't scanning
   bool _isScanning = false;
-  // as the demo starts, we have not started the flic2 controls
-  bool _isStarted = false;
 
   // as we discover buttons, lets add them to a map of uuid/button to show
   final Map<String, Flic2Button> _buttonsFound = {};
   // the last click to show we are hearing the button click
   Flic2ButtonClick? _lastClick;
 
-  // the cancel function to close down our connection to the plugin
-  Future<CancelListening>? listener;
   // the plugin manager to use while we are active
   FlicButtonPlugin? flicButtonManager;
 
   @override
   void initState() {
     super.initState();
-
     // create the FLIC 2 manager and initialize it
-    flicButtonManager = FlicButtonPlugin();
-    // now we have one, let's initialize the plugin to return all function
-    // calls to ourselves
-    listener = flicButtonManager!.initializeFlic2(this);
+    _startStopFlic2();
   }
 
   void _startStopScanningForFlic2() {
@@ -58,17 +47,16 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   void _startStopFlic2() {
     // start or stop it
-    if (!_isStarted) {
+    if (null == flicButtonManager) {
       // we are not started - start listening to FLIC2 buttons
-      flicButtonManager!.startFlic2();
+      setState(() => flicButtonManager = FlicButtonPlugin(flic2listener: this));
     } else {
       // started - so stop
-      flicButtonManager!.stopFlic2();
+      flicButtonManager!.disposeFlic2().then((value) => setState(() {
+            // as the flic manager is disposed, signal that it's gone
+            flicButtonManager = null;
+          }));
     }
-    // and update the UI
-    setState(() {
-      _isStarted = !_isStarted;
-    });
   }
 
   void _getButtons() {
@@ -98,11 +86,21 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
             title: const Text('Flic Button Plugin Example'),
           ),
           body: FutureBuilder(
-            future: listener,
+            future: flicButtonManager != null
+                ? flicButtonManager!.invokation
+                : null,
             builder: (ctx, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 // are not initialized yet, wait a sec - should be very quick!
-                return Center(child: CircularProgressIndicator());
+                return Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // initiate or stop scanning
+                      _startStopFlic2();
+                    },
+                    child: Text('Start and initialize Flic2'),
+                  ),
+                );
               } else {
                 // we have completed the init call, we can perform scanning etc
                 return Column(
@@ -115,12 +113,13 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
                       style: TextStyle(fontSize: 20),
                     ),
                     ElevatedButton(
-                        onPressed: () {
-                          // initiate or stop scanning
-                          _startStopFlic2();
-                        },
-                        child: Text(_isStarted ? 'Stop Flic2' : 'Start Flic2')),
-                    if (_isStarted)
+                      onPressed: () {
+                        // initiate or stop scanning
+                        _startStopFlic2();
+                      },
+                      child: Text('Stop Flic2'),
+                    ),
+                    if (flicButtonManager != null)
                       Row(
                         // if we are started then show the controls to get flic2 and scan for flic2
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

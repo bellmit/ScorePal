@@ -20,12 +20,10 @@ import io.flutter.plugin.common.MethodChannel.Result;
 /** FlicButtonPlugin */
 public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
   public static final String channelName = "flic_button";
-  public static final String methodNameInitialise = "initializeService";
-  public static final String methodNameCancel = "cancelListening";
+  public static final String methodNameInitialise = "initializeFlic2";
   public static final String methodNameCallback = "callListener";
 
-  public static final String methodNameStartFlic2 = "startFlic2";
-  public static final String methodNameStopFlic2 = "stopFlic2";
+  public static final String methodNameDispose = "disposeFlic2";
 
   public static final String methodNameStartFlic2Scan = "startFlic2Scan";
   public static final String methodNameStopFlic2Scan = "stopFlic2Scan";
@@ -63,8 +61,6 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
   private Flic2Controller flic2Controller = null;
 
   private Context context = null;
-
-  private final List<Integer> callbacksRegistered = new ArrayList<>();
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -128,29 +124,29 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull final Result result) {
-    if (call.method.equals(methodNameStartFlic2)) {
+    if (call.method.equals(methodNameInitialise)) {
       // this is easy - start Flic
       if (null != this.flic2Controller) {
         // already started
-        result.error(ERROR_ALREADY_STARTED, "Flic 2 has been started already", "Flic 2 started already, okay to call twice but won't do anything...");
+        result.error(ERROR_ALREADY_STARTED, "Flic 2 has been initialized already", "Flic 2 started already, okay to call twice but won't do anything...");
       } else if (null == this.context) {
         result.error(ERROR_CRITICAL, "There's no context", "The flutter engine didn't attach with a valid application context, sorry but we can't start Flic2");
       } else {
         // start Flic 2 then
         this.flic2Controller = new Flic2Controller(context, flic2Callback);
-        result.success(null);
+        result.success(true);
       }
     }
-    else if (call.method.equals(methodNameStopFlic2)) {
+    else if (call.method.equals(methodNameDispose)) {
       // this is easy - stop Flic
       if (null == this.flic2Controller) {
         // already started
-        result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't stop it...");
+        result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been initialized", "Flic 2 isn't running so we can't stop it...");
       } else {
         // stop Flic 2 then
-        this.flic2Controller.releaseFlic();
+        boolean answer = this.flic2Controller.releaseFlic();
         this.flic2Controller = null;
-        result.success(null);
+        result.success(answer);
       }
     }
     else if (call.method.equals(methodNameStartFlic2Scan)) {
@@ -160,8 +156,8 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
         result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't scan...");
       } else {
         // scan for new buttons then
-        this.flic2Controller.startButtonScanning();
-        result.success(null);
+        boolean answer = this.flic2Controller.startButtonScanning();
+        result.success(answer);
       }
     }
     else if (call.method.equals(methodNameStopFlic2Scan)) {
@@ -171,8 +167,8 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
         result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't stop scanning...");
       } else {
         // stop scanning for new buttons then
-        this.flic2Controller.cancelButtonScan();
-        result.success(null);
+        boolean answer = this.flic2Controller.cancelButtonScan();
+        result.success(answer);
       }
     }
     else if (call.method.equals(methodNameGetButtons)) {
@@ -203,9 +199,9 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
       String buttonUuid = extractStringArgument(methodNameStartListenToFlic2, "button UUID", call.arguments(), result);
       if (buttonUuid != null) {
         // so all's well, lets listen to the button at this UUID
-        this.flic2Controller.listenToButton(buttonUuid);
+        boolean answer = this.flic2Controller.listenToButton(buttonUuid);
         // and return from this as success
-        result.success(null);
+        result.success(answer);
       }
     }
     else if (call.method.equals(methodNameStopListenToFlic2)) {
@@ -213,9 +209,9 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
       String buttonUuid = extractStringArgument(methodNameStopListenToFlic2, "button UUID", call.arguments(), result);
       if (buttonUuid != null) {
         // so all's well, lets get the listener ID and register it to call with all our results as we get them
-        this.flic2Controller.stopListeningToButton(buttonUuid);
+        boolean answer = this.flic2Controller.stopListeningToButton(buttonUuid);
         // and return from this as success
-        result.success(null);
+        result.success(answer);
       }
     }
     else if (call.method.equals(methodNameConnectButton)) {
@@ -223,9 +219,9 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
       String buttonUuid = extractStringArgument(methodNameConnectButton, "button UUID", call.arguments(), result);
       if (buttonUuid != null) {
         // so all's well, lets listen to the button at this UUID
-        this.flic2Controller.connectButton(buttonUuid);
+        boolean answer = this.flic2Controller.connectButton(buttonUuid);
         // and return from this as success
-        result.success(null);
+        result.success(answer);
       }
     }
     else if (call.method.equals(methodNameDisconnectButton)) {
@@ -233,9 +229,9 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
       String buttonUuid = extractStringArgument(methodNameDisconnectButton, "button UUID", call.arguments(), result);
       if (buttonUuid != null) {
         // so all's well, lets get the listener ID and register it to call with all our results as we get them
-        this.flic2Controller.disconnectButton(buttonUuid);
+        boolean answer = this.flic2Controller.disconnectButton(buttonUuid);
         // and return from this as success
-        result.success(null);
+        result.success(answer);
       }
     }
     else if (call.method.equals(methodNameForgetButton)) {
@@ -243,68 +239,9 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
       String buttonUuid = extractStringArgument(methodNameForgetButton, "button UUID", call.arguments(), result);
       if (buttonUuid != null) {
         // so all's well, lets forget this button then please
-        this.flic2Controller.forgetButton(buttonUuid);
+        boolean answer = this.flic2Controller.forgetButton(buttonUuid);
         // and return from this as success
-        result.success(null);
-      }
-    }
-    else if (call.method.equals(methodNameInitialise)) {
-      // initialise the service, this should contain the callback ID to which
-      // all our messages will be returned
-      Object arguments = call.arguments();
-      // the arguments should be a list of params...
-      if (!(arguments instanceof List)) {
-        result.error(ERROR_INVALID_ARGUMENTS,
-                "The list passed to " + methodNameInitialise + " is not valid",
-                arguments == null ? "null" : arguments.toString());
-      } else {
-        List<?> args = (List<?>) arguments;
-        // and we can check the argument passed in is the caller ID
-        if (args.size() != 1 || !(args.get(0) instanceof Integer)) {
-          // there should only be one argument
-          result.error(ERROR_INVALID_ARGUMENTS,
-                  "The list passed to " + methodNameInitialise + " should just contain the caller ID",
-                  arguments.toString());
-        } else {
-          // so all's well, lets get the listener ID and register it to call with all our results as we get them
-          final Integer currentListenerId = (Integer) args.get(0);
-          // and add to the list safely
-          boolean isAdded;
-          synchronized (this.callbacksRegistered) {
-            isAdded = callbacksRegistered.add(currentListenerId);
-          }
-          // and return the success of this initialisation
-          result.success(isAdded);
-        }
-      }
-    }
-    else if (call.method.equals(methodNameCancel)) {
-      // Get callback id
-      Object arguments = call.arguments();
-      // the arguments should be a list of params...
-      if (!(arguments instanceof List)) {
-        result.error("INVALID_ARGUMENTS",
-                "The list passed to " + methodNameCancel + " is not valid",
-                arguments == null ? "null" : arguments.toString());
-      } else {
-        List<?> args = (List<?>) arguments;
-        // and we can check the argument passed in is the caller ID
-        if (args.size() != 1 || !(args.get(0) instanceof Integer)) {
-          // there should only be one argument
-          result.error("INVALID_ARGUMENTS",
-                  "The list passed to " + methodNameCancel + " should just contain the caller ID as registered in " + methodNameInitialise,
-                  arguments.toString());
-        } else {
-          // so all's well, lets get the listener ID and remove it from our list
-          final Integer currentListenerId = (Integer) args.get(0);
-          // and remove from the list safely
-          boolean isRemoved;
-          synchronized (this.callbacksRegistered) {
-            isRemoved = callbacksRegistered.remove(currentListenerId);
-          }
-          // and return the success of this removal
-          result.success(isRemoved);
-        }
+        result.success(answer);
       }
     }
     else{
@@ -361,16 +298,13 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
   };
 
   private void informListeners(int methodId, String callbackData) {
-    synchronized (callbacksRegistered) {
-      for (Integer callbackID : callbacksRegistered) {
-        // call the method on each ID to inform them of this returned data
-        Map<String, Object> args = new HashMap<>();
-        args.put("id", callbackID);
-        args.put("method", methodId);
-        args.put("data", callbackData);
-        // Send some value to callback
-        channel.invokeMethod(methodNameCallback, args);
-      }
+    if (null != channel) {
+      // call the method on the channel to inform listeners of this operation
+      Map<String, Object> args = new HashMap<>();
+      args.put("method", methodId);
+      args.put("data", callbackData);
+      // Send some value to callback
+      channel.invokeMethod(methodNameCallback, args);
     }
   }
 }
