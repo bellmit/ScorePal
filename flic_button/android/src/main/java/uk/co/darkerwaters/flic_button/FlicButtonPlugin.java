@@ -21,9 +21,9 @@ import io.flutter.plugin.common.MethodChannel.Result;
 public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
   public static final String channelName = "flic_button";
   public static final String methodNameInitialise = "initializeFlic2";
+  public static final String methodNameDispose = "disposeFlic2";
   public static final String methodNameCallback = "callListener";
 
-  public static final String methodNameDispose = "disposeFlic2";
 
   public static final String methodNameStartFlic2Scan = "startFlic2Scan";
   public static final String methodNameStopFlic2Scan = "stopFlic2Scan";
@@ -108,17 +108,17 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
 
   private static String ButtonToJson(Flic2Button button) {
     return "{" +
-            "\"uuid\":\""+ button.getUuid() + "\"," +
-            "\"bdAddr\":\""+ button.getBdAddr() + "\"," +
-            "\"readyTime\":"+ button.getReadyTimestamp() + "," +
-            "\"name\":\""+ button.getName() + "\"," +
-            "\"serialNo\":\""+ button.getSerialNumber() + "\"," +
-            "\"connection\":"+ button.getConnectionState() + "," +
-            "\"firmwareVer\":"+ button.getFirmwareVersion() + "," +
-            "\"battPerc\":"+ button.getLastKnownBatteryLevel().getEstimatedPercentage() + "," +
-            "\"battTime\":"+ button.getLastKnownBatteryLevel().getTimestampUtcMs() + "," +
-            "\"battVolt\":"+ button.getLastKnownBatteryLevel().getVoltage() + "," +
-            "\"pressCount\":"+ button.getPressCount() + "" +
+            "\"uuid\":\"" + button.getUuid() + "\"," +
+            "\"bdAddr\":\"" + button.getBdAddr() + "\"," +
+            "\"readyTime\":" + button.getReadyTimestamp() + "," +
+            "\"name\":\"" + button.getName() + "\"," +
+            "\"serialNo\":\"" + button.getSerialNumber() + "\"," +
+            "\"connection\":" + button.getConnectionState() + "," +
+            "\"firmwareVer\":" + button.getFirmwareVersion() + "," +
+            "\"battPerc\":" + button.getLastKnownBatteryLevel().getEstimatedPercentage() + "," +
+            "\"battTime\":" + button.getLastKnownBatteryLevel().getTimestampUtcMs() + "," +
+            "\"battVolt\":" + button.getLastKnownBatteryLevel().getVoltage() + "," +
+            "\"pressCount\":" + button.getPressCount() + "" +
             "}";
   }
 
@@ -283,14 +283,14 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
     public void onButtonClicked(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isSingleClick, boolean isDoubleClick, boolean isHold) {
       // convert all this complex and bulky data to a single object to pass back
       final String jsonData = "{" +
-              "\"wasQueued\":"+ wasQueued + "," +
-              "\"clickAge\":"+ (wasQueued ? button.getReadyTimestamp() - timestamp : 0) + "," +
-              "\"lastQueued\":"+ lastQueued + "," +
-              "\"timestamp\":"+ timestamp + "," +
-              "\"isSingleClick\":"+ isSingleClick + "," +
-              "\"isDoubleClick\":"+ isDoubleClick + "," +
-              "\"isHold\":"+ isHold + "," +
-              "\"button\":"+ ButtonToJson(button) +
+              "\"wasQueued\":" + wasQueued + "," +
+              "\"clickAge\":" + (wasQueued ? button.getReadyTimestamp() - timestamp : 0) + "," +
+              "\"lastQueued\":" + lastQueued + "," +
+              "\"timestamp\":" + timestamp + "," +
+              "\"isSingleClick\":" + isSingleClick + "," +
+              "\"isDoubleClick\":" + isDoubleClick + "," +
+              "\"isHold\":" + isHold + "," +
+              "\"button\":" + ButtonToJson(button) +
               "}";
       // and send back
       informListeners(METHOD_FLIC2_CLICK, jsonData);
