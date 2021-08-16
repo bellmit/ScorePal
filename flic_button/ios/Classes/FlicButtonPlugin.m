@@ -15,17 +15,11 @@
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"getPlatformVersion" isEqualToString:call.method]) {
-    result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-  }
-  else if ([@"getFlic2Button" isEqualToString:call.method]) {
-    result(@"iOS {\"UUID\":\"iOSButtonUUID\",}");
-  }
-  else if ([@"initializeService" isEqualToString:call.method]) {
+  if ([@"initializeService" isEqualToString:call.method]) {
         // Prepare callback dictionary
       if (self->callbackById == nil) self->callbackById = [NSMutableDictionary new];
       // Get callback id
-      NSString* currentListenerId = [(NSNumber*) call.arguments stringValue];
+      NSString* currentListenerId = [(NSNumber*) call.arguments[0] stringValue];
       // Prepare a timer like self calling task
       void (^callback)(void) = ^() {
           void (^callback)(void) = [self->callbackById valueForKey:currentListenerId];
@@ -34,7 +28,7 @@
 
               [self->channel invokeMethod:@"callListener"
                                arguments:@{
-                                   @"id" : (NSNumber*) call.arguments,
+                                   @"id" : (NSNumber*) call.arguments[0],
                                    @"args" : [NSString stringWithFormat:@"Hello Listener! %d", time]
                                }
               ];
@@ -50,7 +44,7 @@
   }
   else if ([@"cancelListening" isEqualToString:call.method]) {
         // Get callback id
-      NSString* currentListenerId = [(NSNumber*) call.arguments stringValue];
+      NSString* currentListenerId = [(NSNumber*) call.arguments[0] stringValue];
       // Remove callback
       [self->callbackById removeObjectForKey:currentListenerId];
       // Do additional stuff if required to cancel the listener
