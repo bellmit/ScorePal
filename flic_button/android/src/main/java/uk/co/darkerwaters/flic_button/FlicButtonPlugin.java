@@ -1,17 +1,16 @@
 package uk.co.darkerwaters.flic_button;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.flic.flic2libandroid.Flic2Button;
-import io.flic.flic2libandroid.Flic2Manager;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -21,6 +20,38 @@ import io.flutter.plugin.common.MethodChannel.Result;
 /** FlicButtonPlugin */
 public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
   public static final String channelName = "flic_button";
+  public static final String methodNameInitialise = "initializeService";
+  public static final String methodNameCancel = "cancelListening";
+  public static final String methodNameCallback = "callListener";
+
+  public static final String methodNameStartFlic2 = "startFlic2";
+  public static final String methodNameStopFlic2 = "stopFlic2";
+
+  public static final String methodNameStartFlic2Scan = "startFlic2Scan";
+  public static final String methodNameStopFlic2Scan = "stopFlic2Scan";
+  public static final String methodNameStartListenToFlic2 = "startListenToFlic2";
+  public static final String methodNameStopListenToFlic2 = "stopListenToFlic2";
+
+  public static final String methodNameGetButtons = "getButtons";
+  public static final String methodNameGetButtonsByAddr = "getButtonsByAddr";
+
+  public static final String methodNameConnectButton = "connectButton";
+  public static final String methodNameDisconnectButton = "disconnectButton";
+  public static final String methodNameForgetButton = "forgetButton";
+
+  public static final String ERROR_CRITICAL = "CRITICAL";
+  public static final String ERROR_NOT_STARTED = "NOT_STARTED";
+  public static final String ERROR_ALREADY_STARTED = "ALREADY_STARTED";
+  public static final String ERROR_INVALID_ARGUMENTS = "INVALID_ARGUMENTS";
+
+  public static final int METHOD_FLIC2_DISCOVER_PAIRED = 100;
+  public static final int METHOD_FLIC2_DISCOVERED = 101;
+  public static final int METHOD_FLIC2_CONNECTED = 102;
+  public static final int METHOD_FLIC2_CLICK = 103;
+  public static final int METHOD_FLIC2_SCANNING = 104;
+  public static final int METHOD_FLIC2_SCAN_COMPLETE = 105;
+  public static final int METHOD_FLIC2_FOUND = 106;
+  public static final int METHOD_FLIC2_ERROR = 200;
 
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
@@ -28,80 +59,318 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
 
-  // we can and want to control a flic2 then
-  private FlicButton2Plugin flic2Plugin = null;
+  // we can and want to control a Flic2 then
+  private Flic2Controller flic2Controller = null;
 
-  private long mCallbackDispatcherHandle;
-  private Context mContext;
+  private Context context = null;
 
-  private Map<Integer, Runnable> callbackById = new HashMap<>();
+  private final List<Integer> callbacksRegistered = new ArrayList<>();
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     this.channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), channelName);
     this.channel.setMethodCallHandler(this);
-
-    this.mContext = flutterPluginBinding.getApplicationContext();
-    // and we can initialise our flic2 support here
-    this.flic2Plugin = new FlicButton2Plugin(mContext);
-  }
-
-  @Override
-  public void onMethodCall(@NonNull MethodCall call, @NonNull final Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else if (call.method.equals("getFlic2Button")) {
-      // scan for the flic2
-      flic2Plugin.getButton(new FlicButton2Plugin.ButtonCallback() {
-        @Override
-        public void onButtonFound(String button) {
-          result.success(button);
-        }
-        @Override
-        public void onError(String error) {
-          result.error(error, "Failed to scan for the Flic2", null);
-        }
-      });
-    } else if(call.method.equals("initializeService")){
-        // Get callback id
-        ArrayList args = call.arguments();
-        final int currentListenerId = (int) args.get(0);
-        // Prepare a timer like self calling task
-        final Handler handler = new Handler();
-        callbackById.put(currentListenerId, new Runnable() {
-          @Override
-          public void run() {
-            if (callbackById.containsKey(currentListenerId)) {
-              Map<String, Object> args = new HashMap();
-              args.put("id", currentListenerId);
-              args.put("args", "Hello listener! " + (System.currentTimeMillis() / 1000));
-              // Send some value to callback
-              channel.invokeMethod("callListener", args);
-            }
-            handler.postDelayed(this, 1000);
-          }
-        });
-        // Run task
-        handler.postDelayed(callbackById.get(currentListenerId), 1000);
-        // Return immediately
-        result.success(null);
-      }
-    else if(call.method.equals("cancelListening")){
-      // Get callback id
-      ArrayList args = call.arguments();
-      int currentListenerId = (int) args.get(0);
-      // Remove callback
-      callbackById.remove(currentListenerId);
-      // Do additional stuff if required to cancel the listener
-      result.success(null);
-    }
-    else {
-      result.notImplemented();
-    }
+    // we will need the application context later for when they start the service or whatever
+    this.context = flutterPluginBinding.getApplicationContext();
   }
 
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     channel.setMethodCallHandler(null);
+    // and shutdown anything else started
+    if (null != this.flic2Controller) {
+      this.flic2Controller.releaseFlic();
+      this.flic2Controller = null;
+    }
+  }
+
+  private String extractStringArgument(String functionName, String paramName, Object arguments, @NonNull final Result result) {
+    String toReturn = null;
+    if (!(arguments instanceof List)) {
+      result.error(ERROR_INVALID_ARGUMENTS,
+              "The list passed to " + functionName + " is not valid",
+              arguments == null ? "null" : arguments.toString());
+    } else if (null == this.flic2Controller) {
+      // already started
+      result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't " + functionName);
+    } else {
+      List<?> args = (List<?>) arguments;
+      // and we can check the argument passed in is the button ID
+      if (args.size() != 1 || !(args.get(0) instanceof String)) {
+        // there should only be one argument
+        result.error(ERROR_INVALID_ARGUMENTS,
+                "The list passed to " + functionName + " should just contain the " + paramName,
+                arguments.toString());
+      } else {
+        // it's a string
+        toReturn = (String) args.get(0);
+      }
+    }
+    // and return the extracted (null if not okay)
+    return toReturn;
+  }
+
+  private static String ButtonToJson(Flic2Button button) {
+    return "{" +
+            "\"uuid\":\""+ button.getUuid() + "\"," +
+            "\"bdAddr\":\""+ button.getBdAddr() + "\"," +
+            "\"readyTime\":"+ button.getReadyTimestamp() + "," +
+            "\"name\":\""+ button.getName() + "\"," +
+            "\"serialNo\":\""+ button.getSerialNumber() + "\"," +
+            "\"connection\":"+ button.getConnectionState() + "," +
+            "\"firmwareVer\":"+ button.getFirmwareVersion() + "," +
+            "\"battPerc\":"+ button.getLastKnownBatteryLevel().getEstimatedPercentage() + "," +
+            "\"battTime\":"+ button.getLastKnownBatteryLevel().getTimestampUtcMs() + "," +
+            "\"battVolt\":"+ button.getLastKnownBatteryLevel().getVoltage() + "," +
+            "\"pressCount\":"+ button.getPressCount() + "" +
+            "}";
+  }
+
+  @Override
+  public void onMethodCall(@NonNull MethodCall call, @NonNull final Result result) {
+    if (call.method.equals(methodNameStartFlic2)) {
+      // this is easy - start Flic
+      if (null != this.flic2Controller) {
+        // already started
+        result.error(ERROR_ALREADY_STARTED, "Flic 2 has been started already", "Flic 2 started already, okay to call twice but won't do anything...");
+      } else if (null == this.context) {
+        result.error(ERROR_CRITICAL, "There's no context", "The flutter engine didn't attach with a valid application context, sorry but we can't start Flic2");
+      } else {
+        // start Flic 2 then
+        this.flic2Controller = new Flic2Controller(context, flic2Callback);
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameStopFlic2)) {
+      // this is easy - stop Flic
+      if (null == this.flic2Controller) {
+        // already started
+        result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't stop it...");
+      } else {
+        // stop Flic 2 then
+        this.flic2Controller.releaseFlic();
+        this.flic2Controller = null;
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameStartFlic2Scan)) {
+      // this is easy - start the controller scanning
+      if (null == this.flic2Controller) {
+        // already started
+        result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't scan...");
+      } else {
+        // scan for new buttons then
+        this.flic2Controller.startButtonScanning();
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameStopFlic2Scan)) {
+      // this is easy - stop the controller scanning
+      if (null == this.flic2Controller) {
+        // already started
+        result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't stop scanning...");
+      } else {
+        // stop scanning for new buttons then
+        this.flic2Controller.cancelButtonScan();
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameGetButtons)) {
+      // just get our buttons registered
+      if (null == this.flic2Controller) {
+        // already started
+        result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't get buttons...");
+      } else {
+        // so we can get all our buttons, but have to translate them all to json before we return
+        List<String> jsonButtons = new ArrayList<>();
+        for (Flic2Button button : this.flic2Controller.getButtonsDiscovered()) {
+          jsonButtons.add(ButtonToJson(button));
+        }
+        // return the list of buttons as nice transferable JSON
+        result.success(jsonButtons);
+      }
+    }
+    else if (call.method.equals(methodNameGetButtonsByAddr)) {
+      // just get the button data for the passed address
+      String buttonAddress = extractStringArgument(methodNameGetButtonsByAddr, "button address", call.arguments(), result);
+      if (buttonAddress != null) {
+        // so all's well, return the button data from this as success
+        result.success(ButtonToJson(this.flic2Controller.getButtonForAddress(buttonAddress)));
+      }
+    }
+    else if (call.method.equals(methodNameStartListenToFlic2)) {
+      // start listening for the button - the arg will be the uid of the button hopefully
+      String buttonUuid = extractStringArgument(methodNameStartListenToFlic2, "button UUID", call.arguments(), result);
+      if (buttonUuid != null) {
+        // so all's well, lets listen to the button at this UUID
+        this.flic2Controller.listenToButton(buttonUuid);
+        // and return from this as success
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameStopListenToFlic2)) {
+      // stop listening for the button - the arg will be the uid of the button hopefully
+      String buttonUuid = extractStringArgument(methodNameStopListenToFlic2, "button UUID", call.arguments(), result);
+      if (buttonUuid != null) {
+        // so all's well, lets get the listener ID and register it to call with all our results as we get them
+        this.flic2Controller.stopListeningToButton(buttonUuid);
+        // and return from this as success
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameConnectButton)) {
+      // connect to the specified button
+      String buttonUuid = extractStringArgument(methodNameConnectButton, "button UUID", call.arguments(), result);
+      if (buttonUuid != null) {
+        // so all's well, lets listen to the button at this UUID
+        this.flic2Controller.connectButton(buttonUuid);
+        // and return from this as success
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameDisconnectButton)) {
+      // disconnect the button - the arg will be the uid of the button hopefully
+      String buttonUuid = extractStringArgument(methodNameDisconnectButton, "button UUID", call.arguments(), result);
+      if (buttonUuid != null) {
+        // so all's well, lets get the listener ID and register it to call with all our results as we get them
+        this.flic2Controller.disconnectButton(buttonUuid);
+        // and return from this as success
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameForgetButton)) {
+      // forget the button - the arg will be the uid of the button hopefully
+      String buttonUuid = extractStringArgument(methodNameForgetButton, "button UUID", call.arguments(), result);
+      if (buttonUuid != null) {
+        // so all's well, lets forget this button then please
+        this.flic2Controller.forgetButton(buttonUuid);
+        // and return from this as success
+        result.success(null);
+      }
+    }
+    else if (call.method.equals(methodNameInitialise)) {
+      // initialise the service, this should contain the callback ID to which
+      // all our messages will be returned
+      Object arguments = call.arguments();
+      // the arguments should be a list of params...
+      if (!(arguments instanceof List)) {
+        result.error(ERROR_INVALID_ARGUMENTS,
+                "The list passed to " + methodNameInitialise + " is not valid",
+                arguments == null ? "null" : arguments.toString());
+      } else {
+        List<?> args = (List<?>) arguments;
+        // and we can check the argument passed in is the caller ID
+        if (args.size() != 1 || !(args.get(0) instanceof Integer)) {
+          // there should only be one argument
+          result.error(ERROR_INVALID_ARGUMENTS,
+                  "The list passed to " + methodNameInitialise + " should just contain the caller ID",
+                  arguments.toString());
+        } else {
+          // so all's well, lets get the listener ID and register it to call with all our results as we get them
+          final Integer currentListenerId = (Integer) args.get(0);
+          // and add to the list safely
+          boolean isAdded;
+          synchronized (this.callbacksRegistered) {
+            isAdded = callbacksRegistered.add(currentListenerId);
+          }
+          // and return the success of this initialisation
+          result.success(isAdded);
+        }
+      }
+    }
+    else if (call.method.equals(methodNameCancel)) {
+      // Get callback id
+      Object arguments = call.arguments();
+      // the arguments should be a list of params...
+      if (!(arguments instanceof List)) {
+        result.error("INVALID_ARGUMENTS",
+                "The list passed to " + methodNameCancel + " is not valid",
+                arguments == null ? "null" : arguments.toString());
+      } else {
+        List<?> args = (List<?>) arguments;
+        // and we can check the argument passed in is the caller ID
+        if (args.size() != 1 || !(args.get(0) instanceof Integer)) {
+          // there should only be one argument
+          result.error("INVALID_ARGUMENTS",
+                  "The list passed to " + methodNameCancel + " should just contain the caller ID as registered in " + methodNameInitialise,
+                  arguments.toString());
+        } else {
+          // so all's well, lets get the listener ID and remove it from our list
+          final Integer currentListenerId = (Integer) args.get(0);
+          // and remove from the list safely
+          boolean isRemoved;
+          synchronized (this.callbacksRegistered) {
+            isRemoved = callbacksRegistered.remove(currentListenerId);
+          }
+          // and return the success of this removal
+          result.success(isRemoved);
+        }
+      }
+    }
+    else{
+      result.notImplemented();
+    }
+  }
+  
+  private final Flic2Controller.ButtonCallback flic2Callback = new Flic2Controller.ButtonCallback() {
+    @Override
+    public void onPairedButtonFound(Flic2Button button) {
+      // inform listeners of this class of this function
+      informListeners(METHOD_FLIC2_DISCOVER_PAIRED, ButtonToJson(button));
+    }
+    @Override
+    public void onButtonFound(Flic2Button button) {
+      informListeners(METHOD_FLIC2_FOUND, ButtonToJson(button));
+    }
+    @Override
+    public void onButtonConnected() {
+      informListeners(METHOD_FLIC2_CONNECTED, null);
+    }
+    @Override
+    public void onButtonDiscovered(String buttonAddress) {
+      informListeners(METHOD_FLIC2_DISCOVERED, buttonAddress);
+    }
+    @Override
+    public void onButtonScanningStarted() {
+      informListeners(METHOD_FLIC2_SCANNING, null);
+    }
+    @Override
+    public void onButtonScanningStopped() {
+      informListeners(METHOD_FLIC2_SCAN_COMPLETE, null);
+    }
+    @Override
+    public void onError(String error) {
+      informListeners(METHOD_FLIC2_ERROR, error);
+    }
+    @Override
+    public void onButtonClicked(Flic2Button button, boolean wasQueued, boolean lastQueued, long timestamp, boolean isSingleClick, boolean isDoubleClick, boolean isHold) {
+      // convert all this complex and bulky data to a single object to pass back
+      final String jsonData = "{" +
+              "\"wasQueued\":"+ wasQueued + "," +
+              "\"clickAge\":"+ (wasQueued ? button.getReadyTimestamp() - timestamp : 0) + "," +
+              "\"lastQueued\":"+ lastQueued + "," +
+              "\"timestamp\":"+ timestamp + "," +
+              "\"isSingleClick\":"+ isSingleClick + "," +
+              "\"isDoubleClick\":"+ isDoubleClick + "," +
+              "\"isHold\":"+ isHold + "," +
+              "\"button\":"+ ButtonToJson(button) +
+              "}";
+      // and send back
+      informListeners(METHOD_FLIC2_CLICK, jsonData);
+    }
+  };
+
+  private void informListeners(int methodId, String callbackData) {
+    synchronized (callbacksRegistered) {
+      for (Integer callbackID : callbacksRegistered) {
+        // call the method on each ID to inform them of this returned data
+        Map<String, Object> args = new HashMap<>();
+        args.put("id", callbackID);
+        args.put("method", methodId);
+        args.put("data", callbackData);
+        // Send some value to callback
+        channel.invokeMethod(methodNameCallback, args);
+      }
+    }
   }
 }
