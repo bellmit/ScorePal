@@ -19,7 +19,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
 
 SPEC CHECKSUMS:
-  flic_button: 11f7d05ef4fcdb631a14274655b23c53a247d0a0
+  flic_button: 6e4986073086cb36c9fee177e9e3591f0afe3fbe
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
 

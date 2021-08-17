@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import "Flic2Controller.h"
-#import "FlicButtonPlugin.h"
 
 @ import flic2lib;
 
@@ -19,6 +18,11 @@
     }
     return self;
     
+}
+
+- (void)dispose {
+    // shut everything down
+    self->plugin = nil;
 }
 
 - (void)manager:(nonnull FLICManager *)manager didUpdateState:(FLICManagerState)state {
@@ -50,31 +54,31 @@
 
 - (NSString*)buttonToJson:(NSObject*)button {
     return @"{"
-        @"\"uuid\":\"" @"button.getUuid()" @"\","
-        @"\"bdAddr\":\"" @"button.getBdAddr()" @"\","
-        @"\"readyTime\":" @"button.getReadyTimestamp()" @","
-        @"\"name\":\"" @"button.getName()" @"\","
-        @"\"serialNo\":\"" @"button.getSerialNumber()" @"\","
-        @"\"connection\":" @"button.getConnectionState()" @","
-        @"\"firmwareVer\":" @"button.getFirmwareVersion()" @","
-        @"\"battPerc\":" @"button.getLastKnownBatteryLevel().getEstimatedPercentage()" @","
-        @"\"battTime\":" @"button.getLastKnownBatteryLevel().getTimestampUtcMs()" @","
-        @"\"battVolt\":" @"button.getLastKnownBatteryLevel().getVoltage()" @","
-        @"\"pressCount\":" @"button.getPressCount()" ""
-        @"}";
-  }
+    @"\"uuid\":\"" @"button.getUuid()" @"\","
+    @"\"bdAddr\":\"" @"button.getBdAddr()" @"\","
+    @"\"readyTime\":" @"button.getReadyTimestamp()" @","
+    @"\"name\":\"" @"button.getName()" @"\","
+    @"\"serialNo\":\"" @"button.getSerialNumber()" @"\","
+    @"\"connection\":" @"button.getConnectionState()" @","
+    @"\"firmwareVer\":" @"button.getFirmwareVersion()" @","
+    @"\"battPerc\":" @"button.getLastKnownBatteryLevel().getEstimatedPercentage()" @","
+    @"\"battTime\":" @"button.getLastKnownBatteryLevel().getTimestampUtcMs()" @","
+    @"\"battVolt\":" @"button.getLastKnownBatteryLevel().getVoltage()" @","
+    @"\"pressCount\":" @"button.getPressCount()" ""
+    @"}";
+}
 
 - (NSString*)buttonClickToJson:(NSObject*)buttonClick {
     return @"{"
-              @"\"wasQueued\":" @"wasQueued" @","
-              @"\"clickAge\":" @"(wasQueued ? button.getReadyTimestamp() - timestamp : 0)" @","
-              @"\"lastQueued\":" @"lastQueued" @","
-              @"\"timestamp\":" @"timestamp" @","
-              @"\"isSingleClick\":" @"isSingleClick" @","
-              @"\"isDoubleClick\":" @"isDoubleClick" @","
-              @"\"isHold\":" @"isHold" @","
-              @"\"button\":" @"ButtonToJson(button)"
-              @"}";
+    @"\"wasQueued\":" @"wasQueued" @","
+    @"\"clickAge\":" @"(wasQueued ? button.getReadyTimestamp() - timestamp : 0)" @","
+    @"\"lastQueued\":" @"lastQueued" @","
+    @"\"timestamp\":" @"timestamp" @","
+    @"\"isSingleClick\":" @"isSingleClick" @","
+    @"\"isDoubleClick\":" @"isDoubleClick" @","
+    @"\"isHold\":" @"isHold" @","
+    @"\"button\":" @"ButtonToJson(button)"
+    @"}";
 }
 
 - (void)startScan {

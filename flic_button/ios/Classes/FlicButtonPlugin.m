@@ -40,10 +40,10 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:ChannelName
-            binaryMessenger:[registrar messenger]];
-  FlicButtonPlugin* instance = [[FlicButtonPlugin alloc] initWithChannel:channel];
-  [registrar addMethodCallDelegate:instance channel:channel];
+                                     methodChannelWithName:ChannelName
+                                     binaryMessenger:[registrar messenger]];
+    FlicButtonPlugin* instance = [[FlicButtonPlugin alloc] initWithChannel:channel];
+    [registrar addMethodCallDelegate:instance channel:channel];
 }
 
 - (id)initWithChannel:(FlutterMethodChannel*)channel {
@@ -60,87 +60,96 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     if ([MethodNameInitialise isEqualToString:call.method]) {
-      // initialize the Flic2 manager here then please
-      if (nil == self->flic2Controller) {
-          
-        self->flic2Controller = [[Flic2Controller alloc] init];
-          // and return the success of this
-          result(@(YES));
-      } else {
-          // just didn't do the work, not an error as such but different
-          result(@(NO));
-      }
-  }
-  else if ([MethodNameDispose isEqualToString:call.method]) {
-    // dispose of the Flic2 manager here then please
-
-    // and return the success of this
-    result(@(YES));
-  }
-  else if ([MethodNameStartFlic2Scan isEqualToString:call.method]) {
-    // start scanning for Flic2 buttons
-
-    // and return the success of this
-    result(@(YES));
-  }
-  else if ([MethodNameStopFlic2Scan isEqualToString:call.method]) {
-    // stop any scanning in progress
-
-    // and return the success of this
-    result(@(YES));
-  }
-  else if ([MethodNameGetButtons isEqualToString:call.method]) {
-    // get all the buttons here
-
-    // and return the success of this
-    result([NSArray alloc]);
-  }
-  else if ([MethodNameGetButtonsByAddr isEqualToString:call.method]) {
-    // get the button object for the specified address then please
-    // the first argument is the address of the button to return
-    NSString* buttonAddress = (NSString*) call.arguments[0];
-
-    // and return the success of this
-    result(@"this is button data then");
-  }
-  else if ([MethodNameStartListenToFlic2 isEqualToString:call.method]) {
-    // listen to the specified button, the first argument being the UUID of the button
-    NSString* buttonUuid = (NSString*) call.arguments[0];
-
-    // and return the success of this
-    result(@(YES));
-  }
-  else if ([MethodNameStopListenToFlic2 isEqualToString:call.method]) {
-    // stop listening to the specified button, the first argument being the UUID of the button
-    NSString* buttonUuid = (NSString*) call.arguments[0];
-
-    // and return the success of this
-    result(@(YES));
-  }
-  else if ([MethodNameConnectButton isEqualToString:call.method]) {
-    // connect to the specified button, the first argument being the UUID of the button
-    NSString* buttonUuid = (NSString*) call.arguments[0];
-
-    // and return the success of this
-    result(@(YES));
-  }
-  else if ([MethodNameDisconnectButton isEqualToString:call.method]) {
-    // disconnect from the specified button, the first argument being the UUID of the button
-    NSString* buttonUuid = (NSString*) call.arguments[0];
-
-    // and return the success of this
-    result(@(YES));
-  }
-  else if ([MethodNameForgetButton isEqualToString:call.method]) {
-    // forget the specified button, the first argument being the UUID of the button
-    NSString* buttonUuid = (NSString*) call.arguments[0];
-
-    // and return the success of this
-    result(@(YES));
-  }
-  else {
-    result(FlutterMethodNotImplemented);
-  }
+        // initialize the Flic2 manager here then please
+        if (nil == self->flic2Controller) {
+            
+            self->flic2Controller = [[Flic2Controller alloc] initWithPlugin:self];
+            // and return the success of this
+            result(@(YES));
+        } else {
+            // just didn't do the work, not an error as such but different
+            result(@(NO));
+        }
+    }
+    else if ([MethodNameDispose isEqualToString:call.method]) {
+        // dispose of the Flic2 manager here then please
+        if (nil != self->flic2Controller) {
+            // inform the controller that we are disposing it here
+            [self->flic2Controller dispose];
+            // and clear it1
+            self->flic2Controller = nil;
+            // and return the success of this
+            result(@(YES));
+        } else {
+            // already done, which is fine but return that we didn't do anything
+            result(@(NO));
+        }
+        
+    }
+    else if ([MethodNameStartFlic2Scan isEqualToString:call.method]) {
+        // start scanning for Flic2 buttons
+        
+        // and return the success of this
+        result(@(YES));
+    }
+    else if ([MethodNameStopFlic2Scan isEqualToString:call.method]) {
+        // stop any scanning in progress
+        
+        // and return the success of this
+        result(@(YES));
+    }
+    else if ([MethodNameGetButtons isEqualToString:call.method]) {
+        // get all the buttons here
+        
+        // and return the success of this
+        result([NSArray alloc]);
+    }
+    else if ([MethodNameGetButtonsByAddr isEqualToString:call.method]) {
+        // get the button object for the specified address then please
+        // the first argument is the address of the button to return
+        NSString* buttonAddress = (NSString*) call.arguments[0];
+        
+        // and return the success of this
+        result(@"this is button data then");
+    }
+    else if ([MethodNameStartListenToFlic2 isEqualToString:call.method]) {
+        // listen to the specified button, the first argument being the UUID of the button
+        NSString* buttonUuid = (NSString*) call.arguments[0];
+        
+        // and return the success of this
+        result(@(YES));
+    }
+    else if ([MethodNameStopListenToFlic2 isEqualToString:call.method]) {
+        // stop listening to the specified button, the first argument being the UUID of the button
+        NSString* buttonUuid = (NSString*) call.arguments[0];
+        
+        // and return the success of this
+        result(@(YES));
+    }
+    else if ([MethodNameConnectButton isEqualToString:call.method]) {
+        // connect to the specified button, the first argument being the UUID of the button
+        NSString* buttonUuid = (NSString*) call.arguments[0];
+        
+        // and return the success of this
+        result(@(YES));
+    }
+    else if ([MethodNameDisconnectButton isEqualToString:call.method]) {
+        // disconnect from the specified button, the first argument being the UUID of the button
+        NSString* buttonUuid = (NSString*) call.arguments[0];
+        
+        // and return the success of this
+        result(@(YES));
+    }
+    else if ([MethodNameForgetButton isEqualToString:call.method]) {
+        // forget the specified button, the first argument being the UUID of the button
+        NSString* buttonUuid = (NSString*) call.arguments[0];
+        
+        // and return the success of this
+        result(@(YES));
+    }
+    else {
+        result(FlutterMethodNotImplemented);
+    }
 }
 
 @end
