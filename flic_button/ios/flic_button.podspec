@@ -16,7 +16,12 @@ An interface to the flic button.
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
+  s.dependency 'flic2lib'
   s.platform = :ios, '8.0'
+
+  s.preserve_paths = './flic2lib.xcframework'
+  s.xcconfig = { 'OTHER_LDFLAGS' => '-framework flic2lib' }
+  s.vendored_frameworks = 'flic2lib.xcframework'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

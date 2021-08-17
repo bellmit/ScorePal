@@ -1,4 +1,5 @@
 #import "FlicButtonPlugin.h"
+#import "Flic2Controller.h"
 
 static NSString* const ChannelName = @"flic_button";
 static NSString* const MethodNameInitialise = @"initializeFlic2";
@@ -34,7 +35,7 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 @implementation FlicButtonPlugin
 {
     FlutterMethodChannel* channel;
-    NSMutableDictionary* buttonsDiscovered;
+    Flic2Controller* flic2Controller;
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -48,38 +49,8 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 - (id)initWithChannel:(FlutterMethodChannel*)channel {
     if (self = [super init]) {
         self->channel = channel;
-        self->buttonsDiscovered = [[NSMutableDictionary alloc] init];
     }
     return self;
-}
-
-- (NSString*)buttonToJson:(NSObject*)button {
-    return @"{"
-        @"\"uuid\":\"" @"button.getUuid()" @"\","
-        @"\"bdAddr\":\"" @"button.getBdAddr()" @"\","
-        @"\"readyTime\":" @"button.getReadyTimestamp()" @","
-        @"\"name\":\"" @"button.getName()" @"\","
-        @"\"serialNo\":\"" @"button.getSerialNumber()" @"\","
-        @"\"connection\":" @"button.getConnectionState()" @","
-        @"\"firmwareVer\":" @"button.getFirmwareVersion()" @","
-        @"\"battPerc\":" @"button.getLastKnownBatteryLevel().getEstimatedPercentage()" @","
-        @"\"battTime\":" @"button.getLastKnownBatteryLevel().getTimestampUtcMs()" @","
-        @"\"battVolt\":" @"button.getLastKnownBatteryLevel().getVoltage()" @","
-        @"\"pressCount\":" @"button.getPressCount()" ""
-        @"}";
-  }
-
-- (NSString*)buttonClickToJson:(NSObject*)buttonClick {
-    return @"{"
-              @"\"wasQueued\":" @"wasQueued" @","
-              @"\"clickAge\":" @"(wasQueued ? button.getReadyTimestamp() - timestamp : 0)" @","
-              @"\"lastQueued\":" @"lastQueued" @","
-              @"\"timestamp\":" @"timestamp" @","
-              @"\"isSingleClick\":" @"isSingleClick" @","
-              @"\"isDoubleClick\":" @"isDoubleClick" @","
-              @"\"isHold\":" @"isHold" @","
-              @"\"button\":" @"ButtonToJson(button)"
-              @"}";
 }
 
 - (void)informListenersOfMethod:(NSNumber*)methodId withData:(NSString*)data {
@@ -88,11 +59,17 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([MethodNameInitialise isEqualToString:call.method]) {
-    // initialize the Flic2 manager here then please
-
-    // and return the success of this
-    result(@(YES));
+    if ([MethodNameInitialise isEqualToString:call.method]) {
+      // initialize the Flic2 manager here then please
+      if (nil == self->flic2Controller) {
+          
+        self->flic2Controller = [[Flic2Controller alloc] init];
+          // and return the success of this
+          result(@(YES));
+      } else {
+          // just didn't do the work, not an error as such but different
+          result(@(NO));
+      }
   }
   else if ([MethodNameDispose isEqualToString:call.method]) {
     // dispose of the Flic2 manager here then please
@@ -124,7 +101,7 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
     NSString* buttonAddress = (NSString*) call.arguments[0];
 
     // and return the success of this
-    result([self buttonToJson:buttonAddress]);
+    result(@"this is button data then");
   }
   else if ([MethodNameStartListenToFlic2 isEqualToString:call.method]) {
     // listen to the specified button, the first argument being the UUID of the button
