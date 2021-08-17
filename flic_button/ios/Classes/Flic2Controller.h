@@ -1,9 +1,9 @@
 #import <Flutter/Flutter.h>
-#import "FlicButtonPlugin.h"
+#import "Flic2ControllerListener.h"
 
 @ import flic2lib;
 
 @interface Flic2Controller : NSObject<FLICButtonDelegate, FLICManagerDelegate>
-- (id)initWithPlugin:(FlicButtonPlugin*)plugin;
+- (id)initWithListener:(id<Flic2ControllerListener>)callback;
 - (void)dispose;
 @end

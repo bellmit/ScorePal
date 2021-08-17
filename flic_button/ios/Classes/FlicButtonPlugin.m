@@ -62,8 +62,8 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
     if ([MethodNameInitialise isEqualToString:call.method]) {
         // initialize the Flic2 manager here then please
         if (nil == self->flic2Controller) {
-            
-            self->flic2Controller = [[Flic2Controller alloc] initWithPlugin:self];
+            // create the controller that does all the actual work then
+            self->flic2Controller = [[Flic2Controller alloc] initWithListener:self];
             // and return the success of this
             result(@(YES));
         } else {
@@ -150,6 +150,10 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
     else {
         result(FlutterMethodNotImplemented);
     }
+}
+
+- (void)onButtonClicked {
+    NSLog(@"Button clicked received in plugin");
 }
 
 @end

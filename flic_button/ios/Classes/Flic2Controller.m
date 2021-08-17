@@ -1,17 +1,18 @@
 #import <Foundation/Foundation.h>
 #import "Flic2Controller.h"
+#import "Flic2ControllerListener.h"
 
 @ import flic2lib;
 
 @implementation Flic2Controller
 {
-    FlicButtonPlugin* plugin;
+    id<Flic2ControllerListener> callback;
     NSMutableDictionary* buttonsDiscovered;
 }
 
-- (id)initWithPlugin:(FlicButtonPlugin*)plugin {
+- (id)initWithListener:(id<Flic2ControllerListener>)callback {
     if (self = [super init]) {
-        self->plugin = plugin;
+        self->callback = callback;
         self->buttonsDiscovered = [[NSMutableDictionary alloc] init];
         // and initialize the Flic2 singleton
         [FLICManager configureWithDelegate:self buttonDelegate:self background:YES];
@@ -22,7 +23,7 @@
 
 - (void)dispose {
     // shut everything down
-    self->plugin = nil;
+    self->callback = nil;
 }
 
 - (void)manager:(nonnull FLICManager *)manager didUpdateState:(FLICManagerState)state {
