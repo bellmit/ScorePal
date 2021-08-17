@@ -61,36 +61,40 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     if ([MethodNameInitialise isEqualToString:call.method]) {
         // initialize the Flic2 manager here then please
-        if (nil == self->flic2Controller) {
+        if (nil != self->flic2Controller) {
+            // already running, this isn't great
+            result([FlutterError errorWithCode:ERROR_ALREADY_STARTED message: @"Flic 2 has been initialized already" details: @"Flic 2 started already, okay to call twice but won't do anything..."]);
+        } else {
             // create the controller that does all the actual work then
             self->flic2Controller = [[Flic2Controller alloc] initWithListener:self];
             // and return the success of this
             result(@(YES));
-        } else {
-            // just didn't do the work, not an error as such but different
-            result(@(NO));
         }
     }
     else if ([MethodNameDispose isEqualToString:call.method]) {
         // dispose of the Flic2 manager here then please
-        if (nil != self->flic2Controller) {
+        if (nil == self->flic2Controller) {
+            // trying to stop something that isn't started
+            result([FlutterError errorWithCode:ERROR_NOT_STARTED message: @"Flic 2 hasn't been initialized" details: @"Flic 2 isn't running so we can't stop it..."]);
+        } else {
             // inform the controller that we are disposing it here
             [self->flic2Controller dispose];
             // and clear it1
             self->flic2Controller = nil;
             // and return the success of this
             result(@(YES));
-        } else {
-            // already done, which is fine but return that we didn't do anything
-            result(@(NO));
         }
-        
     }
     else if ([MethodNameStartFlic2Scan isEqualToString:call.method]) {
         // start scanning for Flic2 buttons
-        
-        // and return the success of this
-        result(@(YES));
+        if (nil == self->flic2Controller) {
+            // not started so we can't scan for sure
+            result([FlutterError errorWithCode:ERROR_NOT_STARTED message: @"Flic 2 hasn't been initialized" details: @"Flic 2 isn't running so we can't scan..."]);
+        } else {
+            [self->flic2Controller startButtonScanning];
+            // and return the success of this
+            result(@(YES));
+        }
     }
     else if ([MethodNameStopFlic2Scan isEqualToString:call.method]) {
         // stop any scanning in progress
@@ -154,6 +158,10 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 
 - (void)onButtonClicked {
     NSLog(@"Button clicked received in plugin");
+    dispatch_async(dispatch_get_main_queue(), ^{
+      // Call the desired channel message here.
+    });
+
 }
 
 @end

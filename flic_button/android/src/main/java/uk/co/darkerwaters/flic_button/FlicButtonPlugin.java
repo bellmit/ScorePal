@@ -152,7 +152,7 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
     else if (call.method.equals(methodNameStartFlic2Scan)) {
       // this is easy - start the controller scanning
       if (null == this.flic2Controller) {
-        // already started
+        // not started so cannot scan
         result.error(ERROR_NOT_STARTED, "Flic 2 hasn't been started", "Flic 2 isn't running so we can't scan...");
       } else {
         // scan for new buttons then

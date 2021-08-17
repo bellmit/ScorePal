@@ -82,7 +82,7 @@
     @"}";
 }
 
-- (void)startScan {
+- (void)startButtonScanning {
     [[FLICManager sharedManager] scanForButtonsWithStateChangeHandler:^(FLICButtonScannerStatusEvent event) {
         // You can use these events to update your UI.
         switch (event)

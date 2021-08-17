@@ -6,4 +6,6 @@
 @interface Flic2Controller : NSObject<FLICButtonDelegate, FLICManagerDelegate>
 - (id)initWithListener:(id<Flic2ControllerListener>)callback;
 - (void)dispose;
+
+- (void)startButtonScanning;
 @end
