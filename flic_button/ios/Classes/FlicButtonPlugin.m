@@ -23,14 +23,14 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
 #define ERROR_ALREADY_STARTED @"ALREADY_STARTED"
 #define ERROR_INVALID_ARGUMENTS @"INVALID_ARGUMENTS"
 
-#define METHOD_FLIC2_DISCOVER_PAIRED 100
-#define METHOD_FLIC2_DISCOVERED 101
-#define METHOD_FLIC2_CONNECTED 102
-#define METHOD_FLIC2_CLICK 103
-#define METHOD_FLIC2_SCANNING 104
-#define METHOD_FLIC2_SCAN_COMPLETE 105
-#define METHOD_FLIC2_FOUND 106
-#define METHOD_FLIC2_ERROR 200
+#define METHOD_FLIC2_DISCOVER_PAIRED @(100)
+#define METHOD_FLIC2_DISCOVERED @(101)
+#define METHOD_FLIC2_CONNECTED @(102)
+#define METHOD_FLIC2_CLICK @(103)
+#define METHOD_FLIC2_SCANNING @(104)
+#define METHOD_FLIC2_SCAN_COMPLETE @(105)
+#define METHOD_FLIC2_FOUND @(106)
+#define METHOD_FLIC2_ERROR @(200)
 
 @implementation FlicButtonPlugin
 {
@@ -53,9 +53,40 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
     return self;
 }
 
+- (NSString*)buttonToJson:(FLICButton*)button {
+    return [NSString stringWithFormat:
+         @"{"
+         @"\"uuid\":\"%@\","
+         @"\"bdAddr\":\"%@\","
+         @"\"readyTime\":%d,"
+         @"\"name\":\"%@\","
+         @"\"serialNo\":\"%@\","
+         @"\"connection\":%d,"
+         @"\"firmwareVer\":%d,"
+         @"\"battPerc\":%d,"
+         @"\"battTime\":%d,"
+         @"\"battVolt\":%f,"
+         @"\"pressCount\":%d"
+         @"}",
+         button.uuid,
+            button.bluetoothAddress,
+            0,
+            button.name,
+            button.serialNumber,
+            [NSNumber numberWithLong:button.state].intValue,
+            button.firmwareRevision,
+            0,
+            0,
+            button.batteryVoltage,
+            button.pressCount];
+}
+
 - (void)informListenersOfMethod:(NSNumber*)methodId withData:(NSString*)data {
-    // just call the callback code right away with the data specified
-    [channel invokeMethod:MethodNameCallback arguments:@{@"method": methodId, @"data" : data}];
+    // just call the callback code right away with the data specified on the UI thread please
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Call the desired channel message here.
+        [self->channel invokeMethod:MethodNameCallback arguments:@{@"method": methodId, @"data" : data}];
+    });
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
@@ -156,12 +187,64 @@ static NSString* const MethodNameForgetButton = @"forgetButton";
     }
 }
 
-- (void)onButtonClicked {
-    NSLog(@"Button clicked received in plugin");
-    dispatch_async(dispatch_get_main_queue(), ^{
-      // Call the desired channel message here.
-    });
+- (void)onButtonClicked:(FLICButton *)button wasQueued:(BOOL)queued at:(NSInteger)age withClicks:(NSInteger)clicks {
+    // need to convert all this to a nice JSON structure to send then
+    NSString* jsonData = [NSString stringWithFormat:
+                          @"{"
+                          @"\"wasQueued\":%s,"
+                          @"\"clickAge\":%ld,"
+                          @"\"lastQueued\":%s,"
+                          @"\"timestamp\":%d,"
+                          @"\"isSingleClick\":%s,"
+                          @"\"isDoubleClick\":%s,"
+                          @"\"isHold\":%s,"
+                          @"\"button\":%@"
+                          @"}",
+                          queued ? "true" : "false",
+                          age,
+                          queued ? "true" : "false",
+                          0,
+                          clicks == 1 ? "true" : "false",
+                          clicks == 2 ? "true" : "false",
+                          clicks == 3 ? "true" : "false",
+                          [self buttonToJson:button]];
+    // just send this method with the correct data then please
+    [self informListenersOfMethod:METHOD_FLIC2_CLICK withData:jsonData];
+}
 
+- (void)onButtonConnected {
+    // just send this method with the correct data then please
+    [self informListenersOfMethod:METHOD_FLIC2_CONNECTED withData:nil];
+}
+
+- (void)onButtonDiscovered:(NSString *)buttonAddress {
+    // just send this method with the correct data then please
+    [self informListenersOfMethod:METHOD_FLIC2_DISCOVERED withData:buttonAddress];
+}
+
+- (void)onButtonFound:(FLICButton *)button {
+    // just send this method with the correct data then please
+    [self informListenersOfMethod:METHOD_FLIC2_FOUND withData:[self buttonToJson:button]];
+}
+
+- (void)onButtonScanningStarted {
+    // just send this method with the correct data then please
+    [self informListenersOfMethod:METHOD_FLIC2_SCANNING withData:nil];
+}
+
+- (void)onButtonScanningStopped {
+    // just send this method with the correct data then please
+    [self informListenersOfMethod:METHOD_FLIC2_SCAN_COMPLETE withData:nil];
+}
+
+- (void)onError:(NSString *)errorString {
+    // just send this method with the correct data then please
+    [self informListenersOfMethod:METHOD_FLIC2_ERROR withData:errorString];
+}
+
+- (void)onPairedButtonFound:(FLICButton *)button {
+    // just send this method with the correct data then please
+    [self informListenersOfMethod:METHOD_FLIC2_DISCOVER_PAIRED withData:[self buttonToJson:button]];
 }
 
 @end

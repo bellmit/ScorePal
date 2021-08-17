@@ -45,41 +45,22 @@
     }
 }
 
-- (void)managerDidRestoreState:(nonnull FLICManager *)manager {
-    // The manager was restored and can now be used.
-    for (FLICButton *button in manager.buttons)
-    {
-        NSLog(@"Did restore Flic: %@", button.name);
+- (void)initializeButton:(FLICButton*)button {
+    // setup the button properly then please
+    if (button.triggerMode != FLICButtonTriggerModeClickAndDoubleClickAndHold) {
+        // change the mode of the button to tell us everything please
+        NSLog(@"changing button to inform about all types of button press");
+        button.triggerMode = FLICButtonTriggerModeClickAndDoubleClickAndHold;
     }
 }
 
-- (NSString*)buttonToJson:(NSObject*)button {
-    return @"{"
-    @"\"uuid\":\"" @"button.getUuid()" @"\","
-    @"\"bdAddr\":\"" @"button.getBdAddr()" @"\","
-    @"\"readyTime\":" @"button.getReadyTimestamp()" @","
-    @"\"name\":\"" @"button.getName()" @"\","
-    @"\"serialNo\":\"" @"button.getSerialNumber()" @"\","
-    @"\"connection\":" @"button.getConnectionState()" @","
-    @"\"firmwareVer\":" @"button.getFirmwareVersion()" @","
-    @"\"battPerc\":" @"button.getLastKnownBatteryLevel().getEstimatedPercentage()" @","
-    @"\"battTime\":" @"button.getLastKnownBatteryLevel().getTimestampUtcMs()" @","
-    @"\"battVolt\":" @"button.getLastKnownBatteryLevel().getVoltage()" @","
-    @"\"pressCount\":" @"button.getPressCount()" ""
-    @"}";
-}
-
-- (NSString*)buttonClickToJson:(NSObject*)buttonClick {
-    return @"{"
-    @"\"wasQueued\":" @"wasQueued" @","
-    @"\"clickAge\":" @"(wasQueued ? button.getReadyTimestamp() - timestamp : 0)" @","
-    @"\"lastQueued\":" @"lastQueued" @","
-    @"\"timestamp\":" @"timestamp" @","
-    @"\"isSingleClick\":" @"isSingleClick" @","
-    @"\"isDoubleClick\":" @"isDoubleClick" @","
-    @"\"isHold\":" @"isHold" @","
-    @"\"button\":" @"ButtonToJson(button)"
-    @"}";
+- (void)managerDidRestoreState:(nonnull FLICManager *)manager {
+    // The manager was restored and can now be used.
+    for (FLICButton *button in manager.buttons) {
+        NSLog(@"Did restore Flic: %@", button.name);
+        // and set it up then
+        [self initializeButton:button];
+    }
 }
 
 - (void)startButtonScanning {
@@ -123,14 +104,40 @@
 
 - (void)buttonDidConnect:(nonnull FLICButton *)button {
     NSLog(@"Did connect Flic: %@", button.name);
+    // and set it up then
+    [self initializeButton:button];
 }
 
 - (void)buttonIsReady:(nonnull FLICButton *)button {
     NSLog(@"Button ready: %@", button.name);
+    // and set it up then
+    [self initializeButton:button];
 }
 
 - (void)button:(FLICButton *)button didReceiveButtonClick:(BOOL)queued age:(NSInteger)age {
     NSLog(@"Flic: %@ was clicked", button.name);
+    if (nil != self->callback) {
+        // pass this to the callback then
+        [self->callback onButtonClicked:button wasQueued:queued at:age withClicks:1];
+    }
+}
+
+- (void)button:(FLICButton *)button didReceiveButtonDoubleClick:(BOOL)queued age:(NSInteger)age {
+    NSLog(@"Flic: %@ was double-clicked", button.name);
+    if (nil != self->callback) {
+        // pass this to the callback then
+        [self->callback onButtonClicked:button wasQueued:queued at:age withClicks:2];
+    }
+    
+}
+
+- (void)button:(FLICButton *)button didReceiveButtonHold:(BOOL)queued age:(NSInteger)age {
+    NSLog(@"Flic: %@ was held", button.name);
+    if (nil != self->callback) {
+        // pass this to the callback then
+        [self->callback onButtonClicked:button wasQueued:queued at:age withClicks:3];
+    }
+    
 }
 
 @end

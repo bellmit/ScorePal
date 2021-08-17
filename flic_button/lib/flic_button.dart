@@ -220,7 +220,7 @@ class FlicButtonPlugin {
         pressCount: json['pressCount'],
       );
     } catch (error) {
-      print('data back is not a valid button: $data');
+      print('data back is not a valid button: $data $error');
       // return an error button
       return Flic2Button(
           uuid: '',
@@ -252,7 +252,7 @@ class FlicButtonPlugin {
         button: _createFlic2FromData(json['button']),
       );
     } catch (error) {
-      print('data back is not a valid click: $data');
+      print('data back is not a valid click: $data $error');
       // return error button click data
       return Flic2ButtonClick(
         wasQueued: false,
