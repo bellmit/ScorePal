@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
   }
 
   void _startStopScanningForFlic2() {
-    // start scanning
+    // start scanning for new buttons
     if (!_isScanning) {
       // not scanning yet - start
       flicButtonManager!.scanForFlic2();
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
   }
 
   void _startStopFlic2() {
-    // start or stop it
+    // start or stop the plugin (iOS doesn's stop)
     if (null == flicButtonManager) {
       // we are not started - start listening to FLIC2 buttons
       setState(() => flicButtonManager = FlicButtonPlugin(flic2listener: this));
@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
   }
 
   void _getButtons() {
-    // get all the buttons
+    // get all the buttons from the plugin that were there last time
     flicButtonManager!.getFlic2Buttons().then((buttons) {
       // put all of these in the list to show the buttons
       buttons.forEach((button) {
@@ -70,6 +70,8 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
   }
 
   void _addButtonAndListen(Flic2Button button) {
+    // as buttons are discovered via the various methods, add them
+    // to the map to show them in the list on the view
     setState(() {
       // add the button to the map
       _buttonsFound[button.uuid] = button;
@@ -79,9 +81,8 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
   }
 
   void _connectDisconnectButton(Flic2Button button) {
-    // if disconnected, connect, else disconnect
-    if (button.connectionState ==
-        Flic2ButtonConnectionState.CONNECTION_STATE_DISCONNECTED) {
+    // if disconnected, connect, else disconnect the button
+    if (button.connectionState == Flic2ButtonConnectionState.disconnected) {
       flicButtonManager!.connectButton(button.uuid);
     } else {
       flicButtonManager!.disconnectButton(button.uuid);
@@ -89,6 +90,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
   }
 
   void _forgetButton(Flic2Button button) {
+    // forget the passed button so it disapears and we can search again
     flicButtonManager!.forgetButton(button.uuid).then((value) {
       if (value != null && value) {
         // button was removed
@@ -116,10 +118,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
                 // are not initialized yet, wait a sec - should be very quick!
                 return Center(
                   child: ElevatedButton(
-                    onPressed: () {
-                      // initiate or stop scanning
-                      _startStopFlic2();
-                    },
+                    onPressed: () => _startStopFlic2(),
                     child: Text('Start and initialize Flic2'),
                   ),
                 );
@@ -135,10 +134,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
                       style: TextStyle(fontSize: 20),
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        // initiate or stop scanning
-                        _startStopFlic2();
-                      },
+                      onPressed: () => _startStopFlic2(),
                       child: Text('Stop Flic2'),
                     ),
                     if (flicButtonManager != null)
@@ -147,16 +143,10 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
-                              onPressed: () {
-                                // get all the buttons currently registered, will listen to any found
-                                _getButtons();
-                              },
+                              onPressed: () => _getButtons(),
                               child: Text('Get Buttons')),
                           ElevatedButton(
-                              onPressed: () {
-                                // initiate scanning
-                                _startStopScanningForFlic2();
-                              },
+                              onPressed: () => _startStopScanningForFlic2(),
                               child: Text(_isScanning
                                   ? 'Stop Scanning'
                                   : 'Scan for buttons')),
@@ -181,10 +171,8 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
                           children: _buttonsFound.values
                               .map((e) => ListTile(
                                     key: ValueKey(e.uuid),
-                                    leading: Icon(
-                                      Icons.radio_button_on,
-                                      size: 48,
-                                    ),
+                                    leading:
+                                        Icon(Icons.radio_button_on, size: 48),
                                     title: Text('FLIC2 @${e.buttonAddr}'),
                                     subtitle: Column(
                                       children: [
@@ -200,13 +188,11 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
                                                   _connectDisconnectButton(e),
                                               child: Text(e.connectionState ==
                                                       Flic2ButtonConnectionState
-                                                          .CONNECTION_STATE_DISCONNECTED
+                                                          .disconnected
                                                   ? 'connect'
                                                   : 'disconnect'),
                                             ),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
+                                            SizedBox(width: 20),
                                             ElevatedButton(
                                               onPressed: () => _forgetButton(e),
                                               child: Text('forget'),
@@ -228,6 +214,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onButtonClicked(Flic2ButtonClick buttonClick) {
+    // callback from the plugin that someone just clicked a button
     print('button ${buttonClick.button.uuid} clicked');
     setState(() {
       _lastClick = buttonClick;
@@ -261,12 +248,13 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
   void onButtonFound(Flic2Button button) {
     // we have found a new button, add to the list to show
     print('button ${button.uuid} found');
+    // and add to the list to show
     _addButtonAndListen(button);
   }
 
   @override
   void onFlic2Error(String error) {
-    // something went wrong somewhere, provide feedback maybe, or did you code something in the wrong order
+    // something went wrong somewhere, provide feedback maybe, or did you code something in the wrong order?
     print('ERROR: $error');
   }
 
@@ -280,6 +268,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onScanCompleted() {
+    // scan completed, update the state of our view
     setState(() {
       _isScanning = false;
     });
@@ -287,6 +276,7 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
 
   @override
   void onScanStarted() {
+    // scan started, update the state of our view
     setState(() {
       _isScanning = true;
     });

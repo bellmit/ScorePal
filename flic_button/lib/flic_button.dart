@@ -3,25 +3,47 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 enum Flic2ButtonConnectionState {
-  CONNECTION_STATE_DISCONNECTED,
-  CONNECTION_STATE_CONNECTING,
-  CONNECTION_STATE_CONNECTED_STARTING,
-  CONNECTION_STATE_CONNECTED_READY,
+  disconnected,
+  connecting,
+  connecting_starting,
+  connected_ready,
 }
 
 class Flic2Button {
+  /// the unique ID of this button - a long ugly string
   final String uuid;
+
+  /// the bluetooth address of this button
   final String buttonAddr;
+
+  /// the time at which this button became ready last (not iOS)
   final int readyTimestamp;
+
+  /// the friendly name of this button
   final String name;
+
+  /// the serial number of this button
   final String serialNo;
+
+  /// is this button connected etc
   final Flic2ButtonConnectionState connectionState;
+
+  /// the firmware version
   final int firmwareVersion;
+
+  /// the state of the battery % so from 0 - 100
   final int battPercentage;
+
+  /// the timestamp the batter data was stored (not iOS)
   final int battTimestamp;
+
+  /// the current voltage of the battery
   final double battVoltage;
+
+  /// a global counter of how often this button has been clicked
   final int pressCount;
 
+  /// constructor
   const Flic2Button({
     required this.uuid,
     required this.buttonAddr,
@@ -38,15 +60,31 @@ class Flic2Button {
 }
 
 class Flic2ButtonClick {
+  /// the button
   final Flic2Button button;
+
+  /// was this click stored in the queue, button comes back into range and sends it's cache
   final bool wasQueued;
+
+  /// is this click the last in the queue
   final bool lastQueued;
+
+  /// the age (ms) of this click when in a queue (if it was ages maybe you want to ignore it)
   final int clickAge;
+
+  /// the timestamp of this click from the button (not in iOS)
   final int timestamp;
+
+  /// was this a single click
   final bool isSingleClick;
+
+  /// was this a double click
   final bool isDoubleClick;
+
+  /// was this a long hold of the button
   final bool isHold;
 
+  /// constructor
   const Flic2ButtonClick({
     required this.wasQueued,
     required this.clickAge,
@@ -60,16 +98,32 @@ class Flic2ButtonClick {
 }
 
 abstract class Flic2Listener {
+  /// called as a button is found by the plugin (while scanning)
   void onButtonFound(Flic2Button button);
+
+  /// called as a button is discovered (by bluetooth address) by the plugin (while scanning)
   void onButtonDiscovered(String buttonAddress);
+
+  /// called as an already paired button is found by the plugin (while scanning)
   void onPairedButtonDiscovered(Flic2Button button);
+
+  /// called by the plugin as a button is clicked
   void onButtonClicked(Flic2ButtonClick buttonClick);
+
+  /// called by the plugin as a button becomes connected
   void onButtonConnected();
+
+  /// called by the plugin as a scan is started
   void onScanStarted();
+
+  /// called by the plugin as a scan is completed
   void onScanCompleted();
+
+  /// called by the plugin as an unexpected error is encountered
   void onFlic2Error(String error);
 }
 
+/// the plugin to handle Flic2 buttons
 class FlicButtonPlugin {
   static const String _channelName = 'flic_button';
   static const String _methodNameInitialize = 'initializeFlic2';
@@ -116,53 +170,63 @@ class FlicButtonPlugin {
     _invokationFuture = _channel.invokeMethod<bool>(_methodNameInitialize);
   }
 
+  /// accessor to get the invokation future so your UI can wait till it's running properly
   Future<bool?>? get invokation {
     return _invokationFuture;
   }
 
+  /// dispose of this plugin to shut it all down (iOS doesn't at the moment)
   Future<bool?> disposeFlic2() async {
     // this just stops the FLIC 2 manager if not started that's ok
     return _channel.invokeMethod<bool>(_methodNameDispose);
   }
 
+  /// initiate a scan for buttons
   Future<bool?> scanForFlic2() async {
     // scan for flic 2 buttons then please
     return _channel.invokeMethod<bool>(_methodNameStartFlic2Scan);
   }
 
+  /// cancel any running scan
   Future<bool?> cancelScanForFlic2() async {
     // scan for flic 2 buttons then please
     return _channel.invokeMethod<bool>(_methodNameStopFlic2Scan);
   }
 
+  /// connect a button for use
   Future<bool?> connectButton(String buttonUuid) async {
     // connect this button then please
     return _channel.invokeMethod<bool>(_methodNameConnectButton, [buttonUuid]);
   }
 
+  /// disconnect a button to stop using
   Future<bool?> disconnectButton(String buttonUuid) async {
     // disconnect this button then please
     return _channel
         .invokeMethod<bool>(_methodNameDisconnectButton, [buttonUuid]);
   }
 
+  /// have the manager forget the button (so you can scan again and connect again)
   Future<bool?> forgetButton(String buttonUuid) async {
     // forget this button then please
     return _channel.invokeMethod<bool>(_methodNameForgetButton, [buttonUuid]);
   }
 
+  /// listen to the button (android only, or can commonly ignore)
   Future<bool?> listenToFlic2Button(String buttonUuid) async {
     // scan for flic 2 buttons then please
     return _channel
         .invokeMethod<bool>(_methodNameStartListenToFlic2, [buttonUuid]);
   }
 
+  /// stop listening to a button (not iOS)
   Future<bool?> cancelListenToFlic2Button(String buttonUuid) async {
     // scan for flic 2 buttons then please
     return _channel
         .invokeMethod<bool>(_methodNameStopListenToFlic2, [buttonUuid]);
   }
 
+  /// get all the flic 2 buttons the manager is currently aware of (will remember between sessions)
   Future<List<Flic2Button>> getFlic2Buttons() async {
     // get the buttons
     final buttons = await _channel.invokeMethod<List?>(_methodNameGetButtons);
@@ -173,6 +237,7 @@ class FlicButtonPlugin {
     }
   }
 
+  /// when a button is discovered, you can just get the bluetooth address, this let's you see if there's a button behind that
   Future<Flic2Button?> getFlic2ButtonByAddress(String buttonAddress) async {
     // scan for flic 2 buttons then please
     final buttonString = await _channel
@@ -185,21 +250,23 @@ class FlicButtonPlugin {
     }
   }
 
+  /// helper to convert the int from the native to a nice enum
   Flic2ButtonConnectionState _connectionStateFromChannelCode(int code) {
     switch (code) {
       case 0:
-        return Flic2ButtonConnectionState.CONNECTION_STATE_DISCONNECTED;
+        return Flic2ButtonConnectionState.disconnected;
       case 1:
-        return Flic2ButtonConnectionState.CONNECTION_STATE_CONNECTING;
+        return Flic2ButtonConnectionState.connecting;
       case 2:
-        return Flic2ButtonConnectionState.CONNECTION_STATE_CONNECTED_STARTING;
+        return Flic2ButtonConnectionState.connecting_starting;
       case 3:
-        return Flic2ButtonConnectionState.CONNECTION_STATE_CONNECTED_READY;
+        return Flic2ButtonConnectionState.connected_ready;
       default:
-        return Flic2ButtonConnectionState.CONNECTION_STATE_DISCONNECTED;
+        return Flic2ButtonConnectionState.disconnected;
     }
   }
 
+  /// helper to convert the json from native to the object passed around in flutter
   Flic2Button _createFlic2FromData(Object data) {
     try {
       // create a button from this json data
@@ -233,8 +300,7 @@ class FlicButtonPlugin {
           readyTimestamp: 0,
           name: '',
           serialNo: '',
-          connectionState:
-              Flic2ButtonConnectionState.CONNECTION_STATE_DISCONNECTED,
+          connectionState: Flic2ButtonConnectionState.disconnected,
           firmwareVersion: 0,
           battPercentage: 0,
           battTimestamp: 0,
@@ -243,6 +309,7 @@ class FlicButtonPlugin {
     }
   }
 
+  /// helper to convert the json from native to the object passed around in flutter
   Flic2ButtonClick _createFlic2ClickFromData(String data) {
     try {
       final json = jsonDecode(data);
@@ -272,6 +339,7 @@ class FlicButtonPlugin {
     }
   }
 
+  /// called back from the native with the relevant data
   Future<void> _methodCallHandler(MethodCall call) async {
     // this is called from the other side when there's something happening in whic
     // we are interested, the ID of the method determines what is sent back
