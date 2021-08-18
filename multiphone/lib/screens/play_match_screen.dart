@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/controllers/controller_listener.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/controllers/controllers.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
 import 'package:multiphone/screens/settings_screen.dart';
@@ -33,7 +34,7 @@ abstract class PlayMatchScreen extends StatefulWidget {
 }
 
 class _PlayMatchScreenState extends State<PlayMatchScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, ControllerListener {
   String _description = '';
   MatchPlayTracker _playTracker;
 
@@ -43,6 +44,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   AnimationController _optionsController;
   Animation<Offset> _optionsOffset;
 
+  Controllers _controllersProvider;
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +54,10 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     ActiveMatch match = Provider.of<ActiveMatch>(context, listen: false);
     // new match - new tracker
     _playTracker = MatchPlayTracker(match);
+    // create the controllers we will use to track things
+    _controllersProvider = new Controllers(context);
+    // and listen to it
+    _controllersProvider.registerControllerListener(this);
 
     // keep this screen on
     Wakelock.enable();
@@ -76,7 +83,6 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   }
 
   void _releaseLocks() {
-    Log.debug("releasing locks");
     // release the lock
     Wakelock.disable();
     // and put the overlays back
@@ -86,7 +92,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
 
   @override
   void deactivate() {
-    print("deactivate");
+    // release the locks for the screen
     _releaseLocks();
     super.deactivate();
   }
@@ -96,6 +102,13 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     // release all the created things
     _messageController.dispose();
     _optionsController.dispose();
+    if (null != _controllersProvider) {
+      // release ourselves as a listener on this
+      _controllersProvider.releaseControllerListener(this);
+      _controllersProvider.dispose();
+      _controllersProvider = null;
+    }
+    _playTracker = null;
     // release any locks we asked for
     _releaseLocks();
     // and dispose
@@ -113,6 +126,22 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
       _optionsController.forward();
     } else {
       _optionsController.reverse();
+    }
+  }
+
+  @override
+  void onButtonPressed({ClickPattern pattern}) {
+    // button was pressed, from the pattern process and handle it
+    switch (pattern) {
+      case ClickPattern.single:
+        _processScoreChange(_playTracker.match, TeamIndex.T_ONE, 0);
+        break;
+      case ClickPattern.double:
+        _processScoreChange(_playTracker.match, TeamIndex.T_TWO, 0);
+        break;
+      case ClickPattern.long:
+        _undoLastPoint(_playTracker.match);
+        break;
     }
   }
 

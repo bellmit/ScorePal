@@ -20,6 +20,7 @@ class MenuItem {
   static const menuSettings = 2;
   static const menuTrash = 3;
   static const menuAttributions = 4;
+  static const menuSetupFlic2 = 5;
 
   static List<MenuItem> mainMenuItems(BuildContext context) {
     final values = Values(context);

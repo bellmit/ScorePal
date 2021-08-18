@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_selection.dart';
-import 'package:multiphone/widgets/common/heading_widget.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
-import 'package:multiphone/widgets/common/line_break_widget.dart';
-import 'package:multiphone/widgets/select_sport_widget.dart';
-import 'package:multiphone/widgets/setup_match_summary_widget.dart';
-import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
 class ChangeMatchSetupScreen extends StatefulWidget {

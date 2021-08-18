@@ -27,6 +27,10 @@
     "@option_trash": {
         "description": "The forth home screen title (view deleted matches)"
     },
+    "option_setup_flic2": "Setup Flic 2 Smart Button",
+    "@option_setup_flic2": {
+        "description": "Setup a Flic 2 smart button as a remote control"
+    },
     "option_attributions": "Attributions",
     "@option_trash": {
         "description": "The home screen title (view attributions)"
