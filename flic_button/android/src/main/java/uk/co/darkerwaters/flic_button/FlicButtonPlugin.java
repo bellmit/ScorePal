@@ -191,7 +191,14 @@ public class FlicButtonPlugin implements FlutterPlugin, MethodCallHandler {
       String buttonAddress = extractStringArgument(methodNameGetButtonsByAddr, "button address", call.arguments(), result);
       if (buttonAddress != null) {
         // so all's well, return the button data from this as success
-        result.success(ButtonToJson(this.flic2Controller.getButtonForAddress(buttonAddress)));
+        Flic2Button button = this.flic2Controller.getButtonForAddress(buttonAddress);
+        if (null == button) {
+          // not found, which is success returning nothing
+          result.success("");
+        } else {
+          // else return the button as JSON
+          result.success(ButtonToJson(button));
+        }
       }
     }
     else if (call.method.equals(methodNameStartListenToFlic2)) {

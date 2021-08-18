@@ -24,6 +24,13 @@
 - (void)dispose {
     // shut everything down
     self->callback = nil;
+    self->buttonsDiscovered = nil;
+    FLICManager* manager = [FLICManager sharedManager];
+    // cancel any active scanning
+    [manager stopScan];
+    // clear us as the delegates
+    [manager setDelegate:nil];
+    [manager setButtonDelegate:nil];
 }
 
 - (void)manager:(nonnull FLICManager *)manager didUpdateState:(FLICManagerState)state {
@@ -46,6 +53,8 @@
 }
 
 - (void)initializeButton:(FLICButton*)button {
+    // put this into our map of data then please, for later access
+    [buttonsDiscovered setObject:button forKey:button.uuid];
     // setup the button properly then please
     if (button.triggerMode != FLICButtonTriggerModeClickAndDoubleClickAndHold) {
         // change the mode of the button to tell us everything please
@@ -57,25 +66,36 @@
 - (void)managerDidRestoreState:(nonnull FLICManager *)manager {
     // The manager was restored and can now be used.
     for (FLICButton *button in manager.buttons) {
-        NSLog(@"Did restore Flic: %@", button.name);
-        // and set it up then
+        // and set it up then which will also add it to our map as needed later
         [self initializeButton:button];
+        // and inform any listeners of this change in state
+        if (nil != self->callback) {
+            // pass this to the callback then
+            [self->callback onPairedButtonFound:button];
+        }
     }
 }
 
-- (void)startButtonScanning {
+- (Boolean)startButtonScanning {
+    if (nil != self->callback) {
+        // pass this to the callback then
+        [self->callback onButtonScanningStarted];
+    }
     [[FLICManager sharedManager] scanForButtonsWithStateChangeHandler:^(FLICButtonScannerStatusEvent event) {
         // You can use these events to update your UI.
         switch (event)
         {
             case FLICButtonScannerStatusEventDiscovered:
-                NSLog(@"A Flic was discovered.");
+                // discovery doesn't have the address, so let's just leave it alone here
                 break;
             case FLICButtonScannerStatusEventConnected:
-                NSLog(@"A Flic is being verified.");
+                // and inform any listeners of this change in state
+                if (nil != self->callback) {
+                    // pass this to the callback then
+                    [self->callback onButtonConnected];
+                }
                 break;
             case FLICButtonScannerStatusEventVerified:
-                NSLog(@"The Flic was verified successfully.");
                 break;
             case FLICButtonScannerStatusEventVerificationFailed:
                 NSLog(@"The Flic verification failed.");
@@ -84,38 +104,175 @@
                 break;
         }
     } completion:^(FLICButton *button, NSError *error) {
-        NSLog(@"Scanner completed with error: %@", error);
-        if (!error)
-        {
-            NSLog(@"Successfully verified: %@, %@, %@", button.name, button.bluetoothAddress, button.serialNumber);
-            // Listen to single click only.
-            button.triggerMode = FLICButtonTriggerModeClick;
+        if (nil != self->callback) {
+            // pass this to the callback then
+            [self->callback onButtonScanningStopped];
+        }
+        if (!error) {
+            // Listen to all the click types then please by initializing the button here
+            [self initializeButton:button];
+            // and inform any listeners of this change in state
+            if (nil != self->callback) {
+                // pass this to the callback then
+                [self->callback onButtonDiscovered:button.bluetoothAddress];
+            }
+        } else {
+            NSLog(@"Scanner completed with error: %@", error);
+            // inform any listeners of this error
+            if (nil != self->callback) {
+                // pass this to the callback then
+                [self->callback onError:error.localizedDescription];
+            }
         }
     }];
+    return true;
+}
+
+- (Boolean)stopButtonScanning {
+    // stop the scanning
+    [[FLICManager sharedManager] stopScan];
+    // this will return any active scan with an error so we don't need to send a message from here...
+    return true;
+}
+
+- (NSArray<FLICButton*>*)getFlic2Buttons {
+    // just return our list, but in a way that the caller cannot edit
+    return [[self->buttonsDiscovered allValues] copy];
+}
+
+- (FLICButton*)getButtonForAddress: (NSString*)address {
+    if (nil == address) {
+        // not good
+        return nil;
+    }
+    // find the button in the array to return
+    for (FLICButton* button in [self->buttonsDiscovered allValues]) {
+        if ([button.bluetoothAddress isEqualToString:address]) {
+            // this is the one
+            return button;
+        }
+    }
+    // not found
+    return nil;
+}
+
+- (FLICButton*)getButtonForUuid: (NSString*)buttonUuid {
+    if (nil == buttonUuid) {
+        // not good
+        return nil;
+    }
+    // find the button in the array to return
+    for (FLICButton* button in [self->buttonsDiscovered allValues]) {
+        if ([button.uuid isEqualToString:buttonUuid]) {
+            // this is the one
+            return button;
+        }
+    }
+    // not found
+    return nil;
+}
+
+- (Boolean)listenToButton: (NSString*)buttonUuid {
+    FLICButton* button = [self getButtonForUuid:buttonUuid];
+    if (nil != button) {
+        // there's no listen / don't listen in iOS but we can ask for clicks or not, so let's do that
+        button.triggerMode = FLICButtonTriggerModeClickAndDoubleClickAndHold;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+- (Boolean)stopListeningToButton: (NSString*)buttonUuid {
+    // can't really do this, stop listening that is...
+    FLICButton* button = [self getButtonForUuid:buttonUuid];
+    if (nil != button) {
+        // there's no listen / don't listen in iOS but we can ask for clicks or not, so let's do that
+        // but it also doesn't let us stop listening to everything )O:
+        //button.triggerMode = FLICButtonTriggerModeNone;
+        return false;
+    } else {
+        return false;
+    }
+}
+
+- (Boolean)connectButton: (NSString*)buttonUuid {
+    FLICButton* button = [self getButtonForUuid:buttonUuid];
+    if (nil != button) {
+        // and connect the button
+        [button connect];
+        return true;
+    } else {
+        return false;
+    }
+}
+
+- (Boolean)disconnectButton: (NSString*)buttonUuid {
+    FLICButton* button = [self getButtonForUuid:buttonUuid];
+    if (nil != button) {
+        // and disconnect the button
+        [button disconnect];
+        return true;
+    } else {
+        return false;
+    }
+}
+
+- (Boolean)forgetButton: (NSString*)buttonUuid {
+    FLICButton* button = [self getButtonForUuid:buttonUuid];
+    if (nil != button) {
+        // and forget the button
+        [[FLICManager sharedManager] forgetButton:button completion:^(NSUUID * _Nonnull uuid, NSError * _Nullable error) {
+            if (!error) {
+                // so we can remove this from our map of buttons
+                [self->buttonsDiscovered removeObjectForKey:uuid];
+            } else {
+                // inform any listeners of this error
+                NSLog(@"Forget button failed with error: %@", error);
+                if (nil != self->callback) {
+                    // pass this to the callback then
+                    [self->callback onError:error.localizedDescription];
+                }
+            }
+        }];
+        return true;
+    } else {
+        return false;
+    }
 }
 
 - (void)button:(nonnull FLICButton *)button didDisconnectWithError:(NSError * _Nullable)error {
-    NSLog(@"Did disconnect Flic: %@", button.name);
+    // and inform any listeners of this problem
+    if (nil != self->callback && nil != error) {
+        // pass this to the callback then
+        [self->callback onError:error.localizedDescription];
+    }
 }
 
 - (void)button:(nonnull FLICButton *)button didFailToConnectWithError:(NSError * _Nullable)error {
-    NSLog(@"Did fail to connect Flic: %@", button.name);
+    // and inform any listeners of this problem
+    if (nil != self->callback && nil != error) {
+        // pass this to the callback then
+        [self->callback onError:error.localizedDescription];
+    }
 }
 
 - (void)buttonDidConnect:(nonnull FLICButton *)button {
-    NSLog(@"Did connect Flic: %@", button.name);
-    // and set it up then
+    // be sure to setup the button properly as it connects
     [self initializeButton:button];
+    // and inform any listeners of this lovely action (just like android so can't pass the button)
+    if (nil != self->callback) {
+        // pass this to the callback then
+        [self->callback onButtonConnected];
+    }
 }
 
 - (void)buttonIsReady:(nonnull FLICButton *)button {
-    NSLog(@"Button ready: %@", button.name);
-    // and set it up then
+    // be sure to setup the button properly as it becomes ready
     [self initializeButton:button];
 }
 
 - (void)button:(FLICButton *)button didReceiveButtonClick:(BOOL)queued age:(NSInteger)age {
-    NSLog(@"Flic: %@ was clicked", button.name);
     if (nil != self->callback) {
         // pass this to the callback then
         [self->callback onButtonClicked:button wasQueued:queued at:age withClicks:1];
@@ -123,21 +280,17 @@
 }
 
 - (void)button:(FLICButton *)button didReceiveButtonDoubleClick:(BOOL)queued age:(NSInteger)age {
-    NSLog(@"Flic: %@ was double-clicked", button.name);
     if (nil != self->callback) {
         // pass this to the callback then
         [self->callback onButtonClicked:button wasQueued:queued at:age withClicks:2];
     }
-    
 }
 
 - (void)button:(FLICButton *)button didReceiveButtonHold:(BOOL)queued age:(NSInteger)age {
-    NSLog(@"Flic: %@ was held", button.name);
     if (nil != self->callback) {
         // pass this to the callback then
         [self->callback onButtonClicked:button wasQueued:queued at:age withClicks:3];
     }
-    
 }
 
 @end
