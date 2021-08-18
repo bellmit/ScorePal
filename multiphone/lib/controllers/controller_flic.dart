@@ -39,6 +39,7 @@ class ControllerFlic extends Controller with Flic2Listener {
 
   @override
   void onButtonClicked(Flic2ButtonClick buttonClick) {
+    //TODO check the age of the click in case there's loads cached
     // a button was clicked, pass this on to the control listeners registered
     if (buttonClick.isSingleClick) {
       provider.informListeners(ClickPattern.single);
