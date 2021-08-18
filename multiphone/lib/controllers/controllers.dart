@@ -52,7 +52,9 @@ class Controllers {
 
   void dispose() {
     // dispose all our controllers
-    _controllerFlic.dispose();
-    _controllerFlic = null;
+    if (null != _controllerFlic) {
+      _controllerFlic.dispose();
+      _controllerFlic = null;
+    }
   }
 }

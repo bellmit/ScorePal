@@ -11,6 +11,7 @@ class ControllerFlic extends Controller with Flic2Listener {
     // create the manager by creating the plugin manager
     _flicPlugin = FlicButtonPlugin(flic2listener: this);
     _flicPlugin.invokation.then((value) {
+      // value can be true or false - depending - so just ignore it
       // have invoked the plugin here, get all the buttons to connect them up
       return _flicPlugin.getFlic2Buttons();
     }).then((value) {
@@ -19,7 +20,8 @@ class ControllerFlic extends Controller with Flic2Listener {
         // listen to them all!
         _flicPlugin.listenToFlic2Button(button.uuid);
       }
-    });
+    }).catchError(
+        (error) => Log.error('failed to initialise flic2 plugin $error'));
   }
 
   @override
