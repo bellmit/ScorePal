@@ -60,8 +60,8 @@ class Flic2ButtonClick {
 }
 
 abstract class Flic2Listener {
-  void onButtonFound(String buttonAddress);
-  void onButtonDiscovered(Flic2Button button);
+  void onButtonFound(Flic2Button button);
+  void onButtonDiscovered(String buttonAddress);
   void onPairedButtonDiscovered(Flic2Button button);
   void onButtonClicked(Flic2ButtonClick buttonClick);
   void onButtonConnected();
@@ -284,16 +284,16 @@ class FlicButtonPlugin {
                 .onPairedButtonDiscovered(_createFlic2FromData(methodData));
             break;
           case METHOD_FLIC2_DISCOVERED:
-            // process this method - have discovered a flic 2 button
-            flic2listener.onButtonDiscovered(_createFlic2FromData(methodData));
+            // process this method - have discovered a flic 2 button, but just the address which isn't great
+            flic2listener.onButtonDiscovered(methodData);
             break;
           case METHOD_FLIC2_CONNECTED:
             // process this method - have connected a flic 2 button
             flic2listener.onButtonConnected();
             break;
-          case METHOD_FLIC2_CONNECTED:
+          case METHOD_FLIC2_FOUND:
             // process this method - have found a flic 2 button
-            flic2listener.onButtonFound(methodData);
+            flic2listener.onButtonFound(_createFlic2FromData(methodData));
             break;
           case METHOD_FLIC2_CLICK:
             // process this method - have clicked a flic 2 button

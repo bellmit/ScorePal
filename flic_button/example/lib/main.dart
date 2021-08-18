@@ -78,6 +78,28 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
     });
   }
 
+  void _connectDisconnectButton(Flic2Button button) {
+    // if disconnected, connect, else disconnect
+    if (button.connectionState ==
+        Flic2ButtonConnectionState.CONNECTION_STATE_DISCONNECTED) {
+      flicButtonManager!.connectButton(button.uuid);
+    } else {
+      flicButtonManager!.disconnectButton(button.uuid);
+    }
+  }
+
+  void _forgetButton(Flic2Button button) {
+    flicButtonManager!.forgetButton(button.uuid).then((value) {
+      if (value != null && value) {
+        // button was removed
+        setState(() {
+          // remove from the list
+          _buttonsFound.remove(button.uuid);
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -158,16 +180,41 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
                       child: ListView(
                           children: _buttonsFound.values
                               .map((e) => ListTile(
+                                    key: ValueKey(e.uuid),
                                     leading: Icon(
                                       Icons.radio_button_on,
                                       size: 48,
                                     ),
                                     title: Text('FLIC2 @${e.buttonAddr}'),
-                                    subtitle: Text('${e.uuid}\n'
-                                        'name: ${e.name}\n'
-                                        'batt: ${e.battVoltage}V (${e.battPercentage}%)\n'
-                                        'serial: ${e.serialNo}\n'
-                                        'pressed: ${e.pressCount}\n'),
+                                    subtitle: Column(
+                                      children: [
+                                        Text('${e.uuid}\n'
+                                            'name: ${e.name}\n'
+                                            'batt: ${e.battVoltage}V (${e.battPercentage}%)\n'
+                                            'serial: ${e.serialNo}\n'
+                                            'pressed: ${e.pressCount}\n'),
+                                        Row(
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () =>
+                                                  _connectDisconnectButton(e),
+                                              child: Text(e.connectionState ==
+                                                      Flic2ButtonConnectionState
+                                                          .CONNECTION_STATE_DISCONNECTED
+                                                  ? 'connect'
+                                                  : 'disconnect'),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () => _forgetButton(e),
+                                              child: Text('forget'),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ))
                               .toList()),
                     ),
@@ -196,16 +243,9 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
   }
 
   @override
-  void onButtonDiscovered(Flic2Button button) {
-    // we have discovered a new button, add to the list to show
-    print('button ${button.uuid} discovered');
-    _addButtonAndListen(button);
-  }
-
-  @override
-  void onButtonFound(String buttonAddress) {
+  void onButtonDiscovered(String buttonAddress) {
     // this is an address which we should be able to resolve to an actual button right away
-    print('button @$buttonAddress found');
+    print('button @$buttonAddress discovered');
     // but we could in theory wait for it to be connected and discovered because that will happen too
     flicButtonManager!.getFlic2ButtonByAddress(buttonAddress).then((button) {
       print(
@@ -213,6 +253,13 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
       // which we can add to the list to show right away
       _addButtonAndListen(button);
     });
+  }
+
+  @override
+  void onButtonFound(Flic2Button button) {
+    // we have found a new button, add to the list to show
+    print('button ${button.uuid} found');
+    _addButtonAndListen(button);
   }
 
   @override

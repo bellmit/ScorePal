@@ -225,7 +225,7 @@
         [[FLICManager sharedManager] forgetButton:button completion:^(NSUUID * _Nonnull uuid, NSError * _Nullable error) {
             if (!error) {
                 // so we can remove this from our map of buttons
-                [self->buttonsDiscovered removeObjectForKey:uuid];
+                [self->buttonsDiscovered removeObjectForKey:buttonUuid];
             } else {
                 // inform any listeners of this error
                 NSLog(@"Forget button failed with error: %@", error);
@@ -262,7 +262,7 @@
     [self initializeButton:button];
     // and inform any listeners of this lovely action (just like android so can't pass the button)
     if (nil != self->callback) {
-        // pass this to the callback then
+        // pass this to the callback then that we are connected
         [self->callback onButtonConnected];
     }
 }
@@ -270,6 +270,11 @@
 - (void)buttonIsReady:(nonnull FLICButton *)button {
     // be sure to setup the button properly as it becomes ready
     [self initializeButton:button];
+    // and inform any listeners of this lovely action (acts like the android found function)
+    if (nil != self->callback) {
+        // pass this to the callback then that we are connected
+        [self->callback onButtonFound:button];
+    }
 }
 
 - (void)button:(FLICButton *)button didReceiveButtonClick:(BOOL)queued age:(NSInteger)age {
