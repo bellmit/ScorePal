@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:multiphone/controllers/controller_flic.dart';
 import 'package:multiphone/controllers/controller_listener.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -40,6 +41,12 @@ class Controllers {
       Permission.location.request().then((value) {
         if (value == PermissionStatus.granted) {
           // we have permission to access bluetooth - create the FLIC controller
+          _controllerFlic = ControllerFlic(this);
+        } else {
+          // this is bad?
+          Log.error(
+              'permission isn\'t granted so we can\'t proceed, its $value');
+          // let's try anyway? seems to work on iOS!
           _controllerFlic = ControllerFlic(this);
         }
       });
