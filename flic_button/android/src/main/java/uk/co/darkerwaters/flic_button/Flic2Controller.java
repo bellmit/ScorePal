@@ -70,7 +70,7 @@ public class Flic2Controller {
                     // and inform the caller of this state
                     callback.onButtonFound(button);
                 } else {
-                    callback.onError("$result, $subCode");
+                    callback.onError(String.format("Internal FLic2 Scan Error with result %d, subCode: %d", result, subCode));
                 }
             }
         });

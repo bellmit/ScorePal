@@ -248,10 +248,12 @@ class _MyAppState extends State<MyApp> implements Flic2Listener {
     print('button @$buttonAddress discovered');
     // but we could in theory wait for it to be connected and discovered because that will happen too
     flicButtonManager!.getFlic2ButtonByAddress(buttonAddress).then((button) {
-      print(
-          'button found with address $buttonAddress resolved to actual button data ${button.uuid}');
-      // which we can add to the list to show right away
-      _addButtonAndListen(button);
+      if (button != null) {
+        print(
+            'button found with address $buttonAddress resolved to actual button data ${button.uuid}');
+        // which we can add to the list to show right away
+        _addButtonAndListen(button);
+      }
     });
   }
 

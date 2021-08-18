@@ -173,11 +173,16 @@ class FlicButtonPlugin {
     }
   }
 
-  Future<Flic2Button> getFlic2ButtonByAddress(String buttonAddress) async {
+  Future<Flic2Button?> getFlic2ButtonByAddress(String buttonAddress) async {
     // scan for flic 2 buttons then please
     final buttonString = await _channel
         .invokeMethod<String?>(_methodNameGetButtonsByAddr, [buttonAddress]);
-    return _createFlic2FromData(buttonString ?? '');
+    if (buttonString == null || buttonString.isEmpty) {
+      // not a valid button
+      return null;
+    } else {
+      return _createFlic2FromData(buttonString);
+    }
   }
 
   Flic2ButtonConnectionState _connectionStateFromChannelCode(int code) {
