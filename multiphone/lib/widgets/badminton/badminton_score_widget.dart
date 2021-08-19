@@ -28,26 +28,30 @@ class BadmintonScoreWidget extends ScoreWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              createBox(
-                context,
-                Values(context).strings.title_badminton_games,
-                games.displayString(context),
-                false,
-                'images/svg/badminton-shuttle-large.svg',
-                () => onScoreClicked(BadmintonScore.LEVEL_GAME),
+              Center(
+                child: createBox(
+                  context,
+                  Values(context).strings.title_badminton_games,
+                  games.displayString(context),
+                  false,
+                  'images/svg/badminton-shuttle-large.svg',
+                  () => onScoreClicked(BadmintonScore.LEVEL_GAME),
+                ),
               ),
             ],
           ),
         ),
         Flexible(
           flex: 2,
-          child: createBox(
-            context,
-            Values(context).strings.title_badminton_points,
-            points.displayString(context),
-            isServing,
-            'images/svg/badminton-shuttle-large.svg',
-            () => onScoreClicked(BadmintonScore.LEVEL_POINT),
+          child: Center(
+            child: createBox(
+              context,
+              Values(context).strings.title_badminton_points,
+              points.displayString(context),
+              isServing,
+              'images/svg/badminton-shuttle-large.svg',
+              () => onScoreClicked(BadmintonScore.LEVEL_POINT),
+            ),
           ),
         ),
       ],

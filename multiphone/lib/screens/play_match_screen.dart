@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multiphone/controllers/controller_listener.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/match/match_writer.dart';
@@ -293,7 +294,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     // To make this screen full screen.
     // It will hide status bar and notch.
     SystemChrome.setEnabledSystemUIOverlays([]);
-
+    final theme = Theme.of(context);
+    final values = Values(context);
     return Scaffold(
       body: OrientationBuilder(
         builder: (ctx, orientation) {
@@ -319,7 +321,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                                   child: Text(_description),
                                 ),
                               ),
-                              color: Theme.of(context).primaryColor,
+                              color: theme.primaryColor,
                             )),
                       ),
                     ),
@@ -351,6 +353,30 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                       ),
                     ),
                   ),
+                  if (match.isMatchOver())
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: Values.team_names_widget_height,
+                          right: Values.default_space,
+                          bottom: Values.team_names_widget_height +
+                              Values.image_large),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            primary: theme.accentColor,
+                            onPrimary: theme.primaryColorDark,
+                          ),
+                          onPressed: () => _onMatchOptionSelected(
+                              PlayMatchOptions.end_match, context),
+                          icon: Icon(
+                            Icons.stop,
+                            size: Values.image_large,
+                          ),
+                          label: Text(values.strings.match_end),
+                        ),
+                      ),
+                    ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: SlideTransition(

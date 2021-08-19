@@ -57,13 +57,15 @@ class TennisScoreWidget extends ScoreWidget {
         ),
         Flexible(
           flex: 2,
-          child: createBox(
-            context,
-            Values(context).strings.title_tennis_points,
-            points.displayString(context),
-            isServing,
-            'images/svg/tennis-ball-large.svg',
-            () => onScoreClicked(TennisScore.LEVEL_POINT),
+          child: Center(
+            child: createBox(
+              context,
+              Values(context).strings.title_tennis_points,
+              points.displayString(context),
+              isServing,
+              'images/svg/tennis-ball-large.svg',
+              () => onScoreClicked(TennisScore.LEVEL_POINT),
+            ),
           ),
         ),
       ],

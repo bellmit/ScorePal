@@ -29,26 +29,30 @@ class PingPongScoreWidget extends ScoreWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              createBox(
-                context,
-                Values(context).strings.title_ping_pong_rounds,
-                rounds.displayString(context),
-                false,
-                'images/svg/ping-pong-ball-large.svg',
-                () => onScoreClicked(PingPongScore.LEVEL_ROUND),
+              Center(
+                child: createBox(
+                  context,
+                  Values(context).strings.title_ping_pong_rounds,
+                  rounds.displayString(context),
+                  false,
+                  'images/svg/ping-pong-ball-large.svg',
+                  () => onScoreClicked(PingPongScore.LEVEL_ROUND),
+                ),
               ),
             ],
           ),
         ),
         Flexible(
           flex: 2,
-          child: createBox(
-            context,
-            Values(context).strings.title_ping_pong_points,
-            points.displayString(context),
-            isServing,
-            'images/svg/ping-pong-ball-large.svg',
-            () => onScoreClicked(PingPongScore.LEVEL_POINT),
+          child: Center(
+            child: createBox(
+              context,
+              Values(context).strings.title_ping_pong_points,
+              points.displayString(context),
+              isServing,
+              'images/svg/ping-pong-ball-large.svg',
+              () => onScoreClicked(PingPongScore.LEVEL_POINT),
+            ),
           ),
         ),
       ],
