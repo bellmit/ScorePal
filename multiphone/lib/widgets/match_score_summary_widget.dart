@@ -46,24 +46,29 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           _createHeading(context, item.title ?? ''),
-          AspectRatio(
-            aspectRatio: 1,
-            child: Card(
-              color: Theme.of(context).primaryColorDark,
-              shape: const RoundedRectangleBorder(
-                borderRadius: const BorderRadius.all(
-                    Radius.circular(Values.default_radius)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(Values.default_space),
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(
-                    item.score,
-                    style: TextStyle(
-                        fontWeight: item.isWinner ?? false
-                            ? FontWeight.bold
-                            : FontWeight.normal),
+          ConstrainedBox(
+            constraints: BoxConstraints.loose(
+              Size(Values.max_score_box, Values.max_score_box),
+            ),
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Card(
+                color: Theme.of(context).primaryColorDark,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.all(
+                      Radius.circular(Values.default_radius)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(Values.default_space),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Text(
+                      item.score,
+                      style: TextStyle(
+                          fontWeight: item.isWinner ?? false
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
                   ),
                 ),
               ),
