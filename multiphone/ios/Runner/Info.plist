@@ -41,10 +41,6 @@
 	<string>Location Permissions are needed to access your remote controls to change score</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location Permissions are needed to access your remote controls to change score</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>bluetooth-central</string>
-	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -64,5 +60,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIBackgroundModes</key>
+    <array>
+		<string>bluetooth-central</string>
+        <string>audio</string>
+    </array>
 </dict>
 </plist>
