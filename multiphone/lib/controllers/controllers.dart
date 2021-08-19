@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:multiphone/controllers/controller_flic.dart';
 import 'package:multiphone/controllers/controller_listener.dart';
@@ -37,19 +39,23 @@ class Controllers {
   void initialiseControllers() {
     // create our controllers as required
     if (_preferences.isControlFlic2) {
-      // we want flic 2 - check for permissions
-      Permission.location.request().then((value) {
-        if (value == PermissionStatus.granted) {
-          // we have permission to access bluetooth - create the FLIC controller
-          _controllerFlic = ControllerFlic(this);
-        } else {
-          // this is bad?
-          Log.error(
-              'permission isn\'t granted so we can\'t proceed, its $value');
-          // let's try anyway? seems to work on iOS!
-          _controllerFlic = ControllerFlic(this);
-        }
-      });
+      // we want flic 2 - check for permissions in Android as need location
+      // permission to use a bluetooth device...
+      if (Platform.isAndroid) {
+        Permission.location.request().then((value) {
+          if (value == PermissionStatus.granted) {
+            // we have permission to access location (ie a bluetooth button) - create the FLIC controller
+            _controllerFlic = ControllerFlic(this);
+          } else {
+            // this is bad?
+            Log.error(
+                'permission isn\'t granted so we can\'t proceed, its $value');
+          }
+        });
+      } else {
+        // in iOS just go for it
+        _controllerFlic = ControllerFlic(this);
+      }
     } else if (null != _controllerFlic) {
       // kill what was here
       _controllerFlic.dispose();

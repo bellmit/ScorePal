@@ -22,6 +22,7 @@ class MatchSummaryTitleWidget extends StatelessWidget {
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             SvgPicture.asset(
               svgPath,

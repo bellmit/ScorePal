@@ -37,57 +37,54 @@ class PlayMatchOptionsWidget extends StatelessWidget {
       elevation: 10,
       margin: EdgeInsets.only(left: Values.image_medium),
       child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            InfoBarWidget(title: values.strings.match_options),
-            MatchSummaryTitleWidget(
-                svgPath: sportSvgPath, description: matchDescription),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: Values.default_space,
-                  right: Values.default_space,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    ElevatedButton.icon(
-                      style: values.optionButtonStyle,
-                      onPressed: () => onOptionSelected(PlayMatchOptions.clear),
-                      icon: Icon(Icons.clear_all),
-                      label: Text(values.strings.match_clear),
-                    ),
-                    ElevatedButton.icon(
-                      style: values.optionButtonStyle,
-                      onPressed: () =>
-                          onOptionSelected(PlayMatchOptions.show_history),
-                      icon: Icon(Icons.history),
-                      label: Text(values.strings.match_history),
-                    ),
-                    ElevatedButton.icon(
-                      style: values.optionButtonStyle,
-                      onPressed: () =>
-                          onOptionSelected(PlayMatchOptions.show_settings),
-                      icon: Icon(Icons.settings),
-                      label: Text(values.strings.match_app_settings),
-                    ),
-                    ElevatedButton.icon(
-                      style: values.optionButtonStyle,
-                      onPressed: () => onOptionSelected(
-                          PlayMatchOptions.show_match_settings),
-                      icon: SvgPicture.asset(
-                        'images/svg/match-settings.svg',
-                        height: Values.image_icon,
-                        width: Values.image_icon,
-                        color: Theme.of(context).accentColor,
+        child: Padding(
+          padding: const EdgeInsets.all(Values.default_space),
+          child: IntrinsicWidth(
+            child: Column(
+              children: <Widget>[
+                InfoBarWidget(title: values.strings.match_options),
+                MatchSummaryTitleWidget(
+                    svgPath: sportSvgPath, description: matchDescription),
+                Padding(
+                  padding: const EdgeInsets.all(Values.default_space),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ElevatedButton.icon(
+                        style: values.optionButtonStyle,
+                        onPressed: () =>
+                            onOptionSelected(PlayMatchOptions.clear),
+                        icon: Icon(Icons.clear_all),
+                        label: Text(values.strings.match_clear),
                       ),
-                      label: Text(values.strings.match_change_setup),
-                    ),
-                    LineBreakWidget(height: Values.image_small),
-                    Container(
-                      width: double.infinity,
-                      child: Row(
+                      ElevatedButton.icon(
+                        style: values.optionButtonStyle,
+                        onPressed: () =>
+                            onOptionSelected(PlayMatchOptions.show_history),
+                        icon: Icon(Icons.history),
+                        label: Text(values.strings.match_history),
+                      ),
+                      ElevatedButton.icon(
+                        style: values.optionButtonStyle,
+                        onPressed: () =>
+                            onOptionSelected(PlayMatchOptions.show_settings),
+                        icon: Icon(Icons.settings),
+                        label: Text(values.strings.match_app_settings),
+                      ),
+                      ElevatedButton.icon(
+                        style: values.optionButtonStyle,
+                        onPressed: () => onOptionSelected(
+                            PlayMatchOptions.show_match_settings),
+                        icon: SvgPicture.asset(
+                          'images/svg/match-settings.svg',
+                          height: Values.image_icon,
+                          width: Values.image_icon,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        label: Text(values.strings.match_change_setup),
+                      ),
+                      LineBreakWidget(),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton.icon(
@@ -104,16 +101,16 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                                 onOptionSelected(PlayMatchOptions.resume),
                             icon: Icon(Icons.play_arrow),
                             label: Text(values.strings.match_resume),
-                          ),
+                          )
                         ],
                       ),
-                    ),
-                    const SizedBox(height: Values.default_space),
-                  ],
+                      const SizedBox(height: Values.default_space),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

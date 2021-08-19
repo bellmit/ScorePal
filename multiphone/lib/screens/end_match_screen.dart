@@ -140,7 +140,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                           child: ElevatedButton.icon(
                             style: values.optionButtonStyle,
                             onPressed: () =>
-                                _concedeMatch(match, TeamIndex.T_ONE),
+                                _concedeMatch(match, TeamIndex.T_TWO),
                             icon: Icon(Icons.thumb_down_alt),
                             label: Expanded(
                               child: Text(

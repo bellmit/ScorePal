@@ -41,6 +41,18 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   }
 
   @override
+  Widget buildSideDrawer(BuildContext context) {
+    // no side drawer - just make them go back
+    return null;
+  }
+
+  @override
+  Widget buildIconMenu(BuildContext context) {
+    // no icon menu please - back button will show instead
+    return null;
+  }
+
+  @override
   void initState() {
     super.initState();
     // create the FLIC 2 manager and initialize it
