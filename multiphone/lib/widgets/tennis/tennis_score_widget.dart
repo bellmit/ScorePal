@@ -21,27 +21,7 @@ class TennisScoreWidget extends ScoreWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final screenSize = mediaQuery.size;
-    var isShowSetsAbove;
-    if (mediaQuery.orientation == Orientation.landscape) {
-      // we have half the width to draw, if the height is > half the width, draw over
-      isShowSetsAbove = screenSize.height - Values.team_names_widget_height >
-          0.5 * screenSize.width;
-    } else {
-      // we have half the height to draw, if that height > the width, draw over
-      isShowSetsAbove =
-          (screenSize.height * 0.5) - (Values.team_names_widget_height * 2) >
-              screenSize.width;
-    }
-    // and return the correct widget
-    return isShowSetsAbove
-        ? setsOverPoints(context)
-        : setsBeforePoints(context);
-  }
-
-  Widget setsOverPoints(BuildContext context) => Column(
+  Widget scoreColumn(BuildContext context) => Column(
         children: [
           Flexible(
             flex: 1,
@@ -73,7 +53,8 @@ class TennisScoreWidget extends ScoreWidget {
         ],
       );
 
-  Widget setsBeforePoints(BuildContext context) => Row(
+  @override
+  Widget scoreRow(BuildContext context) => Row(
         children: [
           // split the row into the smaller controls
           Flexible(

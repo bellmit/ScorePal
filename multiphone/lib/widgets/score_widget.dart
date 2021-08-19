@@ -5,6 +5,29 @@ import 'package:multiphone/helpers/values.dart';
 abstract class ScoreWidget extends StatelessWidget {
   const ScoreWidget({Key key}) : super(key: key);
 
+  Widget scoreColumn(BuildContext context);
+  Widget scoreRow(BuildContext context);
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenSize = mediaQuery.size;
+    var isShowDetailsAbovePoints;
+    if (mediaQuery.orientation == Orientation.landscape) {
+      // we have half the width to draw, if the height is > half the width, draw over
+      isShowDetailsAbovePoints =
+          screenSize.height - Values.team_names_widget_height >
+              0.5 * screenSize.width;
+    } else {
+      // we have half the height to draw, if that height > the width, draw over
+      isShowDetailsAbovePoints =
+          (screenSize.height * 0.5) - (Values.team_names_widget_height * 2) >
+              screenSize.width;
+    }
+    // and return the correct widget
+    return isShowDetailsAbovePoints ? scoreColumn(context) : scoreRow(context);
+  }
+
   Widget createBox(
     BuildContext context,
     String title,

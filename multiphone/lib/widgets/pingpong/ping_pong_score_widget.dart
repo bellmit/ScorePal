@@ -19,43 +19,61 @@ class PingPongScoreWidget extends ScoreWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        // split the row into the smaller controls
-        Flexible(
-          flex: 1,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: createBox(
-                  context,
-                  Values(context).strings.title_ping_pong_rounds,
-                  rounds.displayString(context),
-                  false,
-                  'images/svg/ping-pong-ball-large.svg',
-                  () => onScoreClicked(PingPongScore.LEVEL_ROUND),
-                ),
-              ),
-            ],
+  Widget scoreColumn(BuildContext context) => Column(
+        children: [
+          // split the row into the smaller controls
+          Flexible(
+            flex: 1,
+            child: Center(child: pingPongRounds(context)),
           ),
-        ),
-        Flexible(
-          flex: 2,
-          child: Center(
-            child: createBox(
-              context,
-              Values(context).strings.title_ping_pong_points,
-              points.displayString(context),
-              isServing,
-              'images/svg/ping-pong-ball-large.svg',
-              () => onScoreClicked(PingPongScore.LEVEL_POINT),
+          Flexible(
+            flex: 2,
+            child: Center(child: pingPongPoints(context)),
+          ),
+        ],
+      );
+
+  @override
+  Widget scoreRow(BuildContext context) => Row(
+        children: [
+          // split the row into the smaller controls
+          Flexible(
+            flex: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: pingPongRounds(context),
+                ),
+              ],
             ),
           ),
-        ),
-      ],
-    );
-  }
+          Flexible(
+            flex: 2,
+            child: Center(
+              child: pingPongPoints(context),
+            ),
+          ),
+        ],
+      );
+
+  Widget pingPongRounds(BuildContext context) => createBox(
+        context,
+        Values(context).strings.title_ping_pong_rounds,
+        rounds.displayString(context),
+        false,
+        'images/svg/ping-pong-ball-large.svg',
+        () => onScoreClicked(PingPongScore.LEVEL_ROUND),
+      );
+
+  Widget pingPongPoints(BuildContext context) => createBox(
+        context,
+        Values(context).strings.title_ping_pong_points,
+        points.displayString(context),
+        isServing,
+        'images/svg/ping-pong-ball-large.svg',
+        () => onScoreClicked(PingPongScore.LEVEL_POINT),
+      );
 }

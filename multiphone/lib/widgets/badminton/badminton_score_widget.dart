@@ -18,43 +18,56 @@ class BadmintonScoreWidget extends ScoreWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        // split the row into the smaller controls
-        Flexible(
-          flex: 1,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: createBox(
-                  context,
-                  Values(context).strings.title_badminton_games,
-                  games.displayString(context),
-                  false,
-                  'images/svg/badminton-shuttle-large.svg',
-                  () => onScoreClicked(BadmintonScore.LEVEL_GAME),
-                ),
-              ),
-            ],
+  Widget scoreColumn(BuildContext context) => Column(
+        children: [
+          // split the row into the smaller controls
+          Flexible(
+            flex: 1,
+            child: Center(child: badmintonGames(context)),
           ),
-        ),
-        Flexible(
-          flex: 2,
-          child: Center(
-            child: createBox(
-              context,
-              Values(context).strings.title_badminton_points,
-              points.displayString(context),
-              isServing,
-              'images/svg/badminton-shuttle-large.svg',
-              () => onScoreClicked(BadmintonScore.LEVEL_POINT),
+          Flexible(
+            flex: 2,
+            child: Center(child: badmintonPoints(context)),
+          ),
+        ],
+      );
+
+  @override
+  Widget scoreRow(BuildContext context) => Row(
+        children: [
+          // split the row into the smaller controls
+          Flexible(
+            flex: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(child: badmintonGames(context)),
+              ],
             ),
           ),
-        ),
-      ],
-    );
-  }
+          Flexible(
+            flex: 2,
+            child: Center(child: badmintonPoints(context)),
+          ),
+        ],
+      );
+
+  Widget badmintonGames(BuildContext context) => createBox(
+        context,
+        Values(context).strings.title_badminton_games,
+        games.displayString(context),
+        false,
+        'images/svg/badminton-shuttle-large.svg',
+        () => onScoreClicked(BadmintonScore.LEVEL_GAME),
+      );
+
+  Widget badmintonPoints(BuildContext context) => createBox(
+        context,
+        Values(context).strings.title_badminton_points,
+        points.displayString(context),
+        isServing,
+        'images/svg/badminton-shuttle-large.svg',
+        () => onScoreClicked(BadmintonScore.LEVEL_POINT),
+      );
 }
