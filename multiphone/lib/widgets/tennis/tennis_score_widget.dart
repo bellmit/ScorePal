@@ -30,21 +30,27 @@ class TennisScoreWidget extends ScoreWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              createBox(
-                context,
-                Values(context).strings.title_tennis_sets,
-                sets.displayString(context),
-                false,
-                'images/svg/tennis-ball-large.svg',
-                null, //() => onScoreClicked(TennisScore.LEVEL_SET),
+              Flexible(
+                flex: 1,
+                child: createBox(
+                  context,
+                  Values(context).strings.title_tennis_sets,
+                  sets.displayString(context),
+                  false,
+                  'images/svg/tennis-ball-large.svg',
+                  null, //() => onScoreClicked(TennisScore.LEVEL_SET),
+                ),
               ),
-              createBox(
-                context,
-                Values(context).strings.title_tennis_games,
-                games.displayString(context),
-                false,
-                'images/svg/tennis-ball-large.svg',
-                () => onScoreClicked(TennisScore.LEVEL_GAME),
+              Flexible(
+                flex: 1,
+                child: createBox(
+                  context,
+                  Values(context).strings.title_tennis_games,
+                  games.displayString(context),
+                  false,
+                  'images/svg/tennis-ball-large.svg',
+                  () => onScoreClicked(TennisScore.LEVEL_GAME),
+                ),
               ),
             ],
           ),
