@@ -5,6 +5,7 @@ import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/widgets/match_breakdown_widget.dart';
 import 'package:multiphone/widgets/match_score_summary_widget.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
 import 'package:provider/provider.dart';
@@ -172,6 +173,8 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                       ),
                     ),
                   ),
+                // and show the breakdown for the match
+                MatchBreakdownWidget(match: match),
               ],
             ),
           );

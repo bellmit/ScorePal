@@ -213,6 +213,10 @@
     "results": "Results",
     "team_conceded": "Retired",
 
+    "results_breakdown": "Results Breakdown",
+    "total_points": "Total Points",
+    "break_points": "Break Points",
+
     "scoreSummaryLevel": "Level {0}",
     "scoreSummaryOneLine": "{0} {2} — {3} {1}",
     "match_description_long": "{0} {1} {2}\nLasting {3}:{4} minutes\nPlayed at {5} on {6}.",
