@@ -110,6 +110,28 @@ class MatchWriter<T extends ActiveMatch> {
     );
   }
 
+  static Map<String, String> parseScoreString(String scoreString) {
+    final parts = scoreString.split(',');
+    if (parts != null && parts.length >= 5) {
+      return {
+        'team_one_name': parts[0],
+        'team_two_name': parts[1],
+        'level': parts[2],
+        'team_one_score': parts[3],
+        'team_two_score': parts[4],
+      };
+    } else {
+      // no data
+      return {
+        'team_one_name': '',
+        'team_two_name': '',
+        'level': '',
+        'team_one_score': '',
+        'team_two_score': '',
+      };
+    }
+  }
+
   String getScoreString(T match, BuildContext context) {
     ActiveSetup setup = match.getSetup();
     // get the lowest score currently being played

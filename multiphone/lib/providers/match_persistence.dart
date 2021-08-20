@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:localstore/localstore.dart' as LocalStore;
 import 'package:multiphone/helpers/log.dart';
@@ -245,7 +246,8 @@ class MatchPersistence with ChangeNotifier {
     };
   }
 
-  ActiveMatch _createMatchFromJson(Map<String, Object> topLevel) {
+  ActiveMatch _createMatchFromJson(
+      Map<String, Object> topLevel, BuildContext context) {
     // what is this, get the sport from the JSON object;
     final sport = Sports.fromId(topLevel['sport'] as String);
     final matchId = MatchId(topLevel['id']);
@@ -256,12 +258,13 @@ class MatchPersistence with ChangeNotifier {
     // and the match
     ActiveMatch match = sport.createMatch(setup);
     // set our data from this data under the top level
-    match.setData(matchId, topLevel['data']);
+    match.setData(matchId, topLevel['data'], context);
     // and return this now it's setup properly
     return match;
   }
 
-  Future<ActiveMatch> loadLastMatchData(ActiveMatch match) async {
+  Future<ActiveMatch> loadLastMatchData(
+      ActiveMatch match, BuildContext context) async {
     // just get the last match data and put into the already loaded match
     final setup = match.getSetup();
     final defaultData = await LocalStore.Localstore.instance
@@ -272,14 +275,15 @@ class MatchPersistence with ChangeNotifier {
       // have the document, load ths data from this
       final matchId = MatchId(defaultData['id']);
       setup.setData(defaultData['setup']);
-      match.setData(matchId, defaultData['data']);
+      match.setData(matchId, defaultData['data'], context);
     } else {
       Log.error('default match data isn\'t valid for ${setup.sport.id}');
     }
     return match;
   }
 
-  Future<ActiveMatch> loadLastActiveMatch({Sport sport}) async {
+  Future<ActiveMatch> loadLastActiveMatch(
+      Sport sport, BuildContext context) async {
     if (sport == null) {
       sport = await getLastActiveSport();
     }
@@ -288,7 +292,7 @@ class MatchPersistence with ChangeNotifier {
     // and the match
     final match = sport.createMatch(setup);
     // and finally set the data on these
-    return loadLastMatchData(match);
+    return loadLastMatchData(match, context);
   }
 
   Future<dynamic> saveAsLastActiveMatch(ActiveMatch match) {
@@ -364,7 +368,7 @@ class MatchPersistence with ChangeNotifier {
   }
 
   Future<Map<String, ActiveMatch>> getMatches(
-      MatchPersistenceState state) async {
+      MatchPersistenceState state, BuildContext context) async {
     // get al the matches for this month and the previous month
     DateTime now = DateTime.now();
     final thisMonthMatches = await _getMatchesForDate(now);
@@ -386,8 +390,8 @@ class MatchPersistence with ChangeNotifier {
       documents.removeWhere((key, value) => value['sport'] == null);
     }
     // and convert everything that's left into actual active matches for the caller
-    final matches = documents
-        .map((key, value) => MapEntry(key, _createMatchFromJson(value)));
+    final matches = documents.map(
+        (key, value) => MapEntry(key, _createMatchFromJson(value, context)));
     // and return this sorted nicely (with the most recent on the top please)
     return SplayTreeMap<String, ActiveMatch>.from(
         matches, (key1, key2) => key2.compareTo(key1));

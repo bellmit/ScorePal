@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:multiphone/match/badminton/badminton_match_setup.dart';
 import 'package:multiphone/match/badminton/badminton_score.dart';
 import 'package:multiphone/match/match_id.dart';
@@ -21,8 +22,9 @@ class BadmintonMatch extends ActiveMatch<BadmintonMatchSetup, BadmintonScore> {
   }
 
   @override
-  void setData(MatchId matchId, Map<String, Object> data) {
-    super.setData(matchId, data);
+  void setData(
+      MatchId matchId, Map<String, Object> data, BuildContext context) {
+    super.setData(matchId, data, context);
     //and set any from ours that we saved in here
   }
 

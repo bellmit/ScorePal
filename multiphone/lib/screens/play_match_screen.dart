@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multiphone/controllers/controller_listener.dart';
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/match/match_writer.dart';

@@ -216,6 +216,7 @@
     "results_breakdown": "Results Breakdown",
     "total_points": "Total Points",
     "break_points": "Break Points",
+    "match_momentum": "Match Momentum",
 
     "scoreSummaryLevel": "Level {0}",
     "scoreSummaryOneLine": "{0} {2} — {3} {1}",

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
@@ -22,8 +23,9 @@ class TennisMatch extends ActiveMatch<TennisMatchSetup, TennisScore> {
   }
 
   @override
-  void setData(MatchId matchId, Map<String, Object> data) {
-    super.setData(matchId, data);
+  void setData(
+      MatchId matchId, Map<String, Object> data, BuildContext context) {
+    super.setData(matchId, data, context);
     //and set any from ours that we saved in here
   }
 

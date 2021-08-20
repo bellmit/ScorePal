@@ -69,14 +69,16 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
       _changeUserLoginState(_isUserLoggedOn = user != null);
     });
     // get our matches to show from the persistence provider
-    persistence.getMatches(MatchPersistenceState.deleted).then((value) => {
-          // have the matches back here, set them locally
-          setState(() {
-            matches = List.of(value.values);
-            // which can change the display of the message
-            _animateLoginMessage();
-          })
-        });
+    persistence
+        .getMatches(MatchPersistenceState.deleted, context)
+        .then((value) => {
+              // have the matches back here, set them locally
+              setState(() {
+                matches = List.of(value.values);
+                // which can change the display of the message
+                _animateLoginMessage();
+              })
+            });
   }
 
   @override

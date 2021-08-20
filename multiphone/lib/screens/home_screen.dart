@@ -52,7 +52,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
   Future<void> _refreshMatches() {
     // load the matches and set the state accordingly
     return Provider.of<MatchPersistence>(context, listen: false)
-        .getMatches(MatchPersistenceState.accepted)
+        .getMatches(MatchPersistenceState.accepted, context)
         .then((value) => {
               // have the matches back here, set them locally
               setState(() {

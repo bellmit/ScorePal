@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/match/match_id.dart';
+import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/point.dart';
 import 'package:multiphone/match/score.dart';
@@ -85,7 +86,8 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     return data;
   }
 
-  void setData(MatchId matchId, Map<String, Object> data) {
+  void setData(
+      MatchId matchId, Map<String, Object> data, BuildContext context) {
     // Id first
     _dateMatchStarted = matchId.getDate();
     _matchTimePlayedMs = (data["secs"] as int) * 1000;
@@ -98,6 +100,16 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     _score.restoreFromData(data["score"], () {
       // every time a point is incremented inform listeners
       notifyListeners();
+      if (null != score &&
+          null != context &&
+          (score.state.isChanged(ScoreChange.increment) ||
+              score.state.isChanged(ScoreChange.incrementRedo))) {
+        // this was an item of score incremented. The undo history of this is okay but
+        // we can do better - we know the match that is playing and have a context and
+        // everything so can well describe the score
+        String scoreString = getDescription(DescriptionLevel.SCORE, context);
+        describeLastHistoryChange(score.state.getState(), scoreString);
+      }
     });
     // this, obviously, changes the data
     notifyListeners();

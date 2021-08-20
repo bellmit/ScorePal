@@ -52,7 +52,7 @@ abstract class Score<S extends ActiveSetup> {
         .getPointHistoryAsString(this.setup.getStraightPointsToWin());
 
     // we don't need to store the points at all (they are re-created from the points) but
-    // other apps (a website maybe) might want to skip that and just have the resuts. So, to
+    // other apps (a website maybe) might want to skip that and just have the results. So, to
     // be nice, we can put them in the JSON
 
     /*

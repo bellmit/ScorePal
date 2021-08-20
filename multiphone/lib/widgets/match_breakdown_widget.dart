@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/tennis/tennis_score.dart';
 import 'package:multiphone/providers/active_match.dart';
@@ -16,7 +15,6 @@ class MatchBreakdownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final values = Values(context);
-    final setup = match.getSetup();
     return Card(
       color: theme.primaryColorDark,
       margin: const EdgeInsets.all(Values.default_space),
