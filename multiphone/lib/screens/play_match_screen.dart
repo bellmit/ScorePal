@@ -359,21 +359,31 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                           top: Values.team_names_widget_height,
                           right: Values.default_space,
                           bottom: Values.team_names_widget_height +
-                              Values.image_large),
+                              Values.default_space +
+                              (orientation == Orientation.portrait
+                                  // when we are in portrait, the buttons want to be above the bottom team's name
+                                  ? Values.team_names_widget_height
+                                  : Values.default_space)),
                       child: Align(
                         alignment: Alignment.bottomRight,
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            primary: theme.accentColor,
-                            onPrimary: theme.primaryColorDark,
+                        child: Card(
+                          color: Theme.of(context).primaryColorLight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(Values.default_space),
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                primary: theme.accentColor,
+                                onPrimary: theme.primaryColorDark,
+                              ),
+                              onPressed: () => _onMatchOptionSelected(
+                                  PlayMatchOptions.end_match, context),
+                              icon: Icon(
+                                Icons.stop,
+                                size: Values.image_large,
+                              ),
+                              label: Text(values.strings.match_end),
+                            ),
                           ),
-                          onPressed: () => _onMatchOptionSelected(
-                              PlayMatchOptions.end_match, context),
-                          icon: Icon(
-                            Icons.stop,
-                            size: Values.image_large,
-                          ),
-                          label: Text(values.strings.match_end),
                         ),
                       ),
                     ),
