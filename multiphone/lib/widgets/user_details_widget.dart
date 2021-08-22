@@ -81,19 +81,34 @@ class UserLoggedInWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        user.photoURL != null
-            ? Container(
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (user.photoURL != null)
+              Container(
                 height: Values.image_large,
-                child: Image.network(
-                  user.photoURL,
-                  fit: BoxFit.fill,
+                width: Values.image_large,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                      fit: BoxFit.contain,
+                      image: new NetworkImage(user.photoURL)),
                 ),
-              )
-            : Icon(
+              ),
+            if (user.photoURL == null)
+              Icon(
                 Icons.person,
                 size: Values.image_large,
               ),
-        Text(userName),
+            Padding(
+              padding: const EdgeInsets.all(Values.default_space),
+              child: Text(
+                userName,
+                style: TextStyle(color: Theme.of(context).accentColor),
+              ),
+            ),
+          ],
+        ),
         Align(
           alignment: Alignment.centerRight,
           child: TextButton.icon(

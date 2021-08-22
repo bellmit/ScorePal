@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:multiphone/helpers/values.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:apple_sign_in/apple_sign_in.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(
@@ -44,6 +49,50 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
+  Future<void> _signInViaGoogle() async {
+    final GoogleSignInAccount googleUser = await GoogleSignIn(
+      scopes: <String>['email', 'profile'],
+    ).signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
+    // and sign-in to firebase
+    FirebaseAuth.instance
+        .signInWithCredential(credential)
+        .then((value) => Navigator.of(context).pop());
+  }
+
+  Future<void> _signInViaApple() async {
+    final AuthorizationResult result = await AppleSignIn.performRequests([
+      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
+    switch (result.status) {
+      case AuthorizationStatus.authorized:
+        // log in to firebase here then
+        final appleIdCredential = result.credential;
+        final oAuthProvider = OAuthProvider('apple.com');
+        final credential = oAuthProvider.credential(
+          idToken: String.fromCharCodes(appleIdCredential.identityToken),
+          accessToken:
+              String.fromCharCodes(appleIdCredential.authorizationCode),
+        );
+        FirebaseAuth.instance
+            .signInWithCredential(credential)
+            .then((value) => Navigator.of(context).pop());
+        break;
+
+      case AuthorizationStatus.error:
+        print("Sign in failed: ${result.error.localizedDescription}");
+        break;
+      case AuthorizationStatus.cancelled:
+        print('User cancelled');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -86,7 +135,7 @@ class _AuthFormState extends State<AuthForm> {
                       textCapitalization: TextCapitalization.words,
                       enableSuggestions: false,
                       validator: (value) {
-                        // check the userame
+                        // check the username
                         if (value.length < 4) {
                           return 'Please enter a valid username at least 4 characters long.';
                         } else {
@@ -125,10 +174,50 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   if (widget._isAuthenticating) CircularProgressIndicator(),
                   if (!widget._isAuthenticating)
-                    TextButton(
-                      child:
-                          _isLoggingIn ? Text('Login') : Text('Create Account'),
-                      onPressed: _trySubmit,
+                    Wrap(
+                      spacing: Values.image_medium,
+                      runSpacing: Values.default_space,
+                      children: [
+                        MaterialButton(
+                          height: Values.image_large,
+                          onPressed: _trySubmit,
+                          color: Theme.of(context).primaryColor,
+                          child: Text(_isLoggingIn ? 'Login' : 'Create Account',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16)),
+                          textColor: Colors.white,
+                        ),
+                        MaterialButton(
+                          height: Values.image_large,
+                          onPressed: _signInViaGoogle,
+                          color: Colors.blue,
+                          child: Wrap(
+                            children: <Widget>[
+                              Icon(FontAwesomeIcons.google),
+                              SizedBox(width: 10),
+                              Text('Sign-in using Google',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16)),
+                            ],
+                          ),
+                          textColor: Colors.white,
+                        ),
+                        MaterialButton(
+                          height: Values.image_large,
+                          onPressed: _signInViaApple,
+                          color: Colors.blueGrey,
+                          child: Wrap(
+                            children: <Widget>[
+                              Icon(FontAwesomeIcons.apple),
+                              SizedBox(width: 10),
+                              Text('Sign-in using Apple',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16)),
+                            ],
+                          ),
+                          textColor: Colors.white,
+                        ),
+                      ],
                     ),
                   TextButton(
                     child: _isLoggingIn
