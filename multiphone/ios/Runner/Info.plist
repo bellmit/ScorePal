@@ -65,5 +65,29 @@
 		<string>bluetooth-central</string>
         <string>audio</string>
     </array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>uk.co.darkerwaters</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.85965429895-91dbk5o2isuc242bag6rg5lk11d0915a</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

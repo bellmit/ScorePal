@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(
@@ -66,7 +66,7 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   Future<void> _signInViaApple() async {
-    final AuthorizationResult result = await AppleSignIn.performRequests([
+    final AuthorizationResult result = await TheAppleSignIn.performRequests([
       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
     ]);
     switch (result.status) {
@@ -83,7 +83,6 @@ class _AuthFormState extends State<AuthForm> {
             .signInWithCredential(credential)
             .then((value) => Navigator.of(context).pop());
         break;
-
       case AuthorizationStatus.error:
         print("Sign in failed: ${result.error.localizedDescription}");
         break;

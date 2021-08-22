@@ -343,8 +343,6 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - apple_sign_in (0.0.1):
-    - Flutter
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -504,13 +502,14 @@ PODS:
   - PromisesObjC (2.0.0)
   - shared_preferences (0.0.1):
     - Flutter
+  - the_apple_sign_in (1.0.0):
+    - Flutter
   - url_launcher (0.0.1):
     - Flutter
   - wakelock (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - apple_sign_in (from `.symlinks/plugins/apple_sign_in/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -525,6 +524,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - the_apple_sign_in (from `.symlinks/plugins/the_apple_sign_in/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
@@ -553,8 +553,6 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
-  apple_sign_in:
-    :path: ".symlinks/plugins/apple_sign_in/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
@@ -583,6 +581,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  the_apple_sign_in:
+    :path: ".symlinks/plugins/the_apple_sign_in/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
   wakelock:
@@ -591,7 +591,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  apple_sign_in: 7716c7ddfa195aeab7dec0dc374ef4ff45d1adb4
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: e0516b69697b348db9a4d65f3b610dfd5ba3ac1e
   Firebase: ff8c73105b90e33e1dc6c8e5445d7adc2ccdc7c1
@@ -625,6 +624,7 @@ SPEC CHECKSUMS:
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  the_apple_sign_in: 2e78c83cdb09eba07bb16dcc1f3bc12fcdc8263d
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
