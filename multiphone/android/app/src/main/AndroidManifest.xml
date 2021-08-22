@@ -27,21 +27,6 @@
         android:label="Scorepal"
         android:icon="@mipmap/ic_launcher">
 
-        <!-- Set up the Sign in with Apple activity, such that it's callable from the browser-redirect -->
-        <activity
-        android:name="com.aboutyou.dart_packages.sign_in_with_apple.SignInWithAppleCallback"
-        android:exported="true"
-        >
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-            <category android:name="android.intent.category.BROWSABLE" />
-
-            <data android:scheme="signinwithapple" />
-            <data android:path="callback" />
-        </intent-filter>
-        </activity>
-
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -66,12 +51,6 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
-            <!--  the plugin for sign-in-apple requires this meta-data enabled
-            -->
-            <meta-data
-              android:name="flutterEmbedding"
-              android:value="2" 
-            />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

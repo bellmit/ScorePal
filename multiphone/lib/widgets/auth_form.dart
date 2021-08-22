@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(
@@ -63,33 +62,6 @@ class _AuthFormState extends State<AuthForm> {
     FirebaseAuth.instance
         .signInWithCredential(credential)
         .then((value) => Navigator.of(context).pop());
-  }
-
-  Future<void> _signInViaApple() async {
-    final AuthorizationResult result = await TheAppleSignIn.performRequests([
-      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
-    ]);
-    switch (result.status) {
-      case AuthorizationStatus.authorized:
-        // log in to firebase here then
-        final appleIdCredential = result.credential;
-        final oAuthProvider = OAuthProvider('apple.com');
-        final credential = oAuthProvider.credential(
-          idToken: String.fromCharCodes(appleIdCredential.identityToken),
-          accessToken:
-              String.fromCharCodes(appleIdCredential.authorizationCode),
-        );
-        FirebaseAuth.instance
-            .signInWithCredential(credential)
-            .then((value) => Navigator.of(context).pop());
-        break;
-      case AuthorizationStatus.error:
-        print("Sign in failed: ${result.error.localizedDescription}");
-        break;
-      case AuthorizationStatus.cancelled:
-        print('User cancelled');
-        break;
-    }
   }
 
   @override
@@ -201,6 +173,7 @@ class _AuthFormState extends State<AuthForm> {
                           ),
                           textColor: Colors.white,
                         ),
+                        /*
                         MaterialButton(
                           height: Values.image_large,
                           onPressed: _signInViaApple,
@@ -215,7 +188,7 @@ class _AuthFormState extends State<AuthForm> {
                             ],
                           ),
                           textColor: Colors.white,
-                        ),
+                        ),*/
                       ],
                     ),
                   TextButton(
