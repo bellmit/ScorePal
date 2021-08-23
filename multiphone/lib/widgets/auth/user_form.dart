@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/user_data.dart';
 import 'package:multiphone/helpers/values.dart';
 

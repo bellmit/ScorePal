@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
+import 'package:multiphone/screens/user_screen.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsPrivacyWidget extends StatefulWidget {
@@ -19,7 +21,7 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
   }
 
   void _wipeData() {
-    //TODO the wiping of all the user's data!
+    MatchPlayTracker.navTo(UserScreen.routeName, context);
   }
 
   @override
@@ -44,7 +46,7 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
             child: ElevatedButton(
               style: values.optionButtonStyle,
               onPressed: _wipeData,
-              child: Text(values.strings.title_wipe_all_data),
+              child: Text(values.strings.option_user_data),
             ),
           ),
       ],

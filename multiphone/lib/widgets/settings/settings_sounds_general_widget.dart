@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/preferences.dart';
-import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsSoundsGeneralWidget extends StatefulWidget {
@@ -33,6 +32,8 @@ class _SettingsSoundsGeneralWidgetState
           }),
           isSelected: widget.prefs.soundUseSpeakingNames,
         ),
+        /*
+        //TODO show the volume control and make it do something - set the vol of the device ideally
         Padding(
           padding: const EdgeInsets.only(top: Values.default_space),
           child: Row(
@@ -66,7 +67,7 @@ class _SettingsSoundsGeneralWidgetState
               ),
             ],
           ),
-        ),
+        ),*/
         createSwitchingRow(
           context,
           createIcon(Icons.settings_remote),

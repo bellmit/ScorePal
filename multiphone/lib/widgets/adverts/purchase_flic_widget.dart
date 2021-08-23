@@ -8,7 +8,7 @@ class PurchaseFlicWidget extends StatelessWidget {
 
   static const flicUrl = "https://flic.io/shop/flic-2-single-pack";
 
-  void _navUserToPurchaseFlic(BuildContext context) {
+  static void navUserToPurchaseFlic(BuildContext context) {
     canLaunch(flicUrl).then((value) {
       return launch(flicUrl);
     }).onError((error, stackTrace) {
@@ -54,7 +54,7 @@ class PurchaseFlicWidget extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: TextButton(
-                        onPressed: () => _navUserToPurchaseFlic(context),
+                        onPressed: () => navUserToPurchaseFlic(context),
                         child: Text(values.strings.action_purchase_flic)),
                   ),
                 ],

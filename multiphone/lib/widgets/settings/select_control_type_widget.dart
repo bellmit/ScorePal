@@ -27,7 +27,10 @@ class _SelectControlTypeWidgetState extends State<SelectControlTypeWidget>
 
   void _onControlTypeChanged(ControlType type) {
     // push this data back out to the preferences
-    widget.prefs.controlType = type;
+    setState(() {
+      _selectedType = type;
+      widget.prefs.controlType = type;
+    });
   }
 
   Widget createClickExplainRow(String image, String content) {

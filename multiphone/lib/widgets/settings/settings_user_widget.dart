@@ -20,35 +20,42 @@ class SettingsUserWidget extends StatelessWidget with SettingsWidgetMixin {
         createHeading(values.strings.title_account),
         Row(
           children: <Widget>[
-            user != null && user.photoURL != null
-                ? Container(
-                    height: Values.image_large,
-                    child: Image.network(
-                      user.photoURL,
-                      fit: BoxFit.fill,
-                    ),
-                  )
-                : Icon(
-                    Icons.person,
-                    size: Values.image_large,
-                  ),
+            if (user != null && user.photoURL != null)
+              Container(
+                height: Values.image_large,
+                width: Values.image_large,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                      fit: BoxFit.contain,
+                      image: new NetworkImage(user.photoURL)),
+                ),
+              ),
+            if (user != null && user.photoURL == null)
+              Icon(
+                Icons.person,
+                size: Values.image_large,
+              ),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (user != null &&
-                      user.displayName != null &&
-                      user.displayName.isNotEmpty)
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (user != null &&
+                        user.displayName != null &&
+                        user.displayName.isNotEmpty)
+                      Text(
+                        user.displayName,
+                        style: contentTextStyle,
+                      ),
                     Text(
-                      user.displayName,
+                      user != null ? user.email : '',
                       style: contentTextStyle,
                     ),
-                  Text(
-                    user != null ? user.email : '',
-                    style: contentTextStyle,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             TextButton.icon(

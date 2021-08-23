@@ -326,7 +326,10 @@
     "control_flic2": "Flic 2",
     "control_volume": "Volume",
     "option_setup_flic": "Setup an Original Flic",
-    "option_setup_flic2": "Setup a new Flic 2",
+    "option_setup_flic2": "Setup your Flic 2 Smart-button",
+    "option_purchase": "Purchase",
+    "option_browse": "Browse...",
+    "option_user_data": "Configure user settings and data...",
     
     "title_general": "General Sounds",
     "title_use_names": "Use names when speaking",
@@ -362,13 +365,13 @@
     "explain_control_click_long": "A long press of the button will undo the last point that was recorded.",
     "title_controlsFlic1": "Original Flic Smartbutton",
     "title_controlsFlic": "Flic 2 Smartbutton",
-    "explain_flicSmartButtonRecommendation": "A Flic 2 with a belt clip is the best option",
+    "explain_flicSmartButtonRecommendation": "A Flic 2 with a belt clip...",
     "explain_media_remote": "Small bluetooth media remotes are easy to buy on eBay or Amazon, these can be used to control the score from a distance.",
     "explain_media_remote_recommendation": "Recommend 10m or 40' remote",
     "explain_flic_control": "A 'Flic' Smartbutton is the perfect remote control for Scorepal, allowing you to control your score easily from a distance.",
     "explain_control_vol": "Your phone probably has volume up and down keys on the side. If so, you can use these to control the score.",
     "title_control_vol": "Volume",
-    "explain_control_vol_hack": "Here's a little hack you might like. Buy a bluetooth media remote or a smartwatch and use it's vol keys to control your phone left on the bench. Search for one with at least a 10m or 30 foot range.",
+    "explain_control_vol_hack": "Here's a little hack you might like. Buy a bluetooth media remote or a smartwatch and use it's vol keys to control your phone. Search for one with at least a 10m or 30 foot range.",
 
     "warning_match_change": "Changing the setup of a match already in progress can significantly change the score if you have played points already...",
     "warning_logon_to_delete": "You need to sign in for any changes to also be made online...",
@@ -376,6 +379,7 @@
 
     "error_online": "An error occurred, please sign off and on again and try again.",
     "error_signin": "An error occurred, please check your details and try again.",
-    "error_navigating_to_flic": "Sorry, for some reason I couldn't get to the store, please browse yourself to 'www.flic.io for your own button!"
+    "error_navigating_to_flic": "Sorry, for some reason I couldn't get to the store, please browse yourself to 'www.flic.io' for your own button!",
+    "error_navigating_to_remote": "Sorry, for some reason I couldn't get to the store, please browse for your own button!"
     
 }
