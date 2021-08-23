@@ -236,6 +236,7 @@ class MatchPersistence with ChangeNotifier {
     final matchId = MatchId.create(match);
     return {
       'ver': 1,
+      'analysis': _createAnalysisData(match, setup),
       'id': matchId.toString(),
       'state': stateString(state),
       'sync': syncString(MatchPersistenceSyncState.dirty),
@@ -244,6 +245,24 @@ class MatchPersistence with ChangeNotifier {
       'setup': setup.getData(),
       'data': match.getData(),
     };
+  }
+
+  Map<String, Object> _createAnalysisData(
+      ActiveMatch match, ActiveSetup setup) {
+    // in order for the cloud functions to process completed matches we need
+    // to tell it all about the completed match
+    final Map<String, Object> analysisData = {};
+    if (match == null || setup == null || !match.isMatchOver()) {
+      analysisData['complete'] = false;
+    } else {
+      // this match is complete, set everything up to return the data
+      analysisData['complete'] = true;
+      final matchWinner = match.getMatchWinner();
+      analysisData['user_won'] = setup.isAccountUserInTeam(matchWinner);
+      analysisData['user_lost'] =
+          setup.isAccountUserInTeam(setup.getOtherTeam(matchWinner));
+    }
+    return analysisData;
   }
 
   ActiveMatch _createMatchFromJson(

@@ -12,4 +12,5 @@ admin.initializeApp();
 
 module.exports = {
     ...require('./UserFunctions'),
+    ...require('./MatchFunctions'),
 };

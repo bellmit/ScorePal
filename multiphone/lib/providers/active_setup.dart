@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/match/team_namer.dart';
 import 'package:multiphone/providers/player.dart';
@@ -31,6 +32,8 @@ abstract class ActiveSetup with ChangeNotifier {
 
   ActiveSetup(this.sport)
       : _id = '${sport.id}_${DateTime.now().toIso8601String()}' {
+    // the account holder is always player one
+    _playerNames[PlayerIndex.P_ONE.index] = getAccountUserName();
     // set the team namer as required
     _teamNamer = TeamNamer(this);
   }
@@ -216,6 +219,24 @@ abstract class ActiveSetup with ChangeNotifier {
         _firstServers[TeamIndex.T_TWO.index] = PlayerIndex.P_TWO;
       }
     }
+  }
+
+  String getAccountUserName() {
+    String accountUserName = '';
+    final user = FirebaseAuth.instance.currentUser;
+    if (null != user && user.displayName != null) {
+      accountUserName = user.displayName;
+    }
+    return accountUserName;
+  }
+
+  bool isAccountUserInTeam(TeamIndex teamIndex) {
+    final String accountUserName = getAccountUserName();
+    // the account user is playing if their name is the player or the partner
+    return usernameEquals(
+            _playerNames[getTeamPlayer(teamIndex).index], accountUserName) ||
+        usernameEquals(
+            _playerNames[getTeamPartner(teamIndex).index], accountUserName);
   }
 
   static bool usernameEquals(String username, String compare) {
