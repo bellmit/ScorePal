@@ -84,7 +84,7 @@ class _UserFormState extends State<UserForm> {
     }
   }
 
-  void _deleteAllUserData() {
+  void _deleteAllOnlineUserData() {
     // just delete the user - cloud functions will tidy up our data
     try {
       _userData.currentUser
@@ -295,10 +295,23 @@ class _UserFormState extends State<UserForm> {
                             style: TextStyle(
                                 color: Theme.of(context).primaryColorDark),
                           ),
-                          ElevatedButton(
-                            style: values.optionButtonStyle,
-                            onPressed: _deleteAllUserData,
-                            child: Text(values.strings.delete_user_data),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                style: values.optionButtonStyle,
+                                onPressed: _deleteAllOnlineUserData,
+                                child: Text(
+                                    values.strings.delete_user_data_online),
+                              ),
+                              SizedBox(width: Values.default_space),
+                              ElevatedButton(
+                                style: values.optionButtonStyle,
+                                onPressed: null,
+                                child:
+                                    Text(values.strings.delete_user_data_local),
+                              ),
+                            ],
                           ),
                         ],
                       ),

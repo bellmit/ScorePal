@@ -205,6 +205,8 @@
     "verification_email_send": "Send Verification Email",
     "delete_user_data": "Delete all data...",
     "delete_user_data_confirm": "This will delete all your online data, matches, history, username, everything...",
+    "delete_user_data_online": "Delete all cloud data",
+    "delete_user_data_local": "Delete all local data",
 
     "change_ends": "Change Ends…",
     "change_server": "Change Server…",
