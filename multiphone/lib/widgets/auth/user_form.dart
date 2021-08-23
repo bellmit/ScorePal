@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/user_data.dart';
 import 'package:multiphone/helpers/values.dart';
 
@@ -139,6 +141,7 @@ class _UserFormState extends State<UserForm> {
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
+    final theme = Theme.of(context);
     return Center(
       child: Card(
         margin: EdgeInsets.all(20),
@@ -151,6 +154,76 @@ class _UserFormState extends State<UserForm> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (_userData.currentUser.photoURL != null)
+                        Container(
+                          height: Values.image_large,
+                          width: Values.image_large,
+                          decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                                fit: BoxFit.contain,
+                                image: new NetworkImage(
+                                    _userData.currentUser.photoURL)),
+                          ),
+                        ),
+                      if (_userData.currentUser.photoURL == null)
+                        Icon(
+                          Icons.person,
+                          size: Values.image_large,
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.all(Values.default_space),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _userData.currentUser.email,
+                              style: TextStyle(color: theme.primaryColorDark),
+                            ),
+                            if (_userData.currentUser.providerData.any(
+                                (element) =>
+                                    element.providerId.toLowerCase() ==
+                                    'google.com'))
+                              Row(
+                                children: <Widget>[
+                                  Icon(
+                                    FontAwesomeIcons.google,
+                                    color: theme.primaryColorDark,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    values.strings.provider_google,
+                                    style: TextStyle(
+                                        color: theme.primaryColorDark),
+                                  ),
+                                ],
+                              ),
+                            if (_userData.currentUser.providerData.any(
+                                (element) =>
+                                    element.providerId.toLowerCase() ==
+                                    'apple.com'))
+                              Row(
+                                children: <Widget>[
+                                  Icon(
+                                    FontAwesomeIcons.apple,
+                                    color: theme.primaryColorDark,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    values.strings.provider_apple,
+                                    style: TextStyle(
+                                        color: theme.primaryColorDark),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                   Row(
                     children: [
                       ConstrainedBox(
@@ -187,13 +260,10 @@ class _UserFormState extends State<UserForm> {
                           child: Text(values.strings.save)),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(Values.default_space),
-                    child: ElevatedButton(
-                        style: values.optionButtonStyle,
-                        onPressed: _signOut,
-                        child: Text(values.strings.sign_out)),
-                  ),
+                  ElevatedButton(
+                      style: values.optionButtonStyle,
+                      onPressed: _signOut,
+                      child: Text(values.strings.sign_out)),
                   if (!_userData.currentUser.emailVerified)
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
@@ -201,8 +271,7 @@ class _UserFormState extends State<UserForm> {
                         children: [
                           Text(
                             values.strings.email_not_verified,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorDark),
+                            style: TextStyle(color: theme.primaryColorDark),
                           ),
                           Row(
                             children: [
@@ -221,17 +290,14 @@ class _UserFormState extends State<UserForm> {
                         ],
                       ),
                     ),
-                  Padding(
-                    padding: const EdgeInsets.all(Values.default_space),
-                    child: ElevatedButton(
-                        style: values.optionButtonStyle,
-                        onPressed: () => setState(() =>
-                            _isChangeInPasswordRequired =
-                                !_isChangeInPasswordRequired),
-                        child: Text(_isChangeInPasswordRequired
-                            ? values.strings.cancel
-                            : values.strings.change_password)),
-                  ),
+                  ElevatedButton(
+                      style: values.optionButtonStyle,
+                      onPressed: () => setState(() =>
+                          _isChangeInPasswordRequired =
+                              !_isChangeInPasswordRequired),
+                      child: Text(_isChangeInPasswordRequired
+                          ? values.strings.cancel
+                          : values.strings.change_password)),
                   if (_isChangeInPasswordRequired)
                     Column(
                       children: [
@@ -292,8 +358,7 @@ class _UserFormState extends State<UserForm> {
                         children: [
                           Text(
                             values.strings.delete_user_data_confirm,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColorDark),
+                            style: TextStyle(color: theme.primaryColorDark),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
