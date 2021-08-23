@@ -1,0 +1,26 @@
+/*
+Got FCM device token: cqh3ngH9n5Y:APA91bEfLu1iuUTSqbCu46oPWWmOGkn3-SVFetD0BENnT6pjOIV4iwczJxevFqcCd0kxRjZZvWBIf3TQmJbp6Bob388tsp77yxVD8foWAoG-oOrfQlBP-mrMVxjamfRk64iA2d9JMLUC
+
+send a message to the user with the following command:
+curl -H "Content-Type: application/json" \
+     -H "Authorization: key=AAAAFAPwXIc:APA91bGJGwW5noekkmupWwOYF3W09gFGzYbrIBsIkbC12V4hkE5Kf_qsn70MufInq_ANYVQDVjzqNcwkM1PS2d5DHIJtWfFp6c3n6BNWippVYCiblYIpoo2mPSOH-MMR096_eD9KJ1Tk" \
+     -d '{
+           "notification": {
+             "title": "New chat message!",
+             "body": "There is a new message in FriendlyChat",
+             "icon": "/images/profile_placeholder.png",
+             "click_action": "http://localhost:5000"
+           },
+           "to": "cqh3ngH9n5Y:APA91bEfLu1iuUTSqbCu46oPWWmOGkn3-SVFetD0BENnT6pjOIV4iwczJxevFqcCd0kxRjZZvWBIf3TQmJbp6Bob388tsp77yxVD8foWAoG-oOrfQlBP-mrMVxjamfRk64iA2d9JMLUC"
+         }' \
+     https://fcm.googleapis.com/fcm/send
+*/
+
+{
+    "name": "Scorepal",
+    "short_name": "Scorepal",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "gcm_sender_id": "103953800507"
+}
