@@ -6,7 +6,7 @@ import * as functions from 'firebase-functions';
  */
  exports.processMatchChange = functions.firestore
  .document('users/{userId}/matches/{matchId}')
- .onUpdate((change, context) => {
+ .onWrite((change, context) => {
      // get the change in data we experienced
      const data = change.after.data();
      const previousData = change.before.data();
