@@ -35,6 +35,10 @@
     "@option_trash": {
         "description": "The home screen title (view attributions)"
     },
+    "option_user_details": "User Details",
+    "@option_user_details": {
+        "description": "The user details screen title"
+    },
     "sign_out": "Sign Out",
     "@sign_out": {
       "description": "The button text to show for the user to log out of firebase"
@@ -181,6 +185,26 @@
 
     "deleted_match_menu_resume": "Resume",
     "deleted_match_menu_delete": "Delete Forever",
+
+    "cancel": "Cancel",
+    "save": "Save",
+    "password": "Password",
+    "username": "Username",
+    "email_address": "Email Address",
+    "email_not_verified": "This email address is not verified, please verify to proceed...",
+    "email_valid": "Please enter a valid email address.",
+    "change_password": "Change Password",
+    "confirm_password": "Confirm Password",
+    "password_match": "Please re-enter the identical password.",
+    "password_valid": "Please enter a valid password at least 8 characters long.",
+    "username_valid": "Please enter a valid username at least 4 characters long.",
+    "create_account": "Create Account",
+    "already_account": "I already have an account...",
+    "signin_google": "Sign-in using Google",
+    "signin_apple": "Sign-in using Apple",
+    "verification_email_send": "Send Verification Email",
+    "delete_user_data": "Delete all data...",
+    "delete_user_data_confirm": "This will delete all your online data, matches, history, username, everything...",
 
     "change_ends": "Change Ends…",
     "change_server": "Change Server…",
@@ -346,6 +370,8 @@
     "warning_logon_to_delete": "You need to sign in for any changes to also be made online...",
     "warning_no_matches_to_delete": "You haven't any deleted matches...",
 
+    "error_online": "An error occurred, please sign off and on again and try again.",
+    "error_signin": "An error occurred, please check your details and try again.",
     "error_navigating_to_flic": "Sorry, for some reason I couldn't get to the store, please browse yourself to 'www.flic.io for your own button!"
     
 }

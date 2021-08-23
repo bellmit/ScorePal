@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/auth_screen.dart';
+import 'package:multiphone/screens/user_screen.dart';
 
 class UserDetailsWidget extends StatefulWidget {
   const UserDetailsWidget({Key key}) : super(key: key);
@@ -102,9 +104,13 @@ class UserLoggedInWidget extends StatelessWidget {
               ),
             Padding(
               padding: const EdgeInsets.all(Values.default_space),
-              child: Text(
-                userName,
-                style: TextStyle(color: Theme.of(context).accentColor),
+              child: TextButton(
+                child: Text(
+                  userName,
+                  style: TextStyle(color: Theme.of(context).accentColor),
+                ),
+                onPressed: () =>
+                    MatchPlayTracker.navTo(UserScreen.routeName, context),
               ),
             ),
           ],
