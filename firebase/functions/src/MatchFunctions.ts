@@ -4,7 +4,7 @@ import * as functions from 'firebase-functions';
 /**
  * Listen for changes to matches to count the wins and losses the account holder records
  */
- exports.processMatchChange = functions.firestore
+ exports.processMatchWinnings = functions.firestore
  .document('users/{userId}/matches/{matchId}')
  .onWrite((change, context) => {
      // get the change in data we experienced
@@ -81,3 +81,58 @@ import * as functions from 'firebase-functions';
      // nothing to do
      return false;
  });
+
+ /**
+ * Listen for changes to matches to send the player's opponents the score also
+ */
+  exports.processMatchOpponents = functions.firestore
+  .document('users/{userId}/matches/{matchId}')
+  .onWrite(async (change, context) => {
+      // get the change in data we experienced, we are listening for a write to
+      // be sure to always have the latest in the inbox of the player's the user played
+      const data = change.after.data();
+      // check all the data is there, needs to be complete and not received_from an inbox
+      if (data && data.setup &&
+        data.analysis && data.analysis.complete &&
+        !data.received_from) {
+          // this match is complete we can try to find all our opponents and send
+          // them the score also
+          var addresses = [
+            ...data.setup['player1_addresses'],
+            ...data.setup['player2_addresses'],
+            ...data.setup['player3_addresses'],
+            ...data.setup['player4_addresses'],
+          ];
+          // so we need to find any users with each of these addresses and send them
+          // the results of the match to see if they are interested
+          for (var i = 0; i < addresses.length; ++i) {
+              const lcAddress = addresses[i].toLowerCase();
+              const userDocs = await admin.firestore().collection('users').where('email_lc', '==', lcAddress).get();
+              if (null != userDocs && !userDocs.empty) {
+                  // have users that match this email, add the match to their inbox
+                  const inboxData = {
+                      ...data,
+                      'received_from': context.params.userId,
+                  } as any;
+                  // being sure the state is not deleted or whatever from the source player
+                  inboxData['state'] = 'communicated';
+                  // and put this in all the inboxes there are (will have a 'received_from' so when put into matches
+                  // the subsequent change will not trigger this going back to another one and round and round we would go)
+                  userDocs.forEach(async (userDoc) => {
+                      // first check that we are not sending a match to ourselves
+                      if (userDoc.id !== context.params.userId) {
+                        // for each userDoc in the list, add the match data we just detected has changed to their inbox
+                        await admin.firestore()
+                            .collection('users/' + userDoc.id + '/inbox')
+                            .doc(context.params.matchId)
+                            .set(inboxData);
+                      }
+                  });
+              }
+          }
+          // we waited til everything was complete in this function so we can just return here
+          return true;
+      }
+      // nothing to do
+      return false;
+  });

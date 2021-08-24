@@ -111,6 +111,17 @@ abstract class ActiveSetup with ChangeNotifier {
   }
 
   void setPlayerEmails(PlayerIndex player, List<String> emailAddresses) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null && currentUser.email != null) {
+      // we have our email - don't store our emails!
+      final lcUserEmail = currentUser.email.trim().toLowerCase();
+      if (null !=
+          emailAddresses.firstWhere(
+              (element) => element.trim().toLowerCase() == lcUserEmail)) {
+        // this list of email addresses contains ours - don't record this list
+        emailAddresses = [];
+      }
+    }
     _playerEmailAddresses[player.index] = [...emailAddresses];
   }
 

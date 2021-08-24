@@ -20,6 +20,7 @@ enum MatchPersistenceState {
   backup,
   deleted,
   lastActive,
+  communicated
 }
 
 enum MatchPersistenceSyncState {
@@ -74,6 +75,8 @@ class MatchPersistence with ChangeNotifier {
         return 'deleted';
       case MatchPersistenceState.lastActive:
         return 'last_active';
+      case MatchPersistenceState.communicated:
+        return 'communicated';
       default:
         return 'backup';
     }
@@ -89,6 +92,8 @@ class MatchPersistence with ChangeNotifier {
         return MatchPersistenceState.deleted;
       case 'last_active':
         return MatchPersistenceState.lastActive;
+      case 'communicated':
+        return MatchPersistenceState.communicated;
       default:
         return MatchPersistenceState.backup;
     }
