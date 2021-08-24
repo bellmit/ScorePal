@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:flic_button/flic_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
+import 'package:multiphone/widgets/common/heading_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 
 class SetupFlic2Screen extends BaseNavScreen {
@@ -114,13 +120,12 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
     }
   }
 
-  void _getButtons() {
+  Future<void> _getButtons() async {
     // get all the buttons from the plugin that were there last time
-    flicButtonManager.getFlic2Buttons().then((buttons) {
-      // put all of these in the list to show the buttons
-      buttons.forEach((button) {
-        _addButtonAndListen(button);
-      });
+    final buttons = await flicButtonManager.getFlic2Buttons();
+    // put all of these in the list to show the buttons
+    buttons.forEach((button) {
+      _addButtonAndListen(button);
     });
   }
 
@@ -138,9 +143,13 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   void _connectDisconnectButton(Flic2Button button) {
     // if disconnected, connect, else disconnect the button
     if (button.connectionState == Flic2ButtonConnectionState.disconnected) {
-      flicButtonManager.connectButton(button.uuid);
+      flicButtonManager
+          .connectButton(button.uuid)
+          .then((value) => _getButtons());
     } else {
-      flicButtonManager.disconnectButton(button.uuid);
+      flicButtonManager
+          .disconnectButton(button.uuid)
+          .then((value) => _getButtons());
     }
   }
 
@@ -159,10 +168,14 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
 
   @override
   void onButtonClicked(Flic2ButtonClick buttonClick) {
-    // callback from the plugin that someone just clicked a button
-    print('button ${buttonClick.button.uuid} clicked');
+    // callback from the plugin that someone just clicked a button0
     setState(() {
       _lastClick = buttonClick;
+      new Future.delayed(Duration(seconds: 2), () {
+        setState(() {
+          _lastClick = null;
+        });
+      });
     });
   }
 
@@ -177,12 +190,9 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   @override
   void onButtonDiscovered(String buttonAddress) {
     // this is an address which we should be able to resolve to an actual button right away
-    print('button @$buttonAddress discovered');
     // but we could in theory wait for it to be connected and discovered because that will happen too
     flicButtonManager.getFlic2ButtonByAddress(buttonAddress).then((button) {
       if (button != null) {
-        print(
-            'button found with address $buttonAddress resolved to actual button data ${button.uuid}');
         // which we can add to the list to show right away
         _addButtonAndListen(button);
       }
@@ -192,20 +202,18 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   @override
   void onButtonFound(Flic2Button button) {
     // we have found a new button, add to the list to show
-    print('button ${button.uuid} found');
-    // and add to the list to show
     _addButtonAndListen(button);
   }
 
   @override
   void onFlic2Error(String error) {
     // something went wrong somewhere, provide feedback maybe, or did you code something in the wrong order?
-    print('ERROR: $error');
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(error), backgroundColor: Theme.of(context).errorColor));
   }
 
   @override
   void onPairedButtonDiscovered(Flic2Button button) {
-    print('paired button ${button.uuid} discovered');
     // discovered something already paired (getButtons will return these but maybe you didn't bother and
     // just went right into a scan)
     _addButtonAndListen(button);
@@ -227,99 +235,159 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
     });
   }
 
+  Widget _flic2Widget(Flic2Button button) {
+    final values = Values(context);
+    return ListTile(
+      key: ValueKey(button.uuid),
+      leading: Container(
+        child: Stack(
+          children: [
+            SvgPicture.asset(
+              'images/svg/flic-two.svg',
+              height: Values.image_medium,
+              color: _lastClick != null && _lastClick.button.uuid == button.uuid
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).primaryColorDark,
+            ),
+            if (_lastClick != null && _lastClick.button.uuid == button.uuid)
+              Container(
+                width: Values.image_large,
+                height: Values.image_large + 50,
+                child: FittedBox(
+                  alignment: Alignment.bottomCenter,
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    _lastClick.isSingleClick
+                        ? values.strings.flic_single_click
+                        : _lastClick.isDoubleClick
+                            ? values.strings.flic_double_click
+                            : _lastClick.isHold
+                                ? values.strings.flic_hold_click
+                                : '',
+                    style: TextStyle(color: Theme.of(context).primaryColorDark),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+      title: Text(
+          values.construct(values.strings.flic2_title, [button.buttonAddr])),
+      subtitle: Column(
+        children: [
+          Text(
+            values.construct(
+              values.strings.flic2_details,
+              [
+                button.name,
+                button.battVoltage,
+                button.battPercentage,
+                button.serialNo,
+                button.pressCount,
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () => _connectDisconnectButton(button),
+                child: Text(button.connectionState ==
+                        Flic2ButtonConnectionState.disconnected
+                    ? values.strings.button_flic_connect
+                    : values.strings.button_flic_disconnect),
+                style: values.optionButtonStyle,
+              ),
+              SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: () => _forgetButton(button),
+                child: Text(values.strings.button_flic_forget),
+                style: values.optionButtonStyle,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget buildScreenBody(BuildContext context) {
+    final values = Values(context);
     return FutureBuilder(
       future: flicButtonManager != null ? flicButtonManager.invokation : null,
       builder: (ctx, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           // are not initialized yet, wait a sec - should be very quick!
-          return Center(
-            child: ElevatedButton(
-              onPressed: () => _startStopFlic2(),
-              child: Text('Start and initialize Flic2'),
-            ),
-          );
+          return Center(child: CircularProgressIndicator());
         } else {
           // we have completed the init call, we can perform scanning etc
           return Column(
             children: [
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Flic2 is initialized',
-                style: TextStyle(fontSize: 20),
-              ),
-              ElevatedButton(
-                onPressed: () => _startStopFlic2(),
-                child: Text('Stop Flic2'),
-              ),
               if (flicButtonManager != null)
                 Row(
                   // if we are started then show the controls to get flic2 and scan for flic2
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ElevatedButton(
-                        onPressed: () => _getButtons(),
-                        child: Text('Get Buttons')),
-                    ElevatedButton(
-                        onPressed: () => _startStopScanningForFlic2(),
-                        child: Text(_isScanning
-                            ? 'Stop Scanning'
-                            : 'Scan for buttons')),
+                    Padding(
+                      padding: const EdgeInsets.all(Values.default_space),
+                      child: ElevatedButton(
+                          onPressed: () => _startStopScanningForFlic2(),
+                          child: Text(_isScanning
+                              ? values.strings.button_stop_scanning
+                              : values.strings.button_scan),
+                          style: values.optionButtonStyle),
+                    ),
+                    if (_isScanning)
+                      HeadingWidget(title: values.strings.info_scanning_flic),
                   ],
                 ),
-              if (null != _lastClick)
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    'FLIC2 @${_lastClick.button.buttonAddr}\nclicked ${_lastClick.timestamp - _lastClick.button.readyTimestamp}ms from ready state\n'
-                    '${_lastClick.isSingleClick ? 'single click\n' : ''}'
-                    '${_lastClick.isDoubleClick ? 'double click\n' : ''}'
-                    '${_lastClick.isHold ? 'hold\n' : ''}',
-                  ),
-                ),
-              if (_isScanning)
-                Text(
-                    'Hold down your flic2 button so we can find it now we are scanning...'),
               // and show the list of buttons we have found at this point
               Expanded(
-                child: ListView(
-                    children: _buttonsFound.values
-                        .map((e) => ListTile(
-                              key: ValueKey(e.uuid),
-                              leading: Icon(Icons.radio_button_on, size: 48),
-                              title: Text('FLIC2 @${e.buttonAddr}'),
-                              subtitle: Column(
-                                children: [
-                                  Text('${e.uuid}\n'
-                                      'name: ${e.name}\n'
-                                      'batt: ${e.battVoltage}V (${e.battPercentage}%)\n'
-                                      'serial: ${e.serialNo}\n'
-                                      'pressed: ${e.pressCount}\n'),
-                                  Row(
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () =>
-                                            _connectDisconnectButton(e),
-                                        child: Text(e.connectionState ==
-                                                Flic2ButtonConnectionState
-                                                    .disconnected
-                                            ? 'connect'
-                                            : 'disconnect'),
-                                      ),
-                                      SizedBox(width: 20),
-                                      ElevatedButton(
-                                        onPressed: () => _forgetButton(e),
-                                        child: Text('forget'),
-                                      ),
-                                    ],
+                child: RefreshIndicator(
+                  onRefresh: _getButtons,
+                  child: OrientationBuilder(
+                    builder: (ctx, orientation) {
+                      return StaggeredGridView.countBuilder(
+                        itemCount:
+                            _buttonsFound == null ? 0 : _buttonsFound.length,
+                        crossAxisCount:
+                            orientation == Orientation.portrait ? 1 : 2,
+                        crossAxisSpacing: Values.default_space,
+                        mainAxisSpacing: Values.default_space,
+                        staggeredTileBuilder: (int index) =>
+                            StaggeredTile.fit(1),
+                        itemBuilder: (BuildContext context, int index) {
+                          final button = _buttonsFound.values.elementAt(index);
+                          return Dismissible(
+                            direction: DismissDirection.startToEnd,
+                            background: Container(
+                              color: Values.deleteColor,
+                              child: const Align(
+                                alignment: Alignment.centerLeft,
+                                child: const Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: Values.default_space),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Values.secondaryTextColor,
                                   ),
-                                ],
+                                ),
                               ),
-                            ))
-                        .toList()),
+                            ),
+                            // Each Dismissible must contain a Key. Keys allow Flutter to
+                            // uniquely identify widgets.
+                            key: Key(button.uuid),
+                            // Provide a function that tells the app
+                            // what to do after an item has been swiped away.
+                            onDismissed: (direction) => setState(
+                                () => _buttonsFound.remove(button.uuid)),
+                            child: _flic2Widget(button),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
               ),
             ],
           );

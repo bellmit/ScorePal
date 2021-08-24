@@ -373,6 +373,18 @@
     "title_control_vol": "Volume",
     "explain_control_vol_hack": "Here's a little hack you might like. Buy a bluetooth media remote or a smartwatch and use it's vol keys to control your phone. Search for one with at least a 10m or 30 foot range.",
 
+    "flic_single_click": "Single Clicked",
+    "flic_double_click": "Double Clicked",
+    "flic_hold_click": "Long Clicked",
+    "flic2_title": "FLIC2 @{0}",
+    "button_flic_forget": "Forget",
+    "button_flic_connect": "Connect",
+    "button_flic_disconnect": "Disconnect",
+    "button_scan": "Scan for buttons",
+    "button_stop_scanning": "Stop Scanning",
+    "info_scanning_flic": "Hold down your flic2 button so we can find it now we are scanning...",
+    "flic2_details": "Name: {0}\nBattery at: {1}V ({2}%)\nSerial Number:{3}\nPressed {4} times",
+
     "warning_match_change": "Changing the setup of a match already in progress can significantly change the score if you have played points already...",
     "warning_logon_to_delete": "You need to sign in for any changes to also be made online...",
     "warning_no_matches_to_delete": "You haven't any deleted matches...",
