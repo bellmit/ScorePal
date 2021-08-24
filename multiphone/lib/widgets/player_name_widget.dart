@@ -5,6 +5,7 @@ import 'package:multiphone/helpers/values.dart';
 
 class PlayerNameWidget extends StatefulWidget {
   final void Function(String) onTextChanged;
+  final void Function(Contact) onContactSelected;
   final void Function() onPlayerSelectedToServe;
   final bool isPlayerServer;
   final List<Contact> availableOpponents;
@@ -19,6 +20,7 @@ class PlayerNameWidget extends StatefulWidget {
     @required this.onPlayerSelectedToServe,
     @required this.isPlayerServer,
     @required this.onTextChanged,
+    @required this.onContactSelected,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey _autocompleteKey = GlobalKey();
+  Contact _selectedContact;
 
   @override
   void initState() {
@@ -53,15 +56,35 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
 
   void _textChanged() {
     // they are typing - change the settings accordingly
+    final contactName = _textEditingController.text.trim();
     if (widget.onTextChanged != null) {
       // inform the passed function then of this change
-      widget.onTextChanged(_textEditingController.text);
+      widget.onTextChanged(contactName);
+    }
+    if (null == _selectedContact ||
+        _selectedContact.displayName != contactName) {
+      // we didn't select this contact - but the might have properly entered their name
+      // so does the text entered specify a contact we can email etc?
+      _selectedContact = null;
+      final lcContactName = contactName.toLowerCase();
+      for (Contact contact in widget.availableOpponents) {
+        if (contact.displayName.toLowerCase().trim() == lcContactName) {
+          // this is a match - they typed in their name
+          _selectedContact = contact;
+          break;
+        }
+      }
+      // and inform the widget of this change (might be null)
+      widget.onContactSelected(_selectedContact);
     }
   }
 
   void _onContactSelected(Contact contact) {
     // release the focus when selected a name (text changed will also be called)
     FocusScope.of(context).requestFocus(FocusNode());
+    // this is the contact of the selection - set this on the widget
+    _selectedContact = contact;
+    widget.onContactSelected(_selectedContact);
   }
 
   bool _isContactMatch(Contact contact, String text) {

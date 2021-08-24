@@ -19,6 +19,8 @@ abstract class ActiveSetup with ChangeNotifier {
 
   final List<String> _playerNames =
       List<String>.filled(PlayerIndex.values.length, '');
+  final List<List<String>> _playerEmailAddresses =
+      List<List<String>>.filled(PlayerIndex.values.length, []);
 
   TeamNamer _teamNamer;
   final Sport sport;
@@ -56,6 +58,10 @@ abstract class ActiveSetup with ChangeNotifier {
     for (int i = 0; i < _firstServers.length; ++i) {
       data['server${i + 1}'] = _firstServers[i].index;
     }
+    // also the email addresses of the players we are playing
+    for (int i = 0; i < _playerEmailAddresses.length; ++i) {
+      data['player${i + 1}_addresses'] = _playerEmailAddresses[i];
+    }
     return data;
   }
 
@@ -63,7 +69,7 @@ abstract class ActiveSetup with ChangeNotifier {
     // Id first
     _id = data['id'];
     for (int i = 0; i < _playerNames.length; ++i) {
-      _playerNames[i] = data['player${i + 1}'];
+      _playerNames[i] = data['player${i + 1}'] ?? '';
     }
     // singles / doubles
     _singlesDoubles = data['singles']
@@ -72,6 +78,11 @@ abstract class ActiveSetup with ChangeNotifier {
     _firstServingTeam = TeamIndex.values[data['first_team']];
     for (int i = 0; i < _firstServers.length; ++i) {
       _firstServers[i] = PlayerIndex.values[data['server${i + 1}']];
+    }
+    // and the player's email addresses
+    for (int i = 0; i < _playerEmailAddresses.length; ++i) {
+      final List<dynamic> list = data['player${i + 1}_addresses'] ?? [];
+      _playerEmailAddresses[i] = list.map((e) => e.toString()).toList();
     }
     // this, obviously, changes the data
     notifyListeners();
@@ -97,6 +108,14 @@ abstract class ActiveSetup with ChangeNotifier {
     }
     // return the name
     return name;
+  }
+
+  void setPlayerEmails(PlayerIndex player, List<String> emailAddresses) {
+    _playerEmailAddresses[player.index] = [...emailAddresses];
+  }
+
+  List<String> getPlayerEmails(PlayerIndex player) {
+    return [..._playerEmailAddresses[player.index]];
   }
 
   String getTeamName(TeamIndex team, BuildContext context) {

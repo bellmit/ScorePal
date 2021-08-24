@@ -75,6 +75,26 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
         .setPlayerName(playerIndex, playerName);
   }
 
+  void _onPlayerContactSet(Contact contact, PlayerIndex playerIndex) {
+    List<String> emails = [];
+    if (contact != null && contact.emails != null) {
+      // get the contact's emails to inform about these match results when
+      // we are done too
+      for (Email email in contact.emails) {
+        if (email.isPrimary) {
+          // be sure to place the primary first
+          emails.insert(0, email.address);
+        } else {
+          // all others below
+          emails.add(email.address);
+        }
+      }
+    }
+    // set these emails on the settings for the player
+    Provider.of<ActiveSetup>(context, listen: false)
+        .setPlayerEmails(playerIndex, emails);
+  }
+
   void _onSinglesDoublesChanged(MatchSinglesDoubles singlesDoubles) {
     // update the player name in the settings
     Provider.of<ActiveSetup>(context, listen: false).singlesDoubles =
@@ -104,6 +124,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
           hintText: Values(context).strings.player_one,
           onTextChanged: (newName) =>
               _onPlayerNameChanged(newName, PlayerIndex.P_ONE),
+          onContactSelected: (contact) =>
+              _onPlayerContactSet(contact, PlayerIndex.P_ONE),
           isPlayerServer: _servingPlayer == PlayerIndex.P_ONE,
           onPlayerSelectedToServe: () => _onServerSelected(PlayerIndex.P_ONE),
           availableOpponents: contacts,
@@ -123,6 +145,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                 hintText: Values(context).strings.partner_one,
                 onTextChanged: (newName) =>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_ONE),
+                onContactSelected: (contact) =>
+                    _onPlayerContactSet(contact, PlayerIndex.PT_ONE),
                 isPlayerServer: _servingPlayer == PlayerIndex.PT_ONE,
                 onPlayerSelectedToServe: () =>
                     _onServerSelected(PlayerIndex.PT_ONE),
@@ -137,6 +161,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
           hintText: Values(context).strings.player_two,
           onTextChanged: (newName) =>
               _onPlayerNameChanged(newName, PlayerIndex.P_TWO),
+          onContactSelected: (contact) =>
+              _onPlayerContactSet(contact, PlayerIndex.P_TWO),
           isPlayerServer: _servingPlayer == PlayerIndex.P_TWO,
           onPlayerSelectedToServe: () => _onServerSelected(PlayerIndex.P_TWO),
           availableOpponents: contacts,
@@ -156,6 +182,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                 hintText: Values(context).strings.partner_two,
                 onTextChanged: (newName) =>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_TWO),
+                onContactSelected: (contact) =>
+                    _onPlayerContactSet(contact, PlayerIndex.PT_TWO),
                 isPlayerServer: _servingPlayer == PlayerIndex.PT_TWO,
                 onPlayerSelectedToServe: () =>
                     _onServerSelected(PlayerIndex.PT_TWO),
@@ -174,7 +202,8 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
       // no contacts allowed
       return [];
     } else {
-      return await FlutterContacts.getContacts(withThumbnail: true);
+      return await FlutterContacts.getContacts(
+          withThumbnail: true, withProperties: true);
     }
   }
 
