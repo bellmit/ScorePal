@@ -79,7 +79,9 @@ class _AuthFormState extends State<AuthForm> {
                     enableSuggestions: false,
                     validator: (value) {
                       // check the email address
-                      if (value.isEmpty || !value.contains('@')) {
+                      if (value.isEmpty ||
+                          !value.contains('@') ||
+                          value.contains('|')) {
                         return values.strings.email_valid;
                       } else {
                         return null;
@@ -102,7 +104,7 @@ class _AuthFormState extends State<AuthForm> {
                       enableSuggestions: false,
                       validator: (value) {
                         // check the username
-                        if (value.length < 4) {
+                        if (value.length < 4 || value.contains('|')) {
                           return values.strings.username_valid;
                         } else {
                           return null;

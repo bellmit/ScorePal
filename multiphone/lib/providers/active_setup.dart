@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/team_namer.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
@@ -14,6 +15,14 @@ enum TeamIndex {
   T_TWO,
 }
 
+class CommunicatedTo {
+  final String email;
+  final String username;
+  final String userId;
+  const CommunicatedTo(
+      {@required this.email, @required this.username, @required this.userId});
+}
+
 abstract class ActiveSetup with ChangeNotifier {
   MatchSinglesDoubles _singlesDoubles = MatchSinglesDoubles.singles;
 
@@ -25,6 +34,7 @@ abstract class ActiveSetup with ChangeNotifier {
   TeamNamer _teamNamer;
   final Sport sport;
   String _id;
+  List<CommunicatedTo> _communicatedToList = [];
 
   TeamIndex _firstServingTeam = TeamIndex.T_ONE;
   final List<PlayerIndex> _firstServers = [
@@ -42,6 +52,10 @@ abstract class ActiveSetup with ChangeNotifier {
 
   get id {
     return _id;
+  }
+
+  List<CommunicatedTo> get communicatedTo {
+    return [..._communicatedToList];
   }
 
   Map<String, Object> getData() {
@@ -62,6 +76,13 @@ abstract class ActiveSetup with ChangeNotifier {
     for (int i = 0; i < _playerEmailAddresses.length; ++i) {
       data['player${i + 1}_addresses'] = _playerEmailAddresses[i];
     }
+    // and the 'communicated to' list
+    List<String> dataList = [];
+    for (CommunicatedTo communicated in _communicatedToList) {
+      dataList.add(
+          '${communicated.email}|${communicated.username}|${communicated.userId}');
+    }
+    data['communicated_to'] = dataList;
     return data;
   }
 
@@ -84,8 +105,42 @@ abstract class ActiveSetup with ChangeNotifier {
       final List<dynamic> list = data['player${i + 1}_addresses'] ?? [];
       _playerEmailAddresses[i] = list.map((e) => e.toString()).toList();
     }
+    // we also want the list of players this is communicated to
+    final communicatedTo = data['communicated_to'] as List;
+    if (communicatedTo == null || communicatedTo.isEmpty) {
+      _communicatedToList = [];
+    } else {
+      // create the objects from the ":" separated strings
+      for (String commString in communicatedTo) {
+        final splitStrings = commString.split('|');
+        if (splitStrings.length == 3) {
+          _communicatedToList.add(CommunicatedTo(
+            email: splitStrings[0],
+            username: splitStrings[1],
+            userId: splitStrings[2],
+          ));
+        } else {
+          Log.error(
+              'The communicated_to string of "$commString" was not as expected');
+        }
+      }
+    }
     // this, obviously, changes the data
     notifyListeners();
+  }
+
+  String getPlayerNameForEmail(String email) {
+    // find the email in the list and return the player for that one
+    final lcEmail = email.trim().toLowerCase();
+    for (var i = 0; i < _playerEmailAddresses.length; ++i) {
+      if (_playerEmailAddresses[i]
+          .any((element) => element.toLowerCase().trim() == lcEmail)) {
+        // this list contains the email, this is the player
+        return _playerNames[i].isEmpty ? null : _playerNames[i];
+      }
+    }
+    // if here then there's no match
+    return null;
   }
 
   List<int> getStraightPointsToWin();

@@ -13,9 +13,9 @@ exports.processMatchWinnings = functions.firestore
 
         if (data && data.analysis && data.analysis.complete) {
             // this match is complete and there is data we can record
-            var winChange = 0;
-            var lossChange = 0;
-            var playedChange = 0;
+            let winChange = 0;
+            let lossChange = 0;
+            let playedChange = 0;
             if (!previousData) {
                 // there is no previous data, can just increment the proper counters
                 if (data.analysis.user_won) {
@@ -97,7 +97,7 @@ exports.processMatchOpponents = functions.firestore
             !data.received_from) {
             // this match is complete we can try to find all our opponents and send
             // them the score also
-            var addresses = [
+            let addresses = [
                 ...data.setup['player1_addresses'],
                 ...data.setup['player2_addresses'],
                 ...data.setup['player3_addresses'],
@@ -105,8 +105,8 @@ exports.processMatchOpponents = functions.firestore
             ];
             // so we need to find any users with each of these addresses and send them
             // the results of the match to see if they are interested
-            var usersCommunicated = [] as string[];
-            for (var i = 0; i < addresses.length; ++i) {
+            let usersCommunicated = [] as string[];
+            for (let i = 0; i < addresses.length; ++i) {
                 const lcAddress = addresses[i].toLowerCase();
                 const userDocs = await admin.firestore().collection('users').where('email_lc', '==', lcAddress).get();
                 if (null != userDocs && !userDocs.empty) {
@@ -127,16 +127,16 @@ exports.processMatchOpponents = functions.firestore
                             await admin.firestore()
                                 .collection('users/' + userDoc.id + '/inbox')
                                 .doc(context.params.matchId)
-                                .set(inboxData);
+                                .set(inboxData, {merge: true});
                             // and remember that this worked to put back into the match data
                             const username = userDoc.data()['username'] ?? '';
-                            usersCommunicated.push('"' + lcAddress + '":"' + username + '":"' + userDoc.id + '"');
+                            usersCommunicated.push(lcAddress + '|' + username + '|' + userDoc.id);
                         }
                     }
                 }
             }
             // finally we can record which users this was communicated to
-            return change.after.ref.update({'communicated_to': usersCommunicated});
+            return change.after.ref.set({'setup': {'communicated_to': usersCommunicated}}, {merge: true});
         }
         // nothing to do
         return false;

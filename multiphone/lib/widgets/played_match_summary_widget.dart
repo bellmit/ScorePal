@@ -72,6 +72,8 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
+    final setup = widget.match.getSetup();
+    final sport = widget.match.getSport();
     return Card(
       child: Container(
         padding: EdgeInsets.all(Values.default_space),
@@ -84,7 +86,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(Values.default_radius),
                   child: Image.asset(
-                    widget.match.getSport().image,
+                    sport.image,
                     height: Values.image_large,
                     width: Values.image_large,
                   ),
@@ -101,7 +103,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.match.getSport().title(context),
+                        Text(sport.title(context),
                             style: TextStyle(
                               fontSize: Values.font_size_title,
                               fontWeight: FontWeight.bold,
@@ -137,9 +139,32 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                       : values.strings.show_more)),
             ),
             if (_isExpanded)
-              Padding(
-                padding: EdgeInsets.all(Values.default_space),
-                child: _createScoreSummaryWidget(context),
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(Values.default_space),
+                    child: _createScoreSummaryWidget(context),
+                  ),
+                  if (setup.communicatedTo.isNotEmpty)
+                    Column(
+                      children: setup.communicatedTo
+                          .map(
+                            (e) => ListTile(
+                              leading: Icon(Icons.person_add),
+                              title: Text(
+                                values.construct(
+                                    values.strings.auto_send_summary, [
+                                  setup.getPlayerNameForEmail(e.email) ??
+                                      e.username
+                                ]),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorDark),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                ],
               ),
           ],
         ),

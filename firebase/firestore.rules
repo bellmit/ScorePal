@@ -5,6 +5,9 @@ service cloud.firestore {
     }
   	match /users/{uid}/matches/{document=*} {
     	allow read, write, create, delete: if request.auth != null && request.auth.uid == uid;
-    }    
+    }
+  	match /users/{uid}/inbox/{document=*} {
+    	allow read, delete: if request.auth != null && request.auth.uid == uid;
+    }
   }
 }

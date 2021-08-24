@@ -32,7 +32,7 @@
         "description": "Setup a Flic 2 smart button as a remote control"
     },
     "option_attributions": "Attributions",
-    "@option_trash": {
+    "@option_attributions": {
         "description": "The home screen title (view attributions)"
     },
     "option_user_details": "User Details",
@@ -326,7 +326,6 @@
     "control_flic2": "Flic 2",
     "control_volume": "Volume",
     "option_setup_flic": "Setup an Original Flic",
-    "option_setup_flic2": "Setup your Flic 2 Smart-button",
     "option_purchase": "Purchase",
     "option_browse": "Browse...",
     "option_user_data": "Configure user settings and data...",
@@ -373,6 +372,7 @@
     "title_control_vol": "Volume",
     "explain_control_vol_hack": "Here's a little hack you might like. Buy a bluetooth media remote or a smartwatch and use it's vol keys to control your phone. Search for one with at least a 10m or 30 foot range.",
 
+    "auto_send_summary": "Registered Scorepal user {0} was auto-sent these results.",
     "flic_single_click": "Single Clicked",
     "flic_double_click": "Double Clicked",
     "flic_hold_click": "Long Clicked",

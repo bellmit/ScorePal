@@ -49,16 +49,18 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
     _refreshMatches();
   }
 
-  Future<void> _refreshMatches() {
+  Future<void> _refreshMatches() async {
     // load the matches and set the state accordingly
-    return Provider.of<MatchPersistence>(context, listen: false)
-        .getMatches(MatchPersistenceState.accepted, context)
-        .then((value) => {
-              // have the matches back here, set them locally
-              setState(() {
-                matches = List.of(value.values);
-              })
-            });
+    var persistence = Provider.of<MatchPersistence>(context, listen: false);
+    // get the data from firebase
+    await persistence.syncDataFromFirebase();
+    // and get the matches
+    final matchesReturned =
+        await persistence.getMatches(MatchPersistenceState.accepted, context);
+    // have the matches back here, set them locally
+    setState(() {
+      matches = List.of(matchesReturned.values);
+    });
   }
 
   void _dismissAdvert(Preferences prefs, String advertId) {

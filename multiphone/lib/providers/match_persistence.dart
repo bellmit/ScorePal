@@ -153,7 +153,7 @@ class MatchPersistence with ChangeNotifier {
       }
       // so we sent everything, why not get it all back again to this local
       // data while we are at it
-      _syncDataFromFirebase();
+      syncDataFromFirebase();
     });
   }
 
@@ -191,10 +191,10 @@ class MatchPersistence with ChangeNotifier {
         .set(data, LocalStore.SetOptions(merge: true));
   }
 
-  void _syncDataFromFirebase() {
+  Future<void> syncDataFromFirebase() {
     //TODO don't do this quite as much as sending as will always get a load of data from firebase
     // let's just get the last few (quite a few) and in descending id order
-    FirebaseFirestore.instance
+    return FirebaseFirestore.instance
         .collection(usersCollection)
         .doc(_user.uid)
         .collection(matchCollection)
@@ -205,24 +205,14 @@ class MatchPersistence with ChangeNotifier {
       if (null != value && null != value.docs && value.docs.length > 0) {
         // have a snapshot of everything from firebase
         value.docs.forEach((element) {
-          // just push this to the local store if it doesn't exist
-          LocalStore.Localstore.instance
+          // just push this to the local store
+          return LocalStore.Localstore.instance
               .collection(matchCollection)
               .doc(element.id)
-              .get()
+              .set(element.data())
               .then((value) {
-            // tried to get the doc of this id
-            if (value == null) {
-              // not got this match
-              LocalStore.Localstore.instance
-                  .collection(matchCollection)
-                  .doc(element.id)
-                  .set(element.data())
-                  .then((value) {
-                // this is a change in the collection of matches we can show
-                notifyListeners();
-              });
-            }
+            // this is a change in the collection of matches we can show
+            notifyListeners();
           });
         });
         // and this is a change to this store, we have more data now
