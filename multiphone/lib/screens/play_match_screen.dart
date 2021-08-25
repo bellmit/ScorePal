@@ -52,8 +52,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     super.initState();
 
     // get the match as-is to track it (it will change but there will only be one)
-    ActiveMatch match =
-        Provider.of<ActiveSelection>(context, listen: false).selectedMatch;
+    ActiveMatch match = Provider.of<ActiveSelection>(context, listen: false)
+        .getSelectedMatch(true);
     // new match - new tracker
     _playTracker = MatchPlayTracker(match);
     // create the controllers we will use to track things

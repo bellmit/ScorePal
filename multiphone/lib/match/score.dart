@@ -1,6 +1,5 @@
 import 'dart:core';
 
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/score_history.dart';
 import 'package:multiphone/match/score_state.dart';
@@ -33,7 +32,6 @@ abstract class Score<S extends ActiveSetup> {
         setup = setup,
         _history = ScoreHistory() {
     // make sure everything starts off the same each time
-    Log.debug('new ${setup.sport.id} score created');
     resetScore();
   }
 

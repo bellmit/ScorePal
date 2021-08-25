@@ -44,6 +44,12 @@ class Sport {
     @required this.createSetup,
     @required this.createMatch,
   });
+
+  @override
+  bool operator ==(Object other) => other is Sport && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 class Sports with ChangeNotifier {

@@ -69,7 +69,8 @@ class MyApp extends StatelessWidget {
           // this proxy is called after the specified active selection object is changed
           // to let us supply the setup held in the selection object
           update: (ctx, activeSelection, previousSetup) {
-            final ActiveSetup selected = activeSelection.selectedSetup;
+            final ActiveSetup selected =
+                activeSelection.getSelectedSetup(false);
             if (selected != null && selected.sport == activeSelection.sport) {
               // there is an active setup that's the correct sport, use this
               return selected;
@@ -88,7 +89,7 @@ class MyApp extends StatelessWidget {
           // this setup might change when the selection selects an active match
           final activeSelection =
               Provider.of<ActiveSelection>(ctx, listen: false);
-          final selectedMatch = activeSelection.selectedMatch;
+          final selectedMatch = activeSelection.getSelectedMatch(false);
           if (null != selectedMatch && setup.sport == activeSelection.sport) {
             // and return the active selected match, first apply the settings changed
             selectedMatch.applyChangedMatchSettings();
@@ -102,11 +103,11 @@ class MyApp extends StatelessWidget {
           // this is the first match created - create it for the selected setup
           final activeSelection =
               Provider.of<ActiveSelection>(ctx, listen: false);
-          final selectedMatch = activeSelection.selectedMatch;
+          final selectedMatch = activeSelection.getSelectedMatch(false);
           if (null != selectedMatch &&
               selectedMatch.getSport() == activeSelection.sport) {
             // there is a selected match of the correct sport, use this
-            return activeSelection.selectedMatch;
+            return selectedMatch;
           } else {
             // create a new match
             return activeSelection.createMatch();

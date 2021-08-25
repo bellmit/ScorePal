@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/providers/active_selection.dart';
-import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';

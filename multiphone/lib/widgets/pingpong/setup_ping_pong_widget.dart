@@ -3,7 +3,6 @@ import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
 import 'package:multiphone/providers/active_selection.dart';
-import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_names_widget.dart';
@@ -39,8 +38,8 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
   void initState() {
     super.initState();
     // get our setup
-    _setup = Provider.of<ActiveSelection>(context, listen: false).selectedSetup
-        as PingPongMatchSetup;
+    _setup = Provider.of<ActiveSelection>(context, listen: false)
+        .getSelectedSetup(true) as PingPongMatchSetup;
     if (null != _setup) {
       SetupPersistence().loadLastSetupData(_setup).then((value) {
         setState(() {

@@ -14,11 +14,18 @@ class ActiveSelection with ChangeNotifier {
     _sport = sports == null ? null : sports.available.first;
   }
 
-  ActiveMatch get selectedMatch {
+  ActiveMatch getSelectedMatch(bool createIfNull) {
+    if (createIfNull && null == _selectedMatch) {
+      createMatch();
+    }
     return _selectedMatch;
   }
 
-  ActiveSetup get selectedSetup {
+  ActiveSetup getSelectedSetup(bool createIfNull) {
+    if (createIfNull && null == getSelectedSetup(false)) {
+      // no setup, as a member or from the match, create one then
+      createSetup();
+    }
     // return the setup from the match if there is one, else the setup alone
     return _selectedMatch != null ? _selectedMatch.getSetup() : _selectedSetup;
   }
