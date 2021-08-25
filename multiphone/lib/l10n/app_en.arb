@@ -19,7 +19,7 @@
     "@option_play": {
       "description": "The second home screen title (play a new match)"
     },
-    "option_inbox": "Match Inbox",
+    "option_inbox": "Inbox",
     "@option_inbox": {
         "description": "The matches you have been sent by other Scorepal members"
     },
@@ -84,6 +84,9 @@
       "description": "The default name for this team"
     },
 
+    "button_accept_match": "Accept Match Results",
+    "button_delete_match": "Reject Match Results",
+    "screen_inbox": "Match Inbox",
     "description_check_inbox": "You have some matches in your inbox from other players...",
     "description_play_new_match": "Why not play a match to get started...",
     "description_purchase_flic": "Scorepal works best when you control it via a bluetooth button...\nHint: get a metal clip to attach to your shorts!",

@@ -34,7 +34,7 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
 
   @override
   String getScreenTitle(Values values) {
-    return values.strings.option_inbox;
+    return values.strings.screen_inbox;
   }
 
   @override
@@ -157,12 +157,50 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                             _acceptMatch(match, index);
                           }
                         },
-                        child: PlayedMatchSummaryWidget(
-                          match: match,
-                          popupMenu: PlayedMatchPopupMenu(
-                            onMenuItemSelected: (option) =>
-                                _onMatchMenuItemSelected(match, option),
-                          ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () => _deleteMatch(match, index),
+                                  child: Row(children: [
+                                    Icon(Icons.delete,
+                                        color: Values.deleteColor),
+                                    Padding(
+                                      padding: const EdgeInsets.all(
+                                          Values.default_space),
+                                      child: Text(Values(context)
+                                          .strings
+                                          .button_delete_match),
+                                    )
+                                  ]),
+                                  style: Values(context).optionButtonStyle,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () => _acceptMatch(match, index),
+                                  child: Row(children: [
+                                    Icon(Icons.done_outline),
+                                    Padding(
+                                      padding: const EdgeInsets.all(
+                                          Values.default_space),
+                                      child: Text(Values(context)
+                                          .strings
+                                          .button_accept_match),
+                                    )
+                                  ]),
+                                  style: Values(context).optionButtonStyle,
+                                ),
+                              ],
+                            ),
+                            PlayedMatchSummaryWidget(
+                              match: match,
+                              popupMenu: PlayedMatchPopupMenu(
+                                onMenuItemSelected: (option) =>
+                                    _onMatchMenuItemSelected(match, option),
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
