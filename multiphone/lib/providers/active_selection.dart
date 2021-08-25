@@ -47,6 +47,9 @@ class ActiveSelection with ChangeNotifier {
     }
     // and create the match
     _selectedMatch = _sport.createMatch(_selectedSetup);
+    // this match setup is the setup to use for the next time
+    // then as contains all the latest data they entered
+    SetupPersistence().saveAsLastSetupData(_selectedSetup);
     // returning what we created
     return _selectedMatch;
   }
@@ -92,7 +95,6 @@ class ActiveSelection with ChangeNotifier {
       if (null != _selectedSetup) {
         // there is a setup hanging around though - let's save this
         // as the default for the next time around
-        // the user just selected a nice sport, we might want to save what exists first
         SetupPersistence().saveAsLastSetupData(_selectedSetup);
       }
       // capture all the data on this match then
