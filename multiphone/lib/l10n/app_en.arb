@@ -396,6 +396,7 @@
     "warning_match_change": "Changing the setup of a match already in progress can significantly change the score if you have played points already...",
     "warning_logon_to_delete": "You need to sign in for any changes to also be made online...",
     "warning_no_matches_to_delete": "You haven't any deleted matches...",
+    "warning_no_matches_in_inbox": "You haven't any matches sent from other Scorepal members...",
 
     "error_online": "An error occurred, please sign off and on again and try again.",
     "error_signin": "An error occurred, please check your details and try again.",

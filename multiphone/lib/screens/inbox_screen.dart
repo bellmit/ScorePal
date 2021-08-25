@@ -13,6 +13,7 @@ import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/adverts/play_new_match_widget.dart';
 import 'package:multiphone/widgets/adverts/signin_scorepal_widget.dart';
+import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
 import 'package:multiphone/widgets/adverts/purchase_flic_widget.dart';
@@ -103,6 +104,14 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
     return Container(
       child: Column(
         children: [
+          if (_matches == null || _matches.length <= 0)
+            InfoBarWidget(
+              title: Values(context).strings.warning_no_matches_in_inbox,
+              icon: Icon(
+                Icons.info_outline,
+                color: Theme.of(context).accentColor,
+              ),
+            ),
           Expanded(
             child: RefreshIndicator(
               onRefresh: _refreshMatches,
