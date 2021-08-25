@@ -145,7 +145,8 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                     padding: EdgeInsets.all(Values.default_space),
                     child: _createScoreSummaryWidget(context),
                   ),
-                  if (setup.communicatedTo.isNotEmpty)
+                  if (!setup.isCommunicatedFrom &&
+                      setup.communicatedTo.isNotEmpty)
                     Column(
                       children: setup.communicatedTo
                           .map(

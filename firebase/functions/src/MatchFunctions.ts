@@ -91,13 +91,13 @@ exports.processMatchOpponents = functions.firestore
         // get the change in data we experienced, we are listening for a write to
         // be sure to always have the latest in the inbox of the player's the user played
         const data = change.after.data();
-        // check all the data is there, needs to be complete and not received_from an inbox
+        // check all the data is there, needs to be complete and not communicated_from an inbox
         if (data && data.setup &&
             data.analysis && data.analysis.complete &&
-            !data.received_from) {
+            !data.setup.communicated_from) {
             // this match is complete we can try to find all our opponents and send
             // them the score also
-            let addresses = [
+            const addresses = [
                 ...data.setup['player1_addresses'],
                 ...data.setup['player2_addresses'],
                 ...data.setup['player3_addresses'],
@@ -105,7 +105,7 @@ exports.processMatchOpponents = functions.firestore
             ];
             // so we need to find any users with each of these addresses and send them
             // the results of the match to see if they are interested
-            let usersCommunicated = [] as string[];
+            const usersCommunicated = [] as string[];
             for (let i = 0; i < addresses.length; ++i) {
                 const lcAddress = addresses[i].toLowerCase();
                 const userDocs = await admin.firestore().collection('users').where('email_lc', '==', lcAddress).get();
@@ -113,11 +113,11 @@ exports.processMatchOpponents = functions.firestore
                     // have users that match this email, add the match to their inbox
                     const inboxData = {
                         ...data,
-                        'received_from': context.params.userId,
                     } as any;
                     // being sure the state is not deleted or whatever from the source player
                     inboxData['state'] = 'communicated';
-                    // and put this in all the inboxes there are (will have a 'received_from' so when put into matches
+                    inboxData['setup']['communicated_from'] = context.params.userId;
+                    // and put this in all the inboxes there are (will have a 'communicated_from' so when put into matches
                     // the subsequent change will not trigger this going back to another one and round and round we would go)
                     for (const userDoc of userDocs.docs) {
                         // for each user doc in the array of docs, send the match to each

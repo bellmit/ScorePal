@@ -35,6 +35,7 @@ abstract class ActiveSetup with ChangeNotifier {
   final Sport sport;
   String _id;
   List<CommunicatedTo> _communicatedToList = [];
+  String _communicatedFrom;
 
   TeamIndex _firstServingTeam = TeamIndex.T_ONE;
   final List<PlayerIndex> _firstServers = [
@@ -56,6 +57,10 @@ abstract class ActiveSetup with ChangeNotifier {
 
   List<CommunicatedTo> get communicatedTo {
     return [..._communicatedToList];
+  }
+
+  bool get isCommunicatedFrom {
+    return _communicatedFrom != null && _communicatedFrom.isNotEmpty;
   }
 
   Map<String, Object> getData() {
@@ -83,6 +88,8 @@ abstract class ActiveSetup with ChangeNotifier {
           '${communicated.email}|${communicated.username}|${communicated.userId}');
     }
     data['communicated_to'] = dataList;
+    // and from (might be null)
+    data['communicated_from'] = _communicatedFrom;
     return data;
   }
 
@@ -125,6 +132,8 @@ abstract class ActiveSetup with ChangeNotifier {
         }
       }
     }
+    // and if this is from someone - to not send back
+    _communicatedFrom = data['communicated_from'];
     // this, obviously, changes the data
     notifyListeners();
   }
