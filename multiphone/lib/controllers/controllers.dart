@@ -1,14 +1,24 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:multiphone/controllers/controller.dart';
 import 'package:multiphone/controllers/controller_flic.dart';
 import 'package:multiphone/controllers/controller_listener.dart';
+import 'package:multiphone/controllers/controller_keys.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
+import 'package:multiphone/widgets/settings/select_control_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+enum ClickPattern {
+  single,
+  double,
+  long,
+}
 
 class Controllers {
   ControllerFlic _controllerFlic;
+  ControllerKeys _controllerKeys;
   Preferences _preferences;
 
   final List<ControllerListener> _listeners = [];
@@ -30,15 +40,56 @@ class Controllers {
     _listeners.remove(listener);
   }
 
-  void informListeners(ClickPattern click) {
-    for (ControllerListener listener in _listeners) {
-      listener.onButtonPressed(pattern: click);
+  void informListeners(ClickPattern click, Controller controller) {
+    bool isProcessClick = true;
+    if (null != _preferences) {
+      // check that we want to listen to this based on the current app settings
+      if (controller == _controllerFlic) {
+        isProcessClick = _preferences.isControlFlic2;
+      } else if (controller == _controllerKeys) {
+        isProcessClick = _preferences.isControlKeys;
+      }
+    }
+    if (isProcessClick) {
+      // we want to deal with this then, from a valid controller that's turned on
+      final action = _clickToAction(click);
+      for (ControllerListener listener in _listeners) {
+        listener.onButtonPressed(action: action);
+      }
+    }
+  }
+
+  ClickAction _clickToAction(ClickPattern pattern) {
+    if (null == _preferences ||
+        _preferences.controlType == ControlType.meThem) {
+      switch (pattern) {
+        case ClickPattern.single:
+          return ClickAction.pointTeamOne;
+        case ClickPattern.double:
+          return ClickAction.pointTeamTwo;
+        default:
+          return ClickAction.undoLast;
+      }
+    } else {
+      // they have elected to do server / receiver
+      switch (pattern) {
+        case ClickPattern.single:
+          return ClickAction.pointServer;
+        case ClickPattern.double:
+          return ClickAction.pointReceiver;
+        default:
+          return ClickAction.undoLast;
+      }
     }
   }
 
   void initialiseControllers() {
+    if (null == _preferences) {
+      // not got the prefs yet - nothing can do
+      return;
+    }
     // create our controllers as required
-    if (_preferences.isControlFlic2) {
+    if (null == _controllerFlic) {
       // we want flic 2 - check for permissions in Android as need location
       // permission to use a bluetooth device...
       if (Platform.isAndroid) {
@@ -56,10 +107,9 @@ class Controllers {
         // in iOS just go for it
         _controllerFlic = ControllerFlic(this);
       }
-    } else if (null != _controllerFlic) {
-      // kill what was here
-      _controllerFlic.dispose();
-      _controllerFlic = null;
+    }
+    if (null == _controllerKeys) {
+      _controllerKeys = ControllerKeys(this);
     }
   }
 
@@ -68,6 +118,10 @@ class Controllers {
     if (null != _controllerFlic) {
       _controllerFlic.dispose();
       _controllerFlic = null;
+    }
+    if (null != _controllerKeys) {
+      _controllerKeys.dispose();
+      _controllerKeys = null;
     }
   }
 }

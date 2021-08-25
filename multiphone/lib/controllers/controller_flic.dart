@@ -1,6 +1,5 @@
 import 'package:flic_button/flic_button.dart';
 import 'package:multiphone/controllers/controller.dart';
-import 'package:multiphone/controllers/controller_listener.dart';
 import 'package:multiphone/controllers/controllers.dart';
 import 'package:multiphone/helpers/log.dart';
 
@@ -44,13 +43,13 @@ class ControllerFlic extends Controller with Flic2Listener {
     //TODO check the age of the click in case there's loads cached
     // a button was clicked, pass this on to the control listeners registered
     if (buttonClick.isSingleClick) {
-      provider.informListeners(ClickPattern.single);
+      provider.informListeners(ClickPattern.single, this);
     }
     if (buttonClick.isDoubleClick) {
-      provider.informListeners(ClickPattern.double);
+      provider.informListeners(ClickPattern.double, this);
     }
     if (buttonClick.isHold) {
-      provider.informListeners(ClickPattern.long);
+      provider.informListeners(ClickPattern.long, this);
     }
   }
 

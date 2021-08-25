@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/settings/select_volume_control_widget.dart';
+import 'package:multiphone/widgets/settings/select_keys_control_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SettingsControlsVolumeWidget extends StatefulWidget {
+class SettingsControlKeysWidget extends StatefulWidget {
   final Preferences prefs;
-  SettingsControlsVolumeWidget({Key key, @required this.prefs})
-      : super(key: key);
+  SettingsControlKeysWidget({Key key, @required this.prefs}) : super(key: key);
 
   @override
-  _SettingsControlsVolumeWidgetState createState() =>
-      _SettingsControlsVolumeWidgetState();
+  _SettingsControlKeysWidgetState createState() =>
+      _SettingsControlKeysWidgetState();
 }
 
-class _SettingsControlsVolumeWidgetState
-    extends State<SettingsControlsVolumeWidget> with SettingsWidgetMixin {
-  bool _isVolControl = false;
+class _SettingsControlKeysWidgetState extends State<SettingsControlKeysWidget>
+    with SettingsWidgetMixin {
+  bool _isKeysControl = false;
   static const btRemoteUrl =
       "https://www.google.com/search?q=amazon+bluetooth+media+remote+10m";
 
@@ -25,7 +24,7 @@ class _SettingsControlsVolumeWidgetState
   void initState() {
     super.initState();
     // get the defaults to show
-    _isVolControl = widget.prefs.isControlVol;
+    _isKeysControl = widget.prefs.isControlKeys;
   }
 
   static void navUserToPurchaseRemote(BuildContext context) {
@@ -46,20 +45,20 @@ class _SettingsControlsVolumeWidgetState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        createHeading(values.strings.title_control_vol),
+        createHeading(values.strings.title_control_keys),
         Row(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: Values.default_space),
-              child: SelectVolumeControlWidget(
-                isVolControlSelected: _isVolControl,
-                onVolControlChanged: (value) =>
-                    widget.prefs.isControlVol = value,
+              child: SelectKeysControlWidget(
+                isKeysControlSelected: _isKeysControl,
+                onKeysControlChanged: (value) =>
+                    widget.prefs.isControlKeys = value,
               ),
             ),
             Expanded(
               child: Text(
-                values.strings.explain_control_vol,
+                values.strings.explain_control_keys,
                 style: contentTextStyle,
               ),
             ),
@@ -81,7 +80,7 @@ class _SettingsControlsVolumeWidgetState
             ),
             Expanded(
               child: Text(
-                values.strings.explain_control_vol_hack,
+                values.strings.explain_control_keys_hack,
                 style: contentTextStyle,
               ),
             ),

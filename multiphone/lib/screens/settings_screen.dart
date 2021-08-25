@@ -9,7 +9,7 @@ import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/settings/settings_controls_flic_widget.dart';
 import 'package:multiphone/widgets/settings/select_control_type_widget.dart';
-import 'package:multiphone/widgets/settings/settings_controls_volume_widget.dart';
+import 'package:multiphone/widgets/settings/settings_control_keys_widget.dart';
 import 'package:multiphone/widgets/settings/settings_data_widget.dart';
 import 'package:multiphone/widgets/settings/settings_permissions_widget.dart';
 import 'package:multiphone/widgets/settings/settings_privacy_widget.dart';
@@ -136,7 +136,7 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
           const LineBreakWidget(),
           SettingsControlsFlicWidget(prefs: prefs),
           const LineBreakWidget(),
-          SettingsControlsVolumeWidget(prefs: prefs),
+          SettingsControlKeysWidget(prefs: prefs),
           const LineBreakWidget(),
         ];
       case 2:

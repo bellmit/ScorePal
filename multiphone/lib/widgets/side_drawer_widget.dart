@@ -10,7 +10,6 @@ import 'package:multiphone/screens/inbox_screen.dart';
 import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/screens/trash_screen.dart';
 import 'package:multiphone/widgets/user_details_widget.dart';
-import 'package:provider/provider.dart';
 
 class MenuItem {
   final String name;

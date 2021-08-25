@@ -14,7 +14,7 @@ import * as functions from 'firebase-functions';
         const email = data['email'];
         return change.after.ref.update({'email_lc': email == null ? '' : email.toLowerCase()});
      } else {
-        console.error('Failed to keep user data up-to-date as there is no data for: ' + context.params.userId);
+        // no change to make is fine
         return false;
      }
  });

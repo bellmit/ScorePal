@@ -31,7 +31,6 @@ class HomeScreen extends BaseNavScreen {
 class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
   List<ActiveMatch> matches;
 
-  static const checkInboxKey = 'advert_check_inbox';
   static const purchaseFlicCardKey = 'advert_purchase_flic';
   static const signInScorepalCardKey = 'advert_sign_in_scorepal';
 

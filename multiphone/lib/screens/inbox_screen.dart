@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:multiphone/helpers/log.dart';
-import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/match/score.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/match_inbox.dart';
-import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
-import 'package:multiphone/widgets/adverts/play_new_match_widget.dart';
-import 'package:multiphone/widgets/adverts/signin_scorepal_widget.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
-import 'package:multiphone/widgets/adverts/purchase_flic_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:provider/provider.dart';
 

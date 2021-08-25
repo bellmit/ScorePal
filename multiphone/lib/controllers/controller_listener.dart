@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 
-enum ClickPattern {
-  single,
-  double,
-  long,
+enum ClickAction {
+  pointTeamOne,
+  pointTeamTwo,
+  pointServer,
+  pointReceiver,
+  undoLast,
 }
 
 abstract class ControllerListener {
-  void onButtonPressed({@required ClickPattern pattern});
+  void onButtonPressed({@required ClickAction action});
 }

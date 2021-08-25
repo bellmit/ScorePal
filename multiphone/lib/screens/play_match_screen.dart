@@ -130,16 +130,28 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   }
 
   @override
-  void onButtonPressed({ClickPattern pattern}) {
+  void onButtonPressed({ClickAction action}) {
     // button was pressed, from the pattern process and handle it
-    switch (pattern) {
-      case ClickPattern.single:
+    switch (action) {
+      case ClickAction.pointTeamOne:
         _processScoreChange(_playTracker.match, TeamIndex.T_ONE, 0);
         break;
-      case ClickPattern.double:
+      case ClickAction.pointTeamTwo:
         _processScoreChange(_playTracker.match, TeamIndex.T_TWO, 0);
         break;
-      case ClickPattern.long:
+      case ClickAction.pointServer:
+        _processScoreChange(
+            _playTracker.match, _playTracker.match.getServingTeam(), 0);
+        break;
+      case ClickAction.pointReceiver:
+        _processScoreChange(
+            _playTracker.match,
+            _playTracker.match
+                .getSetup()
+                .getOtherTeam(_playTracker.match.getServingTeam()),
+            0);
+        break;
+      case ClickAction.undoLast:
         _undoLastPoint(_playTracker.match);
         break;
     }

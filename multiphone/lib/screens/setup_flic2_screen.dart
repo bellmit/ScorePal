@@ -4,7 +4,6 @@ import 'package:flic_button/flic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/common/heading_widget.dart';
@@ -33,9 +32,6 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   // the plugin manager to use while we are active
   FlicButtonPlugin flicButtonManager;
 
-  AnimationController _controller;
-  Animation<Offset> _slideAnimation;
-
   @override
   String getScreenTitle(Values values) {
     return values.strings.option_setup_flic2;
@@ -63,18 +59,6 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
     super.initState();
     // create the FLIC 2 manager and initialize it
     _startStopFlic2();
-    // animation things (this can have the mixin of SingleTickerProviderStateMixin)
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: Values.animation_duration_ms),
-    );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, -1),
-      end: const Offset(0, 0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.linear,
-    ));
   }
 
   @override
@@ -85,8 +69,6 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
       flicButtonManager.disposeFlic2();
       flicButtonManager = null;
     }
-    // and the animation thing
-    _controller.dispose();
     // and the base class
     super.dispose();
   }
