@@ -8,6 +8,7 @@ import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/providers/match_inbox.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
@@ -15,6 +16,7 @@ import 'package:multiphone/screens/attributions_screen.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/screens/inbox_screen.dart';
 import 'package:multiphone/screens/setup_flic2_screen.dart';
 import 'package:multiphone/screens/trash_screen.dart';
 import 'package:multiphone/screens/user_screen.dart';
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Sports>(create: (ctx) => Sports()),
         ChangeNotifierProvider<MatchPersistence>(
             create: (ctx) => MatchPersistence()),
+        ChangeNotifierProvider<MatchInbox>(create: (ctx) => MatchInbox()),
         ChangeNotifierProvider<SpeakService>(create: (ctx) => SpeakService()),
         ChangeNotifierProxyProvider<Sports, ActiveSelection>(
           // this proxy is called after the specified sports object is build
@@ -189,6 +192,7 @@ class MyApp extends StatelessWidget {
         routes: {
           AuthScreen.routeName: (ctx) => AuthScreen(),
           UserScreen.routeName: (ctx) => UserScreen(),
+          InboxScreen.routeName: (ctx) => InboxScreen(),
           SetupMatchScreen.routeName: (ctx) => SetupMatchScreen(),
           SettingsScreen.routeName: (ctx) => SettingsScreen(),
           ChangeMatchSetupScreen.routeName: (ctx) => ChangeMatchSetupScreen(),

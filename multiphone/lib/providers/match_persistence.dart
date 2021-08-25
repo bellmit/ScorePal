@@ -147,7 +147,7 @@ class MatchPersistence with ChangeNotifier {
           if (value['state'] == stateString(MatchPersistenceState.accepted)) {
             // this is an accepted score - send this to firebase
             // we don't want to store deleted or anything else really thank you
-            _storeFirebaseData(key, value);
+            _storeFirebaseData(key, value, _user);
           }
         });
       }
@@ -157,30 +157,38 @@ class MatchPersistence with ChangeNotifier {
     });
   }
 
-  void _storeFirebaseData(String matchId, Map<String, Object> data) {
-    if (null == _user) {
+  static Future<void> _storeFirebaseData(
+      String matchId, Map<String, Object> data, User user) {
+    if (null == user) {
       Log.error('Cannot store data in firebase as there is no user logged in');
-      return;
+      return Future.error('User not logged in');
     }
     // send all our data to firebase now then
     final fbCollection = FirebaseFirestore.instance
         .collection(usersCollection)
-        .doc(_user.uid)
+        .doc(user.uid)
         .collection(matchCollection);
     // if this works then the sync state on this data will be different
     data['sync'] = syncString(MatchPersistenceSyncState.stored);
+    final completer = Completer<void>();
     // set this data into the firebase collection then
     fbCollection.doc(matchId).set(data).then((dataSet) {
       // this worked - the data in the local store is synced now
       _changeSyncStatus(matchId, data, MatchPersistenceSyncState.stored);
+      // and return that the firebase function worked
+      completer.complete();
     }).onError((error, stackTrace) {
       Log.error(error);
       // this failed, change this state to not try it again for now
       _changeSyncStatus(matchId, data, MatchPersistenceSyncState.failed);
+      // and return that the firebase function failed
+      completer.completeError(error);
     });
+    // return the completer that our code wraps to do its thing first
+    return completer.future;
   }
 
-  void _changeSyncStatus(String matchId, Map<String, Object> data,
+  static void _changeSyncStatus(String matchId, Map<String, Object> data,
       MatchPersistenceSyncState state) {
     // change the sync state
     data['sync'] = syncString(state);
@@ -193,6 +201,9 @@ class MatchPersistence with ChangeNotifier {
 
   Future<void> syncDataFromFirebase() {
     //TODO don't do this quite as much as sending as will always get a load of data from firebase
+    if (null == _user) {
+      return Future.error('user not logged in');
+    }
     // let's just get the last few (quite a few) and in descending id order
     return FirebaseFirestore.instance
         .collection(usersCollection)
@@ -225,24 +236,7 @@ class MatchPersistence with ChangeNotifier {
     return preferences.lastActiveSport;
   }
 
-  Map<String, Object> _getMatchAsJSON(
-      ActiveMatch match, MatchPersistenceState state) {
-    final setup = match.getSetup();
-    final matchId = MatchId.create(match);
-    return {
-      'ver': 1,
-      'analysis': _createAnalysisData(match, setup),
-      'id': matchId.toString(),
-      'state': stateString(state),
-      'sync': syncString(MatchPersistenceSyncState.dirty),
-      'date': dateKey.format(matchId.getDate()),
-      'sport': setup.sport.id,
-      'setup': setup.getData(),
-      'data': match.getData(),
-    };
-  }
-
-  Map<String, Object> _createAnalysisData(
+  static Map<String, Object> _createAnalysisData(
       ActiveMatch match, ActiveSetup setup) {
     // in order for the cloud functions to process completed matches we need
     // to tell it all about the completed match
@@ -260,7 +254,24 @@ class MatchPersistence with ChangeNotifier {
     return analysisData;
   }
 
-  ActiveMatch _createMatchFromJson(
+  static Map<String, Object> getMatchAsJSON(
+      ActiveMatch match, MatchPersistenceState state) {
+    final setup = match.getSetup();
+    final matchId = MatchId.create(match);
+    return {
+      'ver': 1,
+      'analysis': _createAnalysisData(match, setup),
+      'id': matchId.toString(),
+      'state': stateString(state),
+      'sync': syncString(MatchPersistenceSyncState.dirty),
+      'date': dateKey.format(matchId.getDate()),
+      'sport': setup.sport.id,
+      'setup': setup.getData(),
+      'data': match.getData(),
+    };
+  }
+
+  static ActiveMatch createMatchFromJson(
       Map<String, Object> topLevel, BuildContext context) {
     // what is this, get the sport from the JSON object;
     final sport = Sports.fromId(topLevel['sport'] as String);
@@ -315,7 +326,7 @@ class MatchPersistence with ChangeNotifier {
     return LocalStore.Localstore.instance
         .collection(matchCollection)
         .doc('${lastActivePrefix}_${setup.sport.id}')
-        .set(_getMatchAsJSON(match, MatchPersistenceState.lastActive));
+        .set(getMatchAsJSON(match, MatchPersistenceState.lastActive));
   }
 
   void wipeMatchData(ActiveMatch match) {
@@ -349,19 +360,32 @@ class MatchPersistence with ChangeNotifier {
   void saveMatchData(ActiveMatch match,
       {MatchPersistenceState state = MatchPersistenceState.backup}) {
     // save the match data as specified in the correct state
-    final matchId = MatchId.create(match);
-    final matchData = _getMatchAsJSON(match, state);
-    // just send this off and hope it worked
-    LocalStore.Localstore.instance
-        .collection(matchCollection)
-        .doc(matchId.toString())
-        .set(matchData)
-        .then((value) {
+    putMatchInLocalScore(match, state: state).then((value) {
       // this was stored locally - let's take the opportunity to send to firebase
       if (null != _user) {
-        _storeFirebaseData(matchId.toString(), matchData);
+        putMatchInFirebase(match, _user, state: state);
       }
     });
+  }
+
+  static Future<dynamic> putMatchInLocalScore(ActiveMatch match,
+      {MatchPersistenceState state = MatchPersistenceState.backup}) {
+    // save the match data as specified in the correct state
+    final matchId = MatchId.create(match);
+    final matchData = getMatchAsJSON(match, state);
+    // just send this off and hope it worked
+    return LocalStore.Localstore.instance
+        .collection(matchCollection)
+        .doc(matchId.toString())
+        .set(matchData);
+  }
+
+  static Future<void> putMatchInFirebase(ActiveMatch match, User user,
+      {MatchPersistenceState state = MatchPersistenceState.backup}) {
+    final matchId = MatchId.create(match);
+    final matchData = getMatchAsJSON(match, state);
+    // and send this off to firebase
+    return _storeFirebaseData(matchId.toString(), matchData, user);
   }
 
   Future<Map<String, dynamic>> _getMatchesForDate(DateTime date) async {
@@ -405,7 +429,7 @@ class MatchPersistence with ChangeNotifier {
     }
     // and convert everything that's left into actual active matches for the caller
     final matches = documents.map(
-        (key, value) => MapEntry(key, _createMatchFromJson(value, context)));
+        (key, value) => MapEntry(key, createMatchFromJson(value, context)));
     // and return this sorted nicely (with the most recent on the top please)
     return SplayTreeMap<String, ActiveMatch>.from(
         matches, (key1, key2) => key2.compareTo(key1));

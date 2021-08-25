@@ -25,6 +25,7 @@ class PurchaseFlicWidget extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(Values.default_space),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -37,28 +38,26 @@ class PurchaseFlicWidget extends StatelessWidget {
               width: Values.image_large,
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: Values.default_space),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      values.strings.description_purchase_flic,
-                      style: TextStyle(
-                          fontSize: Values.font_size_title,
-                          color: Theme.of(context).primaryColorDark),
-                    ),
+          Padding(
+            padding: const EdgeInsets.only(top: Values.default_space),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    values.strings.description_purchase_flic,
+                    style: TextStyle(
+                        fontSize: Values.font_size_title,
+                        color: Theme.of(context).primaryColorDark),
                   ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: TextButton(
-                        onPressed: () => navUserToPurchaseFlic(context),
-                        child: Text(values.strings.action_purchase_flic)),
-                  ),
-                ],
-              ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: TextButton(
+                      onPressed: () => navUserToPurchaseFlic(context),
+                      child: Text(values.strings.action_purchase_flic)),
+                ),
+              ],
             ),
           ),
         ],

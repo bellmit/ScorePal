@@ -4,10 +4,12 @@ import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
+import 'package:multiphone/providers/match_inbox.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
+import 'package:multiphone/widgets/adverts/check_inbox_widget.dart';
 import 'package:multiphone/widgets/adverts/play_new_match_widget.dart';
 import 'package:multiphone/widgets/adverts/signin_scorepal_widget.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
@@ -29,6 +31,7 @@ class HomeScreen extends BaseNavScreen {
 class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
   List<ActiveMatch> matches;
 
+  static const checkInboxKey = 'advert_check_inbox';
   static const purchaseFlicCardKey = 'advert_purchase_flic';
   static const signInScorepalCardKey = 'advert_sign_in_scorepal';
 
@@ -53,7 +56,9 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
     // load the matches and set the state accordingly
     var persistence = Provider.of<MatchPersistence>(context, listen: false);
     // get the data from firebase
-    await persistence.syncDataFromFirebase();
+    if (persistence.isUserLoggedOn) {
+      await persistence.syncDataFromFirebase();
+    }
     // and get the matches
     final matchesReturned =
         await persistence.getMatches(MatchPersistenceState.accepted, context);
@@ -69,11 +74,11 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
         (value) => setState(() => Log.info('advert $advertId dismissed')));
   }
 
-  Future<List<Widget>> _createAdvertCards() async {
+  Future<List<Widget>> _createAdvertCards(MatchPersistence persistence) async {
     List<Widget> cards = [];
     // need the preferences
     final prefs = await Preferences.create();
-    if (!Provider.of<MatchPersistence>(context, listen: false).isUserLoggedOn &&
+    if (!persistence.isUserLoggedOn &&
         !prefs.isAdvertDismissed(signInScorepalCardKey)) {
       // poke them to log on / sign in
       cards.add(Dismissible(
@@ -87,6 +92,11 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
             _dismissAdvert(prefs, signInScorepalCardKey),
         child: SignInScorepalWidget(),
       ));
+    }
+    // also, we need the inbox to see if there are any in there...
+    final matchInbox = Provider.of<MatchInbox>(context, listen: false);
+    if (matchInbox.isUserLoggedOn && !await matchInbox.isInboxEmpty()) {
+      cards.add(CheckInboxWidget());
     }
     if (matches == null || matches.length <= 0) {
       // no matches, let them play one to start up and don't let them dismiss that
@@ -172,17 +182,21 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
     return Container(
       child: Column(
         children: [
-          FutureBuilder(
-            future: _createAdvertCards(),
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
-                // have a list of cards
-                return Column(children: snapshot.data);
-              } else {
-                // no cards
-                return Container();
-              }
+          Consumer<MatchPersistence>(
+            builder: (ctx, persistence, child) {
+              return FutureBuilder(
+                future: _createAdvertCards(persistence),
+                builder: (ctx, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.hasData) {
+                    // have a list of cards
+                    return Wrap(children: snapshot.data);
+                  } else {
+                    // no cards
+                    return Container();
+                  }
+                },
+              );
             },
           ),
           Expanded(
