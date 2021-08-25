@@ -124,6 +124,8 @@ class _AuthScreenState extends State<AuthScreen> {
       final userData = UserData.create(authResult, email, username);
       // which we can pop into our database
       await userData.storeData();
+      // and update the display name of the user
+      await authResult.user.updateDisplayName(username);
     }
     // and return the result
     return authResult;

@@ -67,6 +67,6 @@ class UserData {
         .set({
       'username': _username ?? '',
       'email': _email ?? '',
-    }).then((value) => _isDirty = false);
+    }, SetOptions(merge: true)).then((value) => _isDirty = false);
   }
 }

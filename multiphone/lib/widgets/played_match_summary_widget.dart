@@ -145,6 +145,15 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                     padding: EdgeInsets.all(Values.default_space),
                     child: _createScoreSummaryWidget(context),
                   ),
+                  if (setup.isCommunicatedFrom)
+                    ListTile(
+                      leading: Icon(Icons.hail),
+                      title: Text(
+                        values.strings.auto_send_rx_summary,
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColorDark),
+                      ),
+                    ),
                   if (!setup.isCommunicatedFrom &&
                       setup.communicatedTo.isNotEmpty)
                     Column(

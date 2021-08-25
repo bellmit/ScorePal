@@ -1,10 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
@@ -59,38 +57,29 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<MatchInbox>(create: (ctx) => MatchInbox()),
         ChangeNotifierProvider<SpeakService>(create: (ctx) => SpeakService()),
         ChangeNotifierProxyProvider<Sports, ActiveSelection>(
-          // this proxy is called after the specified sports object is build
+          // this proxy is called after the specified sports object is built
           update: (ctx, sports, previousSelection) {
-            Log.debug(
-                'updating selection with ${sports == null || sports.available == null ? '0' : sports.available.length} sports');
             return ActiveSelection(sports);
           },
           create: (ctx) {
-            Log.debug('creating null active selection');
             return ActiveSelection(null);
           },
         ),
         ChangeNotifierProxyProvider<ActiveSelection, ActiveSetup>(
-          // this proxy is called after the specified active match object is build
+          // this proxy is called after the specified active selection object is changed
+          // to let us supply the setup held in the selection object
           update: (ctx, activeSelection, previousSetup) {
-            final ActiveMatch selectedMatch = activeSelection.selectedMatch;
-            if (selectedMatch != null) {
-              // there is an active match running, this is the setup to use then
-              Log.debug(
-                  'using the setup from the active selected match ${MatchId.create(selectedMatch).toString()}');
-              return selectedMatch.getSetup();
+            final ActiveSetup selected = activeSelection.selectedSetup;
+            if (selected != null && selected.sport == activeSelection.sport) {
+              // there is an active setup that's the correct sport, use this
+              return selected;
             } else {
-              // create the correct match setup from the sport, this makes the selection not have a match selected
-              activeSelection.selectMatch(null, true);
-              Log.debug(
-                  'creating a new setup for the sport of ${activeSelection.sport == null ? 'null' : activeSelection.sport.id}');
-              // and create the new setup
-              return activeSelection.sport.createSetup();
+              // there is no match, create a new setup for the sport selected
+              return activeSelection.createSetup();
             }
           },
           // create an empty one initially - needs the active match setting
           create: (ctx) {
-            Log.debug('creating a null setup, no sport selected at this time');
             return null;
           },
         ),
@@ -100,36 +89,28 @@ class MyApp extends StatelessWidget {
           final activeSelection =
               Provider.of<ActiveSelection>(ctx, listen: false);
           final selectedMatch = activeSelection.selectedMatch;
-          if (null != selectedMatch) {
-            // just always use the selected match
+          if (null != selectedMatch && setup.sport == activeSelection.sport) {
+            // and return the active selected match, first apply the settings changed
             selectedMatch.applyChangedMatchSettings();
-            Log.debug(
-                'using the active selected match ${MatchId.create(selectedMatch).toString()}');
+            // and return the selected match then
             return selectedMatch;
-          } else if (previousMatch == null ||
-              setup.sport.id != previousMatch.getSport().id ||
-              activeSelection.isCreateNextMatchNew) {
-            // this is a change in sport, create the new match needed
-            Log.debug(
-                'new setup as switching sport to ${setup.sport == null ? 'null' : setup.sport.id}');
-            activeSelection.selectMatch(null, false);
-            // and return a new match that the provider will inform people about
-            return setup.sport.createMatch(setup);
           } else {
-            // don't let there be a selected one, we are using the previous one
-            activeSelection.selectMatch(null, false);
-            // this is the same sport, just update the match running
-            Log.debug('applying a setup change to the previous match');
-            previousMatch.applyChangedMatchSettings();
-            // and return the same
-            return previousMatch;
+            // there is no selected match in the selection, create a new match
+            return activeSelection.createMatch();
           }
         }, create: (ctx) {
           // this is the first match created - create it for the selected setup
-          var setup = Provider.of<ActiveSetup>(ctx, listen: false);
-          Log.debug(
-              'creating first match of ${setup.sport == null ? 'null' : setup.sport.id}');
-          return setup.sport.createMatch(setup);
+          final activeSelection =
+              Provider.of<ActiveSelection>(ctx, listen: false);
+          final selectedMatch = activeSelection.selectedMatch;
+          if (null != selectedMatch &&
+              selectedMatch.getSport() == activeSelection.sport) {
+            // there is a selected match of the correct sport, use this
+            return activeSelection.selectedMatch;
+          } else {
+            // create a new match
+            return activeSelection.createMatch();
+          }
         }),
       ],
       child: MaterialApp(

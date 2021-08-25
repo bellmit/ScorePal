@@ -35,16 +35,14 @@ class MatchPlayTracker {
 
   static void setupNewMatch(BuildContext context) {
     // clear any current selection on the selection provider (want a new one)
-    Provider.of<ActiveSelection>(context, listen: false)
-        .selectMatch(null, true);
+    Provider.of<ActiveSelection>(context, listen: false).clearSelection();
     // and show the screen to start a new one
     navTo(SetupMatchScreen.routeName, context);
   }
 
   static void resumePreviousMatch(ActiveMatch match, BuildContext context) {
     // select this on the selection provider
-    Provider.of<ActiveSelection>(context, listen: false)
-        .selectMatch(match, false);
+    Provider.of<ActiveSelection>(context, listen: false).selectMatch(match);
     // and show the playing screen for this
     navTo(match.getSport().playNavPath, context);
   }

@@ -6,6 +6,7 @@ import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/controllers/controllers.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
@@ -51,7 +52,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     super.initState();
 
     // get the match as-is to track it (it will change but there will only be one)
-    ActiveMatch match = Provider.of<ActiveMatch>(context, listen: false);
+    ActiveMatch match =
+        Provider.of<ActiveSelection>(context, listen: false).selectedMatch;
     // new match - new tracker
     _playTracker = MatchPlayTracker(match);
     // create the controllers we will use to track things

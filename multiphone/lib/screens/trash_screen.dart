@@ -138,9 +138,6 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
     });
     // delete the match using the provider so it's actually done
     Provider.of<MatchPersistence>(context, listen: false).wipeMatchData(match);
-    // Then show a snackbar to inform the user that this worked ok
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(Values(context).strings.match_wiped)));
   }
 
   @override

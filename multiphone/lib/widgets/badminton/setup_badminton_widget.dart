@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/badminton/badminton_match_setup.dart';
+import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
@@ -38,8 +39,8 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
   void initState() {
     super.initState();
     // get our setup
-    _setup =
-        Provider.of<ActiveSetup>(context, listen: false) as BadmintonMatchSetup;
+    _setup = Provider.of<ActiveSelection>(context, listen: false).selectedSetup
+        as BadmintonMatchSetup;
     if (null != _setup) {
       SetupPersistence().loadLastSetupData(_setup).then((value) {
         setState(() {

@@ -244,46 +244,6 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     notifyListeners();
   }
 
-  /*
-  void onControllerInput(Controller.ControllerAction selectedAction) {
-    // reset any state built up at this point
-    _score.resetState();
-    //TODO now do the action that we received from the controller
-    switch (selectedAction) {
-      case PointServer:
-        if (!isMatchOver()) {
-          incrementPoint(_score.getServingTeam());
-        }
-        break;
-      case PointReceiver:
-        if (!isMatchOver()) {
-          incrementPoint(_setup.getOtherTeam(_score.getServingTeam()));
-        }
-        break;
-      case PointTeamOne:
-        if (!isMatchOver()) {
-          incrementPoint(TeamIndex.T_ONE);
-        }
-        break;
-      case PointTeamTwo:
-        if (!isMatchOver()) {
-          incrementPoint(TeamIndex.T_TWO);
-        }
-        break;
-      case UndoLastPoint:
-        undoLastPoint();
-        break;
-      case AnnouncePoints:
-        // announce the current score then
-        MatchService service = MatchService.GetRunningService();
-        if (null != service) {
-          service.speakSpecialMessage(createPointsAnnouncement(service));
-        }
-        break;
-    }
-  }
-   */
-
   void endMatch() {
     // end this match here
   }

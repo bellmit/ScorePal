@@ -2,6 +2,7 @@ import 'package:localstore/localstore.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 
 class SetupPersistence {
@@ -49,6 +50,12 @@ class SetupPersistence {
     if (defaultData != null && defaultData['data'] != null) {
       // have the document, load ths data from this
       setup.setData(defaultData['data']);
+      // but the names might be rubbish - let's resolve the names
+      String accountHolder = setup.getAccountUserName();
+      if (null != accountHolder && accountHolder.isNotEmpty) {
+        // be sure this is player one!
+        setup.setPlayerName(PlayerIndex.P_ONE, accountHolder);
+      }
     } else {
       Log.debug(
           'default match setup data ${defaultData == null ? null : defaultData} isn\'t valid for ${setup.sport.id}');

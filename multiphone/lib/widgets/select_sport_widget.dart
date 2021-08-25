@@ -33,13 +33,7 @@ class SelectSportWidget extends SelectItemListWidget {
 
   @override
   void onSelectionChanged(BuildContext context, int newSelection) async {
-    // the user just selected a nice sport, we might want to save what exists first
-    final activeSetup = Provider.of<ActiveSetup>(context, listen: false);
-    if (null != activeSetup) {
-      // there is something the user has changed, let's save this as the default
-      await SetupPersistence().saveAsLastSetupData(activeSetup);
-    }
-    // now change the sport, this creates the new setup
+    // change the sport, this creates the new setup
     final activeMatch = Provider.of<ActiveSelection>(context, listen: false);
     activeMatch.sport = Sports.find(newSelection);
   }

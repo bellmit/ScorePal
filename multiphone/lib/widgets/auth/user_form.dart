@@ -50,10 +50,12 @@ class _UserFormState extends State<UserForm> {
       setState(() {
         _isSaveInProgress = true;
       });
-      // update the username them
+      // update the username then
       _userData.currentUser
           .updateDisplayName(_userData.username)
           .then((value) => _onUsernameUpdated());
+      // and the firebase data please
+      _userData.storeData();
     }
   }
 
