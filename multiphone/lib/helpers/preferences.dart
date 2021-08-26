@@ -3,9 +3,13 @@ import 'package:multiphone/match/team_namer.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/settings/select_control_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synchronized/synchronized.dart';
 
 class Preferences {
   final SharedPreferences prefs;
+
+  static Preferences instance;
+  static final Lock _instanceLock = Lock();
 
   Preferences._create(this.prefs) {
     // private constructor
@@ -13,7 +17,14 @@ class Preferences {
 
   //factory method that will wait for the preferences to load up
   static Future<Preferences> create() async {
-    return Preferences._create(await SharedPreferences.getInstance());
+    return _instanceLock.synchronized(() async {
+      if (null == instance) {
+        instance = Preferences._create(await SharedPreferences.getInstance());
+        Log.info('Preferences singleton created');
+      }
+      // and return the instance that has to be created at this stage
+      return instance;
+    });
   }
 
   bool _getBool(String key, bool varDefault) {

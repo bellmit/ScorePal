@@ -92,48 +92,31 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
 
   String getSpeakingTeamName(
       BuildContext context, ActiveSetup setup, TeamIndex team) {
-    if (prefs.soundUseSpeakingNames) {
-      // use the player's names to speak
-      String teamName = setup.getTeamName(team, context);
-      // remove all the punctuation from the team name so there are no weird pauses in it.
-      if (teamName == null || teamName.isEmpty) {
-        return teamName;
-      } else {
-        // delete all the dot chars as they introduce pauses in the spoken text
-        return teamName.replaceAll(".", "");
-      }
+    // use the player's names to speak only when allowed
+    String teamName = prefs.soundUseSpeakingNames
+        ? setup.getTeamName(team, context)
+        : setup.getDefaultTeamName(team, context);
+    // remove all the punctuation from the team name so there are no weird pauses in it.
+    if (teamName == null || teamName.isEmpty) {
+      return teamName;
     } else {
-      if (setup.singlesDoubles == MatchSinglesDoubles.doubles) {
-        // return the pre-determined team string
-        return BuildContext == null
-            ? "Doubles"
-            : setup.getTeamName(team, context);
-      } else {
-        // it's just the player on their own
-        return BuildContext == null
-            ? "Singles"
-            : setup.getPlayerName(setup.getTeamPlayer(team), context);
-      }
+      // delete all the dot chars as they introduce pauses in the spoken text
+      return teamName.replaceAll(".", "");
     }
   }
 
   String getSpeakingPlayerName(
       BuildContext context, ActiveSetup setup, PlayerIndex player) {
-    if (prefs.soundUseSpeakingNames) {
-      // use the player's names to speak
-      String playerName = setup.getPlayerName(player, context);
-      // remove all the punctuation from the team name so there are no weird pauses in it.
-      if (playerName == null || playerName.isEmpty) {
-        return playerName;
-      } else {
-        // delete all the dot chars as they introduce pauses in the spoken text
-        return playerName.replaceAll(".", "");
-      }
+    // use the player's names to speak only when allowed
+    String playerName = prefs.soundUseSpeakingNames
+        ? setup.getPlayerName(player, context)
+        : setup.getDefaultPlayerName(player, context);
+    // remove all the punctuation from the team name so there are no weird pauses in it.
+    if (playerName == null || playerName.isEmpty) {
+      return playerName;
     } else {
-      // return the pre-determined string
-      return BuildContext == null
-          ? "Player"
-          : setup.getPlayerName(player, context);
+      // delete all the dot chars as they introduce pauses in the spoken text
+      return playerName.replaceAll(".", "");
     }
   }
 

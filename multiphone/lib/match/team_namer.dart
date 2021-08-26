@@ -68,40 +68,53 @@ class TeamNamer {
     return '';
   }
 
-  String getTeamName(BuildContext context, TeamIndex teamIndex) {
+  String getTeamName(BuildContext context, TeamIndex teamIndex,
+      {bool isUseDefaults = false}) {
     // sort out what we are doing with our names, by default in doubles
     // we are a team, in singles we are player one
     String teamName = "";
     // combine the name in the correct chosen way
-    switch (currentMode) {
-      case TeamNamingMode.SURNAME_INITIAL:
-        teamName = _createSurnameTeamName(context, teamIndex);
-        break;
-      case TeamNamingMode.FIRST_NAME:
-        teamName = _createFirstNameTeamName(context, teamIndex);
-        break;
-      case TeamNamingMode.LAST_NAME:
-        teamName = _createLastNameTeamName(context, teamIndex);
-        break;
-      case TeamNamingMode.FULL_NAME:
-        teamName = _createFullNameTeamName(context, teamIndex);
-        break;
+    if (!isUseDefaults) {
+      switch (currentMode) {
+        case TeamNamingMode.SURNAME_INITIAL:
+          teamName = _createSurnameTeamName(context, teamIndex);
+          break;
+        case TeamNamingMode.FIRST_NAME:
+          teamName = _createFirstNameTeamName(context, teamIndex);
+          break;
+        case TeamNamingMode.LAST_NAME:
+          teamName = _createLastNameTeamName(context, teamIndex);
+          break;
+        case TeamNamingMode.FULL_NAME:
+          teamName = _createFullNameTeamName(context, teamIndex);
+          break;
+      }
     }
     if (null == teamName || teamName.isEmpty) {
       switch (teamIndex) {
         case TeamIndex.T_ONE:
-          teamName = _setup.getPlayerName(PlayerIndex.P_ONE, context) +
+          final playerOneName = !isUseDefaults
+              ? _setup.getPlayerName(PlayerIndex.P_ONE, context)
+              : _setup.getDefaultPlayerName(PlayerIndex.P_ONE, context);
+          final partnerOneName = !isUseDefaults
+              ? _setup.getPlayerName(PlayerIndex.PT_ONE, context)
+              : _setup.getDefaultPlayerName(PlayerIndex.PT_ONE, context);
+          teamName = playerOneName +
               (_setup.singlesDoubles == MatchSinglesDoubles.singles
                   ? ""
-                  : TEAM_SEP +
-                      _setup.getPlayerName(PlayerIndex.PT_ONE, context));
+                  : TEAM_SEP + partnerOneName);
           break;
         case TeamIndex.T_TWO:
-          teamName = _setup.getPlayerName(PlayerIndex.P_TWO, context) +
+          final playerOneName = !isUseDefaults
+              ? _setup.getPlayerName(PlayerIndex.P_TWO, context)
+              : _setup.getDefaultPlayerName(PlayerIndex.P_TWO, context);
+          final partnerOneName = !isUseDefaults
+              ? _setup.getPlayerName(PlayerIndex.PT_TWO, context)
+              : _setup.getDefaultPlayerName(PlayerIndex.PT_TWO, context);
+          teamName = playerOneName +
               (_setup.singlesDoubles == MatchSinglesDoubles.singles
                   ? ""
-                  : TEAM_SEP +
-                      _setup.getPlayerName(PlayerIndex.PT_TWO, context));
+                  : TEAM_SEP + partnerOneName);
           break;
         // no default please
       }

@@ -174,6 +174,10 @@ abstract class ActiveSetup with ChangeNotifier {
     return name;
   }
 
+  String getDefaultPlayerName(PlayerIndex player, BuildContext context) {
+    return _teamNamer.getDefaultPlayerName(player, context);
+  }
+
   void setPlayerEmails(PlayerIndex player, List<String> emailAddresses) {
     _playerEmailAddresses[player.index] = [...emailAddresses];
   }
@@ -184,7 +188,12 @@ abstract class ActiveSetup with ChangeNotifier {
 
   String getTeamName(TeamIndex team, BuildContext context) {
     // return the correct name for the team
-    return _teamNamer.getTeamName(context, team);
+    return _teamNamer.getTeamName(context, team, isUseDefaults: false);
+  }
+
+  String getDefaultTeamName(TeamIndex team, BuildContext context) {
+    // return the correct name for the team
+    return _teamNamer.getTeamName(context, team, isUseDefaults: true);
   }
 
   get firstServingTeam {
