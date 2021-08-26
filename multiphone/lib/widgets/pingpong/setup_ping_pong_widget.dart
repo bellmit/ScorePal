@@ -11,7 +11,9 @@ import 'package:multiphone/widgets/pingpong/select_points_widget.dart';
 import 'package:provider/provider.dart';
 
 class SetupPingPongWidget extends StatefulWidget {
-  const SetupPingPongWidget({Key key}) : super(key: key);
+  final bool isLoadSetup;
+  const SetupPingPongWidget({Key key, @required this.isLoadSetup})
+      : super(key: key);
 
   @override
   _SetupPingPongWidgetState createState() => _SetupPingPongWidgetState();
@@ -40,7 +42,7 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
     // get our setup
     _setup = Provider.of<ActiveSelection>(context, listen: false)
         .getSelectedSetup(true) as PingPongMatchSetup;
-    if (null != _setup) {
+    if (null != _setup && widget.isLoadSetup) {
       SetupPersistence().loadLastSetupData(_setup).then((value) {
         setState(() {
           _setup = value;

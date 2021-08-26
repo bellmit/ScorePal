@@ -29,7 +29,7 @@ class Sport {
   final String icon;
   final String image;
   final String playNavPath;
-  final Widget Function(BuildContext) createSetupWidget;
+  final Widget Function(BuildContext, bool isLoadSetupData) createSetupWidget;
   final ActiveSetup Function() createSetup;
   final ActiveMatch Function(ActiveSetup) createMatch;
 
@@ -94,7 +94,8 @@ class Sports with ChangeNotifier {
         icon: 'images/svg/tennis.svg',
         image: 'images/img/tennis.jpg',
         playNavPath: PlayTennisScreen.routeName,
-        createSetupWidget: (ctx) => SetupTennisWidget(),
+        createSetupWidget: (ctx, isLoadSetupData) =>
+            SetupTennisWidget(isLoadSetup: isLoadSetupData),
         createSetup: () => TennisMatchSetup(),
         createMatch: (setup) => TennisMatch(setup),
       ),
@@ -105,7 +106,8 @@ class Sports with ChangeNotifier {
         icon: 'images/svg/badminton.svg',
         image: 'images/img/badminton.jpg',
         playNavPath: PlayBadmintonScreen.routeName,
-        createSetupWidget: (ctx) => SetupBadmintonWidget(),
+        createSetupWidget: (ctx, isLoadSetupData) =>
+            SetupBadmintonWidget(isLoadSetup: isLoadSetupData),
         createSetup: () => BadmintonMatchSetup(),
         createMatch: (setup) => BadmintonMatch(setup),
       ),
@@ -116,7 +118,8 @@ class Sports with ChangeNotifier {
         icon: 'images/svg/ping-pong.svg',
         image: 'images/img/ping_pong.jpg',
         playNavPath: PlayPingPongScreen.routeName,
-        createSetupWidget: (ctx) => SetupPingPongWidget(),
+        createSetupWidget: (ctx, isLoadSetupData) =>
+            SetupPingPongWidget(isLoadSetup: isLoadSetupData),
         createSetup: () => PingPongMatchSetup(),
         createMatch: (setup) => PingPongMatch(setup),
       ),

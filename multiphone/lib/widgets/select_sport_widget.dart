@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
@@ -31,8 +32,14 @@ class SelectSportWidget extends SelectItemListWidget {
 
   @override
   void onSelectionChanged(BuildContext context, int newSelection) async {
-    // change the sport, this creates the new setup
-    final activeMatch = Provider.of<ActiveSelection>(context, listen: false);
-    activeMatch.sport = Sports.find(newSelection);
+    final activeSelection =
+        Provider.of<ActiveSelection>(context, listen: false);
+    // before we change the sport, save any old setup
+    var setup = activeSelection.getSelectedSetup(false);
+    if (null != setup) {
+      SetupPersistence().saveAsLastSetupData(setup);
+    }
+    // change the sport, which will create the new setup
+    activeSelection.sport = Sports.find(newSelection);
   }
 }

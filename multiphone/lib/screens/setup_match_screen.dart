@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
@@ -30,6 +31,13 @@ class _SetupMatchScreenState extends BaseNavScreenState<SetupMatchScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // clear any match from being active then as we are starting a new one
+    Provider.of<ActiveSelection>(context, listen: false).clearSelection();
+  }
+
+  @override
   Widget buildScreenBody(BuildContext context) {
     return Column(
       children: [
@@ -56,8 +64,9 @@ class _SetupMatchScreenState extends BaseNavScreenState<SetupMatchScreen> {
                   ),
                   Consumer<ActiveSelection>(
                     builder: (ctx, activeSelection, child) {
+                      // this is called whenever the active selection changes so
                       // create the correct widget to setup the sport here then
-                      return activeSelection.sport.createSetupWidget(ctx);
+                      return activeSelection.sport.createSetupWidget(ctx, true);
                     },
                   ),
                   // and I much prefer scrolling when there is space at the end of the screen

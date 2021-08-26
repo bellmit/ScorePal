@@ -11,7 +11,9 @@ import 'package:multiphone/widgets/badminton/select_points_widget.dart';
 import 'package:provider/provider.dart';
 
 class SetupBadmintonWidget extends StatefulWidget {
-  const SetupBadmintonWidget({Key key}) : super(key: key);
+  final bool isLoadSetup;
+  const SetupBadmintonWidget({Key key, @required this.isLoadSetup})
+      : super(key: key);
 
   @override
   _SetupBadmintonWidgetState createState() => _SetupBadmintonWidgetState();
@@ -40,7 +42,7 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
     // get our setup
     _setup = Provider.of<ActiveSelection>(context, listen: false)
         .getSelectedSetup(true) as BadmintonMatchSetup;
-    if (null != _setup) {
+    if (null != _setup && widget.isLoadSetup) {
       SetupPersistence().loadLastSetupData(_setup).then((value) {
         setState(() {
           _setup = value;

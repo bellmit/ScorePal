@@ -37,7 +37,7 @@ class _ChangeMatchSetupScreenState extends State<ChangeMatchSetupScreen> {
             Consumer<ActiveSelection>(
               builder: (ctx, activeSelection, child) {
                 // create the correct widget to setup the sport here then
-                return activeSelection.sport.createSetupWidget(ctx);
+                return activeSelection.sport.createSetupWidget(ctx, false);
               },
             ),
             // and I much prefer scrolling when there is space at the end of the screen

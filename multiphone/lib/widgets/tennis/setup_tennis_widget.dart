@@ -13,7 +13,9 @@ import 'package:multiphone/widgets/tennis/select_tie_final_widget.dart';
 import 'package:provider/provider.dart';
 
 class SetupTennisWidget extends StatefulWidget {
-  const SetupTennisWidget({Key key}) : super(key: key);
+  final bool isLoadSetup;
+  const SetupTennisWidget({Key key, @required this.isLoadSetup})
+      : super(key: key);
 
   @override
   _SetupTennisWidgetState createState() => _SetupTennisWidgetState();
@@ -42,7 +44,7 @@ class _SetupTennisWidgetState extends State<SetupTennisWidget> {
     // get our setup
     _setup = Provider.of<ActiveSelection>(context, listen: false)
         .getSelectedSetup(true) as TennisMatchSetup;
-    if (null != _setup) {
+    if (null != _setup && widget.isLoadSetup) {
       SetupPersistence().loadLastSetupData(_setup).then((value) {
         setState(() {
           _setup = value;

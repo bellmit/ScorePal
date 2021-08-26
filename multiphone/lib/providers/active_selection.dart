@@ -25,23 +25,20 @@ class ActiveSelection with ChangeNotifier {
   }
 
   ActiveSetup getSelectedSetup(bool createIfNull) {
-    var currentSetup =
-        _selectedMatch != null ? _selectedMatch.getSetup() : _selectedSetup;
     if (createIfNull &&
-        (null == currentSetup || currentSetup.sport != _sport)) {
+        (null == _selectedSetup || _selectedSetup.sport != _sport)) {
       // no setup (or wrong setup), as a member or from the match, create one then
-      currentSetup = createSetup();
+      createSetup();
     }
     // return the setup from the match if there is one, else the setup alone
-    return currentSetup;
+    return _selectedSetup;
   }
 
   ActiveSetup createSetup() {
     // create the new setup then
     _selectedSetup = _sport.createSetup();
-    // but creating empty isn't great - can we try to load the data in a little
-    // bit from what came before?
-    SetupPersistence().loadLastSetupData(_selectedSetup);
+    // inform listeners
+    notifyListeners();
     // and return the setup created
     return _selectedSetup;
   }
@@ -51,9 +48,10 @@ class ActiveSelection with ChangeNotifier {
     final currentSetup = getSelectedSetup(true);
     // and create the match
     _selectedMatch = _sport.createMatch(currentSetup);
-    // this match setup is the setup to use for the next time
-    // then as contains all the latest data they entered
-    SetupPersistence().saveAsLastSetupData(currentSetup);
+    // inform listeners
+    notifyListeners();
+    // and have the setup inform that is has changed
+    currentSetup.notifyListeners();
     // returning what we created
     return _selectedMatch;
   }
@@ -70,12 +68,15 @@ class ActiveSelection with ChangeNotifier {
 
   void selectMatch(ActiveMatch match) {
     _selectedMatch = match;
+    _selectedSetup = match.getSetup();
     if (_selectedMatch != null) {
       // which changes the sport
       _sport = _selectedMatch.getSport();
     }
     // and inform listeners
     notifyListeners();
+    // and have the setup inform that it has changed
+    _selectedSetup.notifyListeners();
   }
 
   void selectSetup(ActiveSetup setup) {
@@ -95,13 +96,7 @@ class ActiveSelection with ChangeNotifier {
 
   set sport(Sport sport) {
     if (_sport != sport) {
-      // this is a change in our sport, we need to create a nice setup.
-      if (null != _selectedSetup) {
-        // there is a setup hanging around though - let's save this
-        // as the default for the next time around
-        SetupPersistence().saveAsLastSetupData(_selectedSetup);
-      }
-      // capture all the data on this match then
+      // change the sport then
       _sport = sport;
       // and inform listeners
       notifyListeners();

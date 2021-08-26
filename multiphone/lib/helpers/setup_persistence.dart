@@ -16,6 +16,7 @@ class SetupPersistence {
 
   Future<dynamic> saveAsLastSetupData(ActiveSetup setup) {
     // just send this off and hope it worked
+    Log.info('saving the setup for ${setup.sport.id}');
     return Localstore.instance
         .collection(setupCollection)
         .doc('${lastSetupPrefix}_${setup.sport.id}')
@@ -43,6 +44,7 @@ class SetupPersistence {
 
   Future<ActiveSetup> loadLastSetupData(ActiveSetup setup) async {
     // just get the last setup data and put into the already loaded setup
+    Log.info('loading the last setup for ${setup.sport.id}');
     final defaultData = await Localstore.instance
         .collection(setupCollection)
         .doc('${lastSetupPrefix}_${setup.sport.id}')
