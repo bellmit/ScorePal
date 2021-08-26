@@ -14,6 +14,31 @@ class StringBuilder {
     content += string;
   }
 
+  void removeLastPause() {
+    // we want to remove any pauses, trim any space
+    if (content.endsWith(Point.K_SPEAKING_PAUSE)) {
+      content =
+          content.substring(0, content.length - Point.K_SPEAKING_PAUSE.length);
+    }
+    if (content.endsWith(Point.K_SPEAKING_PAUSE_SLIGHT)) {
+      content = content.substring(
+          0, content.length - Point.K_SPEAKING_PAUSE_SLIGHT.length);
+    }
+    if (content.endsWith(Point.K_SPEAKING_PAUSE_LONG)) {
+      content = content.substring(
+          0, content.length - Point.K_SPEAKING_PAUSE_LONG.length);
+    }
+  }
+
+  bool endsWith(String end) {
+    return content.endsWith(end);
+  }
+
+  String cleanUp() {
+    String cleaned = content.replaceAll('  ', ' ');
+    return cleaned.replaceAll(' . ', ' ');
+  }
+
   @override
   String toString() {
     return content;
@@ -211,7 +236,11 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
         if (state.isChanged(ScoreChange.increment)) {
           // and summarise the larger score
           if (prefs.soundAnnounceChangeScore) {
+            // remove any hanging pause
+            spokenMessage.removeLastPause();
+            // and put a long one in instead
             append(spokenMessage, Point.K_SPEAKING_PAUSE_LONG);
+            // and the message
             appendPause(
                 spokenMessage,
                 match.createScorePhrase(
@@ -222,7 +251,7 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
       }
     }
     // and speak this
-    return spokenMessage.toString();
+    return spokenMessage.cleanUp();
   }
 
   void append(StringBuilder message, String spokenMessage) {
@@ -238,7 +267,7 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
   }
 
   void appendPause(StringBuilder message, String spokenMessage, String pause) {
-    if (null != spokenMessage && false == spokenMessage.isEmpty) {
+    if (null != spokenMessage && spokenMessage.isNotEmpty) {
       // there is a state showing and the match isn't over, speak it here
       message.append(spokenMessage + pause);
     }

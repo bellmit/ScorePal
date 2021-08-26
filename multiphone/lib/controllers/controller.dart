@@ -2,8 +2,9 @@ import 'package:multiphone/controllers/controllers.dart';
 
 abstract class Controller {
   final Controllers provider;
+  final ClickSource clickSource;
 
-  Controller(Controllers provider) : this.provider = provider;
+  Controller(this.provider, this.clickSource);
 
   void dispose();
 }

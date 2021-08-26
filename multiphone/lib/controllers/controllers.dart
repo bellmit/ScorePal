@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:multiphone/controllers/controller.dart';
 import 'package:multiphone/controllers/controller_flic.dart';
 import 'package:multiphone/controllers/controller_listener.dart';
 import 'package:multiphone/controllers/controller_keys.dart';
@@ -14,6 +13,12 @@ enum ClickPattern {
   single,
   double,
   long,
+}
+
+enum ClickSource {
+  flic2,
+  mediaButton,
+  volButton,
 }
 
 class Controllers {
@@ -40,14 +45,20 @@ class Controllers {
     _listeners.remove(listener);
   }
 
-  void informListeners(ClickPattern click, Controller controller) {
+  void informListeners(ClickPattern click, ClickSource source) {
     bool isProcessClick = true;
     if (null != _preferences) {
       // check that we want to listen to this based on the current app settings
-      if (controller == _controllerFlic) {
-        isProcessClick = _preferences.isControlFlic2;
-      } else if (controller == _controllerKeys) {
-        isProcessClick = _preferences.isControlKeys;
+      switch (source) {
+        case ClickSource.flic2:
+          isProcessClick = _preferences.isControlFlic2;
+          break;
+        case ClickSource.mediaButton:
+          isProcessClick = _preferences.isControlMediaKeys;
+          break;
+        case ClickSource.volButton:
+          isProcessClick = _preferences.isControlVolumeButtons;
+          break;
       }
     }
     if (isProcessClick) {

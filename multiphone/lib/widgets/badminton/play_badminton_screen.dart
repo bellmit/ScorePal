@@ -20,14 +20,15 @@ class PlayBadmintonScreen extends PlayMatchScreen {
   @override
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level) {
     // so a score was clicked, call the proper function
-    BadmintonMatch badmintonMatch = match as BadmintonMatch;
-    switch (level) {
-      case BadmintonScore.LEVEL_POINT:
-        badmintonMatch.incrementPoint(team);
-        break;
-      case BadmintonScore.LEVEL_GAME:
-        badmintonMatch.incrementGame(team);
-        break;
+    if (match is BadmintonMatch) {
+      switch (level) {
+        case BadmintonScore.LEVEL_POINT:
+          match.incrementPoint(team);
+          break;
+        case BadmintonScore.LEVEL_GAME:
+          match.incrementGame(team);
+          break;
+      }
     }
   }
 
@@ -35,14 +36,15 @@ class PlayBadmintonScreen extends PlayMatchScreen {
   Widget createScoreWidget(ActiveMatch match, TeamIndex teamIndex,
       void Function(int level) onScoreClicked) {
     // return each score widget we want to use
-    var badmintonMatch = match as BadmintonMatch;
-    return BadmintonScoreWidget(
-      games:
-          badmintonMatch.getDisplayPoint(BadmintonScore.LEVEL_GAME, teamIndex),
-      points:
-          badmintonMatch.getDisplayPoint(BadmintonScore.LEVEL_POINT, teamIndex),
-      isServing: match.getServingTeam() == teamIndex,
-      onScoreClicked: onScoreClicked,
-    );
+    if (match is BadmintonMatch) {
+      return BadmintonScoreWidget(
+        games: match.getDisplayPoint(BadmintonScore.LEVEL_GAME, teamIndex),
+        points: match.getDisplayPoint(BadmintonScore.LEVEL_POINT, teamIndex),
+        isServing: match.getServingTeam() == teamIndex,
+        onScoreClicked: onScoreClicked,
+      );
+    } else {
+      return Container();
+    }
   }
 }

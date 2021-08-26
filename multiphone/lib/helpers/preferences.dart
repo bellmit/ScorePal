@@ -113,12 +113,20 @@ class Preferences {
     prefs.setBool("isControlTeams", value);
   }
 
-  bool get isControlKeys {
-    return _getBool('isControlKeys', false);
+  bool get isControlMediaKeys {
+    return _getBool('isControlMediaKeys', false);
   }
 
-  set isControlKeys(bool value) {
-    prefs.setBool("isControlKeys", value);
+  set isControlMediaKeys(bool value) {
+    prefs.setBool("isControlMediaKeys", value);
+  }
+
+  bool get isControlVolumeButtons {
+    return _getBool('isControlVolumeButtons', false);
+  }
+
+  set isControlVolumeButtons(bool value) {
+    prefs.setBool("isControlVolumeButtons", value);
   }
 
   bool get isControlFlic1 {

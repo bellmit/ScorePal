@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:flic_button/flic_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:multiphone/helpers/flic2_wrapper.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/common/heading_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SetupFlic2Screen extends BaseNavScreen {
   static const String routeName = '/setup-flic2';
@@ -30,7 +33,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   Flic2ButtonClick _lastClick;
 
   // the plugin manager to use while we are active
-  FlicButtonPlugin flicButtonManager;
+  Flic2Wrapper _flicPlugin;
 
   @override
   String getScreenTitle(Values values) {
@@ -64,23 +67,38 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   @override
   void dispose() {
     // kill everything created, first the flic plugin
-    if (null != flicButtonManager) {
-      flicButtonManager.cancelScanForFlic2();
-      flicButtonManager.disposeFlic2();
-      flicButtonManager = null;
+    if (null != _flicPlugin) {
+      _flicPlugin.removeListener(this);
+      _flicPlugin = null;
     }
     // and the base class
     super.dispose();
   }
 
-  void _startStopScanningForFlic2() {
+  Future<void> _startStopScanningForFlic2() async {
     // start scanning for new buttons
     if (!_isScanning) {
-      // not scanning yet - start
-      flicButtonManager.scanForFlic2();
+      // not scanning yet - start, first we need BLE permission
+      final isGranted = await Permission.bluetooth.request().isGranted;
+      if (!isGranted) {
+        // no bluetooth allowed
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content:
+                Text(Values(context).strings.error_flic2_bluetooth_permission),
+            backgroundColor: Theme.of(context).errorColor));
+        return;
+      }
+      // also bluetooth needs to be on
+      if (!await FlutterBlue.instance.isOn) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(Values(context).strings.error_flic2_bluetooth_on),
+            backgroundColor: Theme.of(context).errorColor));
+        return;
+      }
+      _flicPlugin.plugin.scanForFlic2();
     } else {
       // are scanning - cancel that
-      flicButtonManager.cancelScanForFlic2();
+      _flicPlugin.plugin.cancelScanForFlic2();
     }
     // update the UI
     setState(() {
@@ -90,21 +108,25 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
 
   void _startStopFlic2() {
     // start or stop the plugin (iOS doesn't stop)
-    if (null == flicButtonManager) {
+    if (null == _flicPlugin) {
       // we are not started - start listening to FLIC2 buttons
-      setState(() => flicButtonManager = FlicButtonPlugin(flic2listener: this));
+      setState(() {
+        _flicPlugin = Flic2Wrapper.instance();
+        _flicPlugin.addListener(this);
+      });
+      // and get the buttons already in place
+      _getButtons();
     } else {
       // started - so stop
-      flicButtonManager.disposeFlic2().then((value) => setState(() {
-            // as the flic manager is disposed, signal that it's gone
-            flicButtonManager = null;
-          }));
+      _flicPlugin.removeListener(this);
+      _flicPlugin.plugin.cancelScanForFlic2();
+      setState(() => _flicPlugin = null);
     }
   }
 
   Future<void> _getButtons() async {
     // get all the buttons from the plugin that were there last time
-    final buttons = await flicButtonManager.getFlic2Buttons();
+    final buttons = await _flicPlugin.plugin.getFlic2Buttons();
     // put all of these in the list to show the buttons
     buttons.forEach((button) {
       _addButtonAndListen(button);
@@ -118,18 +140,18 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
       // add the button to the map
       _buttonsFound[button.uuid] = button;
       // and listen to the button for clicks and things
-      flicButtonManager.listenToFlic2Button(button.uuid);
+      _flicPlugin.plugin.listenToFlic2Button(button.uuid);
     });
   }
 
   void _connectDisconnectButton(Flic2Button button) {
     // if disconnected, connect, else disconnect the button
     if (button.connectionState == Flic2ButtonConnectionState.disconnected) {
-      flicButtonManager
+      _flicPlugin.plugin
           .connectButton(button.uuid)
           .then((value) => _getButtons());
     } else {
-      flicButtonManager
+      _flicPlugin.plugin
           .disconnectButton(button.uuid)
           .then((value) => _getButtons());
     }
@@ -137,7 +159,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
 
   void _forgetButton(Flic2Button button) {
     // forget the passed button so it disapears and we can search again
-    flicButtonManager.forgetButton(button.uuid).then((value) {
+    _flicPlugin.plugin.forgetButton(button.uuid).then((value) {
       if (value != null && value) {
         // button was removed
         setState(() {
@@ -173,7 +195,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   void onButtonDiscovered(String buttonAddress) {
     // this is an address which we should be able to resolve to an actual button right away
     // but we could in theory wait for it to be connected and discovered because that will happen too
-    flicButtonManager.getFlic2ButtonByAddress(buttonAddress).then((button) {
+    _flicPlugin.plugin.getFlic2ButtonByAddress(buttonAddress).then((button) {
       if (button != null) {
         // which we can add to the list to show right away
         _addButtonAndListen(button);
@@ -296,7 +318,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   Widget buildScreenBody(BuildContext context) {
     final values = Values(context);
     return FutureBuilder(
-      future: flicButtonManager != null ? flicButtonManager.invokation : null,
+      future: _flicPlugin != null ? _flicPlugin.plugin.invokation : null,
       builder: (ctx, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           // are not initialized yet, wait a sec - should be very quick!
@@ -305,7 +327,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
           // we have completed the init call, we can perform scanning etc
           return Column(
             children: [
-              if (flicButtonManager != null)
+              if (_flicPlugin != null)
                 Row(
                   // if we are started then show the controls to get flic2 and scan for flic2
                   mainAxisAlignment: MainAxisAlignment.start,

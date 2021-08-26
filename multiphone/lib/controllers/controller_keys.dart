@@ -7,14 +7,15 @@ import 'package:multiphone/helpers/values.dart';
 class Click {
   final Duration duration;
   final DateTime time;
-  const Click(this.time, this.duration);
+  final ClickSource source;
+  const Click(this.time, this.duration, this.source);
 }
 
 class ControllerKeys extends Controller {
   DateTime _buttonDown;
   final List<Click> _buttonClicks = [];
 
-  ControllerKeys(Controllers provider) : super(provider) {
+  ControllerKeys(Controllers provider) : super(provider, null) {
     // listen for key presses then please
     RawKeyboard.instance.addListener(_onKeyboardPressed);
   }
@@ -28,12 +29,16 @@ class ControllerKeys extends Controller {
     } else if (event is RawKeyUpEvent) {
       // handle key up
       if (_buttonDown != null) {
+        final source = event.logicalKey == LogicalKeyboardKey.audioVolumeDown ||
+                event.logicalKey == LogicalKeyboardKey.audioVolumeUp
+            ? ClickSource.volButton
+            : ClickSource.mediaButton;
         final click =
-            Click(_buttonDown, DateTime.now().difference(_buttonDown));
+            Click(_buttonDown, DateTime.now().difference(_buttonDown), source);
         Log.info('clicked ${click.duration.inMilliseconds}ms');
         if (click.duration.inMilliseconds > Values.click_hold_ms) {
           // this is a long click
-          provider.informListeners(ClickPattern.long, this);
+          provider.informListeners(ClickPattern.long, clickSource);
         } else {
           // add to the list in case there are more
           _buttonClicks.add(click);
@@ -43,10 +48,12 @@ class ControllerKeys extends Controller {
             // handle the number of clicks gathered in this short period of time
             switch (_buttonClicks.length) {
               case 1:
-                provider.informListeners(ClickPattern.single, this);
+                provider.informListeners(
+                    ClickPattern.single, _buttonClicks.last.source);
                 break;
               case 2:
-                provider.informListeners(ClickPattern.double, this);
+                provider.informListeners(
+                    ClickPattern.double, _buttonClicks.last.source);
                 break;
             }
             // clear the one we added just above then, timed-out

@@ -61,8 +61,9 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
       // inform the passed function then of this change
       widget.onTextChanged(contactName);
     }
-    if (null == _selectedContact ||
-        _selectedContact.displayName != contactName) {
+    if (null != widget.availableOpponents &&
+        (null == _selectedContact ||
+            _selectedContact.displayName != contactName)) {
       // we didn't select this contact - but the might have properly entered their name
       // so does the text entered specify a contact we can email etc?
       _selectedContact = null;

@@ -19,17 +19,18 @@ class PlayTennisScreen extends PlayMatchScreen {
   @override
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level) {
     // so a score was clicked, call the proper function
-    TennisMatch tennisMatch = match as TennisMatch;
-    switch (level) {
-      case TennisScore.LEVEL_POINT:
-        tennisMatch.incrementPoint(team);
-        break;
-      case TennisScore.LEVEL_GAME:
-        tennisMatch.incrementGame(team);
-        break;
-      case TennisScore.LEVEL_SET:
-        tennisMatch.incrementSet(team);
-        break;
+    if (match is TennisMatch) {
+      switch (level) {
+        case TennisScore.LEVEL_POINT:
+          match.incrementPoint(team);
+          break;
+        case TennisScore.LEVEL_GAME:
+          match.incrementGame(team);
+          break;
+        case TennisScore.LEVEL_SET:
+          match.incrementSet(team);
+          break;
+      }
     }
   }
 
@@ -37,13 +38,16 @@ class PlayTennisScreen extends PlayMatchScreen {
   Widget createScoreWidget(ActiveMatch match, TeamIndex teamIndex,
       void Function(int level) onScoreClicked) {
     // return each score widget we want to use
-    var tennisMatch = match as TennisMatch;
-    return TennisScoreWidget(
-      sets: tennisMatch.getDisplayPoint(TennisScore.LEVEL_SET, teamIndex),
-      games: tennisMatch.getDisplayPoint(TennisScore.LEVEL_GAME, teamIndex),
-      points: tennisMatch.getDisplayPoint(TennisScore.LEVEL_POINT, teamIndex),
-      isServing: match.getServingTeam() == teamIndex,
-      onScoreClicked: onScoreClicked,
-    );
+    if (match is TennisMatch) {
+      return TennisScoreWidget(
+        sets: match.getDisplayPoint(TennisScore.LEVEL_SET, teamIndex),
+        games: match.getDisplayPoint(TennisScore.LEVEL_GAME, teamIndex),
+        points: match.getDisplayPoint(TennisScore.LEVEL_POINT, teamIndex),
+        isServing: match.getServingTeam() == teamIndex,
+        onScoreClicked: onScoreClicked,
+      );
+    } else {
+      return Container();
+    }
   }
 }

@@ -9,6 +9,12 @@ import 'package:multiphone/match/point.dart';
 import 'package:multiphone/match/match_speaker.dart';
 
 class BadmintonMatchSpeaker extends MatchSpeaker<BadmintonMatch> {
+  String createScorePhrase(
+      BadmintonMatch match, BuildContext context, TeamIndex team, int level) {
+    // there is no score (summary) phrase in ping-pong
+    return '';
+  }
+
   @override
   String createPointsPhrase(BadmintonMatch match, BuildContext context,
       TeamIndex changeTeam, int level) {

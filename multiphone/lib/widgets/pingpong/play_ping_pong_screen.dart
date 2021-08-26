@@ -20,14 +20,15 @@ class PlayPingPongScreen extends PlayMatchScreen {
   @override
   void onScoreClicked(ActiveMatch match, TeamIndex team, int level) {
     // so a score was clicked, call the proper function
-    PingPongMatch pingPongMatch = match as PingPongMatch;
-    switch (level) {
-      case PingPongScore.LEVEL_POINT:
-        pingPongMatch.incrementPoint(team);
-        break;
-      case PingPongScore.LEVEL_ROUND:
-        pingPongMatch.incrementRound(team);
-        break;
+    if (match is PingPongMatch) {
+      switch (level) {
+        case PingPongScore.LEVEL_POINT:
+          match.incrementPoint(team);
+          break;
+        case PingPongScore.LEVEL_ROUND:
+          match.incrementRound(team);
+          break;
+      }
     }
   }
 
@@ -35,14 +36,15 @@ class PlayPingPongScreen extends PlayMatchScreen {
   Widget createScoreWidget(ActiveMatch match, TeamIndex teamIndex,
       void Function(int level) onScoreClicked) {
     // return each score widget we want to use
-    var pingPongMatch = match as PingPongMatch;
-    return PingPongScoreWidget(
-      rounds:
-          pingPongMatch.getDisplayPoint(PingPongScore.LEVEL_ROUND, teamIndex),
-      points:
-          pingPongMatch.getDisplayPoint(PingPongScore.LEVEL_POINT, teamIndex),
-      isServing: match.getServingTeam() == teamIndex,
-      onScoreClicked: onScoreClicked,
-    );
+    if (match is PingPongMatch) {
+      return PingPongScoreWidget(
+        rounds: match.getDisplayPoint(PingPongScore.LEVEL_ROUND, teamIndex),
+        points: match.getDisplayPoint(PingPongScore.LEVEL_POINT, teamIndex),
+        isServing: match.getServingTeam() == teamIndex,
+        onScoreClicked: onScoreClicked,
+      );
+    } else {
+      return Container();
+    }
   }
 }

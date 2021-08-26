@@ -3,10 +3,10 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/common/select_item_checked_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
 
-class SelectKeysControlWidget extends SelectItemCheckedWidget {
+class SelectMediaKeysControlWidget extends SelectItemCheckedWidget {
   final bool isKeysControlSelected;
   final void Function(bool) onKeysControlChanged;
-  const SelectKeysControlWidget({
+  const SelectMediaKeysControlWidget({
     Key key,
     @required this.isKeysControlSelected,
     @required this.onKeysControlChanged,

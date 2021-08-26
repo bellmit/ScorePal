@@ -12,6 +12,12 @@ class PingPongMatchSpeaker extends MatchSpeaker<PingPongMatch> {
   // special string to announce our expedite system
   String _expediteMessageString;
 
+  String createScorePhrase(
+      PingPongMatch match, BuildContext context, TeamIndex team, int level) {
+    // there is no score (summary) phrase in ping-pong
+    return '';
+  }
+
   @override
   String createPointsPhrase(PingPongMatch match, BuildContext context,
       TeamIndex changeTeam, int level) {

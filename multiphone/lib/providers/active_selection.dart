@@ -15,19 +15,25 @@ class ActiveSelection with ChangeNotifier {
   }
 
   ActiveMatch getSelectedMatch(bool createIfNull) {
-    if (createIfNull && null == _selectedMatch) {
+    if (createIfNull &&
+        (null == _selectedMatch || _selectedMatch.getSport() != _sport)) {
+      // we want to create one and there isn't one, or it isn't the right one
       createMatch();
     }
+    // and return what was created
     return _selectedMatch;
   }
 
   ActiveSetup getSelectedSetup(bool createIfNull) {
-    if (createIfNull && null == getSelectedSetup(false)) {
-      // no setup, as a member or from the match, create one then
-      createSetup();
+    var currentSetup =
+        _selectedMatch != null ? _selectedMatch.getSetup() : _selectedSetup;
+    if (createIfNull &&
+        (null == currentSetup || currentSetup.sport != _sport)) {
+      // no setup (or wrong setup), as a member or from the match, create one then
+      currentSetup = createSetup();
     }
     // return the setup from the match if there is one, else the setup alone
-    return _selectedMatch != null ? _selectedMatch.getSetup() : _selectedSetup;
+    return currentSetup;
   }
 
   ActiveSetup createSetup() {
@@ -41,15 +47,13 @@ class ActiveSelection with ChangeNotifier {
   }
 
   ActiveMatch createMatch() {
-    // be sure there's a setup
-    if (null == _selectedSetup) {
-      createSetup();
-    }
+    // be sure there's a setup by calling the create function
+    final currentSetup = getSelectedSetup(true);
     // and create the match
-    _selectedMatch = _sport.createMatch(_selectedSetup);
+    _selectedMatch = _sport.createMatch(currentSetup);
     // this match setup is the setup to use for the next time
     // then as contains all the latest data they entered
-    SetupPersistence().saveAsLastSetupData(_selectedSetup);
+    SetupPersistence().saveAsLastSetupData(currentSetup);
     // returning what we created
     return _selectedMatch;
   }

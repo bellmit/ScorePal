@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/settings/select_keys_control_widget.dart';
+import 'package:multiphone/widgets/settings/select_media_keys_control_widget.dart';
+import 'package:multiphone/widgets/settings/select_volume_buttons_control_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SettingsControlKeysWidget extends StatefulWidget {
+class SettingsControlHardwareButtonsWidget extends StatefulWidget {
   final Preferences prefs;
-  SettingsControlKeysWidget({Key key, @required this.prefs}) : super(key: key);
+  SettingsControlHardwareButtonsWidget({Key key, @required this.prefs})
+      : super(key: key);
 
   @override
-  _SettingsControlKeysWidgetState createState() =>
-      _SettingsControlKeysWidgetState();
+  _SettingsControlHardwareButtonsWidgetState createState() =>
+      _SettingsControlHardwareButtonsWidgetState();
 }
 
-class _SettingsControlKeysWidgetState extends State<SettingsControlKeysWidget>
+class _SettingsControlHardwareButtonsWidgetState
+    extends State<SettingsControlHardwareButtonsWidget>
     with SettingsWidgetMixin {
-  bool _isKeysControl = false;
+  bool _isMediaKeysControl = false;
+  bool _isVolumeButtonsControl = false;
   static const btRemoteUrl =
       "https://www.google.com/search?q=amazon+bluetooth+media+remote+10m";
 
@@ -24,7 +28,8 @@ class _SettingsControlKeysWidgetState extends State<SettingsControlKeysWidget>
   void initState() {
     super.initState();
     // get the defaults to show
-    _isKeysControl = widget.prefs.isControlKeys;
+    _isMediaKeysControl = widget.prefs.isControlMediaKeys;
+    _isVolumeButtonsControl = widget.prefs.isControlVolumeButtons;
   }
 
   static void navUserToPurchaseRemote(BuildContext context) {
@@ -50,10 +55,29 @@ class _SettingsControlKeysWidgetState extends State<SettingsControlKeysWidget>
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: Values.default_space),
-              child: SelectKeysControlWidget(
-                isKeysControlSelected: _isKeysControl,
+              child: SelectVolumeButtonsControlWidget(
+                isKeysControlSelected: _isVolumeButtonsControl,
                 onKeysControlChanged: (value) =>
-                    widget.prefs.isControlKeys = value,
+                    widget.prefs.isControlVolumeButtons = value,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                values.strings.explain_control_volume,
+                style: contentTextStyle,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: Values.default_space),
+        Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: Values.default_space),
+              child: SelectMediaKeysControlWidget(
+                isKeysControlSelected: _isMediaKeysControl,
+                onKeysControlChanged: (value) =>
+                    widget.prefs.isControlMediaKeys = value,
               ),
             ),
             Expanded(
