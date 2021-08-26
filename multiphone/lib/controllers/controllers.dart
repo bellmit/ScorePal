@@ -27,6 +27,11 @@ class Controllers {
   Preferences _preferences;
 
   final List<ControllerListener> _listeners = [];
+  final Map<ClickSource, bool> _isActive = {
+    ClickSource.flic2: true,
+    ClickSource.mediaButton: true,
+    ClickSource.volButton: true,
+  };
 
   Controllers(BuildContext context) {
     Preferences.create().then((value) {
@@ -51,13 +56,14 @@ class Controllers {
       // check that we want to listen to this based on the current app settings
       switch (source) {
         case ClickSource.flic2:
-          isProcessClick = _preferences.isControlFlic2;
+          isProcessClick = _isActive[source] && _preferences.isControlFlic2;
           break;
         case ClickSource.mediaButton:
-          isProcessClick = _preferences.isControlMediaKeys;
+          isProcessClick = _isActive[source] && _preferences.isControlMediaKeys;
           break;
         case ClickSource.volButton:
-          isProcessClick = _preferences.isControlVolumeButtons;
+          isProcessClick =
+              _isActive[source] && _preferences.isControlVolumeButtons;
           break;
       }
     }
@@ -68,6 +74,12 @@ class Controllers {
         listener.onButtonPressed(action: action);
       }
     }
+  }
+
+  void activateSource(ClickSource source, {bool isActive = true}) {
+    Log.info(
+        'controller for ${source.toString()} is now ${isActive ? 'active' : 'paused'}');
+    _isActive[source] = isActive;
   }
 
   ClickAction _clickToAction(ClickPattern pattern) {

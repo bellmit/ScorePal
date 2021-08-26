@@ -211,23 +211,41 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         // do nothing, the options screen will always return
         break;
       case PlayMatchOptions.end_match:
-        // navigate away from this screen
-        MatchPlayTracker.navTo(widget.getEndingRoute(), context);
+        // navigate away from this screen, first pause our key controller
+        _activateKeyController(isActivate: false);
+        // then nav away to the page and re-activate when we come back
+        MatchPlayTracker.navTo(widget.getEndingRoute(), context)
+            .then((value) => _activateKeyController());
         break;
       case PlayMatchOptions.show_history:
         break;
       case PlayMatchOptions.show_settings:
         // jump to the app settings without showing the side bar so they have to come back after
+        // first pause our key controller
+        _activateKeyController(isActivate: false);
+        // then nav away to the page and re-activate when we come back
         MatchPlayTracker.navTo(SettingsScreen.routeName, context,
-            arguments: {SettingsScreen.argShowSidebar: false});
+                arguments: {SettingsScreen.argShowSidebar: false})
+            .then((value) => _activateKeyController());
         break;
       case PlayMatchOptions.show_match_settings:
         // show the settings without the option to change sports or play new
-        MatchPlayTracker.navTo(ChangeMatchSetupScreen.routeName, context);
+        // first pause our key controller
+        _activateKeyController(isActivate: false);
+        // then nav away to the page and re-activate when we come back
+        MatchPlayTracker.navTo(ChangeMatchSetupScreen.routeName, context)
+            .then((value) => _activateKeyController());
         break;
     }
     // and hide the options screen
     _showPauseOptions(false);
+  }
+
+  void _activateKeyController({bool isActivate = true}) {
+    if (null != _controllersProvider) {
+      _controllersProvider.activateSource(ClickSource.mediaButton,
+          isActive: isActivate);
+    }
   }
 
   Widget _createScoreDisplay(ActiveMatch match, Orientation orientation) {

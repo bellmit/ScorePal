@@ -21,6 +21,12 @@ class ControllerKeys extends Controller {
   }
 
   void _onKeyboardPressed(RawKeyEvent event) {
+    if (event != null &&
+        (event.logicalKey == LogicalKeyboardKey.browserBack ||
+            event.logicalKey == LogicalKeyboardKey.home)) {
+      // the event is back or home, ignore this bad-boy
+      return;
+    }
     if (event is RawKeyDownEvent) {
       // handle key down
       if (null == _buttonDown) {
