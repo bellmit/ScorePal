@@ -111,11 +111,14 @@ class SideDrawer extends StatelessWidget {
         builder: (ctx, snapshot) {
           return Column(
             children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: theme.primaryColor,
+              Container(
+                width: double.infinity,
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: theme.primaryColor,
+                  ),
+                  child: UserDetailsWidget(),
                 ),
-                child: UserDetailsWidget(),
               ),
               Expanded(
                 child: SingleChildScrollView(

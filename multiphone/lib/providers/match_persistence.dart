@@ -330,6 +330,21 @@ class MatchPersistence with ChangeNotifier {
         .set(getMatchAsJSON(match, MatchPersistenceState.lastActive));
   }
 
+  Future<void> deleteAllLocalData() async {
+    final allDocs =
+        await LocalStore.Localstore.instance.collection(matchCollection).get();
+    if (allDocs != null) {
+      allDocs.forEach((key, value) async {
+        await LocalStore.Localstore.instance
+            .collection(matchCollection)
+            .doc(key.replaceFirst('/$matchCollection/', ''))
+            .delete();
+      });
+    }
+    // and we have deleted everything
+    notifyListeners();
+  }
+
   void wipeMatchData(ActiveMatch match) {
     // this is the actual delete - from the local store and the remote firebase store
     final matchId = MatchId.create(match);

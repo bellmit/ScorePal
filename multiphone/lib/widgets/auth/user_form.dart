@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiphone/helpers/user_data.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/providers/match_persistence.dart';
+import 'package:provider/provider.dart';
 
 class UserForm extends StatefulWidget {
   final UserData userData;
@@ -24,6 +26,7 @@ class _UserFormState extends State<UserForm> {
   bool _isDeleteRequired = false;
   bool _isChangeInPasswordRequired = false;
   bool _isSaveInProgress = false;
+  bool _isDeleteInProgress = false;
   bool _isVerifySent = false;
   bool _isDirty = false;
   String _newPassword = '';
@@ -97,6 +100,15 @@ class _UserFormState extends State<UserForm> {
     } catch (error) {
       _displayError(error);
     }
+  }
+
+  void _deleteAllLocalUserData() {
+    // just delete all the local data
+    setState(() => _isDeleteInProgress = true);
+    Provider.of<MatchPersistence>(context, listen: false)
+        .deleteAllLocalData()
+        .then((value) => setState(() => _isDeleteInProgress = false))
+        .onError((error, stackTrace) => _displayError(error));
   }
 
   void _displayError(dynamic error) {
@@ -228,7 +240,7 @@ class _UserFormState extends State<UserForm> {
                   Row(
                     children: [
                       ConstrainedBox(
-                        constraints: BoxConstraints.loose(Size.fromWidth(300)),
+                        constraints: BoxConstraints.loose(Size.fromWidth(250)),
                         child: TextFormField(
                           key: ValueKey('username'),
                           initialValue: _userData.username,
@@ -254,11 +266,10 @@ class _UserFormState extends State<UserForm> {
                         ),
                       ),
                       if (_isSaveInProgress) CircularProgressIndicator(),
-                      TextButton(
-                          onPressed: _isSaveInProgress || !_isDirty
-                              ? null
-                              : _trySubmit,
-                          child: Text(values.strings.save)),
+                      if (!_isSaveInProgress)
+                        TextButton(
+                            onPressed: !_isDirty ? null : _trySubmit,
+                            child: Text(values.strings.save)),
                     ],
                   ),
                   ElevatedButton(
@@ -361,8 +372,7 @@ class _UserFormState extends State<UserForm> {
                             values.strings.delete_user_data_confirm,
                             style: TextStyle(color: theme.primaryColorDark),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Wrap(
                             children: [
                               ElevatedButton(
                                 style: values.optionButtonStyle,
@@ -373,7 +383,9 @@ class _UserFormState extends State<UserForm> {
                               SizedBox(width: Values.default_space),
                               ElevatedButton(
                                 style: values.optionButtonStyle,
-                                onPressed: null,
+                                onPressed: _isDeleteInProgress
+                                    ? null
+                                    : _deleteAllLocalUserData,
                                 child:
                                     Text(values.strings.delete_user_data_local),
                               ),

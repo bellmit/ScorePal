@@ -7,7 +7,10 @@ class PlayNewMatchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardWidth = MediaQuery.of(context).size.width * 0.4;
+    final media = MediaQuery.of(context);
+    final cardWidth = media.orientation == Orientation.landscape
+        ? media.size.width * 0.4
+        : media.size.width * 0.9;
     return Card(
       margin: const EdgeInsets.all(Values.default_space),
       child: ConstrainedBox(

@@ -25,6 +25,18 @@ class _AttributionsScreenState extends BaseNavScreenState<AttributionsScreen> {
   }
 
   @override
+  Widget buildSideDrawer(BuildContext context) {
+    // are hiding the side drawer as not coming from the main menu anymore
+    return null;
+  }
+
+  @override
+  Widget buildIconMenu(BuildContext context) {
+    // are hiding the side drawer as not coming from the main menu anymore
+    return null;
+  }
+
+  @override
   Widget buildScreenBody(BuildContext context) {
     //TODO attributions screen
     return Center(child: CircularProgressIndicator());

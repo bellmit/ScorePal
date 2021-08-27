@@ -45,6 +45,18 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
   }
 
   @override
+  Widget buildSideDrawer(BuildContext context) {
+    // are hiding the side drawer as not coming from the main menu anymore
+    return null;
+  }
+
+  @override
+  Widget buildIconMenu(BuildContext context) {
+    // are hiding the side drawer as not coming from the main menu anymore
+    return null;
+  }
+
+  @override
   void initState() {
     super.initState();
     // animation things (this can have the mixin of SingleTickerProviderStateMixin)
