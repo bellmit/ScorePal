@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -125,13 +126,13 @@ class MatchPersistence with ChangeNotifier {
     }
   }
 
-  void _syncDataToFirebase() {
+  Future<void> _syncDataToFirebase() async {
     if (null == _user) {
       Log.error('Cannot sync data to firebase as there is no user logged in');
       return;
     }
     // get everything that's local and different and send to firebase then
-    LocalStore.Localstore.instance
+    await LocalStore.Localstore.instance
         .collection(matchCollection)
         .where('sync', isEqualTo: syncString(MatchPersistenceSyncState.dirty))
         .get()
@@ -151,10 +152,10 @@ class MatchPersistence with ChangeNotifier {
           }
         });
       }
-      // so we sent everything, why not get it all back again to this local
-      // data while we are at it
-      syncDataFromFirebase();
     });
+    // so we sent everything, why not get it all back again to this local
+    // data while we are at it
+    await syncDataFromFirebase();
   }
 
   static Future<void> _storeFirebaseData(
