@@ -205,7 +205,7 @@
     "confirm_password": "Confirm Password",
     "password_match": "Please re-enter the identical password.",
     "password_valid": "Please enter a valid password at least 8 characters long.",
-    "username_valid": "Please enter a valid username at least 4 characters long without strange characters.",
+    "username_valid": "Please enter a valid username... Your full name (with spaces) works best as will be spoken and recorded as you play a match.",
     "create_account": "Create Account",
     "already_account": "I already have an account...",
     "signin_google": "Sign-in using Google",

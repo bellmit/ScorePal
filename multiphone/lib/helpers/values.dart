@@ -63,6 +63,14 @@ class Values {
     );
   }
 
+  static bool isUsernameValid(String username) {
+    return username != null &&
+        username.isNotEmpty &&
+        username.length > 0 &&
+        !username.contains('|') &&
+        username.contains(' ');
+  }
+
   /// return the localisations of all our strings
   AppLocalizations get strings {
     return AppLocalizations.of(context);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/auth_screen.dart';
+import 'package:email_validator/email_validator.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(
@@ -80,6 +81,7 @@ class _AuthFormState extends State<AuthForm> {
                     validator: (value) {
                       // check the email address
                       if (value.isEmpty ||
+                          !EmailValidator.validate(value) ||
                           !value.contains('@') ||
                           value.contains('|')) {
                         return values.strings.email_valid;
@@ -104,7 +106,7 @@ class _AuthFormState extends State<AuthForm> {
                       enableSuggestions: false,
                       validator: (value) {
                         // check the username
-                        if (value.length < 4 || value.contains('|')) {
+                        if (!Values.isUsernameValid(value)) {
                           return values.strings.username_valid;
                         } else {
                           return null;

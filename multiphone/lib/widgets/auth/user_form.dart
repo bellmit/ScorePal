@@ -237,8 +237,8 @@ class _UserFormState extends State<UserForm> {
                           enableSuggestions: false,
                           validator: (value) {
                             // check the username
-                            if (value.length < 4 || value.contains('|')) {
-                              return 'Please enter a valid username at least 4 characters long.';
+                            if (!Values.isUsernameValid(value)) {
+                              return values.strings.username_valid;
                             } else {
                               return null;
                             }
