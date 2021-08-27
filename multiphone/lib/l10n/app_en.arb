@@ -84,6 +84,7 @@
       "description": "The default name for this team"
     },
 
+    "loading_wait": "Loading matches...",
     "button_accept_match": "Accept Match Results",
     "button_delete_match": "Reject Match Results",
     "screen_inbox": "Match Inbox",

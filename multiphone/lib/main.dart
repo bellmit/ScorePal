@@ -142,7 +142,7 @@ class MyApp extends StatelessWidget {
           // Initialize FlutterFire:
           future: _initialization,
           builder: (context, snapshot) {
-            // firebase has initialised (or not) so we can proceedpug
+            // firebase has initialised (or not) so we can proceed
             if (snapshot.hasError) {
               log('something went wrong with firebase:${snapshot.error}');
               // just send them to the home screen so they can proceed
