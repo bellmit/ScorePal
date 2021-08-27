@@ -42,6 +42,12 @@ class MenuItem {
         onSelected: (context) => MatchPlayTracker.navHome(context),
       ),
       MenuItem(
+        index: menuPlay,
+        icon: Icons.play_arrow,
+        name: values.strings.option_play,
+        onSelected: (context) => MatchPlayTracker.setupNewMatch(context),
+      ),
+      MenuItem(
         index: menuInbox,
         icon: Icons.mail,
         name: values.strings.option_inbox,
@@ -49,12 +55,12 @@ class MenuItem {
         onSelected: (context) =>
             MatchPlayTracker.navTo(InboxScreen.routeName, context),
       ),
-      MenuItem(
-        index: menuPlay,
-        icon: Icons.play_arrow,
-        name: values.strings.option_play,
-        onSelected: (context) => MatchPlayTracker.setupNewMatch(context),
-      ),
+    ];
+  }
+
+  static List<MenuItem> bottomMenuItems(BuildContext context) {
+    final values = Values(context);
+    return <MenuItem>[
       MenuItem(
         index: menuSettings,
         icon: Icons.settings,
@@ -62,6 +68,7 @@ class MenuItem {
         onSelected: (context) =>
             MatchPlayTracker.navTo(SettingsScreen.routeName, context),
       ),
+      /*
       MenuItem(
         index: menuTrash,
         icon: Icons.delete_outline,
@@ -75,16 +82,21 @@ class MenuItem {
         name: values.strings.option_attributions,
         onSelected: (context) =>
             MatchPlayTracker.navTo(AttributionsScreen.routeName, context),
-      ),
+      ),*/
     ];
   }
 }
 
 class SideDrawer extends StatelessWidget {
   final List<MenuItem> menuItems;
+  final List<MenuItem> bottomMenuItems;
   final int currentSelection;
 
-  const SideDrawer({Key key, this.menuItems, this.currentSelection})
+  const SideDrawer(
+      {Key key,
+      @required this.menuItems,
+      @required this.bottomMenuItems,
+      this.currentSelection})
       : super(key: key);
 
   @override
@@ -97,44 +109,54 @@ class SideDrawer extends StatelessWidget {
       child: StreamBuilder<User>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, snapshot) {
-          return ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: <Widget>[
+          return Column(
+            children: [
               DrawerHeader(
                 decoration: BoxDecoration(
                   color: theme.primaryColor,
                 ),
                 child: UserDetailsWidget(),
               ),
-              // and the list of panels, as list tiles
-              ...menuItems.map((e) {
-                final isSelected = e.index == currentSelection;
-                if (e.isForLoggedOnOnly && snapshot.data == null) {
-                  // this item only to be shown when logged on, and we are not
-                  return Container();
-                }
-                return ListTile(
-                  selected: isSelected,
-                  selectedTileColor: theme.primaryColorLight,
-                  leading: Icon(
-                    e.icon,
-                    color: isSelected
-                        ? theme.primaryColorDark
-                        : theme.primaryColor,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: // and the list of panels, as list tiles
+                        menuItems
+                            .map((e) =>
+                                _menuItemWidget(context, snapshot.data, e))
+                            .toList(),
                   ),
-                  title: Text(e.name,
-                      style: TextStyle(
-                          color: isSelected
-                              ? theme.primaryColorDark
-                              : theme.primaryColor)),
-                  onTap: () => e.onSelected(context),
-                );
-              }).toList(),
+                ),
+              ),
+              ...bottomMenuItems
+                  .map((e) => _menuItemWidget(context, snapshot.data, e))
+                  .toList(),
             ],
           );
         },
       ),
+    );
+  }
+
+  Widget _menuItemWidget(
+      BuildContext context, User currentUser, MenuItem menuItem) {
+    final isSelected = menuItem.index == currentSelection;
+    final theme = Theme.of(context);
+    if (menuItem.isForLoggedOnOnly && currentUser == null) {
+      // this item only to be shown when logged on, and we are not
+      return Container();
+    }
+    return ListTile(
+      selected: isSelected,
+      selectedTileColor: theme.primaryColorLight,
+      leading: Icon(
+        menuItem.icon,
+        color: isSelected ? theme.primaryColorDark : theme.primaryColor,
+      ),
+      title: Text(menuItem.name,
+          style: TextStyle(
+              color: isSelected ? theme.primaryColorDark : theme.primaryColor)),
+      onTap: () => menuItem.onSelected(context),
     );
   }
 }

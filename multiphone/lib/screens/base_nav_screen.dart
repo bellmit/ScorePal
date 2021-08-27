@@ -31,6 +31,7 @@ abstract class BaseNavScreenState<T extends BaseNavScreen> extends State<T> {
   Widget buildSideDrawer(BuildContext context) {
     return SideDrawer(
       menuItems: MenuItem.mainMenuItems(context),
+      bottomMenuItems: MenuItem.bottomMenuItems(context),
       currentSelection: getMenuSelectionIndex(),
     );
   }
