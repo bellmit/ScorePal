@@ -13,6 +13,7 @@ import 'package:multiphone/screens/change_match_setup_screen.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
 import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/widgets/common/confirm_dialog.dart';
+import 'package:multiphone/widgets/current_time_widget.dart';
 import 'package:multiphone/widgets/play_match_options_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
@@ -368,7 +369,10 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                               : Values.default_space),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          CurrentTimeWidget(),
+                          SizedBox(width: Values.default_space),
                           FloatingActionButton(
                             heroTag: ValueKey<String>('undo_point'),
                             onPressed: () => _undoLastPoint(match),
