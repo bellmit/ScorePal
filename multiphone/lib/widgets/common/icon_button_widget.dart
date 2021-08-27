@@ -40,7 +40,12 @@ class SvgIconButtonWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) IconSvgWidget(icon, size: null),
+          if (icon != null)
+            IconSvgWidget(
+              icon,
+              size: Values.image_icon,
+              isOnBackground: true,
+            ),
           Padding(
             padding: EdgeInsets.all(icon != null ? Values.default_space : 0),
             child: Text(text),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
 
 import 'common/common_widgets.dart';
@@ -98,12 +99,13 @@ abstract class ScoreWidget extends StatelessWidget {
                             height: Values.image_icon,
                             width: Values.image_icon,
                             decoration: new BoxDecoration(
-                              color: theme.accentColor.withOpacity(0.1),
+                              color: theme.accentColor.withOpacity(0.8),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
                               Icons.add,
-                              color: theme.accentColor.withOpacity(0.2),
+                              color: theme.accentTextTheme.button.color
+                                  .withOpacity(0.3),
                             ),
                           ),
                         ),
@@ -126,7 +128,12 @@ abstract class ScoreWidget extends StatelessWidget {
                             ? Values.image_small
                             : 0,
                         height: Values.image_small,
-                        child: IconSvgWidget(serveSvg, isOnBackground: true),
+                        child: SvgPicture.asset(
+                          'images/svg/$serveSvg.svg',
+                          width: Values.image_icon,
+                          height: Values.image_icon,
+                        ),
+                        //child: IconSvgWidget(serveSvg, isOnBackground: true),
                       ),
                     ),
                   ),

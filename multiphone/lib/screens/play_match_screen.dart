@@ -344,16 +344,15 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                       position: _messageOffset,
                       child: Center(
                         child: FractionallySizedBox(
-                            heightFactor: 0.2,
-                            widthFactor: 0.8,
+                            widthFactor: 0.7,
                             child: Card(
-                              color: Theme.of(context).secondaryHeaderColor,
+                              color: Theme.of(context).accentColor,
                               child: Padding(
                                 padding: EdgeInsets.all(Values.default_space),
                                 child: FittedBox(
                                   fit: BoxFit.contain,
                                   child: TextWidget(_description,
-                                      isOnBackground: false),
+                                      isOnBackground: true),
                                 ),
                               ),
                             )),
