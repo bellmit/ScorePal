@@ -49,9 +49,7 @@ class TextHeadingWidget extends StatelessWidget {
       textAlign: textAlign,
       style: theme.textTheme.headline6.merge(
         TextStyle(
-          color: isOnBackground
-              ? theme.accentTextTheme.button.decorationColor
-              : null,
+          color: isOnBackground ? theme.accentTextTheme.button.color : null,
         ),
       ),
     );
@@ -81,9 +79,7 @@ class TextSubheadingWidget extends StatelessWidget {
       overflow: isLimitOverflow ? TextOverflow.fade : null,
       style: theme.textTheme.subtitle1.merge(
         TextStyle(
-            color: isOnBackground
-                ? theme.accentTextTheme.button.decorationColor
-                : null,
+            color: isOnBackground ? theme.accentTextTheme.button.color : null,
             fontWeight: FontWeight.bold),
       ),
     );
@@ -121,10 +117,11 @@ class IconSvgWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SvgPicture.asset(
-      '/images/svg/$iconName.svg',
+      'images/svg/$iconName.svg',
       width: size,
       height: size,
-      color: isOnBackground ? theme.accentIconTheme.color : null,
+      color:
+          isOnBackground ? theme.accentIconTheme.color : theme.iconTheme.color,
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/attributions_screen.dart';
 import 'package:multiphone/screens/trash_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
@@ -30,10 +31,10 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
                     Expanded(
                       child: TextWidget(title),
                     ),
-                    ElevatedButton(
-                      style: values.optionButtonStyle,
-                      child: TextWidget(buttonText),
-                      onPressed: onPressed,
+                    IconButtonWidget(
+                      onPressed,
+                      null,
+                      buttonText,
                     ),
                   ],
                 ),
@@ -48,6 +49,8 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
 
   @override
   Widget build(BuildContext context) {
+    // prepare the mixin
+    prepareWidget(context);
     // prepare our member data to use and reuse
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

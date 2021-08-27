@@ -37,6 +37,7 @@ abstract class ScoreWidget extends StatelessWidget {
     String serveSvg,
     void onClicked(),
   ) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(Values.default_space),
       child: AspectRatio(
@@ -44,13 +45,12 @@ abstract class ScoreWidget extends StatelessWidget {
         child: InkWell(
           onTap: onClicked,
           child: Card(
-              color: Theme.of(context).primaryColorDark,
+              color: theme.primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.all(Radius.circular(Values.default_radius)),
               ),
-              elevation:
-                  onClicked == null ? 0 : Theme.of(context).cardTheme.elevation,
+              elevation: onClicked == null ? 0 : theme.cardTheme.elevation,
               child: Stack(
                 alignment: Alignment.topRight,
                 children: [
@@ -62,7 +62,7 @@ abstract class ScoreWidget extends StatelessWidget {
                         Padding(
                           padding:
                               const EdgeInsets.only(top: Values.default_space),
-                          child: TextWidget(title),
+                          child: TextWidget(title, isOnBackground: true),
                         ),
                         Expanded(
                           child: FittedBox(
@@ -78,6 +78,7 @@ abstract class ScoreWidget extends StatelessWidget {
                               },
                               child: TextWidget(
                                 points,
+                                isOnBackground: true,
                                 key: ValueKey<String>(points),
                                 textAlign: TextAlign.center,
                               ),
@@ -97,16 +98,12 @@ abstract class ScoreWidget extends StatelessWidget {
                             height: Values.image_icon,
                             width: Values.image_icon,
                             decoration: new BoxDecoration(
-                              color: Theme.of(context)
-                                  .accentColor
-                                  .withOpacity(0.1),
+                              color: theme.accentColor.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
                               Icons.add,
-                              color: Theme.of(context)
-                                  .accentColor
-                                  .withOpacity(0.2),
+                              color: theme.accentColor.withOpacity(0.2),
                             ),
                           ),
                         ),
@@ -129,7 +126,7 @@ abstract class ScoreWidget extends StatelessWidget {
                             ? Values.image_small
                             : 0,
                         height: Values.image_small,
-                        child: IconSvgWidget(serveSvg),
+                        child: IconSvgWidget(serveSvg, isOnBackground: true),
                       ),
                     ),
                   ),

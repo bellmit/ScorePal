@@ -38,7 +38,7 @@ class _CurrentTimeWidgetState extends State<CurrentTimeWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Values.primaryLightColorFaded,
+      color: Theme.of(context).secondaryHeaderColor,
       child: Padding(
         padding: const EdgeInsets.all(Values.default_space),
         child: Column(

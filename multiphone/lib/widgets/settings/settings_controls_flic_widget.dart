@@ -5,6 +5,7 @@ import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/setup_flic2_screen.dart';
 import 'package:multiphone/widgets/adverts/purchase_flic_widget.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/settings/select_flic_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
@@ -48,7 +49,7 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-
+    prepareWidget(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -99,11 +100,11 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
               if (_isFlicTwo)
                 Padding(
                   padding: const EdgeInsets.only(left: Values.default_space),
-                  child: ElevatedButton(
-                    style: values.optionButtonStyle,
-                    onPressed: () => MatchPlayTracker.navTo(
+                  child: IconButtonWidget(
+                    () => MatchPlayTracker.navTo(
                         SetupFlic2Screen.routeName, context),
-                    child: TextWidget(values.strings.option_setup_flic2),
+                    Icons.bluetooth,
+                    values.strings.option_setup_flic2,
                   ),
                 ),
             ],

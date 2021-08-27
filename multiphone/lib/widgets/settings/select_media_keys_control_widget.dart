@@ -21,7 +21,7 @@ class SelectMediaKeysControlWidget extends SelectItemCheckedWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: IconWidget(Icons.gamepad),
+        icon: IconWidget(Icons.gamepad, size: Values.image_medium),
         text: values.strings.title_control_keys,
         iconSize: Values.image_medium,
       ),

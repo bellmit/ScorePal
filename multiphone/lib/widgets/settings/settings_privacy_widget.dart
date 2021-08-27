@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/user_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsPrivacyWidget extends StatefulWidget {
@@ -27,8 +28,8 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
 
   @override
   Widget build(BuildContext context) {
-    // prepare our member data to use and reuse
-
+    // prepare the mixin
+    prepareWidget(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -44,10 +45,10 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
         if (_isWipeSelected)
           Align(
             alignment: Alignment.topRight,
-            child: ElevatedButton(
-              style: values.optionButtonStyle,
-              onPressed: _wipeData,
-              child: TextWidget(values.strings.option_user_data),
+            child: IconButtonWidget(
+              _wipeData,
+              Icons.person,
+              values.strings.option_user_data,
             ),
           ),
       ],

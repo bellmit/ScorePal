@@ -7,6 +7,7 @@ import 'package:multiphone/match/score_history.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 
 import 'common/common_widgets.dart';
 
@@ -30,10 +31,10 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
   int noLevels = 1;
   int highestLevel = 0;
 
-  List<Color> gradientColors = [
-    Values.primaryDarkColor,
-    Values.primaryLightColor,
-  ];
+  List<Color> gradientColors() => [
+        Theme.of(context).primaryColorDark,
+        Theme.of(context).primaryColor,
+      ];
 
   final List<FlSpot> teamOneGraphPoints = [];
   final List<FlSpot> teamTwoGraphPoints = [];
@@ -139,10 +140,8 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
           show: true,
           bottomTitles: SideTitles(
             showTitles: true,
-            getTextStyles: (context, value) {
-              // get the style for the level that changed
-              return Theme.of(context).textTheme.headline3;
-            },
+            getTextStyles: (context, value) =>
+                Theme.of(context).textTheme.caption,
             getTitles: (value) {
               final historyValue = this.pointHistory[value.floor()];
               if (historyValue.topLevelChanged >= highestLevel) {
@@ -173,7 +172,7 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
             showTitles: true,
             interval: 1,
             getTextStyles: (context, value) =>
-                Theme.of(context).textTheme.headline3,
+                Theme.of(context).textTheme.caption,
             getTitles: (value) {
               if (value.abs() % 10 == 0) {
                 return '${value.floor()}';
@@ -188,7 +187,7 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
         borderData: FlBorderData(
             show: true,
             border: Border.all(
-                color: Theme.of(context).primaryColorDark,
+                color: Theme.of(context).secondaryHeaderColor,
                 width: Values.border_width)),
         minX: 0,
         maxX: noPoints.toDouble() - 1.0,
@@ -200,7 +199,7 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
                 ? teamOneGraphPoints
                 : teamTwoGraphPoints,
             isCurved: true,
-            colors: gradientColors,
+            colors: gradientColors(),
             barWidth: 3,
             isStrokeCapRound: true,
             dotData: FlDotData(
@@ -208,7 +207,7 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
                     pointHistory[spot.x.floor()].topLevelChanged > 0),
             belowBarData: BarAreaData(
               show: true,
-              colors: gradientColors
+              colors: gradientColors()
                   .map((color) => color.withOpacity(0.3))
                   .toList(),
             ),
@@ -232,11 +231,11 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
       child: Padding(
         padding: const EdgeInsets.all(Values.default_space),
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(Values.default_radius),
               ),
-              color: Color(0xff232d37)),
+              color: Theme.of(context).secondaryHeaderColor),
           child: Column(
             children: [
               Padding(
@@ -244,15 +243,15 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: _switchActiveTeam,
-                      child:
-                          TextWidget(setup.getTeamName(_activeTeam, context)),
-                      style: values.optionButtonStyle,
+                    IconButtonWidget(
+                      _switchActiveTeam,
+                      null,
+                      setup.getTeamName(_activeTeam, context),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
-                      child: TextWidget(values.strings.match_momentum),
+                      child: TextWidget(values.strings.match_momentum,
+                          isOnBackground: true),
                     ),
                   ],
                 ),

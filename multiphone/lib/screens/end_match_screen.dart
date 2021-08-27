@@ -6,6 +6,7 @@ import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/match_breakdown_widget.dart';
 import 'package:multiphone/widgets/match_momentum_widget.dart';
 import 'package:multiphone/widgets/match_score_summary_widget.dart';
@@ -94,18 +95,10 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton.icon(
-                      style: values.optionButtonStyle,
-                      onPressed: () => _deleteMatch(match),
-                      icon: IconWidget(Icons.delete),
-                      label: TextWidget(values.strings.match_delete),
-                    ),
-                    ElevatedButton.icon(
-                      style: values.optionButtonStyle,
-                      onPressed: () => _acceptMatch(match),
-                      icon: IconWidget(Icons.add),
-                      label: TextWidget(values.strings.match_accept),
-                    ),
+                    IconButtonWidget(() => _deleteMatch(match), Icons.delete,
+                        values.strings.match_delete),
+                    IconButtonWidget(() => _acceptMatch(match), Icons.add,
+                        values.strings.match_accept),
                   ],
                 ),
                 widget.createScoreSummaryWidget(ctx, match),
@@ -119,19 +112,16 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Flexible(
-                          child: ElevatedButton.icon(
-                            style: values.optionButtonStyle,
-                            onPressed: () =>
-                                _concedeMatch(match, TeamIndex.T_ONE),
-                            icon: IconWidget(Icons.thumb_down_alt),
-                            label: Expanded(
-                              child: TextWidget(
-                                values.construct(values.strings.match_concede, [
-                                  match
-                                      .getSetup()
-                                      .getTeamName(TeamIndex.T_ONE, ctx)
-                                ]),
-                              ),
+                          child: IconButtonWrappedWidget(
+                            () => _concedeMatch(match, TeamIndex.T_ONE),
+                            Icons.thumb_down_alt,
+                            values.construct(
+                              values.strings.match_concede,
+                              [
+                                match
+                                    .getSetup()
+                                    .getTeamName(TeamIndex.T_ONE, ctx)
+                              ],
                             ),
                           ),
                         ),
@@ -139,19 +129,16 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                           width: Values.default_space,
                         ),
                         Flexible(
-                          child: ElevatedButton.icon(
-                            style: values.optionButtonStyle,
-                            onPressed: () =>
-                                _concedeMatch(match, TeamIndex.T_TWO),
-                            icon: IconWidget(Icons.thumb_down_alt),
-                            label: Expanded(
-                              child: TextWidget(
-                                values.construct(values.strings.match_concede, [
-                                  match
-                                      .getSetup()
-                                      .getTeamName(TeamIndex.T_TWO, ctx)
-                                ]),
-                              ),
+                          child: IconButtonWrappedWidget(
+                            () => _concedeMatch(match, TeamIndex.T_TWO),
+                            Icons.thumb_down_alt,
+                            values.construct(
+                              values.strings.match_concede,
+                              [
+                                match
+                                    .getSetup()
+                                    .getTeamName(TeamIndex.T_TWO, ctx)
+                              ],
                             ),
                           ),
                         ),
@@ -164,13 +151,10 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                       left: Values.default_space,
                       right: Values.default_space,
                     ),
-                    child: ElevatedButton.icon(
-                      style: values.optionButtonStyle,
-                      onPressed: () => _undoMatchConcede(match),
-                      icon: IconWidget(Icons.undo),
-                      label: TextWidget(
-                        values.strings.match_concede_undo,
-                      ),
+                    child: IconButtonWidget(
+                      () => _undoMatchConcede(match),
+                      Icons.undo,
+                      values.strings.match_concede_undo,
                     ),
                   ),
                 // and show the breakdown for the match

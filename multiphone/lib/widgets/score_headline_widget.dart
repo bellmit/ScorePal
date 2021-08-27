@@ -16,6 +16,7 @@ class ScoreHeadlineWidget extends StatelessWidget {
     final winner = match.getMatchWinner();
     final loser = setup.getOtherTeam(winner);
     final values = Values(context);
+    final theme = Theme.of(context);
     // need to find the top level scores ATM
     Point winnerPoint, loserPoint;
     int level = 0;
@@ -43,10 +44,9 @@ class ScoreHeadlineWidget extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: theme.secondaryHeaderColor,
         border: Border.all(
-            color: Theme.of(context).primaryColorDark,
-            width: Values.border_width),
+            color: theme.primaryColorDark, width: Values.border_width),
         borderRadius: BorderRadius.all(Radius.circular(Values.default_radius)),
       ),
       child: Row(

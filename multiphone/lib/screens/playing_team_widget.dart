@@ -14,13 +14,14 @@ class PlayingTeamWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final setup = match.getSetup();
+    final theme = Theme.of(context);
     final servingPlayer = match.getServingPlayer();
     final player = setup.getTeamPlayer(team);
     final partner = setup.getTeamPartner(team);
     final playerName = setup.getPlayerName(player, context);
     final partnerName = setup.getPlayerName(partner, context);
     return Card(
-      color: Theme.of(context).primaryColorDark,
+      color: Theme.of(context).secondaryHeaderColor,
       child: Container(
         margin: EdgeInsets.all(Values.default_space),
         width: double.infinity,
@@ -46,12 +47,11 @@ class PlayingTeamWidget extends StatelessWidget {
                       playerName,
                       overflow: TextOverflow.fade,
                       maxLines: 2,
-                      style: Theme.of(context).textTheme.headline1.merge(
-                            TextStyle(
-                                fontWeight: servingPlayer == player
-                                    ? FontWeight.bold
-                                    : FontWeight.normal),
-                          ),
+                      style: TextStyle(
+                          color: theme.accentTextTheme.button.color,
+                          fontWeight: servingPlayer == player
+                              ? FontWeight.bold
+                              : FontWeight.normal),
                     ),
                   ),
                 ],
@@ -70,12 +70,11 @@ class PlayingTeamWidget extends StatelessWidget {
                         maxLines: 2,
                         softWrap: false,
                         textAlign: TextAlign.end,
-                        style: Theme.of(context).textTheme.headline1.merge(
-                              TextStyle(
-                                  fontWeight: servingPlayer == player
-                                      ? FontWeight.bold
-                                      : FontWeight.normal),
-                            ),
+                        style: TextStyle(
+                            color: theme.accentTextTheme.button.color,
+                            fontWeight: servingPlayer == player
+                                ? FontWeight.bold
+                                : FontWeight.normal),
                       ),
                     ),
                     const SizedBox(

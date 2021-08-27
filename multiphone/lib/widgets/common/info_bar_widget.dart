@@ -14,7 +14,7 @@ class InfoBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).primaryColorDark,
+      color: Theme.of(context).secondaryHeaderColor,
       child: Container(
         margin: EdgeInsets.all(Values.default_space),
         width: double.infinity,
@@ -24,10 +24,11 @@ class InfoBarWidget extends StatelessWidget {
             children: [
               if (null != icon)
                 Padding(
-                    padding: EdgeInsets.only(right: Values.default_space),
-                    child: IconWidget(icon)),
+                  padding: EdgeInsets.only(right: Values.default_space),
+                  child: IconWidget(icon, isOnBackground: true),
+                ),
               Expanded(
-                child: TextWidget(title),
+                child: TextWidget(title, isOnBackground: true),
               ),
             ]),
       ),

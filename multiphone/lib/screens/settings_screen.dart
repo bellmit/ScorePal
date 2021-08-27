@@ -162,15 +162,15 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
-          icon: IconWidget(Icons.volume_up),
+          icon: IconWidget(Icons.volume_up, size: null),
           label: values.strings.option_settings_sounds,
         ),
         BottomNavigationBarItem(
-          icon: IconWidget(Icons.settings_remote),
+          icon: IconWidget(Icons.settings_remote, size: null),
           label: values.strings.option_settings_control,
         ),
         BottomNavigationBarItem(
-          icon: IconWidget(Icons.settings),
+          icon: IconWidget(Icons.settings, size: null),
           label: values.strings.option_settings_general,
         ),
       ],

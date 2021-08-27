@@ -49,7 +49,7 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-
+    prepareWidget(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

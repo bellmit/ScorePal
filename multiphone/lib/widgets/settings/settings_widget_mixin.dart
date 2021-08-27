@@ -6,6 +6,11 @@ class SettingsWidgetMixin {
   Values values;
   ThemeData theme;
 
+  void prepareWidget(BuildContext context) {
+    values = Values(context);
+    theme = Theme.of(context);
+  }
+
   Widget createSwitchingRow(BuildContext context, Widget icon, String title,
       String explain, void Function(bool) onSwitch,
       {bool isSelected = false}) {

@@ -73,7 +73,7 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
           height: widget.itemSize,
         ),
         renderBorder: false,
-        selectedColor: Theme.of(context).accentColor,
+        selectedColor: Theme.of(context).accentTextTheme.button.color,
         fillColor: Theme.of(context).primaryColor,
         borderRadius: borderRadius,
       ),

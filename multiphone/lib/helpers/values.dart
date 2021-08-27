@@ -2,25 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Values {
-  static const primaryColor = Color(0xFF308038);
-  static const primaryLightColor = Color(0xAA62b064);
-  static const primaryLightColorFaded = Color(0xFF7062b064);
-  static const primaryDarkColor = Color(0xFF00530d);
-  static const secondaryColor = Color(0xFFdcfd50);
-  static const secondaryLightColor = Color(0xFFffff84);
-  static const secondaryDarkColor = Color(0xFFa7ca0a);
-  static const primaryTextColor = Color(0xFFffffff);
-  static const secondaryTextColor = Color(0xFF000000);
-  static const primaryBackground = Color(0xFFbbbbcc);
-
-  static const teamOneColor = Color(0xFFdcfd50);
-  static const teamTwoColor = Color(0xFFffff84);
   static const deleteColor = Color(0xFFff1010);
-
-  static const circular_progress_default_progress = Color(0xFFffff84);
-  static const circular_progress_default_background = Color(0xFF00530d);
-  static const circular_progress_default_title = Color(0xFF62b064);
-  static const circular_progress_default_subtitle = Color(0xFF62b064);
 
   static const int firebase_fetch_limit = 50;
 
@@ -54,14 +36,6 @@ class Values {
   /// construct the Values object to get our localization strings object
   final BuildContext context;
   const Values(this.context);
-
-  ButtonStyle get optionButtonStyle {
-    final theme = Theme.of(context);
-    return ElevatedButton.styleFrom(
-      primary: theme.primaryColorDark,
-      onPrimary: theme.accentColor,
-    );
-  }
 
   static bool isUsernameValid(String username) {
     return username != null &&

@@ -9,6 +9,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
@@ -130,7 +131,7 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                           ),
                         ),
                         secondaryBackground: Container(
-                          color: Values.primaryLightColor,
+                          color: Theme.of(context).secondaryHeaderColor,
                           child: const Align(
                             alignment: Alignment.centerRight,
                             child: const Padding(
@@ -157,33 +158,15 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                ElevatedButton(
-                                  onPressed: () => _deleteMatch(match, index),
-                                  child: Row(children: [
-                                    IconWidget(Icons.delete),
-                                    Padding(
-                                      padding: const EdgeInsets.all(
-                                          Values.default_space),
-                                      child: TextWidget(Values(context)
-                                          .strings
-                                          .button_delete_match),
-                                    )
-                                  ]),
-                                  style: Values(context).optionButtonStyle,
+                                IconButtonWidget(
+                                  () => _deleteMatch(match, index),
+                                  Icons.delete,
+                                  Values(context).strings.button_delete_match,
                                 ),
-                                ElevatedButton(
-                                  onPressed: () => _acceptMatch(match, index),
-                                  child: Row(children: [
-                                    IconWidget(Icons.done_outline),
-                                    Padding(
-                                      padding: const EdgeInsets.all(
-                                          Values.default_space),
-                                      child: TextWidget(Values(context)
-                                          .strings
-                                          .button_accept_match),
-                                    )
-                                  ]),
-                                  style: Values(context).optionButtonStyle,
+                                IconButtonWidget(
+                                  () => _acceptMatch(match, index),
+                                  Icons.done_outline,
+                                  Values(context).strings.button_accept_match,
                                 ),
                               ],
                             ),

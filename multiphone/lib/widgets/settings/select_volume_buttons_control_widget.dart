@@ -21,7 +21,7 @@ class SelectVolumeButtonsControlWidget extends SelectItemCheckedWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: IconWidget(Icons.volume_up),
+        icon: IconWidget(Icons.volume_up, size: Values.image_medium),
         text: values.strings.title_control_volume,
         iconSize: Values.image_medium,
       ),

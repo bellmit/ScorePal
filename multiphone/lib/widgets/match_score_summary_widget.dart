@@ -50,7 +50,7 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
             child: AspectRatio(
               aspectRatio: 1,
               child: Card(
-                color: Theme.of(context).primaryColorDark,
+                color: Theme.of(context).secondaryHeaderColor,
                 shape: const RoundedRectangleBorder(
                   borderRadius: const BorderRadius.all(
                       Radius.circular(Values.default_radius)),

@@ -43,7 +43,7 @@ class _SelectItemCheckedWidgetState extends State<SelectItemCheckedWidget> {
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
         border: Border.all(
-            color: Theme.of(context).primaryColorDark,
+            color: Theme.of(context).secondaryHeaderColor,
             width: Values.border_width),
         borderRadius: borderRadius,
       ),
@@ -62,7 +62,7 @@ class _SelectItemCheckedWidgetState extends State<SelectItemCheckedWidget> {
         constraints: BoxConstraints.expand(
             width: widget.itemSize, height: widget.itemSize),
         renderBorder: false,
-        selectedColor: Theme.of(context).accentColor,
+        selectedColor: Theme.of(context).accentTextTheme.button.color,
         fillColor: Theme.of(context).primaryColor,
         borderRadius: borderRadius,
       ),

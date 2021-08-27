@@ -7,6 +7,7 @@ import 'package:multiphone/helpers/user_data.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:provider/provider.dart';
 
 class UserForm extends StatefulWidget {
@@ -259,10 +260,8 @@ class _UserFormState extends State<UserForm> {
                             child: TextWidget(values.strings.save)),
                     ],
                   ),
-                  ElevatedButton(
-                      style: values.optionButtonStyle,
-                      onPressed: _signOut,
-                      child: TextWidget(values.strings.sign_out)),
+                  IconButtonWidget(
+                      _signOut, Icons.exit_to_app, values.strings.sign_out),
                   if (!_userData.currentUser.emailVerified)
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
@@ -273,11 +272,10 @@ class _UserFormState extends State<UserForm> {
                           ),
                           Row(
                             children: [
-                              ElevatedButton(
-                                style: values.optionButtonStyle,
-                                onPressed: _isVerifySent ? null : _verifyEmail,
-                                child: TextWidget(
-                                    values.strings.verification_email_send),
+                              IconButtonWidget(
+                                _isVerifySent ? null : _verifyEmail,
+                                Icons.mark_email_read,
+                                values.strings.verification_email_send,
                               ),
                               IconButton(
                                 icon: IconWidget(Icons.refresh),
@@ -288,14 +286,14 @@ class _UserFormState extends State<UserForm> {
                         ],
                       ),
                     ),
-                  ElevatedButton(
-                      style: values.optionButtonStyle,
-                      onPressed: () => setState(() =>
-                          _isChangeInPasswordRequired =
-                              !_isChangeInPasswordRequired),
-                      child: TextWidget(_isChangeInPasswordRequired
-                          ? values.strings.cancel
-                          : values.strings.change_password)),
+                  IconButtonWidget(
+                    () => setState(() => _isChangeInPasswordRequired =
+                        !_isChangeInPasswordRequired),
+                    Icons.password,
+                    _isChangeInPasswordRequired
+                        ? values.strings.cancel
+                        : values.strings.change_password,
+                  ),
                   if (_isChangeInPasswordRequired)
                     Column(
                       children: [
@@ -336,19 +334,20 @@ class _UserFormState extends State<UserForm> {
                             _newPassword = value ?? '';
                           },
                         ),
-                        ElevatedButton(
-                            style: values.optionButtonStyle,
-                            onPressed:
-                                _isChangingPassword ? null : _changePassword,
-                            child: TextWidget(values.strings.change_password)),
+                        IconButtonWidget(
+                          _isChangingPassword ? null : _changePassword,
+                          Icons.password,
+                          values.strings.change_password,
+                        ),
                       ],
                     ),
-                  ElevatedButton(
-                      style: values.optionButtonStyle,
-                      onPressed: _isDeleteRequired
-                          ? null
-                          : () => setState(() => _isDeleteRequired = true),
-                      child: TextWidget(values.strings.delete_user_data)),
+                  IconButtonWidget(
+                    _isDeleteRequired
+                        ? null
+                        : () => setState(() => _isDeleteRequired = true),
+                    Icons.delete,
+                    values.strings.delete_user_data,
+                  ),
                   if (_isDeleteRequired)
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
@@ -359,20 +358,18 @@ class _UserFormState extends State<UserForm> {
                           ),
                           Wrap(
                             children: [
-                              ElevatedButton(
-                                style: values.optionButtonStyle,
-                                onPressed: _deleteAllOnlineUserData,
-                                child: TextWidget(
-                                    values.strings.delete_user_data_online),
+                              IconButtonWidget(
+                                _deleteAllOnlineUserData,
+                                Icons.delete_sweep,
+                                values.strings.delete_user_data_online,
                               ),
                               SizedBox(width: Values.default_space),
-                              ElevatedButton(
-                                style: values.optionButtonStyle,
-                                onPressed: _isDeleteInProgress
+                              IconButtonWidget(
+                                _isDeleteInProgress
                                     ? null
                                     : _deleteAllLocalUserData,
-                                child: TextWidget(
-                                    values.strings.delete_user_data_local),
+                                Icons.delete_sweep,
+                                values.strings.delete_user_data_local,
                               ),
                             ],
                           ),

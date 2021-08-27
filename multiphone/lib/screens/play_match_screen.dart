@@ -14,6 +14,7 @@ import 'package:multiphone/screens/playing_team_widget.dart';
 import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/confirm_dialog.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/current_time_widget.dart';
 import 'package:multiphone/widgets/play_match_options_widget.dart';
 import 'package:provider/provider.dart';
@@ -346,15 +347,15 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                             heightFactor: 0.2,
                             widthFactor: 0.8,
                             child: Card(
-                              borderOnForeground: true,
+                              color: Theme.of(context).secondaryHeaderColor,
                               child: Padding(
                                 padding: EdgeInsets.all(Values.default_space),
                                 child: FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: TextWidget(_description),
+                                  fit: BoxFit.contain,
+                                  child: TextWidget(_description,
+                                      isOnBackground: false),
                                 ),
                               ),
-                              color: theme.primaryColor,
                             )),
                       ),
                     ),
@@ -400,18 +401,14 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                       context,
                       orientation,
                       Card(
-                        color: Theme.of(context).primaryColorLight,
+                        color: Theme.of(context).secondaryHeaderColor,
                         child: Padding(
                           padding: const EdgeInsets.all(Values.default_space),
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              primary: theme.accentColor,
-                              onPrimary: theme.primaryColorDark,
-                            ),
-                            onPressed: () => _onMatchOptionSelected(
+                          child: IconButtonWidget(
+                            () => _onMatchOptionSelected(
                                 PlayMatchOptions.end_match, context),
-                            icon: IconWidget(Icons.stop),
-                            label: TextWidget(values.strings.match_end),
+                            Icons.stop,
+                            values.strings.match_end,
                           ),
                         ),
                       ),

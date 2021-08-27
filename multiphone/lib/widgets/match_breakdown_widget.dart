@@ -18,30 +18,31 @@ class MatchBreakdownWidget extends StatelessWidget {
     final theme = Theme.of(context);
     final values = Values(context);
     return Card(
-      color: theme.primaryColorDark,
+      color: theme.secondaryHeaderColor,
       margin: const EdgeInsets.all(Values.default_space),
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: Values.default_space),
-            child: TextWidget(values.strings.results_breakdown),
+            child: TextHeadingWidget(
+              values.strings.results_breakdown,
+              isOnBackground: true,
+            ),
           ),
           Row(
             children: [
               Expanded(
-                child: teamColumn(context, TeamIndex.T_ONE, theme.accentColor),
+                child: teamColumn(context, TeamIndex.T_ONE),
               ),
               Column(
                 children: [
                   teamTitle(''),
-                  detailsTextWidget(
-                      values.strings.total_points, Values.primaryTextColor),
-                  detailsTextWidget(
-                      values.strings.break_points, Values.primaryTextColor),
+                  TextWidget(values.strings.total_points, isOnBackground: true),
+                  TextWidget(values.strings.break_points, isOnBackground: true),
                 ],
               ),
               Expanded(
-                child: teamColumn(context, TeamIndex.T_TWO, theme.accentColor),
+                child: teamColumn(context, TeamIndex.T_TWO),
               )
             ],
           ),
@@ -55,10 +56,7 @@ class MatchBreakdownWidget extends StatelessWidget {
         child: TextWidget(title),
       );
 
-  Widget detailsTextWidget(String text, Color color) => TextWidget(text);
-
-  Widget teamColumn(BuildContext context, TeamIndex team, Color color) =>
-      Padding(
+  Widget teamColumn(BuildContext context, TeamIndex team) => Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: team == TeamIndex.T_ONE
@@ -66,11 +64,11 @@ class MatchBreakdownWidget extends StatelessWidget {
               : CrossAxisAlignment.start,
           children: [
             teamTitle(match.getSetup().getTeamName(team, context)),
-            detailsTextWidget(
-                match.score.getPointsTotal(0, team).toString(), color),
+            TextWidget(match.score.getPointsTotal(0, team).toString(),
+                isOnBackground: true),
             if (match.score is TennisScore)
-              detailsTextWidget(
-                  breakPointsTextWidget(match.score, team), color),
+              TextWidget(breakPointsTextWidget(match.score, team),
+                  isOnBackground: true),
           ],
         ),
       );

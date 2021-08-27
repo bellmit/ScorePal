@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
-
-import 'common/common_widgets.dart';
 
 enum PlayMatchOptions {
   clear,
@@ -52,57 +51,40 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      ElevatedButton.icon(
-                        style: values.optionButtonStyle,
-                        onPressed: () =>
-                            onOptionSelected(PlayMatchOptions.clear),
-                        icon: IconWidget(Icons.clear_all),
-                        label: TextWidget(values.strings.match_clear),
+                      IconButtonWidget(
+                        () => onOptionSelected(PlayMatchOptions.clear),
+                        Icons.clear_all,
+                        values.strings.match_clear,
                       ),
-                      ElevatedButton.icon(
-                        style: values.optionButtonStyle,
-                        onPressed: () =>
-                            onOptionSelected(PlayMatchOptions.show_history),
-                        icon: IconWidget(Icons.history),
-                        label: TextWidget(values.strings.match_history),
+                      IconButtonWidget(
+                          () => onOptionSelected(PlayMatchOptions.show_history),
+                          Icons.history,
+                          values.strings.match_history),
+                      IconButtonWidget(
+                        () => onOptionSelected(PlayMatchOptions.show_settings),
+                        Icons.settings,
+                        values.strings.match_app_settings,
                       ),
-                      ElevatedButton.icon(
-                        style: values.optionButtonStyle,
-                        onPressed: () =>
-                            onOptionSelected(PlayMatchOptions.show_settings),
-                        icon: IconWidget(Icons.settings),
-                        label: TextWidget(values.strings.match_app_settings),
-                      ),
-                      ElevatedButton.icon(
-                        style: values.optionButtonStyle,
-                        onPressed: () => onOptionSelected(
+                      SvgIconButtonWidget(
+                        () => onOptionSelected(
                             PlayMatchOptions.show_match_settings),
-                        icon: IconSvgWidget(
-                          'match-settings',
-                          size: Values.image_icon,
-                          isOnBackground: true,
-                        ),
-                        label: TextWidget(values.strings.match_change_setup),
+                        'match-settings',
+                        values.strings.match_change_setup,
                       ),
                       LineBreakWidget(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                      Wrap(
                         children: [
-                          ElevatedButton.icon(
-                            style: values.optionButtonStyle,
-                            onPressed: () =>
-                                onOptionSelected(PlayMatchOptions.end_match),
-                            icon: IconWidget(Icons.stop),
-                            label: TextWidget(values.strings.match_end),
+                          IconButtonWidget(
+                            () => onOptionSelected(PlayMatchOptions.end_match),
+                            Icons.stop,
+                            values.strings.match_end,
                           ),
                           const SizedBox(width: Values.default_space),
-                          ElevatedButton.icon(
-                            style: values.optionButtonStyle,
-                            onPressed: () =>
-                                onOptionSelected(PlayMatchOptions.resume),
-                            icon: IconWidget(Icons.play_arrow),
-                            label: TextWidget(values.strings.match_resume),
-                          )
+                          IconButtonWidget(
+                            () => onOptionSelected(PlayMatchOptions.resume),
+                            Icons.play_arrow,
+                            values.strings.match_resume,
+                          ),
                         ],
                       ),
                       const SizedBox(height: Values.default_space),

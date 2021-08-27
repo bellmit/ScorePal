@@ -8,6 +8,7 @@ import 'package:multiphone/helpers/flic2_wrapper.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -292,20 +293,16 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
           ),
           Row(
             children: [
-              ElevatedButton(
-                onPressed: () => _connectDisconnectButton(button),
-                child: TextWidget(button.connectionState ==
-                        Flic2ButtonConnectionState.disconnected
-                    ? values.strings.button_flic_connect
-                    : values.strings.button_flic_disconnect),
-                style: values.optionButtonStyle,
-              ),
+              IconButtonWidget(
+                  () => _connectDisconnectButton(button),
+                  null,
+                  button.connectionState ==
+                          Flic2ButtonConnectionState.disconnected
+                      ? values.strings.button_flic_connect
+                      : values.strings.button_flic_disconnect),
               SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: () => _forgetButton(button),
-                child: TextWidget(values.strings.button_flic_forget),
-                style: values.optionButtonStyle,
-              ),
+              IconButtonWidget(() => _forgetButton(button), null,
+                  values.strings.button_flic_forget),
             ],
           ),
         ],
@@ -333,12 +330,15 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
-                      child: ElevatedButton(
-                          onPressed: () => _startStopScanningForFlic2(),
-                          child: TextWidget(_isScanning
-                              ? values.strings.button_stop_scanning
-                              : values.strings.button_scan),
-                          style: values.optionButtonStyle),
+                      child: IconButtonWidget(
+                        () => _startStopScanningForFlic2(),
+                        _isScanning
+                            ? Icons.bluetooth_searching
+                            : Icons.bluetooth,
+                        _isScanning
+                            ? values.strings.button_stop_scanning
+                            : values.strings.button_scan,
+                      ),
                     ),
                     if (_isScanning)
                       TextHeadingWidget(values.strings.info_scanning_flic),

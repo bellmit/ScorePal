@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 
 import 'common_widgets.dart';
+import 'icon_button_widget.dart';
 
 Future<bool> confirmDialog(
   BuildContext context, {
@@ -31,17 +32,15 @@ Future<bool> confirmDialog(
           content != null ? content : values.strings.confirm_default,
         ),
         actions: <Widget>[
-          TextButton(
-            child: TextWidget(
-                textCancel != null ? textCancel : values.strings.confirm_no),
-            style: values.optionButtonStyle,
-            onPressed: () => Navigator.pop(context, false),
+          IconButtonWidget(
+            () => Navigator.pop(context, false),
+            null,
+            textCancel != null ? textCancel : values.strings.confirm_no,
           ),
-          TextButton(
-            child: TextWidget(
-                textOK != null ? textOK : values.strings.confirm_yes),
-            style: values.optionButtonStyle,
-            onPressed: () => Navigator.pop(context, true),
+          IconButtonWidget(
+            () => Navigator.pop(context, true),
+            null,
+            textOK != null ? textOK : values.strings.confirm_yes,
           ),
         ],
       ),

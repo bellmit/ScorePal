@@ -29,7 +29,7 @@ class SetupMatchSummaryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Values.primaryLightColor,
+      color: Theme.of(context).secondaryHeaderColor,
       child: Consumer<ActiveSetup>(
         builder: (ctx, matchSetup, child) {
           // this changes as the active match changes
