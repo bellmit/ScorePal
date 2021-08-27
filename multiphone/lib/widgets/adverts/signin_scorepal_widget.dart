@@ -8,45 +8,45 @@ class SignInScorepalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
+    final cardWidth = MediaQuery.of(context).size.width * 0.4;
     return Card(
       margin: const EdgeInsets.all(Values.default_space),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                left: Values.default_space, right: Values.default_space),
-            child: Icon(
-              Icons.person,
-              size: Values.image_large,
+      child: ConstrainedBox(
+        constraints: BoxConstraints.loose(Size.fromWidth(cardWidth)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  left: Values.default_space, right: Values.default_space),
+              child: Icon(
+                Icons.person,
+                size: Values.image_large,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: Values.default_space),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
+            Flexible(
+              child: Column(
+                children: [
+                  Text(
                     values.strings.description_sign_in_scorepal,
                     style: TextStyle(
                         fontSize: Values.font_size_title,
                         color: Theme.of(context).primaryColorDark),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: TextButton(
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed(AuthScreen.routeName),
-                      child: Text(values.strings.sign_in)),
-                ),
-              ],
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: TextButton(
+                        onPressed: () => Navigator.of(context)
+                            .pushNamed(AuthScreen.routeName),
+                        child: Text(values.strings.sign_in)),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

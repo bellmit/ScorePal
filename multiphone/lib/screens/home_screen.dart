@@ -185,8 +185,14 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
                 builder: (ctx, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done &&
                       snapshot.hasData) {
-                    // have a list of cards
-                    return Wrap(children: snapshot.data);
+                    // have a list of cards, don't let them take up too much height...
+                    final advertsHeight =
+                        MediaQuery.of(context).size.height * 0.3;
+                    return ConstrainedBox(
+                        constraints: BoxConstraints.loose(
+                            Size.fromHeight(advertsHeight)),
+                        child: SingleChildScrollView(
+                            child: Wrap(children: snapshot.data)));
                   } else {
                     // no cards
                     return Container();

@@ -58,7 +58,7 @@ class ScoreHeadlineWidget extends StatelessWidget {
                 children: [
                   Text(
                     winnerTitle,
-                    maxLines: 3,
+                    maxLines: 1,
                     overflow: TextOverflow.fade,
                     style: TextStyle(color: Theme.of(context).accentColor),
                   ),
