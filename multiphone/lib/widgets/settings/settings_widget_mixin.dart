@@ -1,54 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 
 class SettingsWidgetMixin {
-  TextStyle contentTextStyle;
   Values values;
   ThemeData theme;
-
-  Widget createIcon(IconData icon) {
-    return Icon(
-      icon,
-      size: Values.image_large,
-    );
-  }
-
-  Widget createIconSvg(String assetName) {
-    return SvgPicture.asset(
-      assetName,
-      width: Values.image_large,
-      height: Values.image_large,
-    );
-  }
-
-  Widget createHeading(String content) {
-    return Text(
-      content,
-      style: TextStyle(
-        fontSize: Values.font_size_title,
-        fontWeight: FontWeight.bold,
-        color: theme.primaryColorDark,
-      ),
-    );
-  }
-
-  Widget createHeading2(String content) {
-    return Text(
-      content,
-      style: TextStyle(
-        fontSize: Values.font_size_title2,
-        fontWeight: FontWeight.bold,
-        color: Values.secondaryTextColor,
-      ),
-    );
-  }
-
-  void prepareWidget(BuildContext context) {
-    values = Values(context);
-    theme = Theme.of(context);
-    contentTextStyle = TextStyle(color: Values.secondaryTextColor);
-  }
 
   Widget createSwitchingRow(BuildContext context, Widget icon, String title,
       String explain, void Function(bool) onSwitch,
@@ -68,7 +24,7 @@ class SettingsWidgetMixin {
                 Row(
                   children: [
                     Expanded(
-                      child: createHeading2(title),
+                      child: TextWidget(title),
                     ),
                     Switch(
                       activeColor: theme.primaryColor,
@@ -77,10 +33,7 @@ class SettingsWidgetMixin {
                     ),
                   ],
                 ),
-                Text(
-                  explain,
-                  style: contentTextStyle,
-                ),
+                TextWidget(explain),
               ],
             ),
           ),

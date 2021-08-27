@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/preferences.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsSoundsGeneralWidget extends StatefulWidget {
@@ -17,14 +18,14 @@ class _SettingsSoundsGeneralWidgetState
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        createHeading(values.strings.title_general),
+        TextWidget(values.strings.title_general),
         createSwitchingRow(
           context,
-          createIcon(Icons.chat),
+          IconWidget(Icons.chat),
           values.strings.title_use_names,
           values.strings.explain_use_names,
           (value) => setState(() {
@@ -40,16 +41,15 @@ class _SettingsSoundsGeneralWidgetState
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right: Values.default_space),
-                child: createIcon(Icons.volume_up),
+                child: IconWidget(Icons.volume_up),
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    createHeading2(values.strings.title_volume),
-                    Text(
+                    Text2(values.strings.title_volume),
+                    TextWidget(
                       values.strings.explain_control_vol,
-                      style: contentTextStyle,
                     ),
                     Slider(
                       activeColor: theme.primaryColor,
@@ -70,7 +70,7 @@ class _SettingsSoundsGeneralWidgetState
         ),*/
         createSwitchingRow(
           context,
-          createIcon(Icons.settings_remote),
+          IconWidget(Icons.settings_remote),
           values.strings.title_speak_message,
           values.strings.explain_speak_message,
           (value) => setState(() {

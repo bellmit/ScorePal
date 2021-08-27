@@ -91,7 +91,7 @@ class Sports with ChangeNotifier {
         type: SportType.TENNIS,
         id: "tennis",
         title: (ctx) => Values(ctx).strings.sport_tennis,
-        icon: 'images/svg/tennis.svg',
+        icon: 'tennis',
         image: 'images/img/tennis.jpg',
         playNavPath: PlayTennisScreen.routeName,
         createSetupWidget: (ctx, isLoadSetupData) =>
@@ -103,7 +103,7 @@ class Sports with ChangeNotifier {
         type: SportType.BADMINTON,
         id: "badminton",
         title: (ctx) => Values(ctx).strings.sport_badminton,
-        icon: 'images/svg/badminton.svg',
+        icon: 'badminton',
         image: 'images/img/badminton.jpg',
         playNavPath: PlayBadmintonScreen.routeName,
         createSetupWidget: (ctx, isLoadSetupData) =>
@@ -115,7 +115,7 @@ class Sports with ChangeNotifier {
         type: SportType.PING_PONG,
         id: "pingpong",
         title: (ctx) => Values(ctx).strings.sport_ping_pong,
-        icon: 'images/svg/ping-pong.svg',
+        icon: 'ping-pong',
         image: 'images/img/ping_pong.jpg',
         playNavPath: PlayPingPongScreen.routeName,
         createSetupWidget: (ctx, isLoadSetupData) =>

@@ -4,6 +4,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/attributions_screen.dart';
 import 'package:multiphone/screens/trash_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
@@ -17,10 +18,7 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: Values.default_space),
-            child: Icon(
-              icon,
-              size: Values.image_large,
-            ),
+            child: IconWidget(icon),
           ),
           Expanded(
             child: Column(
@@ -30,19 +28,16 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
                 Row(
                   children: [
                     Expanded(
-                      child: createHeading2(title),
+                      child: TextWidget(title),
                     ),
                     ElevatedButton(
                       style: values.optionButtonStyle,
-                      child: Text(buttonText),
+                      child: TextWidget(buttonText),
                       onPressed: onPressed,
                     ),
                   ],
                 ),
-                Text(
-                  explain,
-                  style: contentTextStyle,
-                ),
+                TextWidget(explain),
               ],
             ),
           ),
@@ -54,11 +49,10 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        createHeading(values.strings.title_manage_data),
+        TextWidget(values.strings.title_manage_data),
         createDataRow(
           context,
           Icons.file_download,

@@ -3,7 +3,8 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import 'common/common_widgets.dart';
 
 class SelectSinglesDoublesWidget extends SelectItemListWidget {
   final MatchSinglesDoubles singlesDoubles;
@@ -22,15 +23,15 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/player-receiving-forehand.svg',
+        icon: IconSvgWidget(
+          'player-receiving-forehand',
         ),
         text: values.strings.tennis_singles,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/player-receiving-doubles.svg',
+        icon: IconSvgWidget(
+          'player-receiving-doubles',
         ),
         text: values.strings.tennis_doubles,
         iconSize: Values.image_medium,

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(
@@ -152,12 +153,11 @@ class _AuthFormState extends State<AuthForm> {
                           height: Values.image_large,
                           onPressed: () => _trySubmit(LoginType.emailPassword),
                           color: Theme.of(context).primaryColor,
-                          child: Text(
-                              _isLoggingIn
-                                  ? values.strings.sign_in
-                                  : values.strings.create_account,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16)),
+                          child: TextWidget(
+                            _isLoggingIn
+                                ? values.strings.sign_in
+                                : values.strings.create_account,
+                          ),
                           textColor: Colors.white,
                         ),
                         MaterialButton(
@@ -166,11 +166,9 @@ class _AuthFormState extends State<AuthForm> {
                           color: Colors.blue,
                           child: Wrap(
                             children: <Widget>[
-                              Icon(FontAwesomeIcons.google),
+                              IconWidget(FontAwesomeIcons.google),
                               SizedBox(width: 10),
-                              Text(values.strings.signin_google,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16)),
+                              TextWidget(values.strings.signin_google),
                             ],
                           ),
                           textColor: Colors.white,
@@ -182,11 +180,9 @@ class _AuthFormState extends State<AuthForm> {
                           color: Colors.blueGrey,
                           child: Wrap(
                             children: <Widget>[
-                              Icon(FontAwesomeIcons.apple),
+                              IconWidget(FontAwesomeIcons.apple),
                               SizedBox(width: 10),
-                              Text(values.strings.signin_apple',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16)),
+                              TextWidget(values.strings.signin_apple'),
                             ],
                           ),
                           textColor: Colors.white,
@@ -195,8 +191,8 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                   TextButton(
                     child: _isLoggingIn
-                        ? Text(values.strings.create_account)
-                        : Text(values.strings.already_account),
+                        ? TextWidget(values.strings.create_account)
+                        : TextWidget(values.strings.already_account),
                     onPressed: () {
                       // change our state
                       setState(() {

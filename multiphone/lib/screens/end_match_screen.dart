@@ -5,6 +5,7 @@ import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/match_breakdown_widget.dart';
 import 'package:multiphone/widgets/match_momentum_widget.dart';
 import 'package:multiphone/widgets/match_score_summary_widget.dart';
@@ -77,7 +78,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
     final values = Values(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(values.strings.match_end),
+        title: TextWidget(values.strings.match_end),
       ),
       body: Consumer<ActiveMatch>(
         builder: (ctx, match, child) {
@@ -96,14 +97,14 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                     ElevatedButton.icon(
                       style: values.optionButtonStyle,
                       onPressed: () => _deleteMatch(match),
-                      icon: Icon(Icons.delete),
-                      label: Text(values.strings.match_delete),
+                      icon: IconWidget(Icons.delete),
+                      label: TextWidget(values.strings.match_delete),
                     ),
                     ElevatedButton.icon(
                       style: values.optionButtonStyle,
                       onPressed: () => _acceptMatch(match),
-                      icon: Icon(Icons.add),
-                      label: Text(values.strings.match_accept),
+                      icon: IconWidget(Icons.add),
+                      label: TextWidget(values.strings.match_accept),
                     ),
                   ],
                 ),
@@ -122,15 +123,14 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                             style: values.optionButtonStyle,
                             onPressed: () =>
                                 _concedeMatch(match, TeamIndex.T_ONE),
-                            icon: Icon(Icons.thumb_down_alt),
+                            icon: IconWidget(Icons.thumb_down_alt),
                             label: Expanded(
-                              child: Text(
+                              child: TextWidget(
                                 values.construct(values.strings.match_concede, [
                                   match
                                       .getSetup()
                                       .getTeamName(TeamIndex.T_ONE, ctx)
                                 ]),
-                                maxLines: null,
                               ),
                             ),
                           ),
@@ -143,15 +143,14 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                             style: values.optionButtonStyle,
                             onPressed: () =>
                                 _concedeMatch(match, TeamIndex.T_TWO),
-                            icon: Icon(Icons.thumb_down_alt),
+                            icon: IconWidget(Icons.thumb_down_alt),
                             label: Expanded(
-                              child: Text(
+                              child: TextWidget(
                                 values.construct(values.strings.match_concede, [
                                   match
                                       .getSetup()
                                       .getTeamName(TeamIndex.T_TWO, ctx)
                                 ]),
-                                maxLines: null,
                               ),
                             ),
                           ),
@@ -168,8 +167,8 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                     child: ElevatedButton.icon(
                       style: values.optionButtonStyle,
                       onPressed: () => _undoMatchConcede(match),
-                      icon: Icon(Icons.undo),
-                      label: Text(
+                      icon: IconWidget(Icons.undo),
+                      label: TextWidget(
                         values.strings.match_concede_undo,
                       ),
                     ),

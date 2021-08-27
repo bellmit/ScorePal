@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/server_image_widget.dart';
 
 class PlayingTeamWidget extends StatelessWidget {
@@ -34,7 +35,7 @@ class PlayingTeamWidget extends StatelessWidget {
                   if (match.isTeamConceded(team))
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
-                      child: Text(Values(context).strings.team_conceded),
+                      child: TextWidget(Values(context).strings.team_conceded),
                     ),
                   ServerImageWidget(isServing: servingPlayer == player),
                   const SizedBox(
@@ -45,13 +46,12 @@ class PlayingTeamWidget extends StatelessWidget {
                       playerName,
                       overflow: TextOverflow.fade,
                       maxLines: 2,
-                      style: TextStyle(
-                        fontSize: Values.font_size_title,
-                        fontWeight: servingPlayer == player
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                        color: Theme.of(context).accentColor,
-                      ),
+                      style: Theme.of(context).textTheme.headline1.merge(
+                            TextStyle(
+                                fontWeight: servingPlayer == player
+                                    ? FontWeight.bold
+                                    : FontWeight.normal),
+                          ),
                     ),
                   ),
                 ],
@@ -70,13 +70,12 @@ class PlayingTeamWidget extends StatelessWidget {
                         maxLines: 2,
                         softWrap: false,
                         textAlign: TextAlign.end,
-                        style: TextStyle(
-                          fontSize: Values.font_size_title,
-                          fontWeight: servingPlayer == partner
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                          color: Theme.of(context).accentColor,
-                        ),
+                        style: Theme.of(context).textTheme.headline1.merge(
+                              TextStyle(
+                                  fontWeight: servingPlayer == player
+                                      ? FontWeight.bold
+                                      : FontWeight.normal),
+                            ),
                       ),
                     ),
                     const SizedBox(

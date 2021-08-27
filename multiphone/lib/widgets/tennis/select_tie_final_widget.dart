@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/select_item_checked_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectTieFinalWidget extends SelectItemCheckedWidget {
   final bool isTieInFinalSet;
@@ -21,9 +21,7 @@ class SelectTieFinalWidget extends SelectItemCheckedWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/tie-break.svg',
-        ),
+        icon: IconSvgWidget('tie-break'),
         text: values.strings.tennis_final_tie_sel,
         iconSize: Values.image_medium,
       ),

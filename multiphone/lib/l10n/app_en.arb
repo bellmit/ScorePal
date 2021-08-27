@@ -211,6 +211,7 @@
     "already_account": "I already have an account...",
     "signin_google": "Sign-in using Google",
     "signin_apple": "Sign-in using Apple",
+    "logging_in": "Signing in...",
     "provider_google": "logged in via Google",
     "provider_apple": "logged in via Apple",
     "verification_email_send": "Send Verification Email",

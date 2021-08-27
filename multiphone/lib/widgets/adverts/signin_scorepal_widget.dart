@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/auth_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 
 class SignInScorepalWidget extends StatelessWidget {
   const SignInScorepalWidget({Key key}) : super(key: key);
@@ -24,26 +25,20 @@ class SignInScorepalWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(
                   left: Values.default_space, right: Values.default_space),
-              child: Icon(
-                Icons.person,
-                size: Values.image_large,
-              ),
+              child: IconWidget(Icons.person),
             ),
             Flexible(
               child: Column(
                 children: [
-                  Text(
+                  TextWidget(
                     values.strings.description_sign_in_scorepal,
-                    style: TextStyle(
-                        fontSize: Values.font_size_title,
-                        color: Theme.of(context).primaryColorDark),
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: TextButton(
                         onPressed: () => Navigator.of(context)
                             .pushNamed(AuthScreen.routeName),
-                        child: Text(values.strings.sign_in)),
+                        child: TextWidget(values.strings.sign_in)),
                   ),
                 ],
               ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';

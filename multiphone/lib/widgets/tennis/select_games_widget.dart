@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/tennis/tennis_match_setup.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectGamesWidget extends SelectItemListWidget {
   final TennisGames games;
@@ -22,15 +22,15 @@ class SelectGamesWidget extends SelectItemListWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/tennis-ball-four.svg',
+        icon: IconSvgWidget(
+          'tennis-ball-four',
         ),
         text: values.strings.tennis_four_games_per_set,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/tennis-ball-six.svg',
+        icon: IconSvgWidget(
+          'tennis-ball-six',
         ),
         text: values.strings.tennis_six_games_per_set,
         iconSize: Values.image_medium,

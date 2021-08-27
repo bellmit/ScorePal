@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PurchaseFlicWidget extends StatelessWidget {
@@ -14,7 +14,8 @@ class PurchaseFlicWidget extends StatelessWidget {
     }).onError((error, stackTrace) {
       // failed to launch
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(Values(context).strings.error_navigating_to_flic)));
+          content:
+              TextWidget(Values(context).strings.error_navigating_to_flic)));
       return false;
     });
   }
@@ -38,26 +39,19 @@ class PurchaseFlicWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(
                   left: Values.default_space, right: Values.default_space),
-              child: SvgPicture.asset(
-                'images/svg/flic-two.svg',
-                height: Values.image_large,
-                width: Values.image_large,
-              ),
+              child: IconSvgWidget('flic-two'),
             ),
             Flexible(
               child: Column(
                 children: [
-                  Text(
+                  TextWidget(
                     values.strings.description_purchase_flic,
-                    style: TextStyle(
-                        fontSize: Values.font_size_title,
-                        color: Theme.of(context).primaryColorDark),
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: TextButton(
                         onPressed: () => navUserToPurchaseFlic(context),
-                        child: Text(values.strings.action_purchase_flic)),
+                        child: TextWidget(values.strings.action_purchase_flic)),
                   ),
                 ],
               ),

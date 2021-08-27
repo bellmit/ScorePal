@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiphone/helpers/user_data.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/match_persistence.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:provider/provider.dart';
 
 class UserForm extends StatefulWidget {
@@ -119,7 +120,8 @@ class _UserFormState extends State<UserForm> {
       message = error.message;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(message), backgroundColor: Theme.of(context).errorColor));
+        content: TextWidget(message),
+        backgroundColor: Theme.of(context).errorColor));
   }
 
   void _signOut() {
@@ -154,7 +156,6 @@ class _UserFormState extends State<UserForm> {
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
-    final theme = Theme.of(context);
     return Center(
       child: Card(
         margin: EdgeInsets.all(20),
@@ -183,18 +184,14 @@ class _UserFormState extends State<UserForm> {
                           ),
                         ),
                       if (_userData.currentUser.photoURL == null)
-                        Icon(
-                          Icons.person,
-                          size: Values.image_large,
-                        ),
+                        IconWidget(Icons.person),
                       Padding(
                         padding: const EdgeInsets.all(Values.default_space),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            TextWidget(
                               _userData.currentUser.email,
-                              style: TextStyle(color: theme.primaryColorDark),
                             ),
                             if (_userData.currentUser.providerData.any(
                                 (element) =>
@@ -202,15 +199,10 @@ class _UserFormState extends State<UserForm> {
                                     'google.com'))
                               Row(
                                 children: <Widget>[
-                                  Icon(
-                                    FontAwesomeIcons.google,
-                                    color: theme.primaryColorDark,
-                                  ),
+                                  IconWidget(FontAwesomeIcons.google),
                                   SizedBox(width: 10),
-                                  Text(
+                                  TextWidget(
                                     values.strings.provider_google,
-                                    style: TextStyle(
-                                        color: theme.primaryColorDark),
                                   ),
                                 ],
                               ),
@@ -220,15 +212,10 @@ class _UserFormState extends State<UserForm> {
                                     'apple.com'))
                               Row(
                                 children: <Widget>[
-                                  Icon(
-                                    FontAwesomeIcons.apple,
-                                    color: theme.primaryColorDark,
-                                  ),
+                                  IconWidget(FontAwesomeIcons.apple),
                                   SizedBox(width: 10),
-                                  Text(
+                                  TextWidget(
                                     values.strings.provider_apple,
-                                    style: TextStyle(
-                                        color: theme.primaryColorDark),
                                   ),
                                 ],
                               ),
@@ -269,32 +256,31 @@ class _UserFormState extends State<UserForm> {
                       if (!_isSaveInProgress)
                         TextButton(
                             onPressed: !_isDirty ? null : _trySubmit,
-                            child: Text(values.strings.save)),
+                            child: TextWidget(values.strings.save)),
                     ],
                   ),
                   ElevatedButton(
                       style: values.optionButtonStyle,
                       onPressed: _signOut,
-                      child: Text(values.strings.sign_out)),
+                      child: TextWidget(values.strings.sign_out)),
                   if (!_userData.currentUser.emailVerified)
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
                       child: Column(
                         children: [
-                          Text(
+                          TextWidget(
                             values.strings.email_not_verified,
-                            style: TextStyle(color: theme.primaryColorDark),
                           ),
                           Row(
                             children: [
                               ElevatedButton(
                                 style: values.optionButtonStyle,
                                 onPressed: _isVerifySent ? null : _verifyEmail,
-                                child: Text(
+                                child: TextWidget(
                                     values.strings.verification_email_send),
                               ),
                               IconButton(
-                                icon: Icon(Icons.refresh),
+                                icon: IconWidget(Icons.refresh),
                                 onPressed: _refreshUserData,
                               ),
                             ],
@@ -307,7 +293,7 @@ class _UserFormState extends State<UserForm> {
                       onPressed: () => setState(() =>
                           _isChangeInPasswordRequired =
                               !_isChangeInPasswordRequired),
-                      child: Text(_isChangeInPasswordRequired
+                      child: TextWidget(_isChangeInPasswordRequired
                           ? values.strings.cancel
                           : values.strings.change_password)),
                   if (_isChangeInPasswordRequired)
@@ -354,7 +340,7 @@ class _UserFormState extends State<UserForm> {
                             style: values.optionButtonStyle,
                             onPressed:
                                 _isChangingPassword ? null : _changePassword,
-                            child: Text(values.strings.change_password)),
+                            child: TextWidget(values.strings.change_password)),
                       ],
                     ),
                   ElevatedButton(
@@ -362,22 +348,21 @@ class _UserFormState extends State<UserForm> {
                       onPressed: _isDeleteRequired
                           ? null
                           : () => setState(() => _isDeleteRequired = true),
-                      child: Text(values.strings.delete_user_data)),
+                      child: TextWidget(values.strings.delete_user_data)),
                   if (_isDeleteRequired)
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
                       child: Column(
                         children: [
-                          Text(
+                          TextWidget(
                             values.strings.delete_user_data_confirm,
-                            style: TextStyle(color: theme.primaryColorDark),
                           ),
                           Wrap(
                             children: [
                               ElevatedButton(
                                 style: values.optionButtonStyle,
                                 onPressed: _deleteAllOnlineUserData,
-                                child: Text(
+                                child: TextWidget(
                                     values.strings.delete_user_data_online),
                               ),
                               SizedBox(width: Values.default_space),
@@ -386,8 +371,8 @@ class _UserFormState extends State<UserForm> {
                                 onPressed: _isDeleteInProgress
                                     ? null
                                     : _deleteAllLocalUserData,
-                                child:
-                                    Text(values.strings.delete_user_data_local),
+                                child: TextWidget(
+                                    values.strings.delete_user_data_local),
                               ),
                             ],
                           ),

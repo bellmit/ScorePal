@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 
+import 'common/common_widgets.dart';
+
 class MatchScoreSummaryItem {
   final String score;
   final String title;
@@ -24,17 +26,12 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
   int getScoreCount();
   MatchScoreSummaryItem getScoreItem(BuildContext context, int index, int row);
 
-  Widget _createHeading(BuildContext context, String title) {
+  Widget headingTextWidget(BuildContext context, String title) {
     return Center(
-      child: Text(
+      child: TextSubheadingWidget(
         title,
         textAlign: TextAlign.center,
-        maxLines: 1,
-        overflow: TextOverflow.clip,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).primaryColorDark,
-        ),
+        isLimitOverflow: true,
       ),
     );
   }
@@ -45,7 +42,7 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _createHeading(context, item.title ?? ''),
+          headingTextWidget(context, item.title ?? ''),
           ConstrainedBox(
             constraints: BoxConstraints.loose(
               Size(Values.max_score_box, Values.max_score_box),
@@ -62,12 +59,10 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(Values.default_space),
                   child: FittedBox(
                     fit: BoxFit.contain,
-                    child: Text(
+                    child: TextWidget(
                       item.score,
-                      style: TextStyle(
-                          fontWeight: item.isWinner ?? false
-                              ? FontWeight.bold
-                              : FontWeight.normal),
+                      isOnBackground: true,
+                      isBold: true,
                     ),
                   ),
                 ),
@@ -85,14 +80,11 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _createHeading(
+          headingTextWidget(
               context, isConceded ? Values(context).strings.team_conceded : ''),
           Text(
             title,
             textAlign: TextAlign.start,
-            style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-            ),
             maxLines: 3,
             overflow: TextOverflow.fade,
           ),

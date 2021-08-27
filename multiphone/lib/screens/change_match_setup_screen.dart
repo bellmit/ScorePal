@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -21,18 +22,15 @@ class _ChangeMatchSetupScreenState extends State<ChangeMatchSetupScreen> {
     // and return the scaffold
     return Scaffold(
       appBar: AppBar(
-        title: Text(values.strings.match_change_setup),
+        title: TextWidget(values.strings.match_change_setup),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             InfoBarWidget(
               title: values.strings.warning_match_change,
-              icon: Icon(
-                Icons.warning_amber_outlined,
-                color: Theme.of(context).errorColor,
-                size: Values.image_medium,
-              ),
+              icon: Icons.warning_amber_outlined,
+              isError: true,
             ),
             Consumer<ActiveSelection>(
               builder: (ctx, activeSelection, child) {

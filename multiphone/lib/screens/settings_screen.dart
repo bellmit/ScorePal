@@ -6,6 +6,7 @@ import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/settings/settings_controls_flic_widget.dart';
 import 'package:multiphone/widgets/settings/select_control_type_widget.dart';
@@ -32,9 +33,6 @@ class SettingsScreen extends BaseNavScreen {
 class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
   int _selectedIndex = 0;
   bool _isShowSidebar = true;
-
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   StreamSubscription<User> _userSubscription;
   User _user;
@@ -154,12 +152,7 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
           const LineBreakWidget(),
         ];
       default:
-        return [
-          Text(
-            'unknown option',
-            style: optionStyle,
-          )
-        ];
+        return [TextHeadingWidget('unknown option')];
     }
   }
 
@@ -169,15 +162,15 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.volume_up),
+          icon: IconWidget(Icons.volume_up),
           label: values.strings.option_settings_sounds,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings_remote),
+          icon: IconWidget(Icons.settings_remote),
           label: values.strings.option_settings_control,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
+          icon: IconWidget(Icons.settings),
           label: values.strings.option_settings_general,
         ),
       ],

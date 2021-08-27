@@ -4,6 +4,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/setup_flic2_screen.dart';
 import 'package:multiphone/widgets/adverts/purchase_flic_widget.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/select_flic_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
@@ -47,22 +48,19 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        createHeading(values.strings.title_controlsFlic),
+        TextWidget(values.strings.title_controlsFlic),
         Row(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: Values.default_space),
-              child: createIconSvg('images/svg/flic-two.svg'),
+              child: IconSvgWidget('flic-two'),
             ),
             Expanded(
-              child: Text(
-                values.strings.explain_flic_control,
-                style: contentTextStyle,
-              ),
+              child: TextWidget(values.strings.explain_flic_control),
             ),
           ],
         ),
@@ -83,7 +81,7 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
                   child: ElevatedButton(
                     style: values.optionButtonStyle,
                     onPressed: () => Log.debug('setup flic one'),
-                    child: Text(values.strings.option_setup_flic),
+                    child: TextWidget(values.strings.option_setup_flic),
                   ),
                 ),
             ],
@@ -105,7 +103,7 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
                     style: values.optionButtonStyle,
                     onPressed: () => MatchPlayTracker.navTo(
                         SetupFlic2Screen.routeName, context),
-                    child: Text(values.strings.option_setup_flic2),
+                    child: TextWidget(values.strings.option_setup_flic2),
                   ),
                 ),
             ],
@@ -120,17 +118,12 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
               TextButton(
                 onPressed: () =>
                     PurchaseFlicWidget.navUserToPurchaseFlic(context),
-                child: Text(
-                  values.strings.option_purchase,
-                  style: TextStyle(fontSize: Values.font_size_title),
-                ),
+                child: TextWidget(values.strings.option_purchase),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 4.0),
-                child: Text(
-                  values.strings.explain_flicSmartButtonRecommendation,
-                  style: contentTextStyle,
-                ),
+                child: TextWidget(
+                    values.strings.explain_flicSmartButtonRecommendation),
               ),
             ],
           ),

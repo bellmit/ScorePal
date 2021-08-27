@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:multiphone/helpers/values.dart';
+
+import 'common/common_widgets.dart';
 
 class PlayerNameWidget extends StatefulWidget {
   final void Function(String) onTextChanged;
@@ -139,7 +141,6 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
         return TextField(
           controller: fieldTextEditingController,
           focusNode: fieldFocusNode,
-          //style: const TextStyle(fontWeight: FontWeight.bold),
           decoration: InputDecoration(
             hintText: widget.hintText,
           ),
@@ -169,8 +170,8 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
                     child: ListTile(
                       leading: contact.thumbnail != null
                           ? Image.memory(contact.thumbnail)
-                          : Icon(Icons.person),
-                      title: Text(contact.displayName),
+                          : IconWidget(Icons.person),
+                      title: TextWidget(contact.displayName),
                     ),
                   );
                 },
@@ -211,11 +212,11 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
                 transitionBuilder: (Widget child, Animation<double> animation) {
                   return ScaleTransition(child: child, scale: animation);
                 },
-                child: SvgPicture.asset(
+                child: IconSvgWidget(
                   widget.isPlayerServer
-                      ? 'images/svg/player-serving.svg'
-                      : 'images/svg/player-receiving-backhand.svg',
-                  color: Theme.of(context).primaryColorDark,
+                      ? 'player-serving'
+                      : 'player-receiving-backhand',
+                  isOnBackground: widget.isPlayerServer,
                   key: ValueKey<bool>(widget.isPlayerServer),
                 ),
               ),

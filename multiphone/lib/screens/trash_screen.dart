@@ -9,6 +9,7 @@ import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/deleted_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
@@ -167,22 +168,16 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
             position: _slideAnimation,
             child: InfoBarWidget(
               title: Values(context).strings.warning_logon_to_delete,
-              icon: Icon(
-                Icons.warning_amber_outlined,
-                color: Theme.of(context).errorColor,
-                size: showWarning ? Values.image_medium : 0,
-              ),
+              icon: Icons.warning_amber_outlined,
+              isError: true,
+              //size: showWarning ? Values.image_medium : 0,
             ),
           ),
         ),
         if (matches == null || matches.length <= 0)
           InfoBarWidget(
-            title: Values(context).strings.warning_no_matches_to_delete,
-            icon: Icon(
-              Icons.info_outline,
-              color: Theme.of(context).accentColor,
-            ),
-          ),
+              title: Values(context).strings.warning_no_matches_to_delete,
+              icon: Icons.info_outline),
         Expanded(
           child: ListView.builder(
             itemCount: matches == null ? 0 : matches.length,
@@ -197,10 +192,7 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
                     child: const Padding(
                       padding:
                           const EdgeInsets.only(left: Values.default_space),
-                      child: const Icon(
-                        Icons.delete_forever,
-                        color: Values.secondaryTextColor,
-                      ),
+                      child: const IconWidget(Icons.delete_forever),
                     ),
                   ),
                 ),

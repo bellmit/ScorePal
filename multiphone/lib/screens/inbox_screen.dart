@@ -8,6 +8,7 @@ import 'package:multiphone/providers/match_inbox.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
@@ -85,7 +86,7 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
           // make the helper call to setup a new match and navigate to the screen
           MatchPlayTracker.setupNewMatch(context);
         },
-        child: const Icon(Icons.play_arrow),
+        child: const IconWidget(Icons.play_arrow, size: null),
         backgroundColor: Theme.of(context).accentColor,
       );
     } else {
@@ -101,10 +102,7 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
           if (_matches == null || _matches.length <= 0)
             InfoBarWidget(
               title: Values(context).strings.warning_no_matches_in_inbox,
-              icon: Icon(
-                Icons.info_outline,
-                color: Theme.of(context).accentColor,
-              ),
+              icon: Icons.info_outline,
             ),
           Expanded(
             child: RefreshIndicator(
@@ -127,10 +125,7 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                             child: const Padding(
                               padding: const EdgeInsets.only(
                                   left: Values.default_space),
-                              child: const Icon(
-                                Icons.delete,
-                                color: Values.secondaryTextColor,
-                              ),
+                              child: const IconWidget(Icons.delete),
                             ),
                           ),
                         ),
@@ -141,10 +136,7 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                             child: const Padding(
                               padding: const EdgeInsets.only(
                                   right: Values.default_space),
-                              child: const Icon(
-                                Icons.done_outline,
-                                color: Values.secondaryTextColor,
-                              ),
+                              child: const IconWidget(Icons.done_outline),
                             ),
                           ),
                         ),
@@ -168,12 +160,11 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                                 ElevatedButton(
                                   onPressed: () => _deleteMatch(match, index),
                                   child: Row(children: [
-                                    Icon(Icons.delete,
-                                        color: Values.deleteColor),
+                                    IconWidget(Icons.delete),
                                     Padding(
                                       padding: const EdgeInsets.all(
                                           Values.default_space),
-                                      child: Text(Values(context)
+                                      child: TextWidget(Values(context)
                                           .strings
                                           .button_delete_match),
                                     )
@@ -183,11 +174,11 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                                 ElevatedButton(
                                   onPressed: () => _acceptMatch(match, index),
                                   child: Row(children: [
-                                    Icon(Icons.done_outline),
+                                    IconWidget(Icons.done_outline),
                                     Padding(
                                       padding: const EdgeInsets.all(
                                           Values.default_space),
-                                      child: Text(Values(context)
+                                      child: TextWidget(Values(context)
                                           .strings
                                           .button_accept_match),
                                     )

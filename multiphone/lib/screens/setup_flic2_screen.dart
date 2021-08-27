@@ -4,11 +4,10 @@ import 'package:flic_button/flic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/flic2_wrapper.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
-import 'package:multiphone/widgets/common/heading_widget.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -83,15 +82,16 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
       if (!isGranted) {
         // no bluetooth allowed
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content:
-                Text(Values(context).strings.error_flic2_bluetooth_permission),
+            content: TextWidget(
+                Values(context).strings.error_flic2_bluetooth_permission),
             backgroundColor: Theme.of(context).errorColor));
         return;
       }
       // also bluetooth needs to be on
       if (!await FlutterBlue.instance.isOn) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(Values(context).strings.error_flic2_bluetooth_on),
+            content:
+                TextWidget(Values(context).strings.error_flic2_bluetooth_on),
             backgroundColor: Theme.of(context).errorColor));
         return;
       }
@@ -213,7 +213,8 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
   void onFlic2Error(String error) {
     // something went wrong somewhere, provide feedback maybe, or did you code something in the wrong order?
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(error), backgroundColor: Theme.of(context).errorColor));
+        content: TextWidget(error),
+        backgroundColor: Theme.of(context).errorColor));
   }
 
   @override
@@ -246,12 +247,11 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
       leading: Container(
         child: Stack(
           children: [
-            SvgPicture.asset(
-              'images/svg/flic-two.svg',
-              height: Values.image_medium,
-              color: _lastClick != null && _lastClick.button.uuid == button.uuid
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).primaryColorDark,
+            IconSvgWidget(
+              'flic-two',
+              size: Values.image_medium,
+              isOnBackground:
+                  _lastClick != null && _lastClick.button.uuid == button.uuid,
             ),
             if (_lastClick != null && _lastClick.button.uuid == button.uuid)
               Container(
@@ -260,7 +260,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
                 child: FittedBox(
                   alignment: Alignment.bottomCenter,
                   fit: BoxFit.fitWidth,
-                  child: Text(
+                  child: TextWidget(
                     _lastClick.isSingleClick
                         ? values.strings.flic_single_click
                         : _lastClick.isDoubleClick
@@ -268,18 +268,17 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
                             : _lastClick.isHold
                                 ? values.strings.flic_hold_click
                                 : '',
-                    style: TextStyle(color: Theme.of(context).primaryColorDark),
                   ),
                 ),
               ),
           ],
         ),
       ),
-      title: Text(
+      title: TextWidget(
           values.construct(values.strings.flic2_title, [button.buttonAddr])),
       subtitle: Column(
         children: [
-          Text(
+          TextWidget(
             values.construct(
               values.strings.flic2_details,
               [
@@ -295,7 +294,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
             children: [
               ElevatedButton(
                 onPressed: () => _connectDisconnectButton(button),
-                child: Text(button.connectionState ==
+                child: TextWidget(button.connectionState ==
                         Flic2ButtonConnectionState.disconnected
                     ? values.strings.button_flic_connect
                     : values.strings.button_flic_disconnect),
@@ -304,7 +303,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
               SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () => _forgetButton(button),
-                child: Text(values.strings.button_flic_forget),
+                child: TextWidget(values.strings.button_flic_forget),
                 style: values.optionButtonStyle,
               ),
             ],
@@ -336,13 +335,13 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
                       padding: const EdgeInsets.all(Values.default_space),
                       child: ElevatedButton(
                           onPressed: () => _startStopScanningForFlic2(),
-                          child: Text(_isScanning
+                          child: TextWidget(_isScanning
                               ? values.strings.button_stop_scanning
                               : values.strings.button_scan),
                           style: values.optionButtonStyle),
                     ),
                     if (_isScanning)
-                      HeadingWidget(title: values.strings.info_scanning_flic),
+                      TextHeadingWidget(values.strings.info_scanning_flic),
                   ],
                 ),
               // and show the list of buttons we have found at this point
@@ -371,10 +370,7 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
                                 child: const Padding(
                                   padding: const EdgeInsets.only(
                                       left: Values.default_space),
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Values.secondaryTextColor,
-                                  ),
+                                  child: const IconWidget(Icons.delete),
                                 ),
                               ),
                             ),

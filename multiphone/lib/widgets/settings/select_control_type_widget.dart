@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/select_control_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
@@ -38,16 +39,9 @@ class _SelectControlTypeWidgetState extends State<SelectControlTypeWidget>
       padding: const EdgeInsets.only(top: Values.default_space),
       child: Row(
         children: [
-          SvgPicture.asset(
-            image,
-            width: Values.image_icon,
-            height: Values.image_icon,
-          ),
+          IconSvgWidget(image, size: Values.image_icon),
           Expanded(
-            child: Text(
-              content,
-              style: contentTextStyle,
-            ),
+            child: TextWidget(content),
           ),
         ],
       ),
@@ -57,7 +51,6 @@ class _SelectControlTypeWidgetState extends State<SelectControlTypeWidget>
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,17 +58,14 @@ class _SelectControlTypeWidgetState extends State<SelectControlTypeWidget>
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: Values.default_space),
-              child: createIconSvg('images/svg/click-single.svg'),
+              child: IconSvgWidget('click-single'),
             ),
             Expanded(
-              child: Text(
-                values.strings.explain_controls,
-                style: contentTextStyle,
-              ),
+              child: TextWidget(values.strings.explain_controls),
             ),
           ],
         ),
-        createHeading(values.strings.title_control_type),
+        TextWidget(values.strings.title_control_type),
         Center(
           child: SelectControlWidget(
             initialSelection: _selectedType,
@@ -83,19 +73,19 @@ class _SelectControlTypeWidgetState extends State<SelectControlTypeWidget>
           ),
         ),
         createClickExplainRow(
-          'images/svg/click-single.svg',
+          'click-single',
           _selectedType == ControlType.meThem
               ? values.strings.explain_control_click_single_team
               : values.strings.explain_control_click_single_serving,
         ),
         createClickExplainRow(
-          'images/svg/click-double.svg',
+          'click-double',
           _selectedType == ControlType.meThem
               ? values.strings.explain_control_click_double_team
               : values.strings.explain_control_click_double_serving,
         ),
         createClickExplainRow(
-          'images/svg/click-long.svg',
+          'click-long',
           values.strings.explain_control_click_long,
         ),
       ],

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:multiphone/helpers/values.dart';
 
+import 'common/common_widgets.dart';
+
 class CurrentTimeWidget extends StatefulWidget {
   const CurrentTimeWidget({Key key}) : super(key: key);
 
@@ -13,12 +15,24 @@ class CurrentTimeWidget extends StatefulWidget {
 
 class _CurrentTimeWidgetState extends State<CurrentTimeWidget> {
   String _timeString;
+  Timer _timer;
 
   @override
   void initState() {
-    _timeString = _formatDateTime(DateTime.now());
-    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
+    // and setup our time and string
+    _timeString = _formatDateTime(DateTime.now());
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+  }
+
+  @override
+  void dispose() {
+    if (_timer != null) {
+      _timer.cancel();
+      _timer = null;
+    }
+    // and dispose
+    super.dispose();
   }
 
   @override
@@ -30,7 +44,7 @@ class _CurrentTimeWidgetState extends State<CurrentTimeWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(_timeString),
+            TextWidget(_timeString),
           ],
         ),
       ),

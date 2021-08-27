@@ -8,6 +8,8 @@ import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:fl_chart/fl_chart.dart';
 
+import 'common/common_widgets.dart';
+
 class MatchMomentumWidget extends StatefulWidget {
   final ActiveMatch match;
   const MatchMomentumWidget({
@@ -139,7 +141,7 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
             showTitles: true,
             getTextStyles: (context, value) {
               // get the style for the level that changed
-              return TextStyle(color: Theme.of(context).primaryColorLight);
+              return Theme.of(context).textTheme.headline3;
             },
             getTitles: (value) {
               final historyValue = this.pointHistory[value.floor()];
@@ -170,9 +172,8 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
           leftTitles: SideTitles(
             showTitles: true,
             interval: 1,
-            getTextStyles: (context, value) => TextStyle(
-              color: Theme.of(context).primaryColorLight,
-            ),
+            getTextStyles: (context, value) =>
+                Theme.of(context).textTheme.headline3,
             getTitles: (value) {
               if (value.abs() % 10 == 0) {
                 return '${value.floor()}';
@@ -245,21 +246,13 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
                   children: [
                     TextButton(
                       onPressed: _switchActiveTeam,
-                      child: Text(
-                        setup.getTeamName(_activeTeam, context),
-                      ),
+                      child:
+                          TextWidget(setup.getTeamName(_activeTeam, context)),
                       style: values.optionButtonStyle,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
-                      child: Text(
-                        values.strings.match_momentum,
-                        style: TextStyle(
-                          fontSize: Values.font_size_title,
-                          fontWeight: FontWeight.bold,
-                          color: Values.primaryTextColor,
-                        ),
-                      ),
+                      child: TextWidget(values.strings.match_momentum),
                     ),
                   ],
                 ),

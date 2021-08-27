@@ -12,6 +12,7 @@ import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/adverts/check_inbox_widget.dart';
 import 'package:multiphone/widgets/adverts/play_new_match_widget.dart';
 import 'package:multiphone/widgets/adverts/signin_scorepal_widget.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/played_match_popup_menu.dart';
 import 'package:multiphone/widgets/played_match_summary_widget.dart';
 import 'package:multiphone/widgets/adverts/purchase_flic_widget.dart';
@@ -165,7 +166,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
           // make the helper call to setup a new match and navigate to the screen
           MatchPlayTracker.setupNewMatch(context);
         },
-        child: const Icon(Icons.play_arrow),
+        child: const IconWidget(Icons.play_arrow, size: null),
         backgroundColor: Theme.of(context).accentColor,
       );
     } else {
@@ -223,10 +224,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
                             child: const Padding(
                               padding: const EdgeInsets.only(
                                   left: Values.default_space),
-                              child: const Icon(
-                                Icons.delete,
-                                color: Values.secondaryTextColor,
-                              ),
+                              child: const IconWidget(Icons.delete),
                             ),
                           ),
                         ),

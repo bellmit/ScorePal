@@ -5,9 +5,12 @@ import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/badminton/badminton_score_summary_widget.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/pingpong/ping_pong_score_summary_widget.dart';
 import 'package:multiphone/widgets/score_headline_widget.dart';
 import 'package:multiphone/widgets/tennis/tennis_score_summary_widget.dart';
+
+import 'common/common_widgets.dart';
 
 class PlayedMatchSummaryWidget extends StatefulWidget {
   final ActiveMatch match;
@@ -65,7 +68,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
           isTeamTwoConceded: widget.match.isTeamConceded(TeamIndex.T_TWO),
         );
       default:
-        return Text('unsupported sport of ${widget.match.getSport().id}');
+        return TextWidget('unsupported sport of ${widget.match.getSport().id}');
     }
   }
 
@@ -92,7 +95,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                   ),
                 ),
                 /*
-                SvgPicture.asset(
+                IconSvgWidget(
                   widget.match.getSport().icon,
                   height: Values.image_medium,
                   width: Values.image_medium,
@@ -103,19 +106,10 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(sport.title(context),
-                            style: TextStyle(
-                              fontSize: Values.font_size_title,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColorDark,
-                            )),
-                        Text(
+                        TextSubheadingWidget(sport.title(context)),
+                        TextWidget(
                           widget.match
                               .getDescription(DescriptionLevel.SHORT, context),
-                          style: TextStyle(
-                            fontSize: Values.font_size_subtitle,
-                            color: Theme.of(context).primaryColorDark,
-                          ),
                         ),
                       ],
                     ),
@@ -130,13 +124,12 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
             ),
             Align(
               alignment: Alignment.topRight,
-              child: TextButton.icon(
-                  onPressed: _toggleMore,
-                  icon:
-                      Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-                  label: Text(_isExpanded
+              child: IconButtonWidget(
+                  _toggleMore,
+                  _isExpanded ? Icons.expand_less : Icons.expand_more,
+                  _isExpanded
                       ? values.strings.show_less
-                      : values.strings.show_more)),
+                      : values.strings.show_more),
             ),
             if (_isExpanded)
               Column(
@@ -147,12 +140,8 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                   ),
                   if (setup.isCommunicatedFrom)
                     ListTile(
-                      leading: Icon(Icons.hail),
-                      title: Text(
-                        values.strings.auto_send_rx_summary,
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark),
-                      ),
+                      leading: IconWidget(Icons.hail),
+                      title: TextWidget(values.strings.auto_send_rx_summary),
                     ),
                   if (!setup.isCommunicatedFrom &&
                       setup.communicatedTo.isNotEmpty)
@@ -160,16 +149,12 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                       children: setup.communicatedTo
                           .map(
                             (e) => ListTile(
-                              leading: Icon(Icons.person_add),
-                              title: Text(
-                                values.construct(
-                                    values.strings.auto_send_summary, [
-                                  setup.getPlayerNameForEmail(e.email) ??
-                                      e.username
-                                ]),
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark),
-                              ),
+                              leading: IconWidget(Icons.person_add),
+                              title: TextWidget(values.construct(
+                                  values.strings.auto_send_summary, [
+                                setup.getPlayerNameForEmail(e.email) ??
+                                    e.username
+                              ])),
                             ),
                           )
                           .toList(),

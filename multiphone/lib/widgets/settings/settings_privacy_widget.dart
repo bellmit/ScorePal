@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/user_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
 class SettingsPrivacyWidget extends StatefulWidget {
@@ -27,14 +28,14 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        createHeading(values.strings.title_privacy),
+        TextWidget(values.strings.title_privacy),
         createSwitchingRow(
           context,
-          createIcon(Icons.delete_sweep),
+          IconWidget(Icons.delete_sweep),
           values.strings.title_wipe_all_data,
           values.strings.explain_wipe_all_data,
           showWipe,
@@ -46,7 +47,7 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
             child: ElevatedButton(
               style: values.optionButtonStyle,
               onPressed: _wipeData,
-              child: Text(values.strings.option_user_data),
+              child: TextWidget(values.strings.option_user_data),
             ),
           ),
       ],

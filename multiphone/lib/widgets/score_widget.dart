@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:multiphone/helpers/values.dart';
+
+import 'common/common_widgets.dart';
 
 abstract class ScoreWidget extends StatelessWidget {
   const ScoreWidget({Key key}) : super(key: key);
@@ -61,12 +62,7 @@ abstract class ScoreWidget extends StatelessWidget {
                         Padding(
                           padding:
                               const EdgeInsets.only(top: Values.default_space),
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                                fontSize: Values.font_size_title,
-                                color: Theme.of(context).accentColor),
-                          ),
+                          child: TextWidget(title),
                         ),
                         Expanded(
                           child: FittedBox(
@@ -80,12 +76,10 @@ abstract class ScoreWidget extends StatelessWidget {
                                 return ScaleTransition(
                                     child: child, scale: animation);
                               },
-                              child: Text(
+                              child: TextWidget(
                                 points,
                                 key: ValueKey<String>(points),
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Theme.of(context).accentColor),
                               ),
                             ),
                           ),
@@ -135,7 +129,7 @@ abstract class ScoreWidget extends StatelessWidget {
                             ? Values.image_small
                             : 0,
                         height: Values.image_small,
-                        child: SvgPicture.asset(serveSvg),
+                        child: IconSvgWidget(serveSvg),
                       ),
                     ),
                   ),

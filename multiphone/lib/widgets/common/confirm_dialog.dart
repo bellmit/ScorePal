@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 
+import 'common_widgets.dart';
+
 Future<bool> confirmDialog(
   BuildContext context, {
   String title,
@@ -10,7 +12,6 @@ Future<bool> confirmDialog(
   IconData icon,
 }) async {
   final values = Values(context);
-  final theme = Theme.of(context);
   final bool isConfirm = await showDialog<bool>(
     context: context,
     builder: (_) => WillPopScope(
@@ -18,34 +19,27 @@ Future<bool> confirmDialog(
         title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
           Padding(
             padding: EdgeInsets.only(right: Values.default_space),
-            child: Icon(
-              icon == null ? Icons.warning_amber : icon,
-              size: Values.image_medium,
-              color: Values.deleteColor,
-            ),
+            child: IconWidget(icon == null ? Icons.warning_amber : icon),
           ),
           Expanded(
-            child: Text(
+            child: TextWidget(
               title,
-              style: theme.textTheme.bodyText1
-                  .copyWith(color: theme.primaryColorDark),
             ),
           ),
         ]),
-        content: Text(
+        content: TextWidget(
           content != null ? content : values.strings.confirm_default,
-          style:
-              theme.textTheme.bodyText2.copyWith(color: theme.primaryColorDark),
         ),
         actions: <Widget>[
           TextButton(
-            child: Text(
+            child: TextWidget(
                 textCancel != null ? textCancel : values.strings.confirm_no),
             style: values.optionButtonStyle,
             onPressed: () => Navigator.pop(context, false),
           ),
           TextButton(
-            child: Text(textOK != null ? textOK : values.strings.confirm_yes),
+            child: TextWidget(
+                textOK != null ? textOK : values.strings.confirm_yes),
             style: values.optionButtonStyle,
             onPressed: () => Navigator.pop(context, true),
           ),

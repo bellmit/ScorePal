@@ -87,7 +87,7 @@ class TennisScoreWidget extends ScoreWidget {
         Values(context).strings.title_tennis_sets,
         sets.displayString(context),
         false,
-        'images/svg/tennis-ball-large.svg',
+        'tennis-ball-large',
         null, //() => onScoreClicked(TennisScore.LEVEL_SET),
       );
 
@@ -96,7 +96,7 @@ class TennisScoreWidget extends ScoreWidget {
         Values(context).strings.title_tennis_games,
         games.displayString(context),
         false,
-        'images/svg/tennis-ball-large.svg',
+        'tennis-ball-large',
         () => onScoreClicked(TennisScore.LEVEL_GAME),
       );
 
@@ -105,7 +105,7 @@ class TennisScoreWidget extends ScoreWidget {
         Values(context).strings.title_tennis_points,
         points.displayString(context),
         isServing,
-        'images/svg/tennis-ball-large.svg',
+        'tennis-ball-large',
         () => onScoreClicked(TennisScore.LEVEL_POINT),
       );
 }

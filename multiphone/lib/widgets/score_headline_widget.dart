@@ -3,6 +3,8 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/point.dart';
 import 'package:multiphone/providers/active_match.dart';
 
+import 'common/common_widgets.dart';
+
 class ScoreHeadlineWidget extends StatelessWidget {
   final ActiveMatch match;
   const ScoreHeadlineWidget({Key key, @required this.match}) : super(key: key);
@@ -56,32 +58,22 @@ class ScoreHeadlineWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    winnerTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(color: Theme.of(context).accentColor),
-                  ),
-                  Text(
-                    winnerScore,
-                    style: TextStyle(color: Theme.of(context).accentColor),
-                  ),
+                  TextWidget(winnerTitle,
+                      isOnBackground: true, isLimitOverflow: true),
+                  TextWidget(winnerScore, isOnBackground: true),
                 ],
               ),
             ),
           ),
           Column(
             children: [
-              Text(
+              TextWidget(
                 match.isMatchOver()
                     ? Values(context).strings.match_beat
                     : values.strings.match_beating,
-                style: TextStyle(color: Theme.of(context).accentColor),
+                isOnBackground: true,
               ),
-              Text(
-                playedLevel,
-                style: TextStyle(color: Theme.of(context).accentColor),
-              ),
+              TextWidget(playedLevel, isOnBackground: true),
             ],
           ),
           Expanded(
@@ -91,16 +83,9 @@ class ScoreHeadlineWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    loserTitle,
-                    maxLines: 3,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(color: Theme.of(context).accentColor),
-                  ),
-                  Text(
-                    loserScore,
-                    style: TextStyle(color: Theme.of(context).accentColor),
-                  ),
+                  TextWidget(loserTitle,
+                      isOnBackground: true, isLimitOverflow: true),
+                  TextWidget(loserScore, isOnBackground: true),
                 ],
               ),
             ),

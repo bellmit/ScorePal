@@ -30,8 +30,10 @@ import 'package:multiphone/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/single_child_widget.dart';
 
 void main() {
   // initialise firebase
@@ -47,59 +49,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        // global providers because they are simple enough to setup
-        // and this way we won't forget
-        ChangeNotifierProvider<Players>(create: (ctx) => Players()),
-        ChangeNotifierProvider<Sports>(create: (ctx) => Sports()),
-        ChangeNotifierProvider<MatchPersistence>(
-            create: (ctx) => MatchPersistence()),
-        ChangeNotifierProvider<MatchInbox>(create: (ctx) => MatchInbox()),
-        ChangeNotifierProvider<SpeakService>(create: (ctx) => SpeakService()),
-        ChangeNotifierProxyProvider<Sports, ActiveSelection>(
-          // this proxy is called after the specified sports object is built
-          update: (ctx, sports, previousSelection) {
-            return ActiveSelection(sports);
-          },
-          create: (ctx) {
-            return ActiveSelection(null);
-          },
-        ),
-        ChangeNotifierProxyProvider<ActiveSelection, ActiveSetup>(
-          // this proxy is called after the specified active selection object is changed
-          // to let us supply the setup held in the selection object
-          update: (ctx, activeSelection, previousSetup) {
-            // return the selected on in the active selection (have it create if required)
-            return activeSelection.getSelectedSetup(true);
-          },
-          // create an empty one initially - needs the active match setting
-          create: (ctx) {
-            return null;
-          },
-        ),
-        ChangeNotifierProxyProvider<ActiveSetup, ActiveMatch>(
-            update: (ctx, setup, previousMatch) {
-          // this setup might change when the selection selects an active match
-          final activeSelection =
-              Provider.of<ActiveSelection>(ctx, listen: false);
-          final selectedMatch = activeSelection.getSelectedMatch(false);
-          if (null != selectedMatch &&
-              selectedMatch.getSport() == activeSelection.sport) {
-            // and return the active selected match, first apply the settings changed
-            selectedMatch.applyChangedMatchSettings();
-            // and return the selected match then
-            return selectedMatch;
-          } else {
-            // there is no selected match in the selection, create a new match
-            return activeSelection.createMatch();
-          }
-        }, create: (ctx) {
-          // this is the first match created - create it for the selected setup
-          final activeSelection =
-              Provider.of<ActiveSelection>(ctx, listen: false);
-          return activeSelection.getSelectedMatch(true);
-        }),
-      ],
+      providers: _initProviders(),
       child: MaterialApp(
         onGenerateTitle: (ctx) => Values(ctx).strings.title,
         localizationsDelegates: const [
@@ -112,32 +62,12 @@ class MyApp extends StatelessWidget {
           Locale('en', ''), // English, no country code
           Locale('fr', ''), // French, no country code
         ],
-        theme: ThemeData(
-          // This is the theme of your application.
-          scaffoldBackgroundColor: Values.primaryTextColor,
-          backgroundColor: Values.primaryTextColor,
-          primaryColor: Values.primaryColor,
-          primaryColorLight: Values.primaryLightColor,
-          primaryColorDark: Values.primaryDarkColor,
-          accentColor: Values.secondaryLightColor,
-          // Define the default font family.
-          fontFamily: 'Georgia',
-
-          // Define the default TextTheme. Use this to specify the default
-          // text styling for headlines, titles, bodies of text, and more.
-          textTheme: const TextTheme(
-            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            bodyText1: TextStyle(
-                fontSize: 16.0,
-                fontFamily: 'Hind',
-                color: Values.secondaryTextColor),
-            bodyText2: TextStyle(
-                fontSize: 16.0,
-                fontFamily: 'Hind',
-                color: Values.secondaryLightColor),
-          ),
-        ),
+        // The Mandy red, light theme.
+        theme: FlexColorScheme.light(scheme: FlexScheme.greyLaw).toTheme,
+        // The Mandy red, dark theme.
+        darkTheme: FlexColorScheme.dark(scheme: FlexScheme.greyLaw).toTheme,
+        // Use dark or light theme based on system setting.
+        themeMode: ThemeMode.system,
         home: FutureBuilder(
           // Initialize FlutterFire:
           future: _initialization,
@@ -157,24 +87,91 @@ class MyApp extends StatelessWidget {
           },
         ),
         initialRoute: HomeScreen.routeName,
-        routes: {
-          AuthScreen.routeName: (ctx) => AuthScreen(),
-          UserScreen.routeName: (ctx) => UserScreen(),
-          InboxScreen.routeName: (ctx) => InboxScreen(),
-          SetupMatchScreen.routeName: (ctx) => SetupMatchScreen(),
-          SettingsScreen.routeName: (ctx) => SettingsScreen(),
-          ChangeMatchSetupScreen.routeName: (ctx) => ChangeMatchSetupScreen(),
-          TrashScreen.routeName: (ctx) => TrashScreen(),
-          SetupFlic2Screen.routeName: (ctx) => SetupFlic2Screen(),
-          AttributionsScreen.routeName: (ctx) => AttributionsScreen(),
-          PlayTennisScreen.routeName: (ctx) => PlayTennisScreen(),
-          EndTennisScreen.routeName: (ctx) => EndTennisScreen(),
-          PlayBadmintonScreen.routeName: (ctx) => PlayBadmintonScreen(),
-          EndBadmintonScreen.routeName: (ctx) => EndBadmintonScreen(),
-          PlayPingPongScreen.routeName: (ctx) => PlayPingPongScreen(),
-          EndPingPongScreen.routeName: (ctx) => EndPingPongScreen(),
-        },
+        routes: _initRoutes(),
       ),
     );
   }
+
+  _initRoutes() => {
+        AuthScreen.routeName: (ctx) => AuthScreen(),
+        UserScreen.routeName: (ctx) => UserScreen(),
+        InboxScreen.routeName: (ctx) => InboxScreen(),
+        SetupMatchScreen.routeName: (ctx) => SetupMatchScreen(),
+        SettingsScreen.routeName: (ctx) => SettingsScreen(),
+        ChangeMatchSetupScreen.routeName: (ctx) => ChangeMatchSetupScreen(),
+        TrashScreen.routeName: (ctx) => TrashScreen(),
+        SetupFlic2Screen.routeName: (ctx) => SetupFlic2Screen(),
+        AttributionsScreen.routeName: (ctx) => AttributionsScreen(),
+        PlayTennisScreen.routeName: (ctx) => PlayTennisScreen(),
+        EndTennisScreen.routeName: (ctx) => EndTennisScreen(),
+        PlayBadmintonScreen.routeName: (ctx) => PlayBadmintonScreen(),
+        EndBadmintonScreen.routeName: (ctx) => EndBadmintonScreen(),
+        PlayPingPongScreen.routeName: (ctx) => PlayPingPongScreen(),
+        EndPingPongScreen.routeName: (ctx) => EndPingPongScreen(),
+      };
 }
+
+List<SingleChildWidget> _initProviders() => <SingleChildWidget>[
+      // global providers because they are simple enough to setup
+      // and this way we won't forget
+      ChangeNotifierProvider<Players>(create: (ctx) => Players()),
+      ChangeNotifierProvider<Sports>(create: (ctx) => Sports()),
+      ChangeNotifierProvider<MatchPersistence>(
+          create: (ctx) => MatchPersistence()),
+      ChangeNotifierProvider<MatchInbox>(create: (ctx) => MatchInbox()),
+      ChangeNotifierProvider<SpeakService>(create: (ctx) => SpeakService()),
+      _sportsProvider(),
+      _setupProvider(),
+      _matchProvider(),
+    ];
+
+SingleChildWidget _sportsProvider() =>
+    ChangeNotifierProxyProvider<Sports, ActiveSelection>(
+      // this proxy is called after the specified sports object is built
+      update: (ctx, sports, previousSelection) {
+        return ActiveSelection(sports);
+      },
+      create: (ctx) {
+        return ActiveSelection(null);
+      },
+    );
+
+SingleChildWidget _setupProvider() =>
+    ChangeNotifierProxyProvider<ActiveSelection, ActiveSetup>(
+      // this proxy is called after the specified active selection object is changed
+      // to let us supply the setup held in the selection object
+      update: (ctx, activeSelection, previousSetup) {
+        // return the selected on in the active selection (have it create if required)
+        return activeSelection.getSelectedSetup(true);
+      },
+      // create an empty one initially - needs the active match setting
+      create: (ctx) {
+        return null;
+      },
+    );
+
+SingleChildWidget _matchProvider() =>
+    ChangeNotifierProxyProvider<ActiveSetup, ActiveMatch>(
+      update: (ctx, setup, previousMatch) {
+        // this setup might change when the selection selects an active match
+        final activeSelection =
+            Provider.of<ActiveSelection>(ctx, listen: false);
+        final selectedMatch = activeSelection.getSelectedMatch(false);
+        if (null != selectedMatch &&
+            selectedMatch.getSport() == activeSelection.sport) {
+          // and return the active selected match, first apply the settings changed
+          selectedMatch.applyChangedMatchSettings();
+          // and return the selected match then
+          return selectedMatch;
+        } else {
+          // there is no selected match in the selection, create a new match
+          return activeSelection.createMatch();
+        }
+      },
+      create: (ctx) {
+        // this is the first match created - create it for the selected setup
+        final activeSelection =
+            Provider.of<ActiveSelection>(ctx, listen: false);
+        return activeSelection.getSelectedMatch(true);
+      },
+    );

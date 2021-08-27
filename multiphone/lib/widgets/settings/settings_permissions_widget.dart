@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -48,14 +49,14 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        createHeading(values.strings.title_permissions),
+        TextWidget(values.strings.title_permissions),
         createSwitchingRow(
           context,
-          createIcon(Icons.near_me),
+          IconWidget(Icons.near_me),
           values.strings.title_permission_location,
           values.strings.explain_permission_location,
           (value) => Permission.location
@@ -69,7 +70,7 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
         ),
         createSwitchingRow(
           context,
-          createIcon(Icons.contact_mail),
+          IconWidget(Icons.contact_mail),
           values.strings.title_permission_contacts,
           values.strings.explain_permission_contacts,
           (value) => Permission.contacts
@@ -83,7 +84,7 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
         ),
         createSwitchingRow(
           context,
-          createIcon(Icons.bluetooth),
+          IconWidget(Icons.bluetooth),
           values.strings.title_permission_bluetooth,
           values.strings.explain_permission_bluetooth,
           (value) => Permission.bluetooth

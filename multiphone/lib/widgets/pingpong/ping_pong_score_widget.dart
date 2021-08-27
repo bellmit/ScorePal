@@ -64,7 +64,7 @@ class PingPongScoreWidget extends ScoreWidget {
         Values(context).strings.title_ping_pong_rounds,
         rounds.displayString(context),
         false,
-        'images/svg/ping-pong-ball-large.svg',
+        'ping-pong-ball-large',
         () => onScoreClicked(PingPongScore.LEVEL_ROUND),
       );
 
@@ -73,7 +73,7 @@ class PingPongScoreWidget extends ScoreWidget {
         Values(context).strings.title_ping_pong_points,
         points.displayString(context),
         isServing,
-        'images/svg/ping-pong-ball-large.svg',
+        'ping-pong-ball-large',
         () => onScoreClicked(PingPongScore.LEVEL_POINT),
       );
 }

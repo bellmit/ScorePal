@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/widgets/common/heading_widget.dart';
+
+import 'common_widgets.dart';
 
 class HeadingIconWidget extends StatelessWidget {
   final String title;
@@ -13,12 +13,8 @@ class HeadingIconWidget extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: Values.image_large,
-          color: Theme.of(context).primaryColorDark,
-        ),
-        HeadingWidget(title: title),
+        IconWidget(icon),
+        TextHeadingWidget(title),
       ],
     );
   }

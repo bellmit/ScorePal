@@ -4,6 +4,8 @@ import 'package:multiphone/match/tennis/tennis_score.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 
+import 'common/common_widgets.dart';
+
 class MatchBreakdownWidget extends StatelessWidget {
   final ActiveMatch match;
   const MatchBreakdownWidget({
@@ -22,14 +24,7 @@ class MatchBreakdownWidget extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: Values.default_space),
-            child: Text(
-              values.strings.results_breakdown,
-              style: TextStyle(
-                fontSize: Values.font_size_title,
-                fontWeight: FontWeight.bold,
-                color: Values.primaryTextColor,
-              ),
-            ),
+            child: TextWidget(values.strings.results_breakdown),
           ),
           Row(
             children: [
@@ -39,9 +34,9 @@ class MatchBreakdownWidget extends StatelessWidget {
               Column(
                 children: [
                   teamTitle(''),
-                  detailsText(
+                  detailsTextWidget(
                       values.strings.total_points, Values.primaryTextColor),
-                  detailsText(
+                  detailsTextWidget(
                       values.strings.break_points, Values.primaryTextColor),
                 ],
               ),
@@ -57,16 +52,10 @@ class MatchBreakdownWidget extends StatelessWidget {
 
   Widget teamTitle(String title) => Padding(
         padding: const EdgeInsets.only(bottom: Values.default_space + .5),
-        child: Text(
-          title,
-          style: const TextStyle(fontSize: Values.font_size_title),
-        ),
+        child: TextWidget(title),
       );
 
-  Widget detailsText(String text, Color color) => Text(text,
-      style: TextStyle(
-        color: color,
-      ));
+  Widget detailsTextWidget(String text, Color color) => TextWidget(text);
 
   Widget teamColumn(BuildContext context, TeamIndex team, Color color) =>
       Padding(
@@ -77,13 +66,15 @@ class MatchBreakdownWidget extends StatelessWidget {
               : CrossAxisAlignment.start,
           children: [
             teamTitle(match.getSetup().getTeamName(team, context)),
-            detailsText(match.score.getPointsTotal(0, team).toString(), color),
+            detailsTextWidget(
+                match.score.getPointsTotal(0, team).toString(), color),
             if (match.score is TennisScore)
-              detailsText(breakPointsText(match.score, team), color),
+              detailsTextWidget(
+                  breakPointsTextWidget(match.score, team), color),
           ],
         ),
       );
 
-  String breakPointsText(TennisScore score, TeamIndex team) =>
+  String breakPointsTextWidget(TennisScore score, TeamIndex team) =>
       '${score.getBreakPointsConverted(team)} / ${score.getBreakPoints(team)}';
 }

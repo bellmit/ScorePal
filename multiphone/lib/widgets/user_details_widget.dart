@@ -5,6 +5,9 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/user_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
+
+import 'common/icon_button_widget.dart';
 
 class UserDetailsWidget extends StatefulWidget {
   const UserDetailsWidget({Key key}) : super(key: key);
@@ -36,7 +39,7 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
         // login stream just changed
         if (authSnapshot.connectionState == ConnectionState.waiting) {
           // waiting to load the user
-          return UserLoggingInWidget();
+          return TextWidget(Values(context).strings.logging_in);
         } else if (authSnapshot.hasData && authSnapshot.data != null) {
           // user is logged in
           _currentUser = authSnapshot.data;
@@ -44,9 +47,8 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
               user: _currentUser, signOutFunction: _signOutFirebase);
         } else {
           // not logged in, show the login options
-          return LoginUserWidget(
-            signInFunction: _signInFirebase,
-          );
+          return IconButtonWidget(_signInFirebase, Icons.exit_to_app,
+              Values(context).strings.sign_in);
         }
       },
     );
@@ -77,7 +79,6 @@ class UserLoggedInWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
@@ -98,17 +99,14 @@ class UserLoggedInWidget extends StatelessWidget {
                 ),
               ),
             if (user.photoURL == null)
-              Icon(
+              IconWidget(
                 Icons.person,
-                size: Values.image_large,
+                isOnBackground: true,
               ),
             Padding(
               padding: const EdgeInsets.all(Values.default_space),
               child: TextButton(
-                child: Text(
-                  userName,
-                  style: TextStyle(color: Theme.of(context).accentColor),
-                ),
+                child: TextWidget(userName, isOnBackground: true),
                 onPressed: () =>
                     MatchPlayTracker.navTo(UserScreen.routeName, context),
               ),
@@ -117,53 +115,13 @@ class UserLoggedInWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.centerRight,
-          child: TextButton.icon(
-            onPressed: signOutFunction,
-            icon: Icon(
-              Icons.exit_to_app,
-              color: theme.accentColor,
-            ),
-            label: Text(
-              Values(context).strings.sign_out,
-              style: TextStyle(color: theme.accentColor),
-            ),
+          child: IconButtonWidget(
+            signOutFunction,
+            Icons.exit_to_app,
+            Values(context).strings.sign_out,
           ),
         ),
       ],
-    );
-  }
-}
-
-/// Widget that shows that the user is currently trying to log in
-class UserLoggingInWidget extends StatelessWidget {
-  const UserLoggingInWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('logging in...');
-  }
-}
-
-/// Widget that shows the option to log the user into firebase
-class LoginUserWidget extends StatelessWidget {
-  final Function signInFunction;
-  const LoginUserWidget({Key key, this.signInFunction}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return TextButton.icon(
-      onPressed: signInFunction,
-      icon: Icon(
-        Icons.exit_to_app,
-        color: theme.accentColor,
-      ),
-      label: Text(
-        Values(context).strings.sign_in,
-        style: TextStyle(color: theme.accentColor),
-      ),
     );
   }
 }

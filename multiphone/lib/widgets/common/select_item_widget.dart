@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 
+import 'common_widgets.dart';
+
 class SelectItemWidget extends StatelessWidget {
   final Widget icon;
   final String text;
@@ -27,7 +29,7 @@ class SelectItemWidget extends StatelessWidget {
         ),
         FittedBox(
           fit: BoxFit.contain,
-          child: Text(text),
+          child: TextWidget(text),
         ),
       ],
     );

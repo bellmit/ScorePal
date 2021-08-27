@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
+
+import 'common/common_widgets.dart';
 
 enum PlayMatchOptions {
   clear,
@@ -54,34 +56,33 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                         style: values.optionButtonStyle,
                         onPressed: () =>
                             onOptionSelected(PlayMatchOptions.clear),
-                        icon: Icon(Icons.clear_all),
-                        label: Text(values.strings.match_clear),
+                        icon: IconWidget(Icons.clear_all),
+                        label: TextWidget(values.strings.match_clear),
                       ),
                       ElevatedButton.icon(
                         style: values.optionButtonStyle,
                         onPressed: () =>
                             onOptionSelected(PlayMatchOptions.show_history),
-                        icon: Icon(Icons.history),
-                        label: Text(values.strings.match_history),
+                        icon: IconWidget(Icons.history),
+                        label: TextWidget(values.strings.match_history),
                       ),
                       ElevatedButton.icon(
                         style: values.optionButtonStyle,
                         onPressed: () =>
                             onOptionSelected(PlayMatchOptions.show_settings),
-                        icon: Icon(Icons.settings),
-                        label: Text(values.strings.match_app_settings),
+                        icon: IconWidget(Icons.settings),
+                        label: TextWidget(values.strings.match_app_settings),
                       ),
                       ElevatedButton.icon(
                         style: values.optionButtonStyle,
                         onPressed: () => onOptionSelected(
                             PlayMatchOptions.show_match_settings),
-                        icon: SvgPicture.asset(
-                          'images/svg/match-settings.svg',
-                          height: Values.image_icon,
-                          width: Values.image_icon,
-                          color: Theme.of(context).accentColor,
+                        icon: IconSvgWidget(
+                          'match-settings',
+                          size: Values.image_icon,
+                          isOnBackground: true,
                         ),
-                        label: Text(values.strings.match_change_setup),
+                        label: TextWidget(values.strings.match_change_setup),
                       ),
                       LineBreakWidget(),
                       Row(
@@ -91,16 +92,16 @@ class PlayMatchOptionsWidget extends StatelessWidget {
                             style: values.optionButtonStyle,
                             onPressed: () =>
                                 onOptionSelected(PlayMatchOptions.end_match),
-                            icon: Icon(Icons.stop),
-                            label: Text(values.strings.match_end),
+                            icon: IconWidget(Icons.stop),
+                            label: TextWidget(values.strings.match_end),
                           ),
                           const SizedBox(width: Values.default_space),
                           ElevatedButton.icon(
                             style: values.optionButtonStyle,
                             onPressed: () =>
                                 onOptionSelected(PlayMatchOptions.resume),
-                            icon: Icon(Icons.play_arrow),
-                            label: Text(values.strings.match_resume),
+                            icon: IconWidget(Icons.play_arrow),
+                            label: TextWidget(values.strings.match_resume),
                           )
                         ],
                       ),

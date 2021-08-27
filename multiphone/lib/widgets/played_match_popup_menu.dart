@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 
+import 'common/common_widgets.dart';
+
 enum PlayedMatchMenuItem {
   delete,
   resume,
@@ -18,12 +20,9 @@ class PlayedMatchPopupMenu extends StatelessWidget {
       value: item,
       child: Row(
         children: [
-          Icon(icon, color: Theme.of(context).primaryColorDark),
+          IconWidget(icon, size: null),
           SizedBox(width: Values.default_space),
-          Text(
-            title,
-            style: TextStyle(color: Theme.of(context).primaryColorDark),
-          ),
+          TextWidget(title),
         ],
       ),
     );

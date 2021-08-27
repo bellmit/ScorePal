@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:multiphone/helpers/values.dart';
+
+import 'common/common_widgets.dart';
 
 class ServerImageWidget extends StatelessWidget {
   final bool isServing;
@@ -21,11 +22,9 @@ class ServerImageWidget extends StatelessWidget {
             color: Theme.of(context).accentColor,
             shape: BoxShape.circle,
           ),
-          child: SvgPicture.asset(
-            isServing
-                ? 'images/svg/player-serving.svg'
-                : 'images/svg/player-receiving-backhand.svg',
-            color: Theme.of(context).primaryColorDark,
+          child: IconSvgWidget(
+            isServing ? 'player-serving' : 'player-receiving-backhand',
+            isOnBackground: true,
           )),
     );
   }

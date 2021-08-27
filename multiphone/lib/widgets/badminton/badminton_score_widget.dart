@@ -58,7 +58,7 @@ class BadmintonScoreWidget extends ScoreWidget {
         Values(context).strings.title_badminton_games,
         games.displayString(context),
         false,
-        'images/svg/badminton-shuttle-large.svg',
+        'badminton-shuttle-large',
         () => onScoreClicked(BadmintonScore.LEVEL_GAME),
       );
 
@@ -67,7 +67,7 @@ class BadmintonScoreWidget extends ScoreWidget {
         Values(context).strings.title_badminton_points,
         points.displayString(context),
         isServing,
-        'images/svg/badminton-shuttle-large.svg',
+        'badminton-shuttle-large',
         () => onScoreClicked(BadmintonScore.LEVEL_POINT),
       );
 }

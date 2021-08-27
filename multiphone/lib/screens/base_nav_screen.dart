@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/side_drawer_widget.dart';
 
 abstract class BaseNavScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ abstract class BaseNavScreenState<T extends BaseNavScreen> extends State<T> {
   Widget buildIconMenu(BuildContext context) {
     return IconButton(
         onPressed: () => widget.scaffoldKey.currentState.openDrawer(),
-        icon: const Icon(Icons.more_vert));
+        icon: const IconWidget(Icons.more_vert, size: null));
   }
 
   Widget buildSideDrawer(BuildContext context) {
@@ -44,7 +45,7 @@ abstract class BaseNavScreenState<T extends BaseNavScreen> extends State<T> {
     return Scaffold(
       key: widget.scaffoldKey,
       appBar: AppBar(
-        title: Text(getScreenTitle(values)),
+        title: TextWidget(getScreenTitle(values)),
         leading: buildIconMenu(context),
       ),
       drawer: buildSideDrawer(context),

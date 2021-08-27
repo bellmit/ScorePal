@@ -4,6 +4,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/player.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:multiphone/widgets/player_names_widget.dart';
 import 'package:multiphone/widgets/pingpong/select_rounds_widget.dart';
@@ -26,12 +27,7 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(right: Values.default_space),
-        child: Text(title,
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              fontSize: Values.font_size_title,
-              color: Theme.of(context).primaryColorDark,
-            )),
+        child: TextWidget(title, textAlign: TextAlign.right),
       ),
     );
   }

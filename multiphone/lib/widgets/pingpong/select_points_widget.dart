@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
 
@@ -22,15 +22,15 @@ class SelectPointsWidget extends SelectItemListWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/eleven_points.svg',
+        icon: IconSvgWidget(
+          'eleven_points',
         ),
         text: values.strings.ping_pong_eleven_points_per_round,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/twenty_one_points.svg',
+        icon: IconSvgWidget(
+          'twenty_one_points',
         ),
         text: values.strings.ping_pong_twenty_one_points_per_round,
         iconSize: Values.image_medium,

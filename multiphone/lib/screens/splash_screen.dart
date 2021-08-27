@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/sport.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:provider/provider.dart';
 
 enum SplashScreenState {
@@ -55,16 +56,19 @@ class SplashScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    Values(context).strings.title,
-                    style: TextStyle(fontSize: 50),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: TextWidget(
+                      Values(context).strings.title,
+                    ),
                   ),
-                  Text(
-                    _errorString != null && _errorString.isNotEmpty
-                        ? _errorString
-                        : Values(context).strings.loading_wait,
-                    style: TextStyle(fontSize: 20),
-                  )
+                  FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: TextWidget(
+                        _errorString != null && _errorString.isNotEmpty
+                            ? _errorString
+                            : Values(context).strings.loading_wait,
+                      )),
                 ],
               ),
             ),

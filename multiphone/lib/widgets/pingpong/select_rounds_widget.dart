@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectRoundsWidget extends SelectItemListWidget {
   final PingPongRounds rounds;
@@ -22,22 +22,22 @@ class SelectRoundsWidget extends SelectItemListWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/ping-pong-ball-one.svg',
+        icon: IconSvgWidget(
+          'ping-pong-ball-one',
         ),
         text: values.strings.ping_pong_one_round,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/ping-pong-ball-three.svg',
+        icon: IconSvgWidget(
+          'ping-pong-ball-three',
         ),
         text: values.strings.ping_pong_three_round,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/ping-pong-ball-five.svg',
+        icon: IconSvgWidget(
+          'ping-pong-ball-five',
         ),
         text: values.strings.ping_pong_five_round,
         iconSize: Values.image_medium,

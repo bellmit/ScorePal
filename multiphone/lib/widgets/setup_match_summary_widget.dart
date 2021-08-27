@@ -3,8 +3,9 @@ import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
-import 'package:multiphone/widgets/common/heading_widget.dart';
 import 'package:provider/provider.dart';
+
+import 'common/common_widgets.dart';
 
 class SetupMatchSummaryWidget extends StatelessWidget {
   const SetupMatchSummaryWidget({Key key}) : super(key: key);
@@ -34,8 +35,7 @@ class SetupMatchSummaryWidget extends StatelessWidget {
           // this changes as the active match changes
           return Row(
             children: [
-              Expanded(
-                  child: HeadingWidget(title: matchSetup.matchSummary(ctx))),
+              Expanded(child: TextHeadingWidget(matchSetup.matchSummary(ctx))),
               // and the child of the consumer
               child,
             ],
@@ -47,7 +47,7 @@ class SetupMatchSummaryWidget extends StatelessWidget {
           child: FloatingActionButton(
             heroTag: ValueKey<String>('play_match'),
             onPressed: () => _startMatch(context),
-            child: const Icon(Icons.play_arrow),
+            child: const IconWidget(Icons.play_arrow, size: null),
             backgroundColor: Theme.of(context).accentColor,
           ),
         ),

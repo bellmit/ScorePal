@@ -12,6 +12,7 @@ import 'package:multiphone/controllers/controllers.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
 import 'package:multiphone/screens/settings_screen.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/confirm_dialog.dart';
 import 'package:multiphone/widgets/current_time_widget.dart';
 import 'package:multiphone/widgets/play_match_options_widget.dart';
@@ -350,7 +351,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                                 padding: EdgeInsets.all(Values.default_space),
                                 child: FittedBox(
                                   fit: BoxFit.fitWidth,
-                                  child: Text(_description),
+                                  child: TextWidget(_description),
                                 ),
                               ),
                               color: theme.primaryColor,
@@ -376,13 +377,13 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                           FloatingActionButton(
                             heroTag: ValueKey<String>('undo_point'),
                             onPressed: () => _undoLastPoint(match),
-                            child: Icon(Icons.undo),
+                            child: IconWidget(Icons.undo, size: null),
                           ),
                           SizedBox(width: Values.default_space),
                           FloatingActionButton(
                             heroTag: ValueKey<String>('pause_match'),
                             onPressed: () => _showPauseOptions(true),
-                            child: Icon(Icons.more_vert),
+                            child: IconWidget(Icons.more_vert, size: null),
                           ),
                         ],
                       ),
@@ -409,11 +410,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                             ),
                             onPressed: () => _onMatchOptionSelected(
                                 PlayMatchOptions.end_match, context),
-                            icon: Icon(
-                              Icons.stop,
-                              size: Values.image_large,
-                            ),
-                            label: Text(values.strings.match_end),
+                            icon: IconWidget(Icons.stop),
+                            label: TextWidget(values.strings.match_end),
                           ),
                         ),
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multiphone/helpers/values.dart';
+
+import 'common/common_widgets.dart';
 
 class MatchSummaryTitleWidget extends StatelessWidget {
   final String svgPath;
@@ -24,16 +25,12 @@ class MatchSummaryTitleWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            SvgPicture.asset(
+            IconSvgWidget(
               svgPath,
-              height: Values.image_medium,
-              width: Values.image_medium,
+              size: Values.image_medium,
             ),
             Expanded(
-              child: Text(
-                description,
-                style: TextStyle(color: Theme.of(context).primaryColorDark),
-              ),
+              child: TextWidget(description),
             ),
           ],
         ),

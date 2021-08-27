@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/user_data.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/auth/user_form.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 
 class UserScreen extends StatefulWidget {
   static const String routeName = '/user-details';
@@ -25,7 +26,7 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Values(context).strings.option_user_details),
+        title: TextWidget(Values(context).strings.option_user_details),
       ),
       body: FutureBuilder<UserData>(
         future: _userFuture,

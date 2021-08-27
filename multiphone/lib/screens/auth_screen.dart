@@ -7,6 +7,7 @@ import 'package:multiphone/helpers/user_data.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/user_screen.dart';
 import 'package:multiphone/widgets/auth/auth_form.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 
 enum LoginType { emailPassword, google, apple }
 
@@ -72,7 +73,8 @@ class _AuthScreenState extends State<AuthScreen> {
       message = error.message;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(message), backgroundColor: Theme.of(context).errorColor));
+        content: TextWidget(message),
+        backgroundColor: Theme.of(context).errorColor));
     setState(() {
       _isAuthenticating = false;
     });

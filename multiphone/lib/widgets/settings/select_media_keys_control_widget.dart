@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/select_item_checked_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
 
@@ -20,10 +21,7 @@ class SelectMediaKeysControlWidget extends SelectItemCheckedWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: Icon(
-          Icons.gamepad,
-          size: Values.image_medium,
-        ),
+        icon: IconWidget(Icons.gamepad),
         text: values.strings.title_control_keys,
         iconSize: Values.image_medium,
       ),

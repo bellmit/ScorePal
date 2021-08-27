@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/select_item_checked_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
   final bool isSuddenDeath;
@@ -21,8 +21,8 @@ class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/deuce-sudden-death.svg',
+        icon: IconSvgWidget(
+          'deuce-sudden-death',
         ),
         text: values.strings.tennis_sudden_death_deuce_sel,
         iconSize: Values.image_medium,

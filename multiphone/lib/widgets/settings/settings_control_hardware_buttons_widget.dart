@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/select_media_keys_control_widget.dart';
 import 'package:multiphone/widgets/settings/select_volume_buttons_control_widget.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
@@ -38,7 +39,8 @@ class _SettingsControlHardwareButtonsWidgetState
     }).onError((error, stackTrace) {
       // failed to launch
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(Values(context).strings.error_navigating_to_remote)));
+          content:
+              TextWidget(Values(context).strings.error_navigating_to_remote)));
       return false;
     });
   }
@@ -46,11 +48,11 @@ class _SettingsControlHardwareButtonsWidgetState
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        createHeading(values.strings.title_control_keys),
+        TextWidget(values.strings.title_control_keys),
         Row(
           children: <Widget>[
             Padding(
@@ -62,10 +64,7 @@ class _SettingsControlHardwareButtonsWidgetState
               ),
             ),
             Expanded(
-              child: Text(
-                values.strings.explain_control_volume,
-                style: contentTextStyle,
-              ),
+              child: TextWidget(values.strings.explain_control_volume),
             ),
           ],
         ),
@@ -81,10 +80,7 @@ class _SettingsControlHardwareButtonsWidgetState
               ),
             ),
             Expanded(
-              child: Text(
-                values.strings.explain_control_keys,
-                style: contentTextStyle,
-              ),
+              child: TextWidget(values.strings.explain_control_keys),
             ),
           ],
         ),
@@ -93,20 +89,14 @@ class _SettingsControlHardwareButtonsWidgetState
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: Values.default_space),
-              child: createIconSvg('images/svg/media-remote.svg'),
+              child: IconSvgWidget('media-remote'),
             ),
             TextButton(
               onPressed: () => navUserToPurchaseRemote(context),
-              child: Text(
-                values.strings.option_browse,
-                style: TextStyle(fontSize: Values.font_size_title),
-              ),
+              child: TextWidget(values.strings.option_browse),
             ),
             Expanded(
-              child: Text(
-                values.strings.explain_control_keys_hack,
-                style: contentTextStyle,
-              ),
+              child: TextWidget(values.strings.explain_control_keys_hack),
             ),
           ],
         ),

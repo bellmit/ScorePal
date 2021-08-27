@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 enum ControlType {
   meThem,
@@ -26,15 +26,15 @@ class SelectControlWidget extends SelectItemListWidget {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/control-we.svg',
+        icon: IconSvgWidget(
+          'control-we',
         ),
         text: values.strings.control_me_them,
         iconSize: Values.image_medium,
       ),
       SelectItemWidget(
-        icon: SvgPicture.asset(
-          'images/svg/control-them.svg',
+        icon: IconSvgWidget(
+          'control-them',
         ),
         text: values.strings.control_server_receiver,
         iconSize: Values.image_medium,
