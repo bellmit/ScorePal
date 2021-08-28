@@ -406,6 +406,7 @@
     "error_flic2_bluetooth_on": "Bluetooth needs to be enabled to discover a Flic2, please turn bluetooth on and try again.",
     "error_online": "An error occurred, please sign off and on again and try again.",
     "error_signin": "An error occurred, please check your details and try again.",
+    "error_navigating": "Sorry, for some reason I couldn't get to the internet, you will have to browse to this location yourself...",
     "error_navigating_to_flic": "Sorry, for some reason I couldn't get to the store, please browse yourself to 'www.flic.io' for your own button!",
     "error_navigating_to_remote": "Sorry, for some reason I couldn't get to the store, please browse for your own button!"
     
