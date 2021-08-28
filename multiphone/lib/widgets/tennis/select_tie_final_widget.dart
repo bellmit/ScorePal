@@ -24,7 +24,7 @@ class SelectTieFinalWidget extends SelectItemCheckedWidget {
         icon: IconSvgWidget(
           'tie-break',
           isOnBackground: isSelected == null || isSelected.length == 0
-              ? false
+              ? isTieInFinalSet
               : isSelected[0],
         ),
         text: values.strings.tennis_final_tie_sel,

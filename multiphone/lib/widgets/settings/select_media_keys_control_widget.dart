@@ -25,7 +25,7 @@ class SelectMediaKeysControlWidget extends SelectItemCheckedWidget {
           Icons.gamepad,
           size: Values.image_medium,
           isOnBackground: isSelected == null || isSelected.length == 0
-              ? false
+              ? isKeysControlSelected
               : isSelected[0],
         ),
         text: values.strings.title_control_keys,

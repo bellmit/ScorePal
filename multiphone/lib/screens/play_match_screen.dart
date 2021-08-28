@@ -343,27 +343,28 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
               return Stack(
                 children: [
                   _createScoreDisplay(match, orientation),
-                  Align(
-                    alignment: Alignment.center,
-                    child: SlideTransition(
-                      position: _messageOffset,
-                      child: Center(
-                        child: FractionallySizedBox(
-                            widthFactor: 0.7,
-                            child: Card(
-                              color: Theme.of(context).accentColor,
-                              child: Padding(
-                                padding: EdgeInsets.all(Values.default_space),
-                                child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: TextWidget(_description,
-                                      isOnBackground: true),
+                  if (_description != null && _description.isNotEmpty)
+                    Align(
+                      alignment: Alignment.center,
+                      child: SlideTransition(
+                        position: _messageOffset,
+                        child: Center(
+                          child: FractionallySizedBox(
+                              widthFactor: 0.7,
+                              child: Card(
+                                color: Theme.of(context).accentColor,
+                                child: Padding(
+                                  padding: EdgeInsets.all(Values.default_space),
+                                  child: FittedBox(
+                                    fit: BoxFit.contain,
+                                    child: TextWidget(_description,
+                                        isOnBackground: true),
+                                  ),
                                 ),
-                              ),
-                            )),
+                              )),
+                        ),
                       ),
                     ),
-                  ),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Padding(

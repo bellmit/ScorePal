@@ -24,7 +24,7 @@ class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
         icon: IconSvgWidget(
           'deuce-sudden-death',
           isOnBackground: isSelected == null || isSelected.length == 0
-              ? false
+              ? isSuddenDeath
               : isSelected[0],
         ),
         text: values.strings.tennis_sudden_death_deuce_sel,
