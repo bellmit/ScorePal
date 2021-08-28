@@ -17,11 +17,16 @@ class SelectTieFinalWidget extends SelectItemCheckedWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context) {
+  List<SelectItemWidget> items(BuildContext context, List<bool> isSelected) {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: IconSvgWidget('tie-break'),
+        icon: IconSvgWidget(
+          'tie-break',
+          isOnBackground: isSelected == null || isSelected.length == 0
+              ? false
+              : isSelected[0],
+        ),
         text: values.strings.tennis_final_tie_sel,
         iconSize: Values.image_medium,
       ),

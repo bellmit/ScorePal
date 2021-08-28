@@ -18,12 +18,13 @@ class SelectSetsWidget extends SelectItemListWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context) {
+  List<SelectItemWidget> items(BuildContext context, int currentSelection) {
     final values = Values(context);
     return [
       SelectItemWidget(
         icon: IconSvgWidget(
           'tennis-ball-one',
+          isOnBackground: currentSelection == 0,
         ),
         text: values.strings.tennis_one_set,
         iconSize: Values.image_medium,
@@ -31,6 +32,7 @@ class SelectSetsWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'tennis-ball-three',
+          isOnBackground: currentSelection == 1,
         ),
         text: values.strings.tennis_three_sets,
         iconSize: Values.image_medium,
@@ -38,6 +40,7 @@ class SelectSetsWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'tennis-ball-five',
+          isOnBackground: currentSelection == 2,
         ),
         text: values.strings.tennis_five_sets,
         iconSize: Values.image_medium,

@@ -24,12 +24,15 @@ class SelectFlicWidget extends SelectItemCheckedWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context) {
+  List<SelectItemWidget> items(BuildContext context, List<bool> isSelected) {
     final values = Values(context);
     return [
       SelectItemWidget(
         icon: IconSvgWidget(
           button == FlicButton.one ? 'flic-one' : 'flic-two',
+          isOnBackground: isSelected == null || isSelected.length == 0
+              ? false
+              : isSelected[0],
         ),
         text: button == FlicButton.one
             ? values.strings.control_flic

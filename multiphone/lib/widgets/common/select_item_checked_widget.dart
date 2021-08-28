@@ -13,7 +13,7 @@ abstract class SelectItemCheckedWidget extends StatefulWidget {
   _SelectItemCheckedWidgetState createState() =>
       _SelectItemCheckedWidgetState();
 
-  List<SelectItemWidget> items(BuildContext context);
+  List<SelectItemWidget> items(BuildContext context, List<bool> isSelected);
 
   bool getInitialSelection(BuildContext context, int index);
 
@@ -28,7 +28,7 @@ class _SelectItemCheckedWidgetState extends State<SelectItemCheckedWidget> {
   @override
   Widget build(BuildContext context) {
     // get the items we will be adding to the buttons
-    var selectItems = widget.items(context);
+    var selectItems = widget.items(context, _isSelected);
     const borderRadius =
         BorderRadius.all(Radius.circular(Values.default_radius));
     if (_isSelected.length != selectItems.length) {

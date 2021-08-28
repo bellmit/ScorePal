@@ -12,7 +12,7 @@ abstract class SelectItemListWidget extends StatefulWidget {
   @override
   _SelectItemListWidgetState createState() => _SelectItemListWidgetState();
 
-  List<SelectItemWidget> items(BuildContext context);
+  List<SelectItemWidget> items(BuildContext context, int currentSelection);
 
   int getInitialSelection(BuildContext context);
 
@@ -29,7 +29,7 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
   @override
   Widget build(BuildContext context) {
     // get the items we will be adding to the buttons
-    var selectItems = widget.items(context);
+    var selectItems = widget.items(context, _currentSelection);
     const borderRadius = BorderRadius.all(Radius.circular(10));
     if (_isSelected.length != selectItems.length) {
       // setup the initial selection from the widget

@@ -18,12 +18,13 @@ class SelectGamesWidget extends SelectItemListWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context) {
+  List<SelectItemWidget> items(BuildContext context, int currentSelection) {
     final values = Values(context);
     return [
       SelectItemWidget(
         icon: IconSvgWidget(
           'badminton_shuttle_one',
+          isOnBackground: currentSelection == 0,
         ),
         text: values.strings.badminton_one_game,
         iconSize: Values.image_medium,
@@ -31,6 +32,7 @@ class SelectGamesWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'badminton_shuttle_three',
+          isOnBackground: currentSelection == 1,
         ),
         text: values.strings.badminton_three_game,
         iconSize: Values.image_medium,
@@ -38,6 +40,7 @@ class SelectGamesWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'badminton_shuttle_five',
+          isOnBackground: currentSelection == 2,
         ),
         text: values.strings.badminton_five_game,
         iconSize: Values.image_medium,

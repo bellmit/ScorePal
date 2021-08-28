@@ -17,11 +17,17 @@ class SelectVolumeButtonsControlWidget extends SelectItemCheckedWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context) {
+  List<SelectItemWidget> items(BuildContext context, List<bool> isSelected) {
     final values = Values(context);
     return [
       SelectItemWidget(
-        icon: IconWidget(Icons.volume_up, size: Values.image_medium),
+        icon: IconWidget(
+          Icons.volume_up,
+          size: Values.image_medium,
+          isOnBackground: isSelected == null || isSelected.length == 0
+              ? false
+              : isSelected[0],
+        ),
         text: values.strings.title_control_volume,
         iconSize: Values.image_medium,
       ),

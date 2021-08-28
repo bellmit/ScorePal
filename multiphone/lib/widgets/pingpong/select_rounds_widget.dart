@@ -18,12 +18,13 @@ class SelectRoundsWidget extends SelectItemListWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context) {
+  List<SelectItemWidget> items(BuildContext context, int currentSelection) {
     final values = Values(context);
     return [
       SelectItemWidget(
         icon: IconSvgWidget(
           'ping-pong-ball-one',
+          isOnBackground: currentSelection == 0,
         ),
         text: values.strings.ping_pong_one_round,
         iconSize: Values.image_medium,
@@ -31,6 +32,7 @@ class SelectRoundsWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'ping-pong-ball-three',
+          isOnBackground: currentSelection == 1,
         ),
         text: values.strings.ping_pong_three_round,
         iconSize: Values.image_medium,
@@ -38,6 +40,7 @@ class SelectRoundsWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'ping-pong-ball-five',
+          isOnBackground: currentSelection == 2,
         ),
         text: values.strings.ping_pong_five_round,
         iconSize: Values.image_medium,

@@ -17,12 +17,15 @@ class SelectSuddenDeathWidget extends SelectItemCheckedWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context) {
+  List<SelectItemWidget> items(BuildContext context, List<bool> isSelected) {
     final values = Values(context);
     return [
       SelectItemWidget(
         icon: IconSvgWidget(
           'deuce-sudden-death',
+          isOnBackground: isSelected == null || isSelected.length == 0
+              ? false
+              : isSelected[0],
         ),
         text: values.strings.tennis_sudden_death_deuce_sel,
         iconSize: Values.image_medium,

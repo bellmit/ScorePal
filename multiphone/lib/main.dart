@@ -46,6 +46,10 @@ class MyApp extends StatelessWidget {
   /// The future is part of the state of our widget. We should not call `initializeApp`
   /// directly inside [build].
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  // Define which predefined FlexScheme to use.
+  final FlexScheme usedFlexScheme = FlexScheme.ebonyClay;
+  // Used to select if we use the dark or light theme.
+  ThemeMode themeMode = ThemeMode.system;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -63,12 +67,21 @@ class MyApp extends StatelessWidget {
           Locale('en', ''), // English, no country code
           Locale('fr', ''), // French, no country code
         ],
-        // The Mandy red, light theme.
-        theme: FlexColorScheme.light(scheme: FlexScheme.greyLaw).toTheme,
-        // The Mandy red, dark theme.
-        darkTheme: FlexColorScheme.dark(scheme: FlexScheme.greyLaw).toTheme,
-        // Use dark or light theme based on system setting.
-        themeMode: ThemeMode.system,
+        // A light scheme, passed to FlexColorScheme.light factory, then use
+        // toTheme to return the resulting theme to the MaterialApp theme.
+        theme: FlexColorScheme.light(
+          scheme: usedFlexScheme,
+          // Use comfortable on desktops instead of compact, devices use default.
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        ).toTheme,
+        // Same thing for the dark theme, but using FlexColorScheme.dark factory.
+        darkTheme: FlexColorScheme.dark(
+          scheme: usedFlexScheme,
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        ).toTheme,
+        // Use the above dark or light theme, based on active themeMode
+        // value light/dark/system.
+        themeMode: themeMode,
         home: FutureBuilder(
           // Initialize FlutterFire:
           future: _initialization,
