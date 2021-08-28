@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
               return HomeScreen();
             } else if (snapshot.connectionState == ConnectionState.done) {
               // connected - go on home
-              return HomeScreen();
+              return SplashScreen('');
             } else {
               // show the splash screen that we are loading firebase things
               return SplashScreen('');

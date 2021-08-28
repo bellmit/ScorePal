@@ -4,7 +4,6 @@ import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:provider/provider.dart';
 
-
 class SplashScreen extends StatelessWidget {
   final String _errorString;
 
@@ -19,9 +18,9 @@ class SplashScreen extends StatelessWidget {
     } else {
       cols = 2;
     }
-    //rows =
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: theme.primaryColor,
       body: Consumer<Sports>(
         builder: (ctx, sports, child) {
           final availableSports = sports.available;
@@ -44,27 +43,44 @@ class SplashScreen extends StatelessWidget {
           );
         },
         child: Center(
-          child: Card(
-            color: Theme.of(context).secondaryHeaderColor,
-            child: Padding(
-              padding: const EdgeInsets.all(Values.default_space),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: TextWidget(
-                      Values(context).strings.title,
+          child: FractionallySizedBox(
+            widthFactor: 0.4,
+            alignment: Alignment.center,
+            child: Container(
+              decoration: BoxDecoration(
+                color: theme.secondaryHeaderColor.withOpacity(0.75),
+                border: Border.all(
+                    color: theme.primaryColorDark, width: Values.border_width),
+                borderRadius:
+                    BorderRadius.all(Radius.circular(Values.default_radius)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(Values.default_space),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          Values(context).strings.title,
+                        ),
+                      ),
                     ),
-                  ),
-                  FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: TextWidget(
-                        _errorString != null && _errorString.isNotEmpty
-                            ? _errorString
-                            : Values(context).strings.loading_wait,
-                      )),
-                ],
+                    Container(
+                      width: double.infinity,
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: TextWidget(
+                          _errorString != null && _errorString.isNotEmpty
+                              ? _errorString
+                              : Values(context).strings.loading_wait,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
