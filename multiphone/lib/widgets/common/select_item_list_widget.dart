@@ -28,12 +28,12 @@ class _SelectItemListWidgetState extends State<SelectItemListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // get the items we will be adding to the buttons
+    // setup the initial selection from the widget
+    _currentSelection = widget.getInitialSelection(context);
+    // and get the items we will be adding to the buttons
     var selectItems = widget.items(context, _currentSelection);
     const borderRadius = BorderRadius.all(Radius.circular(10));
     if (_isSelected.length != selectItems.length) {
-      // setup the initial selection from the widget
-      _currentSelection = widget.getInitialSelection(context);
       for (int i = 0; i < selectItems.length; ++i) {
         _isSelected.add(i == _currentSelection);
       }

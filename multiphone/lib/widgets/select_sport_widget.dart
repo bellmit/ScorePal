@@ -20,7 +20,7 @@ class SelectSportWidget extends SelectItemListWidget {
       return SelectItemWidget(
           icon: IconSvgWidget(
             e.icon,
-          isOnBackground: currentSelection == sports.indexOf(e),
+            isOnBackground: currentSelection == sports.indexOf(e),
           ),
           text: e.title(context));
     }).toList();
