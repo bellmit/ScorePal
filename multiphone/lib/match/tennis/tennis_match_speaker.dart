@@ -174,7 +174,7 @@ class TennisMatchSpeaker extends MatchSpeaker<TennisMatch> {
     // create the announcement of games on this match
     String teamOneString = getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
     String teamTwoString = getSpeakingTeamName(context, setup, TeamIndex.T_TWO);
-    String changeTeamString = getSpeakingTeamName(context, setup, changeTeam);
+    //String changeTeamString = getSpeakingTeamName(context, setup, changeTeam);
     StringBuilder message = StringBuilder();
     // so we want to say the games as they stand
     append(message, Point.K_SPEAKING_PAUSE_LONG);

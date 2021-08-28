@@ -4,16 +4,11 @@ import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:provider/provider.dart';
 
-enum SplashScreenState {
-  error,
-  loading,
-}
 
 class SplashScreen extends StatelessWidget {
   final String _errorString;
-  final SplashScreenState _state;
 
-  SplashScreen(this._state, this._errorString);
+  SplashScreen(this._errorString);
 
   @override
   Widget build(BuildContext context) {

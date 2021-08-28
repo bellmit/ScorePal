@@ -10,6 +10,7 @@ import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/controllers/controllers.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
+import 'package:multiphone/screens/match_history_screen.dart';
 import 'package:multiphone/screens/playing_team_widget.dart';
 import 'package:multiphone/screens/settings_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
@@ -221,6 +222,11 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
             .then((value) => _activateKeyController());
         break;
       case PlayMatchOptions.show_history:
+        // navigate away from this screen, first pause our key controller
+        _activateKeyController(isActivate: false);
+        // then nav away to the page and re-activate when we come back
+        MatchPlayTracker.navTo(MatchHistoryScreen.routeName, context)
+            .then((value) => _activateKeyController());
         break;
       case PlayMatchOptions.show_settings:
         // jump to the app settings without showing the side bar so they have to come back after
@@ -328,7 +334,6 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     // To make this screen full screen.
     // It will hide status bar and notch.
     SystemChrome.setEnabledSystemUIOverlays([]);
-    final theme = Theme.of(context);
     final values = Values(context);
     return Scaffold(
       body: OrientationBuilder(

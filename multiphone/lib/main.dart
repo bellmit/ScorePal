@@ -15,6 +15,7 @@ import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/screens/inbox_screen.dart';
+import 'package:multiphone/screens/match_history_screen.dart';
 import 'package:multiphone/screens/setup_flic2_screen.dart';
 import 'package:multiphone/screens/trash_screen.dart';
 import 'package:multiphone/screens/user_screen.dart';
@@ -82,7 +83,7 @@ class MyApp extends StatelessWidget {
               return HomeScreen();
             } else {
               // show the splash screen that we are loading firebase things
-              return SplashScreen(SplashScreenState.loading, '');
+              return SplashScreen('');
             }
           },
         ),
@@ -102,6 +103,7 @@ class MyApp extends StatelessWidget {
         TrashScreen.routeName: (ctx) => TrashScreen(),
         SetupFlic2Screen.routeName: (ctx) => SetupFlic2Screen(),
         AttributionsScreen.routeName: (ctx) => AttributionsScreen(),
+        MatchHistoryScreen.routeName: (ctx) => MatchHistoryScreen(),
         PlayTennisScreen.routeName: (ctx) => PlayTennisScreen(),
         EndTennisScreen.routeName: (ctx) => EndTennisScreen(),
         PlayBadmintonScreen.routeName: (ctx) => PlayBadmintonScreen(),

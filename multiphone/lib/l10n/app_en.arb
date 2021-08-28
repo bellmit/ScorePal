@@ -188,6 +188,8 @@
     "speak_match": "match",
     "speak_expedite_system": "Expedite System to commence…",
 
+    "history_point_explain": "{0} awarded the point.",
+
     "played_match_menu_delete": "Delete",
     "played_match_menu_share": "Share",
     "played_match_menu_resume": "Resume",

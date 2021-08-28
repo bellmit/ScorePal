@@ -132,7 +132,7 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
     StringBuilder spokenMessage = StringBuilder();
     ActiveSetup setup = match.getSetup();
     if (prefs.soundButtonClick) {
-      //TODO the click of the button
+      //TODO make a noise for the click of the button
     }
     if (prefs.soundActionSpeak && null != context) {
       if (state.isChanged(ScoreChange.decrement)) {

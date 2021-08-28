@@ -9,12 +9,15 @@ import 'package:multiphone/match/ping_pong/ping_pong_match.dart';
 import 'package:multiphone/match/ping_pong/ping_pong_match_setup.dart';
 import 'package:multiphone/match/tennis/tennis_match.dart';
 import 'package:multiphone/match/tennis/tennis_match_setup.dart';
+import 'package:multiphone/widgets/badminton/badminton_score_summary_widget.dart';
 import 'package:multiphone/widgets/badminton/play_badminton_screen.dart';
 import 'package:multiphone/widgets/badminton/setup_badminton_widget.dart';
+import 'package:multiphone/widgets/pingpong/ping_pong_score_summary_widget.dart';
 import 'package:multiphone/widgets/pingpong/play_ping_pong_screen.dart';
 import 'package:multiphone/widgets/pingpong/setup_ping_pong_widget.dart';
 import 'package:multiphone/widgets/tennis/play_tennis_screen.dart';
 import 'package:multiphone/widgets/tennis/setup_tennis_widget.dart';
+import 'package:multiphone/widgets/tennis/tennis_score_summary_widget.dart';
 
 enum SportType {
   TENNIS,
@@ -30,6 +33,8 @@ class Sport {
   final String image;
   final String playNavPath;
   final Widget Function(BuildContext, bool isLoadSetupData) createSetupWidget;
+  final Widget Function(BuildContext, ActiveMatch match)
+      createScoreSummaryWidget;
   final ActiveSetup Function() createSetup;
   final ActiveMatch Function(ActiveSetup) createMatch;
 
@@ -41,6 +46,7 @@ class Sport {
     @required this.image,
     @required this.playNavPath,
     @required this.createSetupWidget,
+    @required this.createScoreSummaryWidget,
     @required this.createSetup,
     @required this.createMatch,
   });
@@ -96,6 +102,13 @@ class Sports with ChangeNotifier {
         playNavPath: PlayTennisScreen.routeName,
         createSetupWidget: (ctx, isLoadSetupData) =>
             SetupTennisWidget(isLoadSetup: isLoadSetupData),
+        createScoreSummaryWidget: (ctx, match) => TennisScoreSummaryWidget(
+          match: match,
+          teamOneName: match.getSetup().getTeamName(TeamIndex.T_ONE, ctx),
+          isTeamOneConceded: match.isTeamConceded(TeamIndex.T_ONE),
+          teamTwoName: match.getSetup().getTeamName(TeamIndex.T_TWO, ctx),
+          isTeamTwoConceded: match.isTeamConceded(TeamIndex.T_TWO),
+        ),
         createSetup: () => TennisMatchSetup(),
         createMatch: (setup) => TennisMatch(setup),
       ),
@@ -108,6 +121,13 @@ class Sports with ChangeNotifier {
         playNavPath: PlayBadmintonScreen.routeName,
         createSetupWidget: (ctx, isLoadSetupData) =>
             SetupBadmintonWidget(isLoadSetup: isLoadSetupData),
+        createScoreSummaryWidget: (ctx, match) => BadmintonScoreSummaryWidget(
+          match: match,
+          teamOneName: match.getSetup().getTeamName(TeamIndex.T_ONE, ctx),
+          isTeamOneConceded: match.isTeamConceded(TeamIndex.T_ONE),
+          teamTwoName: match.getSetup().getTeamName(TeamIndex.T_TWO, ctx),
+          isTeamTwoConceded: match.isTeamConceded(TeamIndex.T_TWO),
+        ),
         createSetup: () => BadmintonMatchSetup(),
         createMatch: (setup) => BadmintonMatch(setup),
       ),
@@ -120,6 +140,13 @@ class Sports with ChangeNotifier {
         playNavPath: PlayPingPongScreen.routeName,
         createSetupWidget: (ctx, isLoadSetupData) =>
             SetupPingPongWidget(isLoadSetup: isLoadSetupData),
+        createScoreSummaryWidget: (ctx, match) => PingPongScoreSummaryWidget(
+          match: match,
+          teamOneName: match.getSetup().getTeamName(TeamIndex.T_ONE, ctx),
+          isTeamOneConceded: match.isTeamConceded(TeamIndex.T_ONE),
+          teamTwoName: match.getSetup().getTeamName(TeamIndex.T_TWO, ctx),
+          isTeamTwoConceded: match.isTeamConceded(TeamIndex.T_TWO),
+        ),
         createSetup: () => PingPongMatchSetup(),
         createMatch: (setup) => PingPongMatch(setup),
       ),

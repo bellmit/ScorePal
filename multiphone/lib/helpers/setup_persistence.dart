@@ -31,17 +31,6 @@ class SetupPersistence {
     };
   }
 
-  ActiveSetup _createSetupFromJson(Map<String, Object> topLevel) {
-    // what is this, get the sport from the JSON object;
-    Sport sport = Sports.fromId(topLevel['sport'] as String);
-    // and create the setup for this
-    ActiveSetup setup = sport.createSetup();
-    // set our data from this data under the top level
-    setup.setData(topLevel['data']);
-    // and return this now it's setup properly
-    return setup;
-  }
-
   Future<ActiveSetup> loadLastSetupData(ActiveSetup setup) async {
     // just get the last setup data and put into the already loaded setup
     Log.info('loading the last setup for ${setup.sport.id}');

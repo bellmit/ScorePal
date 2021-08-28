@@ -148,9 +148,9 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                         // what to do after an item has been swiped away.
                         onDismissed: (direction) {
                           if (direction == DismissDirection.startToEnd) {
-                            _deleteMatch(match, index);
-                          } else {
                             _acceptMatch(match, index);
+                          } else {
+                            _deleteMatch(match, index);
                           }
                         },
                         child: Column(

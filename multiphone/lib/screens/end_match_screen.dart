@@ -9,18 +9,14 @@ import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/match_breakdown_widget.dart';
 import 'package:multiphone/widgets/match_momentum_widget.dart';
-import 'package:multiphone/widgets/match_score_summary_widget.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
 import 'package:provider/provider.dart';
 
-abstract class EndMatchScreen extends StatefulWidget {
+class EndMatchScreen extends StatefulWidget {
   EndMatchScreen();
 
   @override
   _EndMatchScreenState createState() => _EndMatchScreenState();
-
-  MatchScoreSummaryWidget createScoreSummaryWidget(
-      BuildContext context, ActiveMatch match);
 }
 
 class _EndMatchScreenState extends State<EndMatchScreen> {
@@ -101,7 +97,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                         values.strings.match_accept),
                   ],
                 ),
-                widget.createScoreSummaryWidget(ctx, match),
+                match.getSport().createScoreSummaryWidget(ctx, match),
                 if (!match.isMatchOver())
                   Padding(
                     padding: const EdgeInsets.only(
