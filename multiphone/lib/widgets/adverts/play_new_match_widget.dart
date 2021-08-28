@@ -33,11 +33,8 @@ class PlayNewMatchWidget extends StatelessWidget {
               ),
             ),
             Flexible(
-              child: Text(
-                Values(context).strings.description_play_new_match,
-                maxLines: 3,
-                style: Theme.of(context).textTheme.headline1,
-              ),
+              child: TextWidget(
+                  Values(context).strings.description_play_new_match),
             ),
             Padding(
               padding: EdgeInsets.all(Values.default_space),
