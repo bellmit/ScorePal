@@ -22,13 +22,17 @@ class SelectControlWidget extends SelectItemListWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context, int currentSelection) {
+  List<SelectItemWidget> items(
+      BuildContext context, List<bool> currentSelection) {
     final values = Values(context);
     return [
       SelectItemWidget(
         icon: IconSvgWidget(
           'control-we',
-          isOnBackground: currentSelection == 0,
+          isOnBackground:
+              currentSelection == null || currentSelection.length == 0
+                  ? initialSelection == ControlType.meThem
+                  : currentSelection[0],
         ),
         text: values.strings.control_me_them,
         iconSize: Values.image_medium,
@@ -36,7 +40,10 @@ class SelectControlWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'control-them',
-          isOnBackground: currentSelection == 1,
+          isOnBackground:
+              currentSelection == null || currentSelection.length == 0
+                  ? initialSelection == ControlType.serverReceiver
+                  : currentSelection[1],
         ),
         text: values.strings.control_server_receiver,
         iconSize: Values.image_medium,

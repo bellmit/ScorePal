@@ -13,14 +13,16 @@ class SelectSportWidget extends SelectItemListWidget {
   const SelectSportWidget({Key key}) : super(key: key);
 
   @override
-  List<SelectItemWidget> items(BuildContext context, int currentSelection) {
+  List<SelectItemWidget> items(BuildContext context, List<bool> currentSelection) {
     final sports = Provider.of<Sports>(context, listen: false).available;
     return sports.map((e) {
       // for each sport, return a widget representing it
       return SelectItemWidget(
           icon: IconSvgWidget(
             e.icon,
-            isOnBackground: currentSelection == sports.indexOf(e),
+            isOnBackground: currentSelection == null || currentSelection.length == 0
+                  ? getInitialSelection(context) == sports.indexOf(e)
+                  : currentSelection[sports.indexOf(e)],
           ),
           text: e.title(context));
     }).toList();
@@ -29,7 +31,7 @@ class SelectSportWidget extends SelectItemListWidget {
   @override
   int getInitialSelection(BuildContext context) {
     // the initial selection is handled by the active match
-    Sport activeSport = Provider.of<ActiveSelection>(context).sport;
+    Sport activeSport = Provider.of<ActiveSelection>(context, listen: false).sport;
     // from the active sport - return the index of the sport for that match
     return Sports.index(activeSport);
   }

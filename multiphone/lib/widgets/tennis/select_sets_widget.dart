@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/tennis/tennis_match_setup.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
@@ -18,13 +19,17 @@ class SelectSetsWidget extends SelectItemListWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context, int currentSelection) {
+  List<SelectItemWidget> items(
+      BuildContext context, List<bool> currentSelection) {
     final values = Values(context);
     return [
       SelectItemWidget(
         icon: IconSvgWidget(
           'tennis-ball-one',
-          isOnBackground: currentSelection == 0,
+          isOnBackground:
+              currentSelection == null || currentSelection.length == 0
+                  ? sets == TennisSets.one
+                  : currentSelection[0],
         ),
         text: values.strings.tennis_one_set,
         iconSize: Values.image_medium,
@@ -32,7 +37,10 @@ class SelectSetsWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'tennis-ball-three',
-          isOnBackground: currentSelection == 1,
+          isOnBackground:
+              currentSelection == null || currentSelection.length == 0
+                  ? sets == TennisSets.three
+                  : currentSelection[1],
         ),
         text: values.strings.tennis_three_sets,
         iconSize: Values.image_medium,
@@ -40,7 +48,10 @@ class SelectSetsWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'tennis-ball-five',
-          isOnBackground: currentSelection == 2,
+          isOnBackground:
+              currentSelection == null || currentSelection.length == 0
+                  ? sets == TennisSets.five
+                  : currentSelection[2],
         ),
         text: values.strings.tennis_five_sets,
         iconSize: Values.image_medium,

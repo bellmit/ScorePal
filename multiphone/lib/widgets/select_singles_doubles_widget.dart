@@ -19,13 +19,17 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
         );
 
   @override
-  List<SelectItemWidget> items(BuildContext context, int currentSelection) {
+  List<SelectItemWidget> items(
+      BuildContext context, List<bool> currentSelection) {
     final values = Values(context);
     return [
       SelectItemWidget(
         icon: IconSvgWidget(
           'player-receiving-forehand',
-          isOnBackground: currentSelection == 0,
+          isOnBackground:
+              currentSelection == null || currentSelection.length == 0
+                  ? singlesDoubles == MatchSinglesDoubles.singles
+                  : currentSelection[0],
         ),
         text: values.strings.tennis_singles,
         iconSize: Values.image_medium,
@@ -33,7 +37,10 @@ class SelectSinglesDoublesWidget extends SelectItemListWidget {
       SelectItemWidget(
         icon: IconSvgWidget(
           'player-receiving-doubles',
-          isOnBackground: currentSelection == 1,
+          isOnBackground:
+              currentSelection == null || currentSelection.length == 0
+                  ? singlesDoubles == MatchSinglesDoubles.doubles
+                  : currentSelection[1],
         ),
         text: values.strings.tennis_doubles,
         iconSize: Values.image_medium,

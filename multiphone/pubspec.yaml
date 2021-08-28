@@ -75,9 +75,10 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
+  remove_alpha_ios: true
   image_path: "dev_assets/scorepal.png"
   adaptive_icon_background: "#334BAA"
-  adaptive_icon_foreground: "dev_assets/scorepal.png"
+  adaptive_icon_foreground: "dev_assets/scorepal-adaptive.png"
 
 #************************************************************
 # create the icons from the terminal with the following command
