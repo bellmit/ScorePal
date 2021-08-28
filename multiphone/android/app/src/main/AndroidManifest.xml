@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.ORIENTATION"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
+
     <queries>
         <!-- If your app opens https URLs -->
         <intent>
@@ -24,8 +28,10 @@
     </queries>
     
    <application
-        android:label="Scorepal"
-        android:icon="@mipmap/ic_launcher">
+       android:label="Scorepal"
+       android:icon="@mipmap/launcher_icon"
+       android:roundIcon="@mipmap/ic_launcher_round"
+       android:supportsRtl="true">
 
         <activity
             android:name=".MainActivity"
