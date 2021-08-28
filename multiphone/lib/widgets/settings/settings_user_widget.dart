@@ -55,7 +55,7 @@ class SettingsUserWidget extends StatelessWidget with SettingsWidgetMixin {
             ),
             IconButtonWidget(
                 onChangeUser,
-                Icons.exit_to_app,
+                user != null ? Icons.logout : Icons.login,
                 user != null
                     ? values.strings.sign_out
                     : values.strings.sign_in),

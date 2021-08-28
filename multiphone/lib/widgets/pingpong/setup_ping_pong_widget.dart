@@ -27,7 +27,7 @@ class _SetupPingPongWidgetState extends State<SetupPingPongWidget> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(right: Values.default_space),
-        child: TextWidget(title, textAlign: TextAlign.right),
+        child: TextSubheadingWidget(title, textAlign: TextAlign.right),
       ),
     );
   }

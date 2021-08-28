@@ -47,7 +47,7 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
               user: _currentUser, signOutFunction: _signOutFirebase);
         } else {
           // not logged in, show the login options
-          return IconButtonWidget(_signInFirebase, Icons.exit_to_app,
+          return IconButtonWidget(_signInFirebase, Icons.login,
               Values(context).strings.sign_in);
         }
       },
@@ -117,7 +117,7 @@ class UserLoggedInWidget extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: IconButtonWidget(
             signOutFunction,
-            Icons.exit_to_app,
+            Icons.logout,
             Values(context).strings.sign_out,
           ),
         ),

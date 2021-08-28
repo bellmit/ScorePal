@@ -35,7 +35,11 @@ class SetupMatchSummaryWidget extends StatelessWidget {
           // this changes as the active match changes
           return Row(
             children: [
-              Expanded(child: TextHeadingWidget(matchSetup.matchSummary(ctx))),
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.only(left: Values.default_space),
+                child: TextHeadingWidget(matchSetup.matchSummary(ctx)),
+              )),
               // and the child of the consumer
               child,
             ],

@@ -4,6 +4,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/auth_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 
 class AuthForm extends StatefulWidget {
   final void Function(
@@ -149,44 +150,18 @@ class _AuthFormState extends State<AuthForm> {
                       spacing: Values.image_medium,
                       runSpacing: Values.default_space,
                       children: [
-                        MaterialButton(
-                          height: Values.image_large,
-                          onPressed: () => _trySubmit(LoginType.emailPassword),
-                          color: Theme.of(context).primaryColor,
-                          child: TextWidget(
+                        IconButtonWidget(
+                            () => _trySubmit(LoginType.emailPassword),
+                            Icons.login,
                             _isLoggingIn
                                 ? values.strings.sign_in
-                                : values.strings.create_account,
-                          ),
-                          textColor: Colors.white,
-                        ),
-                        MaterialButton(
-                          height: Values.image_large,
-                          onPressed: () => _trySubmit(LoginType.google),
-                          color: Colors.blue,
-                          child: Wrap(
-                            children: <Widget>[
-                              IconWidget(FontAwesomeIcons.google),
-                              SizedBox(width: 10),
-                              TextWidget(values.strings.signin_google),
-                            ],
-                          ),
-                          textColor: Colors.white,
-                        ),
+                                : values.strings.create_account),
+                        IconButtonWidget(
+                            () => _trySubmit(LoginType.google),
+                            FontAwesomeIcons.google,
+                            values.strings.signin_google),
                         /*
-                        MaterialButton(
-                          height: Values.image_large,
-                          onPressed: () => _trySubmit(LoginType.apple),
-                          color: Colors.blueGrey,
-                          child: Wrap(
-                            children: <Widget>[
-                              IconWidget(FontAwesomeIcons.apple),
-                              SizedBox(width: 10),
-                              TextWidget(values.strings.signin_apple'),
-                            ],
-                          ),
-                          textColor: Colors.white,
-                        ),*/
+                        IconButtonWidget(() => _trySubmit(LoginType.apple), FontAwesomeIcons.apple, values.strings.signin_apple),*/
                       ],
                     ),
                   TextButton(

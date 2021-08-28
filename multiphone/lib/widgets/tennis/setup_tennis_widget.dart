@@ -29,7 +29,7 @@ class _SetupTennisWidgetState extends State<SetupTennisWidget> {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(right: Values.default_space),
-        child: TextHeadingWidget(title, textAlign: TextAlign.right),
+        child: TextSubheadingWidget(title, textAlign: TextAlign.right),
       ),
     );
   }

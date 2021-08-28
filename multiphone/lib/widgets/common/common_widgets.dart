@@ -77,7 +77,7 @@ class TextSubheadingWidget extends StatelessWidget {
       textAlign: textAlign,
       maxLines: isLimitOverflow ? 1 : null,
       overflow: isLimitOverflow ? TextOverflow.fade : null,
-      style: theme.textTheme.subtitle1.merge(
+      style: theme.textTheme.subtitle2.merge(
         TextStyle(
             color: isOnBackground ? theme.accentTextTheme.button.color : null,
             fontWeight: FontWeight.bold),

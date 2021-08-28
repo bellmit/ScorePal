@@ -261,7 +261,7 @@ class _UserFormState extends State<UserForm> {
                     ],
                   ),
                   IconButtonWidget(
-                      _signOut, Icons.exit_to_app, values.strings.sign_out),
+                      _signOut, Icons.logout, values.strings.sign_out),
                   if (!_userData.currentUser.emailVerified)
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
