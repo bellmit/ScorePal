@@ -82,7 +82,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
         !prefs.isAdvertDismissed(signInScorepalCardKey)) {
       // poke them to log on / sign in
       cards.add(Dismissible(
-        direction: DismissDirection.startToEnd,
+        direction: DismissDirection.horizontal,
         // Each Dismissible must contain a Key. Keys allow Flutter to
         // uniquely identify widgets.
         key: Key(signInScorepalCardKey),
@@ -107,7 +107,7 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
         !prefs.isAdvertDismissed(purchaseFlicCardKey)) {
       // they are not using flic!
       cards.add(Dismissible(
-        direction: DismissDirection.startToEnd,
+        direction: DismissDirection.horizontal,
         // Each Dismissible must contain a Key. Keys allow Flutter to
         // uniquely identify widgets.
         key: Key(purchaseFlicCardKey),
@@ -216,14 +216,14 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       final match = matches.elementAt(index);
                       return Dismissible(
-                        direction: DismissDirection.startToEnd,
+                        direction: DismissDirection.endToStart,
                         background: Container(
                           color: Values.deleteColor,
                           child: const Align(
-                            alignment: Alignment.centerLeft,
+                            alignment: Alignment.centerRight,
                             child: const Padding(
                               padding: const EdgeInsets.only(
-                                  left: Values.default_space),
+                                  right: Values.default_space),
                               child: const IconWidget(Icons.delete),
                             ),
                           ),

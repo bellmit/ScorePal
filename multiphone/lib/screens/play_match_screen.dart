@@ -414,25 +414,33 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                     ),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: SlideTransition(
-                      position: _optionsOffset,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: Values.team_names_widget_height,
-                            right: Values.default_space,
-                            bottom: Values.team_names_widget_height),
-                        child: PlayMatchOptionsWidget(
-                          sportSvgPath: match.getSport().icon,
-                          matchDescription: match.getDescription(
-                              DescriptionLevel.SHORT, context),
-                          teamOneName: match
-                              .getSetup()
-                              .getTeamName(TeamIndex.T_ONE, context),
-                          teamTwoName: match
-                              .getSetup()
-                              .getTeamName(TeamIndex.T_TWO, context),
-                          onOptionSelected: (value) =>
-                              _onMatchOptionSelected(value, context),
+                    child: GestureDetector(
+                      onPanUpdate: (details) {
+                        // Swiping in right direction.
+                        if (details.delta.dx > 0) {
+                          _showPauseOptions(false);
+                        }
+                      },
+                      child: SlideTransition(
+                        position: _optionsOffset,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: Values.team_names_widget_height,
+                              right: Values.default_space,
+                              bottom: Values.team_names_widget_height),
+                          child: PlayMatchOptionsWidget(
+                            sportSvgPath: match.getSport().icon,
+                            matchDescription: match.getDescription(
+                                DescriptionLevel.SHORT, context),
+                            teamOneName: match
+                                .getSetup()
+                                .getTeamName(TeamIndex.T_ONE, context),
+                            teamTwoName: match
+                                .getSetup()
+                                .getTeamName(TeamIndex.T_TWO, context),
+                            onOptionSelected: (value) =>
+                                _onMatchOptionSelected(value, context),
+                          ),
                         ),
                       ),
                     ),

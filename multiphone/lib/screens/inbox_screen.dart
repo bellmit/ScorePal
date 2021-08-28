@@ -120,24 +120,24 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                       final match = _matches.elementAt(index);
                       return Dismissible(
                         background: Container(
-                          color: Values.deleteColor,
+                          color: Theme.of(context).secondaryHeaderColor,
                           child: const Align(
                             alignment: Alignment.centerLeft,
                             child: const Padding(
                               padding: const EdgeInsets.only(
                                   left: Values.default_space),
-                              child: const IconWidget(Icons.delete),
+                              child: const IconWidget(Icons.done_outline),
                             ),
                           ),
                         ),
                         secondaryBackground: Container(
-                          color: Theme.of(context).secondaryHeaderColor,
+                          color: Values.deleteColor,
                           child: const Align(
                             alignment: Alignment.centerRight,
                             child: const Padding(
                               padding: const EdgeInsets.only(
                                   right: Values.default_space),
-                              child: const IconWidget(Icons.done_outline),
+                              child: const IconWidget(Icons.delete),
                             ),
                           ),
                         ),

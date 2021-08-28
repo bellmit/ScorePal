@@ -362,14 +362,14 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
                         itemBuilder: (BuildContext context, int index) {
                           final button = _buttonsFound.values.elementAt(index);
                           return Dismissible(
-                            direction: DismissDirection.startToEnd,
+                            direction: DismissDirection.endToStart,
                             background: Container(
                               color: Values.deleteColor,
                               child: const Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.centerRight,
                                 child: const Padding(
                                   padding: const EdgeInsets.only(
-                                      left: Values.default_space),
+                                      right: Values.default_space),
                                   child: const IconWidget(Icons.delete),
                                 ),
                               ),

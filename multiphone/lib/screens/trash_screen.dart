@@ -184,14 +184,14 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
             itemBuilder: (ctx, index) {
               final match = matches.elementAt(index);
               return Dismissible(
-                direction: DismissDirection.startToEnd,
+                direction: DismissDirection.endToStart,
                 background: Container(
                   color: Values.deleteColor,
                   child: const Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: Alignment.centerRight,
                     child: const Padding(
                       padding:
-                          const EdgeInsets.only(left: Values.default_space),
+                          const EdgeInsets.only(right: Values.default_space),
                       child: const IconWidget(Icons.delete_forever),
                     ),
                   ),
