@@ -51,8 +51,7 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                     Flexible(
                       flex: 3,
                       child: Card(
-                        child: activeMatch
-                            .getSport()
+                        child: activeMatch.sport
                             .createScoreSummaryWidget(ctx, activeMatch),
                       ),
                     ),
@@ -64,8 +63,7 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                   children: [
                     // summarise the score
                     Card(
-                      child: activeMatch
-                          .getSport()
+                      child: activeMatch.sport
                           .createScoreSummaryWidget(ctx, activeMatch),
                     ),
                     // and show the history of this match

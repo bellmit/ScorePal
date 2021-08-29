@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class _ChangeMatchSetupScreenState extends State<ChangeMatchSetupScreen> {
               icon: Icons.warning_amber_outlined,
               isError: true,
             ),
-            Consumer<ActiveSelection>(
+            Consumer<ActiveSport>(
               builder: (ctx, activeSelection, child) {
                 // create the correct widget to setup the sport here then
                 return activeSelection.sport.createSetupWidget(ctx, false);

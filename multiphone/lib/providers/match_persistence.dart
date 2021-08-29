@@ -265,7 +265,7 @@ class MatchPersistence with ChangeNotifier {
       'id': matchId.toString(),
       'state': stateString(state),
       'sync': syncString(MatchPersistenceSyncState.dirty),
-      'date': dateKey.format(matchId.getDate()),
+      'date': dateKey.format(matchId.date),
       'sport': setup.sport.id,
       'setup': setup.getData(),
       'data': match.getData(),

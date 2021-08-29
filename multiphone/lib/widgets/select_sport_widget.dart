@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:multiphone/helpers/setup_persistence.dart';
-import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/providers/sport.dart';
 import 'package:multiphone/widgets/common/select_item_list_widget.dart';
 import 'package:multiphone/widgets/common/select_item_widget.dart';
@@ -13,16 +14,18 @@ class SelectSportWidget extends SelectItemListWidget {
   const SelectSportWidget({Key key}) : super(key: key);
 
   @override
-  List<SelectItemWidget> items(BuildContext context, List<bool> currentSelection) {
+  List<SelectItemWidget> items(
+      BuildContext context, List<bool> currentSelection) {
     final sports = Provider.of<Sports>(context, listen: false).available;
     return sports.map((e) {
       // for each sport, return a widget representing it
       return SelectItemWidget(
           icon: IconSvgWidget(
             e.icon,
-            isOnBackground: currentSelection == null || currentSelection.length == 0
-                  ? getInitialSelection(context) == sports.indexOf(e)
-                  : currentSelection[sports.indexOf(e)],
+            isOnBackground:
+                currentSelection == null || currentSelection.length == 0
+                    ? getInitialSelection(context) == sports.indexOf(e)
+                    : currentSelection[sports.indexOf(e)],
           ),
           text: e.title(context));
     }).toList();
@@ -31,17 +34,16 @@ class SelectSportWidget extends SelectItemListWidget {
   @override
   int getInitialSelection(BuildContext context) {
     // the initial selection is handled by the active match
-    Sport activeSport = Provider.of<ActiveSelection>(context, listen: false).sport;
+    Sport activeSport = Provider.of<ActiveSport>(context, listen: false).sport;
     // from the active sport - return the index of the sport for that match
     return Sports.index(activeSport);
   }
 
   @override
   void onSelectionChanged(BuildContext context, int newSelection) async {
-    final activeSelection =
-        Provider.of<ActiveSelection>(context, listen: false);
+    final activeSelection = Provider.of<ActiveSport>(context, listen: false);
     // before we change the sport, save any old setup
-    var setup = activeSelection.getSelectedSetup(false);
+    final setup = Provider.of<ActiveSetup>(context, listen: false);
     if (null != setup) {
       SetupPersistence().saveAsLastSetupData(setup);
     }

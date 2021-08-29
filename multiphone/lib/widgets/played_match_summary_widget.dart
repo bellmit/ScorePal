@@ -36,7 +36,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
   }
 
   Widget _createScoreSummaryWidget(BuildContext context) {
-    switch (widget.match.getSport().type) {
+    switch (widget.match.sport.type) {
       case SportType.TENNIS:
         return TennisScoreSummaryWidget(
           match: widget.match,
@@ -68,7 +68,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
           isTeamTwoConceded: widget.match.isTeamConceded(TeamIndex.T_TWO),
         );
       default:
-        return TextWidget('unsupported sport of ${widget.match.getSport().id}');
+        return TextWidget('unsupported sport of ${widget.match.sport.id}');
     }
   }
 
@@ -76,7 +76,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
   Widget build(BuildContext context) {
     final values = Values(context);
     final setup = widget.match.getSetup();
-    final sport = widget.match.getSport();
+    final sport = widget.match.sport;
     return Card(
       child: Container(
         padding: EdgeInsets.all(Values.default_space),
@@ -96,7 +96,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                 ),
                 /*
                 IconSvgWidget(
-                  widget.match.getSport().icon,
+                  widget.match.sport.icon,
                   height: Values.image_medium,
                   width: Values.image_medium,
                 ),*/

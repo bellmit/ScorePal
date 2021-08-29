@@ -5,7 +5,7 @@ import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/match_inbox.dart';
 import 'package:multiphone/providers/match_persistence.dart';
@@ -136,60 +136,102 @@ List<SingleChildWidget> _initProviders() => <SingleChildWidget>[
           create: (ctx) => MatchPersistence()),
       ChangeNotifierProvider<MatchInbox>(create: (ctx) => MatchInbox()),
       ChangeNotifierProvider<SpeakService>(create: (ctx) => SpeakService()),
-      _sportsProvider(),
-      _setupProvider(),
-      _matchProvider(),
+      _activeSportProvider(),
+      _activeSetupProvider(),
+      _activeMatchProvider(),
     ];
 
-SingleChildWidget _sportsProvider() =>
-    ChangeNotifierProxyProvider<Sports, ActiveSelection>(
-      // this proxy is called after the specified sports object is built
-      update: (ctx, sports, previousSelection) {
-        previousSelection.updateSportFromAvailable(sports);
-        return previousSelection;
+SingleChildWidget _activeSportProvider() =>
+    ChangeNotifierProxyProvider<Sports, ActiveSport>(
+      // this proxy is called after the specified sports object is built to set the active one
+      update: (ctx, sports, previousActiveSport) {
+        // update the selection to the available sports then
+        previousActiveSport.updateSportFromAvailable(sports);
+        return previousActiveSport;
       },
       create: (ctx) {
-        Log.info('created the single active selection');
-        return ActiveSelection();
+        Log.info('created the single active sport provider');
+        return ActiveSport();
       },
     );
 
-SingleChildWidget _setupProvider() =>
-    ChangeNotifierProxyProvider<ActiveSelection, ActiveSetup>(
+SingleChildWidget _activeSetupProvider() =>
+    ChangeNotifierProxyProvider<ActiveSport, ActiveSetup>(
       // this proxy is called after the specified active selection object is changed
       // to let us supply the setup held in the selection object
-      update: (ctx, activeSelection, previousSetup) {
-        // return the selected on in the active selection (have it create if required)
-        return activeSelection.getSelectedSetup(true);
+      update: (ctx, activeSport, previousSetup) {
+        if (activeSport.matchToResume != null) {
+          // there is a match to resume so use the setup from that
+          final setup = activeSport.matchToResume.getSetup();
+          setup.resumeMatch(activeSport.matchToResume);
+          Log.info(
+              'using the setup for the match of ${activeSport.sport.id.toString()} we want to resume');
+          return setup;
+        } else if (activeSport.isCreateNewMatch ||
+            null == previousSetup ||
+            previousSetup.sport != activeSport.sport) {
+          // we want to create a new one (or sport different), so do that
+          Log.info(
+              'creating a new setup of ${activeSport.sport.id.toString()}');
+          final newSetup = activeSport.sport == null
+              ? null
+              : activeSport.sport.createSetup();
+          if (activeSport.isCreateNewMatch) {
+            // tell the setup to also create a new match please
+            newSetup.createNewMatch();
+            // reset the active sport to not create a new one
+            activeSport.newMatchCreated();
+          }
+          return newSetup;
+        } else {
+          Log.info(
+              'using the existing setup for ${activeSport.sport.id.toString()}');
+          // we can just use the previous setup as-is
+          return previousSetup;
+        }
       },
       // create an empty one initially - needs the active match setting
       create: (ctx) {
+        // there is no setup when there is no sport
         return null;
       },
     );
 
-SingleChildWidget _matchProvider() =>
+SingleChildWidget _activeMatchProvider() =>
     ChangeNotifierProxyProvider<ActiveSetup, ActiveMatch>(
-      update: (ctx, setup, previousMatch) {
-        // this setup might change when the selection selects an active match
-        final activeSelection =
-            Provider.of<ActiveSelection>(ctx, listen: false);
-        final selectedMatch = activeSelection.getSelectedMatch(false);
-        if (null != selectedMatch &&
-            selectedMatch.getSport() == activeSelection.sport) {
-          // and return the active selected match, first apply the settings changed
-          selectedMatch.applyChangedMatchSettings();
-          // and return the selected match then
-          return selectedMatch;
+      update: (ctx, activeSetup, previousMatch) {
+        // the match has to update to reflect any changes in the active setup
+        if (activeSetup.matchToResume != null) {
+          // there is a match to resume so use that match
+          Log.info(
+              'using the match of ${activeSetup.sport.id.toString()} we want to resume');
+          // but this might be a change in the setup too
+          activeSetup.matchToResume.applyChangedMatchSettings();
+          // and return the match resumed
+          return activeSetup.matchToResume;
+        } else if (activeSetup.isCreateNewMatch ||
+            null == previousMatch ||
+            previousMatch.sport != activeSetup.sport) {
+          // the setup wants a new match, or the sport has changed so make a new match
+          Log.info(
+              'creating a new match of ${activeSetup.sport.id.toString()}');
+          // create the new one
+          final newMatch = activeSetup.sport.createMatch(activeSetup);
+          // and reset the flag on the setup
+          activeSetup.newMatchCreated();
+          // and return the new one
+          return newMatch;
         } else {
-          // there is no selected match in the selection, create a new match
-          return activeSelection.createMatch();
+          // we can just use the previous match as-is (but the setup changed)
+          previousMatch.applyChangedMatchSettings();
+          Log.info(
+              'using the existing match for ${activeSetup.sport.id.toString()}');
+          // and return the updated match
+          return previousMatch;
         }
       },
       create: (ctx) {
-        // this is the first match created - create it for the selected setup
-        final activeSelection =
-            Provider.of<ActiveSelection>(ctx, listen: false);
-        return activeSelection.getSelectedMatch(true);
+        // there is no match initially
+        return null;
       },
     );

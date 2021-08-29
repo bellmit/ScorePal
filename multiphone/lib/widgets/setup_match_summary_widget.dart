@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:provider/provider.dart';
 
@@ -12,16 +12,17 @@ class SetupMatchSummaryWidget extends StatelessWidget {
 
   void _startMatch(BuildContext context) {
     // start playing the selected match then, just get the match as-is
-    final selection = Provider.of<ActiveSelection>(context, listen: false);
+    final selection = Provider.of<ActiveSport>(context, listen: false);
     // but the settings might have changed, let's have a little save of them before
     // we pop out to the play match widget to play a new match
-    final setup = selection.getSelectedSetup(false);
+    final setup = Provider.of<ActiveSetup>(context, listen: false);
     if (null != setup) {
+      // save this data off in your own time.
       SetupPersistence().saveAsLastSetupData(setup);
+      // and be sure to create a brand new match from the setup to clear anything
+      // that might be hanging around
+      setup.createNewMatch();
     }
-    // and be sure to create a brand new match from the setup to clear anything
-    // that might be hanging around
-    selection.createMatch();
     // and navigate to the match screen
     Navigator.of(context).pushNamed(selection.sport.playNavPath);
   }

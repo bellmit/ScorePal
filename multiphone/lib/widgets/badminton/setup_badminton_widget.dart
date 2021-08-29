@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/setup_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/badminton/badminton_match_setup.dart';
-import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/info_bar_widget.dart';
@@ -21,8 +21,6 @@ class SetupBadmintonWidget extends StatefulWidget {
 }
 
 class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
-  BadmintonMatchSetup _setup;
-
   Widget _createAdvancedTitle(String title) {
     return Expanded(
       child: Padding(
@@ -35,15 +33,10 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
   @override
   void initState() {
     super.initState();
-    // get our setup
-    _setup = Provider.of<ActiveSelection>(context, listen: false)
-        .getSelectedSetup(true) as BadmintonMatchSetup;
-    if (null != _setup && widget.isLoadSetup) {
-      SetupPersistence().loadLastSetupData(_setup).then((value) {
-        setState(() {
-          _setup = value;
-        });
-      });
+    // do we need to load data into here?
+    if (widget.isLoadSetup) {
+      final setup = Provider.of<ActiveSetup>(context, listen: false);
+      SetupPersistence().loadLastSetupData(setup);
     }
   }
 
@@ -57,43 +50,48 @@ class _SetupBadmintonWidgetState extends State<SetupBadmintonWidget> {
     );
     return Container(
       width: double.infinity,
-      child: Column(
-        // we need a key for the data that changes when the setup changes
-        key: ValueKey<String>(_setup.id),
-        children: [
-          Padding(
-            padding: EdgeInsets.all(Values.default_space),
-            child: SelectGamesWidget(
-              games: _setup.games,
-              onGamesChanged: (value) => _setup.games = value,
-            ),
-          ),
-          PlayerNamesWidget(
-            playerNames: [
-              _setup.getPlayerName(PlayerIndex.P_ONE, context),
-              _setup.getPlayerName(PlayerIndex.P_TWO, context),
-              _setup.getPlayerName(PlayerIndex.PT_ONE, context),
-              _setup.getPlayerName(PlayerIndex.PT_TWO, context),
+      child: Consumer<ActiveSetup>(
+        builder: (ctx, setup, child) {
+          if (!(setup is BadmintonMatchSetup))
+            return Text('setup is not badminton');
+          final badmintonSetup = setup as BadmintonMatchSetup;
+          return Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(Values.default_space),
+                child: SelectGamesWidget(
+                  games: badmintonSetup.games,
+                  onGamesChanged: (value) => badmintonSetup.games = value,
+                ),
+              ),
+              PlayerNamesWidget(
+                playerNames: [
+                  badmintonSetup.getPlayerName(PlayerIndex.P_ONE, context),
+                  badmintonSetup.getPlayerName(PlayerIndex.P_TWO, context),
+                  badmintonSetup.getPlayerName(PlayerIndex.PT_ONE, context),
+                  badmintonSetup.getPlayerName(PlayerIndex.PT_TWO, context),
+                ],
+                startingServer: badmintonSetup.startingServer,
+                singlesDoubles: badmintonSetup.singlesDoubles,
+              ),
+              InfoBarWidget(title: Values(context).strings.heading_advanced),
+              Padding(
+                padding: advancedHeadingPadding,
+                child: Row(
+                  children: [
+                    _createAdvancedTitle(
+                      Values(context).strings.badminton_number_points_per_game,
+                    ),
+                    SelectPointsWidget(
+                      points: badmintonSetup.points,
+                      onPointsChanged: (value) => badmintonSetup.points = value,
+                    ),
+                  ],
+                ),
+              ),
             ],
-            startingServer: _setup.startingServer,
-            singlesDoubles: _setup.singlesDoubles,
-          ),
-          InfoBarWidget(title: Values(context).strings.heading_advanced),
-          Padding(
-            padding: advancedHeadingPadding,
-            child: Row(
-              children: [
-                _createAdvancedTitle(
-                  Values(context).strings.badminton_number_points_per_game,
-                ),
-                SelectPointsWidget(
-                  points: _setup.points,
-                  onPointsChanged: (value) => _setup.points = value,
-                ),
-              ],
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

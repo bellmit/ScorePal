@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
-import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/common/line_break_widget.dart';
 import 'package:multiphone/widgets/select_sport_widget.dart';
@@ -30,13 +30,6 @@ class _SetupMatchScreenState extends BaseNavScreenState<SetupMatchScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // clear any match from being active then as we are starting a new one
-    Provider.of<ActiveSelection>(context, listen: false).clearSelection();
-  }
-
-  @override
   Widget buildScreenBody(BuildContext context) {
     return Column(
       children: [
@@ -61,7 +54,7 @@ class _SetupMatchScreenState extends BaseNavScreenState<SetupMatchScreen> {
                     padding: EdgeInsets.all(Values.default_space),
                     child: SelectSportWidget(),
                   ),
-                  Consumer<ActiveSelection>(
+                  Consumer<ActiveSport>(
                     builder: (ctx, activeSelection, child) {
                       // this is called whenever the active selection changes so
                       // create the correct widget to setup the sport here then

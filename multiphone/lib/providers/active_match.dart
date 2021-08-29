@@ -116,7 +116,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   void setData(
       MatchId matchId, Map<String, Object> data, BuildContext context) {
     // Id first
-    _dateMatchStarted = matchId.getDate();
+    _dateMatchStarted = matchId.date;
     _matchTimePlayedMs = (data["secs"] as int) * 1000;
     for (int i = 0; i < _conceded.length; ++i) {
       _conceded[i] = data['conceded_${i + 1}'] ?? false;
@@ -200,7 +200,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     return _setup;
   }
 
-  Sport getSport() {
+  Sport get sport {
     return _setup.sport;
   }
 

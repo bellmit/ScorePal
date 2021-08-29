@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/match/team_namer.dart';
+import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 
@@ -33,6 +34,8 @@ abstract class ActiveSetup with ChangeNotifier {
 
   TeamNamer _teamNamer;
   final Sport sport;
+  bool _isCreateNewMatch = false;
+  ActiveMatch _matchToResume;
   String _id;
   List<CommunicatedTo> _communicatedToList = [];
   String _communicatedFrom;
@@ -61,6 +64,32 @@ abstract class ActiveSetup with ChangeNotifier {
 
   bool get isCommunicatedFrom {
     return _communicatedFrom != null && _communicatedFrom.isNotEmpty;
+  }
+
+  bool get isCreateNewMatch {
+    return _isCreateNewMatch;
+  }
+
+  void newMatchCreated() {
+    // called from the provider when we make a new one (to not do it again)
+    _isCreateNewMatch = false;
+  }
+
+  ActiveMatch get matchToResume {
+    return _matchToResume;
+  }
+
+  void createNewMatch() {
+    _isCreateNewMatch = true;
+    _matchToResume = null;
+    // and inform listeners
+    notifyListeners();
+  }
+
+  void resumeMatch(ActiveMatch match) {
+    _matchToResume = match;
+    _isCreateNewMatch = false;
+    notifyListeners();
   }
 
   Map<String, Object> getData() {

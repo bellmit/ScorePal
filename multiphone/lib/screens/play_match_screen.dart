@@ -459,7 +459,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                               right: Values.default_space,
                               bottom: Values.team_names_widget_height),
                           child: PlayMatchOptionsWidget(
-                            sportSvgPath: match.getSport().icon,
+                            sportSvgPath: match.sport.icon,
                             matchDescription: match.getDescription(
                                 DescriptionLevel.SHORT, context),
                             teamOneName: match

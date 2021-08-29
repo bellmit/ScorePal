@@ -84,7 +84,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
               children: <Widget>[
                 SizedBox(height: Values.default_space),
                 MatchSummaryTitleWidget(
-                  svgPath: match.getSport().icon,
+                  svgPath: match.sport.icon,
                   description:
                       match.getDescription(DescriptionLevel.SHORT, context),
                 ),
@@ -97,7 +97,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                         values.strings.match_accept),
                   ],
                 ),
-                match.getSport().createScoreSummaryWidget(ctx, match),
+                match.sport.createScoreSummaryWidget(ctx, match),
                 if (!match.isMatchOver())
                   Padding(
                     padding: const EdgeInsets.only(

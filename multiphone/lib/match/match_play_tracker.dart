@@ -4,7 +4,7 @@ import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/active_selection.dart';
+import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/screens/setup_match_screen.dart';
@@ -59,16 +59,16 @@ class MatchPlayTracker {
 
   static void setupNewMatch(BuildContext context) {
     // clear any current selection on the selection provider (want a new one)
-    Provider.of<ActiveSelection>(context, listen: false).clearSelection();
+    Provider.of<ActiveSport>(context, listen: false).createNewMatch();
     // and show the screen to start a new one
     navTo(SetupMatchScreen.routeName, context);
   }
 
   static void resumePreviousMatch(ActiveMatch match, BuildContext context) {
     // select this on the selection provider
-    Provider.of<ActiveSelection>(context, listen: false).selectMatch(match);
+    Provider.of<ActiveSport>(context, listen: false).resumeMatch(match);
     // and show the playing screen for this
-    navTo(match.getSport().playNavPath, context);
+    navTo(match.sport.playNavPath, context);
   }
 
   void clearMatchData() {

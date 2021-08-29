@@ -11,7 +11,7 @@ class MatchId {
   static MatchId create(ActiveMatch match) => MatchId(
       fileDateFormat.format(match.getDateMatchStarted() ?? DateTime.now()) +
           "_" +
-          match.getSport().id);
+          match.sport.id);
 
   MatchId(String idString) : _idString = idString;
 
@@ -26,15 +26,15 @@ class MatchId {
     return _idString;
   }
 
-  bool isValid() {
+  bool get isValid {
     return isMatchIdValid(_idString);
   }
 
-  DateTime getDate() {
+  DateTime get date {
     return dateFromMatchId(_idString);
   }
 
-  Sport getSport() {
+  Sport get sport {
     return sportFromMatchId(_idString);
   }
 
