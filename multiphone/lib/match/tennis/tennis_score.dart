@@ -21,7 +21,7 @@ class TennisScore extends Score<TennisMatchSetup> {
   static const int K_LEVELS = 3;
 
   bool _isInTieBreak;
-  bool _isTeamServerChangeAllowed;
+  bool _isTeamServerChangeAllowed = true;
   PlayerIndex _tieBreakServer;
 
   List<int> tieBreakSets;
@@ -67,7 +67,7 @@ class TennisScore extends Score<TennisMatchSetup> {
     }
     // and reset our data
     _isInTieBreak = false;
-    _isTeamServerChangeAllowed = false;
+    _isTeamServerChangeAllowed = true;
     _tieBreakServer = null;
   }
 

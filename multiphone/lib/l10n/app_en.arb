@@ -404,6 +404,7 @@
     "warning_no_matches_to_delete": "You haven't any deleted matches...",
     "warning_no_matches_in_inbox": "You haven't any matches sent from other Scorepal members...",
 
+    "error_change_server": "Sorry, you can't change server at this point in the match.",
     "error_flic2_bluetooth_permission": "Bluetooth access is required to scan and use a FLic2, please change the permissions of Scorepal to allow this.",
     "error_flic2_bluetooth_on": "Bluetooth needs to be enabled to discover a Flic2, please turn bluetooth on and try again.",
     "error_online": "An error occurred, please sign off and on again and try again.",

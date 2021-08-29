@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
   // Define which predefined FlexScheme to use.
   final FlexScheme usedFlexScheme = FlexScheme.ebonyClay;
   // Used to select if we use the dark or light theme.
-  ThemeMode themeMode = ThemeMode.system;
+  final ThemeMode themeMode = ThemeMode.system;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -144,10 +145,12 @@ SingleChildWidget _sportsProvider() =>
     ChangeNotifierProxyProvider<Sports, ActiveSelection>(
       // this proxy is called after the specified sports object is built
       update: (ctx, sports, previousSelection) {
-        return ActiveSelection(sports);
+        previousSelection.updateSportFromAvailable(sports);
+        return previousSelection;
       },
       create: (ctx) {
-        return ActiveSelection(null);
+        Log.info('created the single active selection');
+        return ActiveSelection();
       },
     );
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_history.dart';
@@ -45,12 +44,12 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                   children: [
                     // summarise the score
                     Flexible(
-                      flex: 3,
+                      flex: 5,
                       child: _historyList(activeMatch, values),
                     ),
                     // and show the history of this match
                     Flexible(
-                      flex: 5,
+                      flex: 3,
                       child: Card(
                         child: activeMatch
                             .getSport()

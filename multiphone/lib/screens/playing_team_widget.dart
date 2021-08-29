@@ -8,8 +8,14 @@ import 'package:multiphone/widgets/server_image_widget.dart';
 class PlayingTeamWidget extends StatelessWidget {
   final TeamIndex team;
   final ActiveMatch match;
+  final void Function() onTeamNameClicked;
 
-  const PlayingTeamWidget({Key key, this.team, this.match}) : super(key: key);
+  const PlayingTeamWidget({
+    Key key,
+    @required this.team,
+    @required this.match,
+    @required this.onTeamNameClicked,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,56 +26,36 @@ class PlayingTeamWidget extends StatelessWidget {
     final partner = setup.getTeamPartner(team);
     final playerName = setup.getPlayerName(player, context);
     final partnerName = setup.getPlayerName(partner, context);
-    return Card(
-      color: Theme.of(context).secondaryHeaderColor,
-      child: Container(
-        margin: EdgeInsets.all(Values.default_space),
-        width: double.infinity,
-        height: Values.team_names_widget_height,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              flex: 1,
-              child: Row(
-                children: [
-                  if (match.isTeamConceded(team))
-                    Padding(
-                      padding: const EdgeInsets.all(Values.default_space),
-                      child: TextWidget(Values(context).strings.team_conceded),
-                    ),
-                  ServerImageWidget(isServing: servingPlayer == player),
-                  const SizedBox(
-                    width: Values.default_space,
-                  ),
-                  Expanded(
-                    child: Text(
-                      playerName,
-                      overflow: TextOverflow.fade,
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: theme.accentTextTheme.button.color,
-                          fontWeight: servingPlayer == player
-                              ? FontWeight.bold
-                              : FontWeight.normal),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (setup.singlesDoubles == MatchSinglesDoubles.doubles)
+    return InkWell(
+      onTap: onTeamNameClicked,
+      child: Card(
+        color: Theme.of(context).secondaryHeaderColor,
+        child: Container(
+          margin: EdgeInsets.all(Values.default_space),
+          width: double.infinity,
+          height: Values.team_names_widget_height,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Flexible(
                 flex: 1,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    if (match.isTeamConceded(team))
+                      Padding(
+                        padding: const EdgeInsets.all(Values.default_space),
+                        child:
+                            TextWidget(Values(context).strings.team_conceded),
+                      ),
+                    ServerImageWidget(isServing: servingPlayer == player),
+                    const SizedBox(
+                      width: Values.default_space,
+                    ),
                     Expanded(
                       child: Text(
-                        partnerName,
+                        playerName,
                         overflow: TextOverflow.fade,
                         maxLines: 2,
-                        softWrap: false,
-                        textAlign: TextAlign.end,
                         style: TextStyle(
                             color: theme.accentTextTheme.button.color,
                             fontWeight: servingPlayer == player
@@ -77,14 +63,38 @@ class PlayingTeamWidget extends StatelessWidget {
                                 : FontWeight.normal),
                       ),
                     ),
-                    const SizedBox(
-                      width: Values.default_space,
-                    ),
-                    ServerImageWidget(isServing: servingPlayer == partner),
                   ],
                 ),
               ),
-          ],
+              if (setup.singlesDoubles == MatchSinglesDoubles.doubles)
+                Flexible(
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          partnerName,
+                          overflow: TextOverflow.fade,
+                          maxLines: 2,
+                          softWrap: false,
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                              color: theme.accentTextTheme.button.color,
+                              fontWeight: servingPlayer == player
+                                  ? FontWeight.bold
+                                  : FontWeight.normal),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: Values.default_space,
+                      ),
+                      ServerImageWidget(isServing: servingPlayer == partner),
+                    ],
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

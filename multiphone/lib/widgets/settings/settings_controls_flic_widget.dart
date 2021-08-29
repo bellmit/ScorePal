@@ -49,7 +49,7 @@ class _SettingsControlsFlicWidgetState extends State<SettingsControlsFlicWidget>
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
+    final values = Values(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/user_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
@@ -29,7 +30,7 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
   @override
   Widget build(BuildContext context) {
     // prepare the mixin
-    prepareWidget(context);
+    final values = Values(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

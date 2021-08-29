@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -49,7 +50,7 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
+    final values = Values(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

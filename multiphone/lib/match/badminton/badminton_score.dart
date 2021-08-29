@@ -10,7 +10,7 @@ class BadmintonScore extends Score<BadmintonMatchSetup> {
   static const POINTS_AHEAD_IN_GAME = 2;
 
   static const K_LEVELS = 2;
-  bool _isTeamServerChangeAllowed;
+  bool _isTeamServerChangeAllowed = true;
 
   BadmintonScore(BadmintonMatchSetup setup) : super(setup, K_LEVELS);
 
@@ -33,7 +33,7 @@ class BadmintonScore extends Score<BadmintonMatchSetup> {
     // let the base reset
     super.resetScore();
     // and reset any stats we have here
-    _isTeamServerChangeAllowed = false;
+    _isTeamServerChangeAllowed = true;
   }
 
   @override

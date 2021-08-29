@@ -231,8 +231,8 @@ abstract class ActiveSetup with ChangeNotifier {
     return _singlesDoubles;
   }
 
-  set singlesDoubles(MatchSinglesDoubles singlesDoubles) {
-    _singlesDoubles = singlesDoubles;
+  set singlesDoubles(MatchSinglesDoubles newValue) {
+    _singlesDoubles = newValue;
     // this is a change
     notifyListeners();
   }

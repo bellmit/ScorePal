@@ -6,7 +6,6 @@ import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_match.dart';
-import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/controllers/controllers.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
@@ -55,11 +54,6 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   void initState() {
     super.initState();
 
-    // get the match as-is to track it (it will change but there will only be one)
-    ActiveMatch match = Provider.of<ActiveSelection>(context, listen: false)
-        .getSelectedMatch(true);
-    // new match - new tracker
-    _playTracker = MatchPlayTracker(match);
     // create the controllers we will use to track things
     _controllersProvider = new Controllers(context);
     // and listen to it
@@ -163,6 +157,16 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     }
   }
 
+  void _onTeamClicked(ActiveMatch match, TeamIndex team) {
+    if (match.score.isTeamServerChangeAllowed()) {
+      setState(() => match.score.changeServer());
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: TextWidget(Values(context).strings.error_change_server),
+      ));
+    }
+  }
+
   void _processScoreChange(ActiveMatch match, TeamIndex team, int level) {
     if (!match.isMatchOver()) {
       // make the derived class change our score
@@ -262,7 +266,11 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
       return Column(
         children: [
           // this is the bar for team one player and partner
-          PlayingTeamWidget(match: match, team: TeamIndex.T_ONE),
+          PlayingTeamWidget(
+            match: match,
+            team: TeamIndex.T_ONE,
+            onTeamNameClicked: () => _onTeamClicked(match, TeamIndex.T_ONE),
+          ),
           Expanded(
             child: Column(
               children: [
@@ -286,7 +294,11 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
             ),
           ),
           // this is the bar for team two player and partner
-          PlayingTeamWidget(match: match, team: TeamIndex.T_TWO),
+          PlayingTeamWidget(
+            match: match,
+            team: TeamIndex.T_TWO,
+            onTeamNameClicked: () => _onTeamClicked(match, TeamIndex.T_TWO),
+          ),
         ],
       );
     } else {
@@ -296,7 +308,12 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
             flex: 1,
             child: Column(
               children: [
-                PlayingTeamWidget(match: match, team: TeamIndex.T_ONE),
+                PlayingTeamWidget(
+                  match: match,
+                  team: TeamIndex.T_ONE,
+                  onTeamNameClicked: () =>
+                      _onTeamClicked(match, TeamIndex.T_ONE),
+                ),
                 Expanded(
                   child: widget.createScoreWidget(
                     match,
@@ -312,7 +329,12 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
             flex: 1,
             child: Column(
               children: [
-                PlayingTeamWidget(match: match, team: TeamIndex.T_TWO),
+                PlayingTeamWidget(
+                  match: match,
+                  team: TeamIndex.T_TWO,
+                  onTeamNameClicked: () =>
+                      _onTeamClicked(match, TeamIndex.T_TWO),
+                ),
                 Expanded(
                   child: widget.createScoreWidget(
                     match,
@@ -340,6 +362,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         builder: (ctx, orientation) {
           return Consumer<ActiveMatch>(
             builder: (ctx, match, child) {
+              // new match - new tracker
+              _playTracker = MatchPlayTracker(match);
               return Stack(
                 children: [
                   _createScoreDisplay(match, orientation),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/preferences.dart';
+import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 
@@ -18,8 +19,7 @@ class _SettingsSoundsGeneralWidgetState
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
-    prepareWidget(context);
-
+    final values = Values(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -50,7 +50,7 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
   @override
   Widget build(BuildContext context) {
     // prepare the mixin
-    prepareWidget(context);
+    final values = Values(context);
     // prepare our member data to use and reuse
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

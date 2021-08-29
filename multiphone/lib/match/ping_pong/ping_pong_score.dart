@@ -12,7 +12,7 @@ class PingPongScore extends Score<PingPongMatchSetup> {
   static const K_LEVELS = 2;
 
   bool _isExpediteSystemInEffect = false;
-  bool _isTeamServerChangeAllowed;
+  bool _isTeamServerChangeAllowed = true;
   PlayerIndex _nextRoundServer;
 
   PingPongScore(PingPongMatchSetup setup) : super(setup, K_LEVELS);
@@ -42,7 +42,7 @@ class PingPongScore extends Score<PingPongMatchSetup> {
     super.resetScore();
     // and reset our data
     _isExpediteSystemInEffect = false;
-    _isTeamServerChangeAllowed = false;
+    _isTeamServerChangeAllowed = true;
     _nextRoundServer = getNextServer();
   }
 

@@ -8,9 +8,13 @@ class ActiveSelection with ChangeNotifier {
   ActiveSetup _selectedSetup;
   ActiveMatch _selectedMatch;
 
-  ActiveSelection(Sports sports) {
-    // just use the first available valid sport as our default
-    _sport = sports == null ? null : sports.available.first;
+  ActiveSelection();
+
+  void updateSportFromAvailable(Sports sports) {
+    // if our sport is null (or invalid), just take the first
+    if (_sport == null || sports.available.contains(_sport)) {
+      sport = sports == null ? null : sports.available.first;
+    }
   }
 
   ActiveMatch getSelectedMatch(bool createIfNull) {

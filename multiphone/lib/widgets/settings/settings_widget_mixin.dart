@@ -3,14 +3,6 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 
 class SettingsWidgetMixin {
-  Values values;
-  ThemeData theme;
-
-  void prepareWidget(BuildContext context) {
-    values = Values(context);
-    theme = Theme.of(context);
-  }
-
   Widget createSwitchingRow(BuildContext context, Widget icon, String title,
       String explain, void Function(bool) onSwitch,
       {bool isSelected = false}) {
@@ -32,7 +24,7 @@ class SettingsWidgetMixin {
                       child: TextWidget(title),
                     ),
                     Switch(
-                      activeColor: theme.primaryColor,
+                      activeColor: Theme.of(context).primaryColor,
                       value: isSelected,
                       onChanged: onSwitch,
                     ),
