@@ -21,6 +21,11 @@ class PingPongMatchSpeaker extends MatchSpeaker<PingPongMatch> {
   @override
   String createPointsPhrase(PingPongMatch match, BuildContext context,
       TeamIndex changeTeam, int level) {
+    // while we are here, let's just be sure to create the expedite string
+    if (_expediteMessageString == null && null != context) {
+      _expediteMessageString = Values(context).strings.speak_expedite_system;
+    }
+    // and now do what we are actually here for
     PingPongMatchSetup setup = match.getSetup();
     StringBuilder message = StringBuilder();
     String teamOneString = getSpeakingTeamName(context, setup, TeamIndex.T_ONE);
@@ -93,16 +98,17 @@ class PingPongMatchSpeaker extends MatchSpeaker<PingPongMatch> {
     if (match.getIsAnnounceExpediteSystem()) {
       // we are to announce the commencement of the expedite system
       append(message, Point.K_SPEAKING_PAUSE);
-      if (_expediteMessageString == null) {
-        _expediteMessageString = BuildContext == null
-            ? "commence expedite"
-            : Values(context).strings.speak_expedite_system;
-      }
-      append(message, _expediteMessageString);
+      append(message, expediteString);
       match.expediteSystemAnnounced();
     }
     // and return the complicated message to speak
     return message.toString();
+  }
+
+  String get expediteString {
+    return _expediteMessageString == null
+        ? "commence expedite"
+        : _expediteMessageString;
   }
 
   @override

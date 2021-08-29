@@ -1,5 +1,7 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
@@ -81,17 +83,11 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
         if (startExpediteSystem()) {
           // this is started right now half way through anything else
           // announce it immediately
-          //TODO announce this expedite system immediately please!
-          /*
-          MatchService service = MatchService.GetRunningService();
-          if (null != service) {
-            // get the string to announce
-            String messageString = Values(context).
-                service.getString(R.string.speak_expedite_system);
-            // send this message to announce the points with this string to say right away
-            service.speakSpecialMessage(messageString);
-          }
-          */
+          FlutterTts().getDefaultEngine.then((value) {
+            // we have the engine, let's speak the message
+            SpeakService.speakNow(
+                value, (speaker as PingPongMatchSpeaker).expediteString);
+          });
         }
       }));
     }

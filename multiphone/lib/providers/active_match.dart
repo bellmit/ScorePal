@@ -35,6 +35,10 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     _dateMatchStarted = DateTime.now();
   }
 
+  MatchSpeaker get speaker {
+    return _speaker;
+  }
+
   TScore get score {
     return _score;
   }

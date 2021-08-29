@@ -13,6 +13,8 @@ class SpeakService with ChangeNotifier {
   final FlutterTts flutterTts;
   String engine;
 
+  static SpeakService _runningService;
+
   TtsState _ttsState = TtsState.stopped;
 
   bool get isPlaying => _ttsState == TtsState.playing;
@@ -77,6 +79,17 @@ class SpeakService with ChangeNotifier {
     return engine;
   }
 
+  static Future<void> speakNow(FlutterTts engine, String message,
+      {double volume = 1.0}) async {
+    // and speak the message
+    Log.debug('speaking the following (vol:$volume): "$message"');
+    await engine.setVolume(volume);
+    await engine.setSpeechRate(Values.speaking_rate);
+    await engine.setPitch(Values.speaking_pitch);
+    // and speak the new one
+    await engine.speak(message ?? '');
+  }
+
   Future<void> speak(String message) async {
     if (null == message || message.isEmpty) {
       // nothing to say, stop any previous message
@@ -85,15 +98,10 @@ class SpeakService with ChangeNotifier {
     }
     final preferences = await Preferences.create();
     final volume = preferences.soundAnnounceVolume.clamp(0.0, 1.0);
-    Log.debug('speaking the following (vol:$volume): "$message"');
-    await flutterTts.setVolume(volume);
-    await flutterTts.setSpeechRate(Values.speaking_rate);
-    await flutterTts.setPitch(Values.speaking_pitch);
-
     // stop any previous message
     await stop();
-    // and speak the new one
-    await flutterTts.speak(message ?? '');
+    // and speak this right now at the preference's vol (always 1 for now)
+    speakNow(flutterTts, message, volume: volume);
   }
 
   Future<void> stop() async {
