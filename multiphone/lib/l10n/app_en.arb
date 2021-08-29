@@ -85,8 +85,6 @@
     },
 
     "loading_wait": "Loading matches...",
-    "button_accept_match": "Accept Match Results",
-    "button_delete_match": "Reject Match Results",
     "screen_inbox": "Match Inbox",
     "description_check_inbox": "You have some matches in your inbox from other players...",
     "description_play_new_match": "Why not play a match to get started...",

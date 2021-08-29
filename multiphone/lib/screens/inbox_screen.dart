@@ -155,18 +155,19 @@ class _InboxScreenState extends BaseNavScreenState<InboxScreen> {
                         },
                         child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            Wrap(
+                              alignment: WrapAlignment.spaceEvenly,
+                              spacing: Values.default_space,
                               children: [
                                 IconButtonWidget(
                                   () => _deleteMatch(match, index),
                                   Icons.delete,
-                                  Values(context).strings.button_delete_match,
+                                  Values(context).strings.match_delete,
                                 ),
                                 IconButtonWidget(
                                   () => _acceptMatch(match, index),
                                   Icons.done_outline,
-                                  Values(context).strings.button_accept_match,
+                                  Values(context).strings.match_accept,
                                 ),
                               ],
                             ),

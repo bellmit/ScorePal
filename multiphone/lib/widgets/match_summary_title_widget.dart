@@ -14,26 +14,23 @@ class MatchSummaryTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: ValueKey<String>('match_summary'),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: Values.default_space,
-          right: Values.default_space,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            IconSvgWidget(
-              svgPath,
-              size: Values.image_medium,
-            ),
-            Expanded(
-              child: TextWidget(description),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: Values.default_space,
+        right: Values.default_space,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          IconSvgWidget(
+            svgPath,
+            size: Values.image_medium,
+          ),
+          Expanded(
+            child: TextWidget(description),
+          ),
+        ],
       ),
     );
   }

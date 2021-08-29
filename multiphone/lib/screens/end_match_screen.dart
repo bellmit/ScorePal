@@ -88,8 +88,9 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                   description:
                       match.getDescription(DescriptionLevel.SHORT, context),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Wrap(
+                  alignment: WrapAlignment.spaceEvenly,
+                  spacing: Values.default_space,
                   children: [
                     IconButtonWidget(() => _deleteMatch(match), Icons.delete,
                         values.strings.match_delete),
