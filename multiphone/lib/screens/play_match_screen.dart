@@ -363,7 +363,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
           return Consumer<ActiveMatch>(
             builder: (ctx, match, child) {
               // new match - new tracker
-              _playTracker = MatchPlayTracker(match);
+              _playTracker = MatchPlayTracker(match, ctx);
               return Stack(
                 children: [
                   _createScoreDisplay(match, orientation),

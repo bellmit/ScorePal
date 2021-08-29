@@ -18,13 +18,15 @@ class MatchPlayTracker {
   DateTime _playEnded;
   DateTime _playStarted;
 
-  MatchPlayTracker(this.match) {
+  MatchPlayTracker(this.match, BuildContext context) {
     // have started then
     _playStarted = DateTime.now();
     if (match.getDateMatchStarted() == null) {
       // this goes on the match too
       match.setDateMatchStarted(_playStarted);
     }
+    // because we have the context here, we can restore our history properly
+    match.restorePointHistory(context);
     // we can set the location of the match here too!
     Permission.location.serviceStatus
         .then((value) => value.isEnabled)

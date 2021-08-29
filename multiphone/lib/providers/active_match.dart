@@ -65,14 +65,19 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   void applyChangedMatchSettings() {
     // this is a little different to the reset as we want to keep the score
     // so we can just restore the point history, which has the side-effect of doing just this
-    _score.restorePointHistory(() {
-      // every time a point is incremented inform listeners
-      notifyListeners();
-    });
+    _score.restorePointHistory(null);
     // reset any state as nothing actually changed
     _score.resetState();
     // inform listeners of this change to the score
     notifyListeners();
+  }
+
+  void restorePointHistory(BuildContext context) {
+    // we want to restore the point history here now that we have a context
+    _score.restorePointHistory(
+        _scoreHistoryReconstitutionFunction(context, false));
+    // reset any state as nothing actually changed
+    _score.resetState();
   }
 
   set location(LocationData location) {
@@ -134,9 +139,19 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     //this.playedLocation = LocationWrapper().deserialiseFromString(data.getString("locn")).content;
     // most importantly we want to put the score in. Then we can replay the score to
     // put the state of this match back to how it was when we saved it
-    _score.restoreFromData(data["score"], () {
-      // every time a point is incremented inform listeners
-      notifyListeners();
+    _score.restoreFromData(
+        data["score"], _scoreHistoryReconstitutionFunction(context, true));
+    // this, obviously, changes the data
+    notifyListeners();
+  }
+
+  void Function() _scoreHistoryReconstitutionFunction(
+      BuildContext context, bool isNotifyChanges) {
+    return () {
+      if (isNotifyChanges) {
+        // every time a point is incremented inform listeners
+        notifyListeners();
+      }
       if (null != score &&
           null != context &&
           (score.state.isChanged(ScoreChange.increment) ||
@@ -147,9 +162,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
         String scoreString = getDescription(DescriptionLevel.SCORE, context);
         describeLastHistoryChange(score.state.getState(), scoreString);
       }
-    });
-    // this, obviously, changes the data
-    notifyListeners();
+    };
   }
 
   bool isMatchPlayStarted() {
