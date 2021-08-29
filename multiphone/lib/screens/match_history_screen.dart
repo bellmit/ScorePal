@@ -136,8 +136,12 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
           children: [
             Expanded(
               child: TextWidget(
-                values.construct(values.strings.history_point_explain,
-                    [setup.getTeamName(history.team, context)]),
+                values.construct(values.strings.history_point_explain, [
+                  setup.getTeamName(history.team, context),
+                  MatchWriter.removePlural(MatchWriter.parseScoreString(
+                          history.scoreString)['level'])
+                      .toLowerCase()
+                ]),
                 isLimitOverflow: false,
               ),
             ),
@@ -156,11 +160,18 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                   Expanded(
                     child: Column(
                       children: [
-                        teamTitle(setup.getTeamName(TeamIndex.T_ONE, context)),
                         TextWidget(
-                            MatchWriter.parseScoreString(
-                                history.scoreString)['team_one_score'],
-                            isOnBackground: true),
+                          setup.getTeamName(TeamIndex.T_ONE, context),
+                          isOnBackground: true,
+                          textAlign: TextAlign.right,
+                          isLimitOverflow: true,
+                        ),
+                        TextWidget(
+                          MatchWriter.parseScoreString(
+                              history.scoreString)['team_one_score'],
+                          isOnBackground: true,
+                          textAlign: TextAlign.right,
+                        ),
                       ],
                     ),
                   ),
@@ -168,18 +179,26 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                     children: [
                       teamTitle(''),
                       TextWidget(
-                          activeMatch.getLevelTitle(history.level, context),
+                          MatchWriter.parseScoreString(
+                              history.scoreString)['level'],
                           isOnBackground: true),
                     ],
                   ),
                   Expanded(
                     child: Column(
                       children: [
-                        teamTitle(setup.getTeamName(TeamIndex.T_TWO, context)),
                         TextWidget(
-                            MatchWriter.parseScoreString(
-                                history.scoreString)['team_two_score'],
-                            isOnBackground: true),
+                          setup.getTeamName(TeamIndex.T_TWO, context),
+                          isOnBackground: true,
+                          textAlign: TextAlign.left,
+                          isLimitOverflow: true,
+                        ),
+                        TextWidget(
+                          MatchWriter.parseScoreString(
+                              history.scoreString)['team_two_score'],
+                          isOnBackground: true,
+                          textAlign: TextAlign.left,
+                        ),
                       ],
                     ),
                   ),

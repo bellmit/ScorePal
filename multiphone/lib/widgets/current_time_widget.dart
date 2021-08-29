@@ -44,7 +44,7 @@ class _CurrentTimeWidgetState extends State<CurrentTimeWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextWidget(_timeString),
+            TextWidget(_timeString, isOnBackground: true),
           ],
         ),
       ),

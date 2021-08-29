@@ -110,6 +110,14 @@ class MatchWriter<T extends ActiveMatch> {
     );
   }
 
+  static String removePlural(String content) {
+    if (content != null && content.toLowerCase().endsWith('s')) {
+      return content.substring(0, content.length - 1);
+    } else {
+      return content;
+    }
+  }
+
   static Map<String, String> parseScoreString(String scoreString) {
     final parts = scoreString.split(',');
     if (parts != null && parts.length >= 5) {
