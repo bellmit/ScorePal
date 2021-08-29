@@ -153,6 +153,16 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
     Provider.of<MatchPersistence>(context, listen: false).wipeMatchData(match);
   }
 
+  void _restoreMatch(ActiveMatch match, int index) {
+    // remove the match from the list to remove from view
+    setState(() {
+      matches.removeAt(index);
+    });
+    // delete the match using the provider so it's actually done
+    Provider.of<MatchPersistence>(context, listen: false)
+        .restoreMatchData(match);
+  }
+
   @override
   Widget buildScreenBody(BuildContext context) {
     final showWarning = _isShowUserWarning;
@@ -184,15 +194,25 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
             itemBuilder: (ctx, index) {
               final match = matches.elementAt(index);
               return Dismissible(
-                direction: DismissDirection.endToStart,
                 background: Container(
+                  color: Theme.of(context).secondaryHeaderColor,
+                  child: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: const Padding(
+                      padding:
+                          const EdgeInsets.only(left: Values.default_space),
+                      child: const IconWidget(Icons.restore_from_trash),
+                    ),
+                  ),
+                ),
+                secondaryBackground: Container(
                   color: Values.deleteColor,
                   child: const Align(
                     alignment: Alignment.centerRight,
                     child: const Padding(
                       padding:
                           const EdgeInsets.only(right: Values.default_space),
-                      child: const IconWidget(Icons.delete_forever),
+                      child: const IconWidget(Icons.delete),
                     ),
                   ),
                 ),
@@ -201,7 +221,13 @@ class _TrashScreenState extends BaseNavScreenState<TrashScreen>
                 key: Key(MatchId.create(match).toString()),
                 // Provide a function that tells the app
                 // what to do after an item has been swiped away.
-                onDismissed: (direction) => _wipeMatch(match, index),
+                onDismissed: (direction) {
+                  if (direction == DismissDirection.startToEnd) {
+                    _restoreMatch(match, index);
+                  } else {
+                    _wipeMatch(match, index);
+                  }
+                },
                 child: PlayedMatchSummaryWidget(
                   match: match,
                   popupMenu: DeletedMatchPopupMenu(

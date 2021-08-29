@@ -368,6 +368,11 @@ class MatchPersistence with ChangeNotifier {
     }
   }
 
+  void restoreMatchData(ActiveMatch match) {
+    // restoring is just a case of changing it back to being accepted
+    saveMatchData(match, state: MatchPersistenceState.accepted);
+  }
+
   void deleteMatchData(ActiveMatch match) {
     // we don't delete though - what we do is save as state == deleted
     saveMatchData(match, state: MatchPersistenceState.deleted);
