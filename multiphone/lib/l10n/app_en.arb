@@ -250,9 +250,11 @@
     "results": "Results",
     "team_conceded": "Retired",
 
+    "playing": "Vs",
     "results_breakdown": "Results Breakdown",
     "total_points": "Total Points",
     "break_points": "Break Points",
+    "receiver_deuce_points": "Deuces as Receiver",
     "match_momentum": "Match Momentum",
 
     "scoreSummaryLevel": "Level {0}",

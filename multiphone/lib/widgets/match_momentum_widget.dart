@@ -2,20 +2,25 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_history.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:multiphone/screens/match_momentum_screen.dart';
 import 'package:multiphone/widgets/common/icon_button_widget.dart';
 
 import 'common/common_widgets.dart';
 
 class MatchMomentumWidget extends StatefulWidget {
   final ActiveMatch match;
+  final bool isAllowFullscreenButton;
+
   const MatchMomentumWidget({
     Key key,
     @required this.match,
+    this.isAllowFullscreenButton = true,
   }) : super(key: key);
 
   @override
@@ -222,6 +227,10 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
     });
   }
 
+  void _showMomentumFullScreen() {
+    MatchPlayTracker.navTo(MatchMomentumScreen.routeName, context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
@@ -240,18 +249,23 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(Values.default_space),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Wrap(
+                  alignment: WrapAlignment.center,
                   children: [
                     IconButtonWidget(
                       _switchActiveTeam,
                       null,
                       setup.getTeamName(_activeTeam, context),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(Values.default_space),
-                      child: TextWidget(values.strings.match_momentum,
-                          isOnBackground: true),
+                    InkWell(
+                      onTap: widget.isAllowFullscreenButton
+                          ? _showMomentumFullScreen
+                          : null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(Values.default_space),
+                        child: TextWidget(values.strings.match_momentum,
+                            isOnBackground: true),
+                      ),
                     ),
                   ],
                 ),

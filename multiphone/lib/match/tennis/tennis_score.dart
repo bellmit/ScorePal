@@ -25,6 +25,7 @@ class TennisScore extends Score<TennisMatchSetup> {
   PlayerIndex _tieBreakServer;
 
   List<int> tieBreakSets;
+  List<int> receivingDeuces;
   List<int> breakPoints;
   List<int> breakPointsConverted;
 
@@ -56,15 +57,14 @@ class TennisScore extends Score<TennisMatchSetup> {
     // initialise all the data we are gathering
     if (null != tieBreakSets) {
       tieBreakSets.clear();
-      // clear our count of breaks and breaks converted
-      breakPoints = List.filled(Score.teamCount, 0);
-      breakPointsConverted = List.filled(Score.teamCount, 0);
     } else {
-      // create the lists
       tieBreakSets = [];
-      breakPoints = List.filled(Score.teamCount, 0);
-      breakPointsConverted = List.filled(Score.teamCount, 0);
     }
+    // clear our count of breaks and breaks converted
+    receivingDeuces = List.filled(Score.teamCount, 0);
+    breakPoints = List.filled(Score.teamCount, 0);
+    breakPointsConverted = List.filled(Score.teamCount, 0);
+
     // and reset our data
     _isInTieBreak = false;
     _isTeamServerChangeAllowed = true;
@@ -166,6 +166,10 @@ class TennisScore extends Score<TennisMatchSetup> {
     return tieBreakSets.contains(setIndex);
   }
 
+  int getReceivingDeucePoints(TeamIndex team) {
+    return receivingDeuces[team.index];
+  }
+
   int getBreakPoints(TeamIndex team) {
     return breakPoints[team.index];
   }
@@ -234,9 +238,12 @@ class TennisScore extends Score<TennisMatchSetup> {
     _isTeamServerChangeAllowed = false;
     // has this team won the game with this point addition (can't be the other)
     if (false == _isInTieBreak) {
-      if (setup.isSuddenDeathOnDeuce &&
-          point == otherPoint &&
-          point >= TennisPoint.forty.val()) {
+      final isDeuce = point == otherPoint && point >= TennisPoint.forty.val();
+      if (isDeuce) {
+        // the receiver has brought their receiving game to deuce
+        ++receivingDeuces[setup.getOtherTeam(getServingTeam()).index];
+      }
+      if (setup.isSuddenDeathOnDeuce && isDeuce) {
         // this is a draw in points, not enough to win but we are interested
         // if this is a deciding point, in order to tell people
         state.addStateChange(ScoreChange.decidingPoint);

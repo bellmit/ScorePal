@@ -23,7 +23,7 @@ class TextWidget extends StatelessWidget {
     return Text(
       text,
       maxLines: isLimitOverflow ? 1 : null,
-      overflow: isLimitOverflow ? TextOverflow.fade : null,
+      overflow: isLimitOverflow ? TextOverflow.ellipsis : null,
       textAlign: textAlign,
       style: isOnBackground ? theme.accentTextTheme.button : null,
     );
