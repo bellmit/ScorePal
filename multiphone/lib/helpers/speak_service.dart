@@ -13,8 +13,6 @@ class SpeakService with ChangeNotifier {
   final FlutterTts flutterTts;
   String engine;
 
-  static SpeakService _runningService;
-
   TtsState _ttsState = TtsState.stopped;
 
   bool get isPlaying => _ttsState == TtsState.playing;

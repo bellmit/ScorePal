@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
@@ -7,7 +8,9 @@ import 'package:multiphone/providers/active_selection.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/screens/setup_match_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:location/location.dart';
 
 class MatchPlayTracker {
   final ActiveMatch match;
@@ -22,7 +25,27 @@ class MatchPlayTracker {
       // this goes on the match too
       match.setDateMatchStarted(_playStarted);
     }
-    //TODO we can set the location of the match here too!
+    // we can set the location of the match here too!
+    Permission.location.serviceStatus
+        .then((value) => value.isEnabled)
+        .then((isServiceEnabled) {
+      if (isServiceEnabled) {
+        return Permission.location.request().isGranted;
+      } else {
+        return Future.error('location is not enabled');
+      }
+    }).then((isPermissionGranted) {
+      if (isPermissionGranted) {
+        return Location().getLocation();
+      } else {
+        // why not request it (will hide if annoying them already)
+        return Future.error('location is not granted');
+      }
+    }).then((value) {
+      // finally we have the location then
+      match.location = value;
+    }).catchError((error, stackTrace) =>
+            Log.info('Location not got for match because $error'));
   }
 
   static Future<void> navTo(String route, BuildContext context,

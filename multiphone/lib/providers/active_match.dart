@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/match/score_state.dart';
 import 'package:multiphone/providers/active_setup.dart';
@@ -10,6 +11,12 @@ import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/player.dart';
 import 'package:multiphone/providers/sport.dart';
 
+class MatchLocation {
+  final double lat;
+  final double lon;
+  const MatchLocation(this.lat, this.lon);
+}
+
 abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     with ChangeNotifier {
   // we have the score and the setup to track what we are doing / played
@@ -20,6 +27,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
 
   DateTime _dateMatchStarted;
   int _matchTimePlayedMs;
+  MatchLocation _matchLocation;
 
   MatchSpeaker _speaker;
   MatchWriter _writer;
@@ -67,6 +75,15 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     notifyListeners();
   }
 
+  set location(LocationData location) {
+    _matchLocation = location == null
+        ? null
+        : MatchLocation(
+            location.latitude,
+            location.longitude,
+          );
+  }
+
   void describeLastHistoryChange(int state, String description) {
     _score.describeLastPoint(state, description);
   }
@@ -79,6 +96,12 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     // save all our data
     final data = Map<String, Object>();
     data["secs"] = (_matchTimePlayedMs / 1000.0).floor();
+    data['location'] = _matchLocation == null
+        ? {}
+        : {
+            'lat': _matchLocation.lat,
+            'lon': _matchLocation.lon,
+          };
     // and if anyone conceded
     for (int i = 0; i < _conceded.length; ++i) {
       data['conceded_${i + 1}'] = _conceded[i] ?? false;
@@ -97,6 +120,16 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     _matchTimePlayedMs = (data["secs"] as int) * 1000;
     for (int i = 0; i < _conceded.length; ++i) {
       _conceded[i] = data['conceded_${i + 1}'] ?? false;
+    }
+    // get the location if there is one
+    final locationObject = data['location'] as Map<String, Object>;
+    if (locationObject != null &&
+        locationObject['lat'] != null &&
+        locationObject['lon'] != null) {
+      _matchLocation =
+          MatchLocation(locationObject['lat'], locationObject['lon']);
+    } else {
+      _matchLocation = null;
     }
     //this.playedLocation = LocationWrapper().deserialiseFromString(data.getString("locn")).content;
     // most importantly we want to put the score in. Then we can replay the score to

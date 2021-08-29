@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_history.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:provider/provider.dart';
 
 class MatchHistoryScreen extends StatefulWidget {
@@ -67,7 +69,7 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                                 child: const Padding(
                                   padding: const EdgeInsets.only(
                                       right: Values.default_space),
-                                  child: const IconWidget(Icons.delete),
+                                  child: const IconWidget(Icons.undo),
                                 ),
                               ),
                             ),
@@ -79,12 +81,12 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
                             onDismissed: (direction) {
                               _undoLastHistoryItem(activeMatch);
                             },
-                            child: _historyTile(
-                                activeMatch, setup, history, context, values),
+                            child: _historyTile(activeMatch, setup, history,
+                                context, values, true),
                           );
                         } else {
-                          return _historyTile(
-                              activeMatch, setup, history, context, values);
+                          return _historyTile(activeMatch, setup, history,
+                              context, values, false);
                         }
                       }),
                 ),
@@ -96,12 +98,75 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
     );
   }
 
-  Widget _historyTile(ActiveMatch activeMatch, ActiveSetup setup,
-          HistoryValue history, BuildContext context, Values values) =>
+  Widget _historyTile(
+          ActiveMatch activeMatch,
+          ActiveSetup setup,
+          HistoryValue history,
+          BuildContext context,
+          Values values,
+          bool isShowUndo) =>
       ListTile(
         leading: IconSvgWidget('player-serving'),
-        title: TextWidget(values.construct(values.strings.history_point_explain,
-            [setup.getTeamName(history.team, context)])),
-        subtitle: TextWidget(history.scoreString),
+        title: Row(
+          children: [
+            Expanded(
+              child: TextWidget(
+                values.construct(values.strings.history_point_explain,
+                    [setup.getTeamName(history.team, context)]),
+                isLimitOverflow: false,
+              ),
+            ),
+            if (isShowUndo)
+              IconButtonWidget(
+                  () => _undoLastHistoryItem(activeMatch), Icons.undo, 'undo'),
+          ],
+        ),
+        subtitle: Card(
+          color: Theme.of(context).secondaryHeaderColor,
+          margin: const EdgeInsets.all(Values.default_space),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        teamTitle(setup.getTeamName(TeamIndex.T_ONE, context)),
+                        TextWidget(
+                            MatchWriter.parseScoreString(
+                                history.scoreString)['team_one_score'],
+                            isOnBackground: true),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      teamTitle(''),
+                      TextWidget(
+                          activeMatch.getLevelTitle(history.level, context),
+                          isOnBackground: true),
+                    ],
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        teamTitle(setup.getTeamName(TeamIndex.T_TWO, context)),
+                        TextWidget(
+                            MatchWriter.parseScoreString(
+                                history.scoreString)['team_two_score'],
+                            isOnBackground: true),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+
+  Widget teamTitle(String title) => Padding(
+        padding: const EdgeInsets.only(bottom: Values.default_space + .5),
+        child: TextWidget(title),
       );
 }
