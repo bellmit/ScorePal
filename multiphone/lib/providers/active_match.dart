@@ -80,7 +80,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     _score.resetState();
   }
 
-  set location(LocationData location) {
+  void setLocation(LocationData location) {
     _matchLocation = location == null
         ? null
         : MatchLocation(
@@ -88,6 +88,8 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
             location.longitude,
           );
   }
+
+  MatchLocation get location => _matchLocation;
 
   void describeLastHistoryChange(int state, String description) {
     _score.describeLastPoint(state, description);
