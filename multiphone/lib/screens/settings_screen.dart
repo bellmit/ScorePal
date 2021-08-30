@@ -12,6 +12,7 @@ import 'package:multiphone/widgets/settings/settings_controls_flic_widget.dart';
 import 'package:multiphone/widgets/settings/select_control_type_widget.dart';
 import 'package:multiphone/widgets/settings/settings_control_hardware_buttons_widget.dart';
 import 'package:multiphone/widgets/settings/settings_data_widget.dart';
+import 'package:multiphone/widgets/settings/settings_naming_mode_widget.dart';
 import 'package:multiphone/widgets/settings/settings_permissions_widget.dart';
 import 'package:multiphone/widgets/settings/settings_privacy_widget.dart';
 import 'package:multiphone/widgets/settings/settings_sounds_announcements_widget.dart';
@@ -124,6 +125,8 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
       case 0:
         return [
           SettingsSoundsGeneralWidget(prefs: prefs),
+          const LineBreakWidget(),
+          SettingsNamingModeWidget(prefs: prefs),
           const LineBreakWidget(),
           SettingsSoundsAnnouncementsWidget(prefs: prefs),
           const LineBreakWidget(),

@@ -53,6 +53,8 @@ dependencies:
   flex_color_scheme: ^3.0.1
   # show HTML text
   flutter_html: ^2.1.1
+  #control to select naming mode
+  material_segmented_control: ^3.1.2
 
   # firestore things
   firebase_core: ^1.3.0

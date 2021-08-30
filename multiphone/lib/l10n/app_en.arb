@@ -257,6 +257,16 @@
     "receiver_deuce_points": "Deuces as Receiver",
     "match_momentum": "Match Momentum",
 
+    "naming_mode_surname_initial": "Surname. Initial",
+    "naming_mode_first_name": "First Name",
+    "naming_mode_surname": "Surname",
+    "naming_mode_full_name": "Full Name",
+    "explain_name_mode": "Choose how to display and speak the names of your players and teams in a match.",
+    "example_naming_mode_surname_initial": "J. McEnroe -- S. Williams",
+    "example_naming_mode_first_name": "John -- Serena",
+    "example_naming_mode_surname": "McEnroe -- Williams",
+    "example_naming_mode_full_name": "John McEnroe -- Serena Williams",
+
     "scoreSummaryLevel": "Level {0}",
     "scoreSummaryOneLine": "{0} {2} — {3} {1}",
     "match_description_long": "{0} {1} {2}\nLasting {3}:{4} minutes\nPlayed at {5} on {6}.",
