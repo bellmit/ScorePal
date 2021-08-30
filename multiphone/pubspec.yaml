@@ -88,7 +88,7 @@ flutter_icons:
   ios: true
   remove_alpha_ios: false
   image_path: "dev_assets/scorepal.png"
-  adaptive_icon_background: "#334BAA"
+  adaptive_icon_background: "#125A8D"
   adaptive_icon_foreground: "dev_assets/scorepal-adaptive.png"
 
 #************************************************************
