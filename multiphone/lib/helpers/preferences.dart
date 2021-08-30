@@ -116,6 +116,15 @@ class Preferences {
     prefs.setBool('is_firebase_login', newValue);
   }
 
+  bool get isMatchLocationPermitted {
+    // get the data direct from the preferences class
+    return _getBool('is_match_location_permit', true);
+  }
+
+  set isMatchLocationPermitted(bool newValue) {
+    prefs.setBool('is_match_location_permit', newValue);
+  }
+
   bool get isControlTeams {
     return _getBool('isControlTeams', false);
   }

@@ -28,7 +28,7 @@ class _SettingsSoundsAnnouncementsWidgetState
           context,
           IconWidget(Icons.record_voice_over),
           values.strings.title_speak_score_changes,
-          values.strings.explain_speak_score_changes,
+          TextWidget(values.strings.explain_speak_score_changes),
           (value) => setState(() {
             widget.prefs.soundAnnounceChange = value;
           }),
@@ -38,7 +38,7 @@ class _SettingsSoundsAnnouncementsWidgetState
           context,
           IconSvgWidget('score-points'),
           values.strings.title_speak_points,
-          values.strings.explain_speak_points,
+          TextWidget(values.strings.explain_speak_points),
           (value) => setState(() {
             widget.prefs.soundAnnounceChangePoints = value;
           }),
@@ -48,7 +48,7 @@ class _SettingsSoundsAnnouncementsWidgetState
           context,
           IconWidget(Icons.compare_arrows),
           values.strings.title_speak_change_ends,
-          values.strings.explain_speak_change_ends,
+          TextWidget(values.strings.explain_speak_change_ends),
           (value) => setState(() {
             widget.prefs.soundAnnounceChangeEnds = value;
           }),
@@ -58,7 +58,7 @@ class _SettingsSoundsAnnouncementsWidgetState
           context,
           IconSvgWidget('player-serving'),
           values.strings.title_speak_server,
-          values.strings.explain_speak_server,
+          TextWidget(values.strings.explain_speak_server),
           (value) => setState(() {
             widget.prefs.soundAnnounceChangeServer = value;
           }),
@@ -68,7 +68,7 @@ class _SettingsSoundsAnnouncementsWidgetState
           context,
           IconSvgWidget('score-match'),
           values.strings.title_speak_score,
-          values.strings.explain_speak_score,
+          TextWidget(values.strings.explain_speak_score),
           (value) => setState(() {
             widget.prefs.soundAnnounceChangeScore = value;
           }),

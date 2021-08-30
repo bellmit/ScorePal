@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/settings/settings_widget_mixin.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SettingsPermissionsWidget extends StatefulWidget {
-  SettingsPermissionsWidget({Key key}) : super(key: key);
+  final Preferences prefs;
+  SettingsPermissionsWidget({Key key, @required this.prefs}) : super(key: key);
 
   @override
   _SettingsPermissionsWidgetState createState() =>
@@ -16,6 +18,7 @@ class SettingsPermissionsWidget extends StatefulWidget {
 class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
     with SettingsWidgetMixin {
   bool _isLocation = false;
+  bool _isMatchLocationPermitted = true;
   bool _isContacts = false;
   bool _isBluetooth = false;
 
@@ -23,6 +26,7 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
   void initState() {
     super.initState();
     // get the defaults to show
+    _isMatchLocationPermitted = widget.prefs.isMatchLocationPermitted;
 
     // get permissions to enable the values as expected
     Permission.location.isGranted
@@ -47,6 +51,14 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
     //TODO cannot revoke permissions - just show a 'on' button somehow instead of a switch?
   }
 
+  void _onLocationPermissionChanged(bool isLocationPermitted) {
+    // push this data back out to the preferences
+    setState(() {
+      _isMatchLocationPermitted = isLocationPermitted;
+      widget.prefs.isMatchLocationPermitted = isLocationPermitted;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // prepare our member data to use and reuse
@@ -59,7 +71,22 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
           context,
           IconWidget(Icons.near_me),
           values.strings.title_permission_location,
-          values.strings.explain_permission_location,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextWidget(values.strings.explain_permission_location),
+              Row(
+                children: [
+                  TextWidget(values.strings.title_permission_match_location),
+                  Switch(
+                    activeColor: Theme.of(context).primaryColor,
+                    value: _isMatchLocationPermitted,
+                    onChanged: _onLocationPermissionChanged,
+                  ),
+                ],
+              ),
+            ],
+          ),
           (value) => Permission.location
               .request()
               .then((value) => setState(() {
@@ -73,7 +100,7 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
           context,
           IconWidget(Icons.contact_mail),
           values.strings.title_permission_contacts,
-          values.strings.explain_permission_contacts,
+          TextWidget(values.strings.explain_permission_contacts),
           (value) => Permission.contacts
               .request()
               .then((value) => setState(() {
@@ -87,7 +114,7 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
           context,
           IconWidget(Icons.bluetooth),
           values.strings.title_permission_bluetooth,
-          values.strings.explain_permission_bluetooth,
+          TextWidget(values.strings.explain_permission_bluetooth),
           (value) => Permission.bluetooth
               .request()
               .then((value) => setState(() {

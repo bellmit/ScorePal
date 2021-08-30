@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:multiphone/helpers/log.dart';
+import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/match/score_state.dart';
@@ -27,27 +28,34 @@ class MatchPlayTracker {
     }
     // because we have the context here, we can restore our history properly
     match.restorePointHistory(context);
-    // we can set the location of the match here too!
-    Permission.location.serviceStatus
-        .then((value) => value.isEnabled)
-        .then((isServiceEnabled) {
-      if (isServiceEnabled) {
-        return Permission.location.request().isGranted;
-      } else {
-        return Future.error('location is not enabled');
+    // check the preferences to see if we are allowed to store a location
+    Preferences.create().then((prefs) {
+      // have the preferences, if we want to store location, do so
+      if (prefs.isMatchLocationPermitted) {
+        // we can set the location of the match here too!
+        Permission.location.serviceStatus
+            .then((value) => value.isEnabled)
+            .then((isServiceEnabled) {
+          if (isServiceEnabled) {
+            return Permission.location.request().isGranted;
+          } else {
+            return Future.error('location is not enabled');
+          }
+        }).then((isPermissionGranted) {
+          if (isPermissionGranted) {
+            Log.info('storing location of this match');
+            return Location().getLocation();
+          } else {
+            // why not request it (will hide if annoying them already)
+            return Future.error('location is not granted');
+          }
+        }).then((value) {
+          // finally we have the location then
+          match.location = value;
+        }).catchError((error, stackTrace) =>
+                Log.info('Location not got for match because $error'));
       }
-    }).then((isPermissionGranted) {
-      if (isPermissionGranted) {
-        return Location().getLocation();
-      } else {
-        // why not request it (will hide if annoying them already)
-        return Future.error('location is not granted');
-      }
-    }).then((value) {
-      // finally we have the location then
-      match.location = value;
-    }).catchError((error, stackTrace) =>
-            Log.info('Location not got for match because $error'));
+    });
   }
 
   static Future<void> navTo(String route, BuildContext context,

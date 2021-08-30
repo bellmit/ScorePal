@@ -39,7 +39,7 @@ class _SettingsPrivacyWidgetState extends State<SettingsPrivacyWidget>
           context,
           IconWidget(Icons.delete_sweep),
           values.strings.title_wipe_all_data,
-          values.strings.explain_wipe_all_data,
+          TextWidget(values.strings.explain_wipe_all_data),
           showWipe,
           isSelected: _isWipeSelected,
         ),

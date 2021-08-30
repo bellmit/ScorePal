@@ -322,6 +322,7 @@
     "title_permissions": "Permissions",
     "title_permission_location": "Query Location",
     "explain_permission_location": "This is needed to talk to and use bluetooth buttons to change score.",
+    "title_permission_match_location": "Store the locations of your matches played",
     "title_permission_contacts": "Access Contacts",
     "explain_permission_contacts": "This is needed to select players from your list of contacts.",
     "title_permission_bluetooth": "Use Bluetooth",

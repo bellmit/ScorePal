@@ -28,7 +28,7 @@ class _SettingsSoundsGeneralWidgetState
           context,
           IconWidget(Icons.chat),
           values.strings.title_use_names,
-          values.strings.explain_use_names,
+          TextWidget(values.strings.explain_use_names),
           (value) => setState(() {
             widget.prefs.soundUseSpeakingNames = value;
           }),
@@ -73,7 +73,7 @@ class _SettingsSoundsGeneralWidgetState
           context,
           IconWidget(Icons.settings_remote),
           values.strings.title_speak_message,
-          values.strings.explain_speak_message,
+          TextWidget(values.strings.explain_speak_message),
           (value) => setState(() {
             widget.prefs.soundActionSpeak = value;
           }),

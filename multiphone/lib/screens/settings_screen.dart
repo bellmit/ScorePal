@@ -147,7 +147,7 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
             onChangeUser: _changeUser,
           ),
           const LineBreakWidget(),
-          SettingsPermissionsWidget(),
+          SettingsPermissionsWidget(prefs: prefs),
           const LineBreakWidget(),
           SettingsDataWidget(),
           const LineBreakWidget(),

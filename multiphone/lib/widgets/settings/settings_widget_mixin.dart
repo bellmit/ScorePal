@@ -4,7 +4,7 @@ import 'package:multiphone/widgets/common/common_widgets.dart';
 
 class SettingsWidgetMixin {
   Widget createSwitchingRow(BuildContext context, Widget icon, String title,
-      String explain, void Function(bool) onSwitch,
+      Widget explain, void Function(bool) onSwitch,
       {bool isSelected = false}) {
     return Padding(
       padding: const EdgeInsets.only(top: Values.default_space),
@@ -30,7 +30,7 @@ class SettingsWidgetMixin {
                     ),
                   ],
                 ),
-                TextWidget(explain),
+                explain,
               ],
             ),
           ),
