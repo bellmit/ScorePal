@@ -259,16 +259,6 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     return _score.getWinnersHistory();
   }
 
-  /*
-  //TODO set the location of the match played
-  Location getPlayedLocation() {
-    return this.playedLocation;
-  }
-
-  void setPlayedLocation(Location currentLocation) {
-    this.playedLocation = currentLocation;
-  }*/
-
   void undoLastPoint() {
     // reset the last state
     _score.resetState();
@@ -298,6 +288,20 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
 
   void endMatch() {
     // end this match here
+  }
+
+  void changeServer() {
+    // delegate to the score
+    _score.changeServer();
+    // and inform of the change
+    notifyListeners();
+  }
+
+  void changeTeamServer(TeamIndex team) {
+    // delegate to the score
+    _score.changeTeamServer(team);
+    // and inform of the change
+    notifyListeners();
   }
 
   TeamIndex getServingTeam() {

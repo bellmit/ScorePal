@@ -26,10 +26,10 @@ class PlayingTeamWidget extends StatelessWidget {
     final partner = setup.getTeamPartner(team);
     final playerName = setup.getPlayerName(player, context);
     final partnerName = setup.getPlayerName(partner, context);
-    return InkWell(
-      onTap: onTeamNameClicked,
-      child: Card(
-        color: Theme.of(context).secondaryHeaderColor,
+    return Card(
+      color: Theme.of(context).secondaryHeaderColor,
+      child: InkWell(
+        onTap: onTeamNameClicked,
         child: Container(
           margin: EdgeInsets.all(Values.default_space),
           width: double.infinity,

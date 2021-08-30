@@ -158,8 +158,28 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
   }
 
   void _onTeamClicked(ActiveMatch match, TeamIndex team) {
-    if (match.score.isTeamServerChangeAllowed()) {
-      setState(() => match.score.changeServer());
+    final setup = match.getSetup();
+    if (setup.singlesDoubles == MatchSinglesDoubles.singles) {
+      if (match.isMatchPlayStarted()) {
+        // can't change servers once started
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: TextWidget(Values(context).strings.error_change_server),
+        ));
+      } else if (match.getServingTeam() != team) {
+        // they clicked the other team, change the server for singles then
+        setup.firstServingTeam = team;
+      }
+    } else if (match.score.isTeamServerChangeAllowed(team)) {
+      // we are in doubles and this team server change is allowed
+      if (!match.isMatchPlayStarted() && match.getServingTeam() != team) {
+        // we want to change the serving team
+        setup.firstServingTeam = team;
+      } else {
+        // we want to change the first server in the current team
+        final currentServer = setup.getFirstServingPlayer(team);
+        // so use the other
+        setup.startingServer = setup.getOtherPlayer(currentServer);
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: TextWidget(Values(context).strings.error_change_server),

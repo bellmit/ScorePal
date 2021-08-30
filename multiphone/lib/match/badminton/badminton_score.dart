@@ -95,7 +95,7 @@ class BadmintonScore extends Score<BadmintonMatchSetup> {
     return toReturn;
   }
 
-  bool isTeamServerChangeAllowed() {
+  bool isTeamServerChangeAllowed(TeamIndex teamToChange) {
     return _isTeamServerChangeAllowed;
   }
 

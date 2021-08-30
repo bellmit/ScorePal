@@ -108,7 +108,7 @@ class PingPongScore extends Score<PingPongMatchSetup> {
     return toReturn;
   }
 
-  bool isTeamServerChangeAllowed() {
+  bool isTeamServerChangeAllowed(TeamIndex teamToChange) {
     return _isTeamServerChangeAllowed;
   }
 

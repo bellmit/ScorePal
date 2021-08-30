@@ -21,7 +21,7 @@ class TennisScore extends Score<TennisMatchSetup> {
   static const int K_LEVELS = 3;
 
   bool _isInTieBreak;
-  bool _isTeamServerChangeAllowed = true;
+  List<bool> _isTeamServerChangeAllowed;
   PlayerIndex _tieBreakServer;
 
   List<int> tieBreakSets;
@@ -67,7 +67,7 @@ class TennisScore extends Score<TennisMatchSetup> {
 
     // and reset our data
     _isInTieBreak = false;
-    _isTeamServerChangeAllowed = true;
+    _isTeamServerChangeAllowed = List.filled(Score.teamCount, true);
     _tieBreakServer = null;
   }
 
@@ -234,8 +234,8 @@ class TennisScore extends Score<TennisMatchSetup> {
     TeamIndex otherTeam = setup.getOtherTeam(team);
     int otherPoint = getTeamPoints(setup.getOtherTeam(team));
     int pointsAhead = point - otherPoint;
-    // as soon as a point is played, you cannot change the server in the team
-    _isTeamServerChangeAllowed = false;
+    // as soon as a point is played, you cannot change the server in the team that's serving
+    _isTeamServerChangeAllowed[getServingTeam().index] = false;
     // has this team won the game with this point addition (can't be the other)
     if (false == _isInTieBreak) {
       final isDeuce = point == otherPoint && point >= TennisPoint.forty.val();
@@ -351,9 +351,6 @@ class TennisScore extends Score<TennisMatchSetup> {
         _tieBreakServer = servingPlayers[servingTeam.index];
       }
     }
-    _isTeamServerChangeAllowed = gamesPlayed == 1 &&
-        setup.singlesDoubles == MatchSinglesDoubles.doubles &&
-        getPlayedSets() == 0;
     if (isSetChanged) {
       // we want to change ends at the end of any set in which the score wasn't even
       if (gamesPlayed % 2 != 0) {
@@ -408,8 +405,8 @@ class TennisScore extends Score<TennisMatchSetup> {
     return _isInTieBreak;
   }
 
-  bool isTeamServerChangeAllowed() {
-    return _isTeamServerChangeAllowed;
+  bool isTeamServerChangeAllowed(TeamIndex teamToChange) {
+    return _isTeamServerChangeAllowed[teamToChange.index];
   }
 
   bool isTieBreak(int games1, int games2) {

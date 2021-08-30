@@ -271,6 +271,18 @@ abstract class Score<S extends ActiveSetup> {
     setServer(getNextServer());
   }
 
+  void changeTeamServer(TeamIndex team) {
+    // just set the next server to be the new server
+    servingPlayers[team.index] =
+        setup.getOtherPlayer(servingPlayers[team.index]);
+    if (getServingTeam() == team) {
+      // the server of the serving team just changed
+      setServer(servingPlayers[team.index]);
+    }
+    // inform listeners of this
+    state.addStateChange(ScoreChange.server);
+  }
+
   void changeEnds() {
     // cycle each TeamIndex's court position
     for (int i = 0; i < teamCount; ++i) {
@@ -284,7 +296,7 @@ abstract class Score<S extends ActiveSetup> {
 
   bool isScoreCompleted();
 
-  bool isTeamServerChangeAllowed();
+  bool isTeamServerChangeAllowed(TeamIndex teamToChange);
 
   TeamIndex getScoreWinner(int level) {
     int topTeam = 0;
