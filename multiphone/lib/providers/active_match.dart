@@ -32,6 +32,8 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   MatchSpeaker _speaker;
   MatchWriter _writer;
 
+  String _matchTitle;
+
   ActiveMatch(
       TSetup matchSetup, TScore score, MatchSpeaker speaker, MatchWriter writer)
       : _setup = matchSetup,
@@ -89,6 +91,24 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
           );
   }
 
+  void setMatchTitle(String title, bool isNotify) {
+    _matchTitle = title;
+    if (isNotify) {
+      notifyListeners();
+    }
+  }
+
+  String getMatchTitle(BuildContext context) {
+    if (_matchTitle == null || _matchTitle.isEmpty) {
+      // no title
+      return sport.title(context);
+    } else {
+      return _matchTitle;
+    }
+  }
+
+  String get matchTitle => _matchTitle;
+
   MatchLocation get location => _matchLocation;
 
   void describeLastHistoryChange(int state, String description) {
@@ -109,6 +129,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
             'lat': _matchLocation.lat,
             'lon': _matchLocation.lon,
           };
+    data['title'] = _matchTitle;
     // and if anyone conceded
     for (int i = 0; i < _conceded.length; ++i) {
       data['conceded_${i + 1}'] = _conceded[i] ?? false;
@@ -128,6 +149,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     for (int i = 0; i < _conceded.length; ++i) {
       _conceded[i] = data['conceded_${i + 1}'] ?? false;
     }
+    _matchTitle = data['title'] ?? '';
     // get the location if there is one
     final locationObject = data['location'] as Map<String, Object>;
     if (locationObject != null &&

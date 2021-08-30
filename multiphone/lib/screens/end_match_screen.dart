@@ -70,9 +70,29 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
         HomeScreen.routeName, (Route<dynamic> route) => false);
   }
 
+  Widget _matchNameInput(BuildContext context, ActiveMatch match) =>
+      TextFormField(
+        key: ValueKey('match_title'),
+        initialValue: match.matchTitle,
+        autocorrect: true,
+        textCapitalization: TextCapitalization.words,
+        enableSuggestions: true,
+        decoration: InputDecoration(
+          labelText: Values(context).strings.match_title_entry,
+        ),
+        onChanged: (value) => match.setMatchTitle(value, false),
+      );
+
+  Widget _matchSummary(BuildContext context, ActiveMatch match) =>
+      MatchSummaryTitleWidget(
+        svgPath: match.sport.icon,
+        description: match.getDescription(DescriptionLevel.SHORT, context),
+      );
+
   @override
   Widget build(BuildContext context) {
     final values = Values(context);
+    final query = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
         title: TextWidget(values.strings.match_end),
@@ -83,11 +103,21 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: Values.default_space),
-                MatchSummaryTitleWidget(
-                  svgPath: match.sport.icon,
-                  description:
-                      match.getDescription(DescriptionLevel.SHORT, context),
-                ),
+                if (query.orientation == Orientation.portrait) ...[
+                  _matchSummary(ctx, match),
+                  _matchNameInput(ctx, match),
+                ],
+                if (query.orientation == Orientation.landscape)
+                  Row(
+                    children: [
+                      Flexible(
+                        child: _matchSummary(ctx, match),
+                      ),
+                      Flexible(
+                        child: _matchNameInput(ctx, match),
+                      ),
+                    ],
+                  ),
                 Wrap(
                   alignment: WrapAlignment.spaceEvenly,
                   spacing: Values.default_space,

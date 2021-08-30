@@ -106,7 +106,8 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextSubheadingWidget(sport.title(context)),
+                        TextSubheadingWidget(
+                            widget.match.getMatchTitle(context)),
                         TextWidget(
                           widget.match
                               .getDescription(DescriptionLevel.SHORT, context),

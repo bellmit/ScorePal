@@ -316,6 +316,7 @@
     "button_import": "Import",
     "button_view": "View",
 
+    "match_title_entry": "Match title / explanation",
     "title_account": "Account",
     "explain_account_not_signed_in": "You are currently not logged in, all your data will remain local and not be stored remotely. Consider signing in to back up scores and calculate your match victories etc.",
     "explain_account_signedin": "You are currently logged in so you have access to everything, including your match history.",
