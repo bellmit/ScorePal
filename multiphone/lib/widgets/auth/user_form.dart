@@ -277,9 +277,10 @@ class _UserFormState extends State<UserForm> {
                                 Icons.mark_email_read,
                                 values.strings.verification_email_send,
                               ),
-                              IconButton(
-                                icon: IconWidget(Icons.refresh),
-                                onPressed: _refreshUserData,
+                              IconButtonWidget(
+                                _refreshUserData,
+                                Icons.refresh,
+                                values.strings.title_user_refresh_data,
                               ),
                             ],
                           ),

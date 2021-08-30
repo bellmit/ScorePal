@@ -329,6 +329,7 @@
     "explain_permission_bluetooth": "This is needed to manage bluetooth buttons to change score.",
     "title_manage_data": "Manage Data",
     "title_import_match": "Import Match",
+    "title_user_refresh_data": "Refresh Verification State",
     "explain_import_match": "Other players can share match results with you by attaching a file to a message. Save this file to your phone and import that file here...",
     "title_manage_deleted": "Manage Deleted Matches",
     "explain_manage_deleted": "Restore matches from the trash, or delete them permanently one-by-one.",
