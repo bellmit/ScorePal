@@ -56,15 +56,16 @@ class SettingsDataWidget extends StatelessWidget with SettingsWidgetMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextWidget(values.strings.title_manage_data),
+        /*
         createDataRow(
           context,
           Icons.file_download,
           values.strings.title_import_match,
           values.strings.explain_import_match,
           values.strings.button_import,
-          //TODO match data import
+          //TODO match data import from the settings once you can share out too
           () => Log.debug('need to do match importing I suppose'),
-        ),
+        ),*/
         createDataRow(
           context,
           Icons.contact_mail,

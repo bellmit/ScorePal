@@ -46,12 +46,14 @@ class PlayedMatchPopupMenu extends StatelessWidget {
           Icons.delete,
           values.strings.played_match_menu_delete,
         ),
+        /*
+        //TODO put the share option back in once it's coded
         createMenuItem(
           context,
           PlayedMatchMenuItem.share,
           Icons.share,
           values.strings.played_match_menu_share,
-        ),
+        ),*/
       ],
     );
   }

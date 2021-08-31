@@ -324,9 +324,10 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
           return Column(
             children: [
               if (_flicPlugin != null)
-                Row(
+                Wrap(
                   // if we are started then show the controls to get flic2 and scan for flic2
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  alignment: WrapAlignment.start,
+                  spacing: Values.default_space,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
@@ -341,7 +342,11 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
                       ),
                     ),
                     if (_isScanning)
-                      TextHeadingWidget(values.strings.info_scanning_flic),
+                      Padding(
+                        padding: const EdgeInsets.all(Values.default_space),
+                        child: TextHeadingWidget(
+                            values.strings.info_scanning_flic),
+                      ),
                   ],
                 ),
               // and show the list of buttons we have found at this point

@@ -9,6 +9,7 @@ class Values {
   static const int click_hold_ms = 500;
   static const int click_capture_period_ms = 500;
 
+  static const int click_button_timeout_ms = 30000;
   static const int display_duration_ms = 3000;
   static const int animation_duration_rapid_ms = 200;
   static const int animation_duration_ms = 500;
