@@ -59,10 +59,10 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
           score.getPoints(TeamIndex.T_ONE) + score.getPoints(TeamIndex.T_TWO);
       PingPongMatchSetup setup = getSetup();
       if (setup.isExpediteEnabled &&
-          points >=
+          points <
               PingPongMatchSetup.expeditePointsValue(
                   setup.expediteSystemPoints)) {
-        // there are enough points played to start, start it now
+        // we are lower than the expected points - start the system
         score.setExpediteSystemInEffect(true);
         isSystemStarted = true;
       }
@@ -83,11 +83,8 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
         if (startExpediteSystem()) {
           // this is started right now half way through anything else
           // announce it immediately
-          FlutterTts().getDefaultEngine.then((value) {
-            // we have the engine, let's speak the message
-            SpeakService.speakNow(
-                value, (speaker as PingPongMatchSpeaker).expediteString);
-          });
+          SpeakService.speakNow(
+              FlutterTts(), (speaker as PingPongMatchSpeaker).expediteString);
         }
       }));
     }
