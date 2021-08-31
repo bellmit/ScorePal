@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/score_history.dart';
 import 'package:multiphone/match/score_state.dart';
@@ -92,11 +93,9 @@ abstract class Score<S extends ActiveSetup> {
   void resetScore() {
     servingTeam = setup.firstServingTeam;
     for (int i = 0; i < teamCount; ++i) {
-      this.servingPlayers[i] = null;
+      // setup the serving players from the start of the match
+      this.servingPlayers[i] = setup.getFirstServingPlayer(TeamIndex.values[i]);
     }
-    // set the starting server though
-    this.servingPlayers[servingTeam.index] =
-        setup.getFirstServingPlayer(this.servingTeam);
     // and the ends we start at (1 and 0)
     this._playingEnd[0] = true;
     this._playingEnd[1] = false;
@@ -114,6 +113,8 @@ abstract class Score<S extends ActiveSetup> {
     state.reset();
   }
 
+  int get teamServerChangeIndex => 0;
+
   int getLevels() {
     return _points.length;
   }
@@ -126,7 +127,8 @@ abstract class Score<S extends ActiveSetup> {
     PlayerIndex server = servingPlayers[servingTeam.index];
     if (null == server) {
       // there is no server recorded, the first server of the team is serving
-      server = setup.getFirstServingPlayer(servingTeam);
+      server = setup.getFirstServingPlayer(servingTeam,
+          entryIndex: teamServerChangeIndex);
     }
     // return the server, correcting any errors
     return correctServerErrors(server);
@@ -341,26 +343,33 @@ abstract class Score<S extends ActiveSetup> {
   PlayerIndex getNextServer() {
     // the current server must yield now to the new one
     // find the team that is serving at the moment
-    PlayerIndex newServer = getServingPlayer();
+    PlayerIndex newServer;
     if (null != servingTeam) {
       // change team, and not the player that was last serving
       TeamIndex otherTeam = setup.getOtherTeam(servingTeam);
-      if (setup.singlesDoubles == MatchSinglesDoubles.doubles) {
-        // we are playing doubles, cycle the server in the team
-        newServer = servingPlayers[otherTeam.index];
-        if (null != newServer) {
-          // this new server is the current server for the team, cycle this
-          newServer = setup.getOtherPlayer(newServer);
-        } else {
-          // there is no server who has served yet - use the first one
-          newServer = setup.getFirstServingPlayer(otherTeam);
+      if (isTeamServerChangeAllowed(otherTeam)) {
+        // a change in the team serving is permitted, let's see if they
+        // have a new server in mind at this stage
+        final PlayerIndex newLevelServer = setup.getFirstServingPlayer(
+            otherTeam,
+            entryIndex: teamServerChangeIndex);
+        if (newLevelServer != null) {
+          // there is a specific one to use, use this
+          newServer = newLevelServer;
         }
-      } else {
-        // just use the server of the other team
-        newServer = servingPlayers[otherTeam.index];
-        if (null == newServer) {
-          // there isn't one served yet - just use the first
-          newServer = setup.getFirstServingPlayer(otherTeam);
+      }
+      if (newServer == null) {
+        // we don't yet have a new server, let's cycle as expected
+        if (setup.singlesDoubles == MatchSinglesDoubles.doubles) {
+          // we are playing doubles, cycle the server in the team
+          newServer = servingPlayers[otherTeam.index];
+          if (null != newServer) {
+            // this new server is the current server for the team, cycle this
+            newServer = setup.getOtherPlayer(newServer);
+          }
+        } else {
+          // just use the server of the other team
+          newServer = servingPlayers[otherTeam.index];
         }
       }
     }

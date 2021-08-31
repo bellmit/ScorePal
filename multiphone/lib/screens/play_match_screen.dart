@@ -176,9 +176,9 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         setup.firstServingTeam = team;
       } else {
         // we want to change the first server in the current team
-        final currentServer = setup.getFirstServingPlayer(team);
+        final currentServer = match.getServingPlayer();
         // so use the other
-        setup.startingServer = setup.getOtherPlayer(currentServer);
+        match.setFirstServingPlayer(team, setup.getOtherPlayer(currentServer));
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -383,7 +383,9 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
           return Consumer<ActiveMatch>(
             builder: (ctx, match, child) {
               // new match - new tracker
-              _playTracker = MatchPlayTracker(match, ctx);
+              if (null == _playTracker || _playTracker.match != match) {
+                _playTracker = MatchPlayTracker(match, ctx);
+              }
               return Stack(
                 children: [
                   _createScoreDisplay(match, orientation),

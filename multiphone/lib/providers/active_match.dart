@@ -334,6 +334,16 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     return _score.getServingPlayer();
   }
 
+  PlayerIndex getFirstServingPlayer(TeamIndex team) {
+    return _setup.getFirstServingPlayer(team,
+        entryIndex: _score.teamServerChangeIndex);
+  }
+
+  void setFirstServingPlayer(TeamIndex team, PlayerIndex player) {
+    _setup.setFirstServingPlayer(team, player,
+        entryIndex: _score.teamServerChangeIndex);
+  }
+
   String getDescription(DescriptionLevel level, BuildContext context) {
     return _writer.getDescription(this, level, context);
   }

@@ -21,6 +21,7 @@ class TennisScore extends Score<TennisMatchSetup> {
   static const int K_LEVELS = 3;
 
   bool _isInTieBreak;
+  int _teamServerChangeIndex = 0;
   List<bool> _isTeamServerChangeAllowed;
   PlayerIndex _tieBreakServer;
 
@@ -65,6 +66,8 @@ class TennisScore extends Score<TennisMatchSetup> {
     breakPoints = List.filled(Score.teamCount, 0);
     breakPointsConverted = List.filled(Score.teamCount, 0);
 
+    // our index needs to reset
+    _teamServerChangeIndex = 0;
     // and reset our data
     _isInTieBreak = false;
     _isTeamServerChangeAllowed = List.filled(Score.teamCount, true);
@@ -162,6 +165,10 @@ class TennisScore extends Score<TennisMatchSetup> {
     return toReturn;
   }
 
+  int get teamServerChangeIndex {
+    return _teamServerChangeIndex;
+  }
+
   bool isSetTieBreak(int setIndex) {
     return tieBreakSets.contains(setIndex);
   }
@@ -226,6 +233,9 @@ class TennisScore extends Score<TennisMatchSetup> {
     int point = super.getPoint(LEVEL_SET, team) + 1;
     // set this back on the score
     super.setPoint(LEVEL_SET, team, point);
+    // this resets the flags to allow the teams to swap servers if they so desire
+    _teamServerChangeIndex = getPlayedSets();
+    _isTeamServerChangeAllowed = List.filled(Score.teamCount, true);
     // and handle this
     onSetIncremented(team, point);
   }
@@ -319,6 +329,8 @@ class TennisScore extends Score<TennisMatchSetup> {
   void onGameIncremented(TeamIndex team, int point) {
     // clear the points
     super.clearLevel(LEVEL_POINT);
+    // as soon as a point is played, you cannot change the server in the team that's serving
+    _isTeamServerChangeAllowed[getServingTeam().index] = false;
     // and handle if this won a set
     bool isSetChanged = false;
     int gamesPlayed = getPlayedGames(-1);

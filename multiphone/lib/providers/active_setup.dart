@@ -41,9 +41,9 @@ abstract class ActiveSetup with ChangeNotifier {
   String _communicatedFrom;
 
   TeamIndex _firstServingTeam = TeamIndex.T_ONE;
-  final List<PlayerIndex> _firstServers = [
-    PlayerIndex.P_ONE,
-    PlayerIndex.P_TWO
+  final List<List<PlayerIndex>> _firstServers = [
+    [PlayerIndex.P_ONE],
+    [PlayerIndex.P_TWO],
   ];
 
   ActiveSetup(this.sport)
@@ -104,7 +104,13 @@ abstract class ActiveSetup with ChangeNotifier {
     data['singles'] = _singlesDoubles == MatchSinglesDoubles.singles;
     data['first_team'] = _firstServingTeam.index;
     for (int i = 0; i < _firstServers.length; ++i) {
-      data['server${i + 1}'] = _firstServers[i].index;
+      // there is a list in each list, first is the first server for
+      // the actual match, from then on it's the set or whatever...
+      for (int j = 0; j < _firstServers[i].length; ++j) {
+        final indexToAdd =
+            _firstServers[i][j] == null ? -1 : _firstServers[i][j].index;
+        data['server${i + 1}${j == 0 ? '' : '_$j'}'] = indexToAdd;
+      }
     }
     // also the email addresses of the players we are playing
     for (int i = 0; i < _playerEmailAddresses.length; ++i) {
@@ -134,7 +140,22 @@ abstract class ActiveSetup with ChangeNotifier {
         : MatchSinglesDoubles.doubles;
     _firstServingTeam = TeamIndex.values[data['first_team']];
     for (int i = 0; i < _firstServers.length; ++i) {
-      _firstServers[i] = PlayerIndex.values[data['server${i + 1}']];
+      // there is a list in each list, first is the first server for
+      // the actual match, from then on it's the set or whatever...
+      int j = 0;
+      int serverIndex;
+      // clear the old data
+      _firstServers[i] = [];
+      do {
+        // for each j, try to get a value for the server in i
+        serverIndex = data['server${i + 1}${j == 0 ? '' : '_$j'}'];
+        if (serverIndex != null) {
+          _firstServers[i]
+              .add(serverIndex == -1 ? null : PlayerIndex.values[serverIndex]);
+        }
+        // move j on
+        ++j;
+      } while (serverIndex != null);
     }
     // and the player's email addresses
     for (int i = 0; i < _playerEmailAddresses.length; ++i) {
@@ -229,13 +250,35 @@ abstract class ActiveSetup with ChangeNotifier {
     return _firstServingTeam;
   }
 
-  PlayerIndex getFirstServingPlayer(TeamIndex team) {
+  void _fillFirstServers(TeamIndex team, int entryIndex) {
+    while (_firstServers[team.index].length <= entryIndex) {
+      // while there are not enough, add more
+      _firstServers[team.index].add(null);
+    }
+  }
+
+  PlayerIndex getFirstServingPlayer(TeamIndex team, {int entryIndex = 0}) {
     // return the player that serves first for this team
-    return _firstServers[team.index];
+    _fillFirstServers(team, entryIndex);
+    return _firstServers[team.index][entryIndex];
+  }
+
+  List<PlayerIndex> getFirstServingPlayers(TeamIndex team) {
+    // return the player that serves first for this team
+    return [..._firstServers[team.index]];
+  }
+
+  void setFirstServingPlayer(TeamIndex team, PlayerIndex player,
+      {int entryIndex = 0}) {
+    // return the player that serves first for this team
+    _fillFirstServers(team, entryIndex);
+    _firstServers[team.index][entryIndex] = player;
+    // this changes the setup
+    notifyListeners();
   }
 
   get startingServer {
-    return _firstServers[_firstServingTeam.index];
+    return getFirstServingPlayer(_firstServingTeam);
   }
 
   set firstServingTeam(TeamIndex team) {
@@ -248,9 +291,12 @@ abstract class ActiveSetup with ChangeNotifier {
 
   set startingServer(PlayerIndex server) {
     TeamIndex playerTeam = getPlayerTeam(server);
-    if (_firstServers[playerTeam.index] != server) {
+    _fillFirstServers(playerTeam, 0);
+    if (_firstServers[playerTeam.index][0] != server) {
       // get the team for the player and set accordingly
-      _firstServers[playerTeam.index] = server;
+      _firstServers[playerTeam.index].clear();
+      // this will wipe all subsequent changes as changes the match history
+      _firstServers[playerTeam.index].add(server);
       // this changes the setup
       notifyListeners();
     }
@@ -330,14 +376,16 @@ abstract class ActiveSetup with ChangeNotifier {
     // changing the type from doubles to singles etc, can effect some settings
     // a player no longer playing could be serving - correct those here
     if (singlesDoubles == MatchSinglesDoubles.singles) {
+      _fillFirstServers(TeamIndex.T_ONE, 0);
       // this is singles, the first server has to be the player of that team
-      if (_firstServers[TeamIndex.T_ONE.index] != PlayerIndex.P_ONE) {
+      if (_firstServers[TeamIndex.T_ONE.index][0] != PlayerIndex.P_ONE) {
         // partner can't be serving - this is a singles match
-        _firstServers[TeamIndex.T_ONE.index] = PlayerIndex.P_ONE;
+        _firstServers[TeamIndex.T_ONE.index][0] = PlayerIndex.P_ONE;
       }
-      if (_firstServers[TeamIndex.T_TWO.index] != PlayerIndex.P_TWO) {
+      _fillFirstServers(TeamIndex.T_TWO, 0);
+      if (_firstServers[TeamIndex.T_TWO.index][0] != PlayerIndex.P_TWO) {
         // partner can't be serving - this is a singles match
-        _firstServers[TeamIndex.T_TWO.index] = PlayerIndex.P_TWO;
+        _firstServers[TeamIndex.T_TWO.index][0] = PlayerIndex.P_TWO;
       }
     }
   }
