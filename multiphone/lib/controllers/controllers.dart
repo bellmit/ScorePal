@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:multiphone/controllers/controller_flic.dart';
 import 'package:multiphone/controllers/controller_listener.dart';
 import 'package:multiphone/controllers/controller_keys.dart';
@@ -64,6 +65,24 @@ class Controllers {
         case ClickSource.volButton:
           isProcessClick =
               _isActive[source] && _preferences.isControlVolumeButtons;
+          break;
+      }
+    }
+    if (isProcessClick &&
+        null != _preferences &&
+        _preferences.soundButtonClick) {
+      // this isn't great double and hold but you can't turn it on either (O:
+      switch (click) {
+        case ClickPattern.single:
+          FlutterBeep.beep();
+          break;
+        case ClickPattern.double:
+          FlutterBeep.beep().then((_) => FlutterBeep.beep());
+          break;
+        case ClickPattern.long:
+          for (int i = 0; i < 5; ++i) {
+            FlutterBeep.beep();
+          }
           break;
       }
     }

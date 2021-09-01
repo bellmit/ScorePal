@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/screens/attributions_screen.dart';

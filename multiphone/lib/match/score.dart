@@ -1,6 +1,5 @@
 import 'dart:core';
 
-import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/match/score_history.dart';
 import 'package:multiphone/match/score_state.dart';
