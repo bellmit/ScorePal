@@ -100,7 +100,6 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
   }
 
   void cancelExpediteSystem() {
-    Log.info('cancelling expedite');
     if (null != _expediteOperation) {
       // cancel this expedite operation then
       _expediteOperation.cancel();
