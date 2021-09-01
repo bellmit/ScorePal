@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/speak_service.dart';
@@ -7,6 +8,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/providers/active_setup.dart';
+import 'package:multiphone/providers/active_theme.dart';
 import 'package:multiphone/providers/match_inbox.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/providers/player.dart';
@@ -48,62 +50,81 @@ class MyApp extends StatelessWidget {
   /// The future is part of the state of our widget. We should not call `initializeApp`
   /// directly inside [build].
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  // Define which predefined FlexScheme to use.
-  final FlexScheme usedFlexScheme = FlexScheme.ebonyClay;
-  // Used to select if we use the dark or light theme.
-  final ThemeMode themeMode = ThemeMode.system;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: _initProviders(),
-      child: MaterialApp(
-        onGenerateTitle: (ctx) => Values(ctx).strings.title,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', ''), // English, no country code
-          Locale('fr', ''), // French, no country code
-        ],
-        // A light scheme, passed to FlexColorScheme.light factory, then use
-        // toTheme to return the resulting theme to the MaterialApp theme.
-        theme: FlexColorScheme.light(
-          scheme: usedFlexScheme,
-          // Use comfortable on desktops instead of compact, devices use default.
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        ).toTheme,
-        // Same thing for the dark theme, but using FlexColorScheme.dark factory.
-        darkTheme: FlexColorScheme.dark(
-          scheme: usedFlexScheme,
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        ).toTheme,
-        // Use the above dark or light theme, based on active themeMode
-        // value light/dark/system.
-        themeMode: themeMode,
-        home: FutureBuilder(
-          // Initialize FlutterFire:
-          future: _initialization,
-          builder: (context, snapshot) {
-            // firebase has initialised (or not) so we can proceed
-            if (snapshot.hasError) {
-              log('something went wrong with firebase:${snapshot.error}');
-              // just send them to the home screen so they can proceed
-              return HomeScreen();
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              // connected - go on home
-              return HomeScreen();
-            } else {
-              // show the splash screen that we are loading firebase things
-              return SplashScreen('');
-            }
-          },
-        ),
-        initialRoute: HomeScreen.routeName,
-        routes: _initRoutes(),
+      child: Consumer<ActiveTheme>(
+        builder: (ctx, themeProvider, child) {
+          // create the delegate and local data
+          final delegates = const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ];
+          final locales = const [
+            Locale('en', ''), // English, no country code
+            Locale('fr', ''), // French, no country code
+          ];
+          final homePage = FutureBuilder(
+            // Initialize FlutterFire:
+            future: _initialization,
+            builder: (context, snapshot) {
+              // firebase has initialised (or not) so we can proceed
+              if (snapshot.hasError) {
+                log('something went wrong with firebase:${snapshot.error}');
+                // just send them to the home screen so they can proceed
+                return HomeScreen();
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                // connected - go on home
+                return HomeScreen();
+              } else {
+                // show the splash screen that we are loading firebase things
+                return SplashScreen('');
+              }
+            },
+          );
+          if (ActiveTheme.isCupertino) {
+            // return the cupertino app
+            return CupertinoApp(
+              debugShowCheckedModeBanner: false,
+              onGenerateTitle: (ctx) => Values(ctx).strings.title,
+              theme: CupertinoThemeData(brightness: Brightness.light),
+              localizationsDelegates: delegates,
+              supportedLocales: locales,
+              home: homePage,
+              initialRoute: HomeScreen.routeName,
+              routes: _initRoutes(),
+            );
+          } else {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              onGenerateTitle: (ctx) => Values(ctx).strings.title,
+              localizationsDelegates: delegates,
+              supportedLocales: locales,
+              // A light scheme, passed to FlexColorScheme.light factory, then use
+              // toTheme to return the resulting theme to the MaterialApp theme.
+              theme: FlexColorScheme.light(
+                scheme: ActiveTheme.usedFlexScheme,
+                // Use comfortable on desktops instead of compact, devices use default.
+                visualDensity: FlexColorScheme.comfortablePlatformDensity,
+              ).toTheme,
+              // Same thing for the dark theme, but using FlexColorScheme.dark factory.
+              darkTheme: FlexColorScheme.dark(
+                scheme: ActiveTheme.usedFlexScheme,
+                visualDensity: FlexColorScheme.comfortablePlatformDensity,
+              ).toTheme,
+              // Use the above dark or light theme, based on active themeMode
+              // value light/dark/system.
+              themeMode: ActiveTheme.themeMode,
+              home: homePage,
+              initialRoute: HomeScreen.routeName,
+              routes: _initRoutes(),
+            );
+          }
+        },
       ),
     );
   }
@@ -132,6 +153,7 @@ class MyApp extends StatelessWidget {
 List<SingleChildWidget> _initProviders() => <SingleChildWidget>[
       // global providers because they are simple enough to setup
       // and this way we won't forget
+      ChangeNotifierProvider<ActiveTheme>(create: (ctx) => ActiveTheme(ctx)),
       ChangeNotifierProvider<Players>(create: (ctx) => Players()),
       ChangeNotifierProvider<Sports>(create: (ctx) => Sports()),
       ChangeNotifierProvider<MatchPersistence>(

@@ -170,6 +170,7 @@ class _UserFormState extends State<UserForm> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
+                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (_userData.currentUser.photoURL != null)
@@ -186,41 +187,43 @@ class _UserFormState extends State<UserForm> {
                         ),
                       if (_userData.currentUser.photoURL == null)
                         IconWidget(Icons.person),
-                      Padding(
-                        padding: const EdgeInsets.all(Values.default_space),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextWidget(
-                              _userData.currentUser.email,
-                            ),
-                            if (_userData.currentUser.providerData.any(
-                                (element) =>
-                                    element.providerId.toLowerCase() ==
-                                    'google.com'))
-                              Row(
-                                children: <Widget>[
-                                  IconWidget(FontAwesomeIcons.google),
-                                  SizedBox(width: 10),
-                                  TextWidget(
-                                    values.strings.provider_google,
-                                  ),
-                                ],
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(Values.default_space),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextWidget(
+                                _userData.currentUser.email,
                               ),
-                            if (_userData.currentUser.providerData.any(
-                                (element) =>
-                                    element.providerId.toLowerCase() ==
-                                    'apple.com'))
-                              Row(
-                                children: <Widget>[
-                                  IconWidget(FontAwesomeIcons.apple),
-                                  SizedBox(width: 10),
-                                  TextWidget(
-                                    values.strings.provider_apple,
-                                  ),
-                                ],
-                              ),
-                          ],
+                              if (_userData.currentUser.providerData.any(
+                                  (element) =>
+                                      element.providerId.toLowerCase() ==
+                                      'google.com'))
+                                Row(
+                                  children: <Widget>[
+                                    IconWidget(FontAwesomeIcons.google),
+                                    SizedBox(width: 10),
+                                    TextWidget(
+                                      values.strings.provider_google,
+                                    ),
+                                  ],
+                                ),
+                              if (_userData.currentUser.providerData.any(
+                                  (element) =>
+                                      element.providerId.toLowerCase() ==
+                                      'apple.com'))
+                                Row(
+                                  children: <Widget>[
+                                    IconWidget(FontAwesomeIcons.apple),
+                                    SizedBox(width: 10),
+                                    TextWidget(
+                                      values.strings.provider_apple,
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -270,7 +273,8 @@ class _UserFormState extends State<UserForm> {
                           TextWidget(
                             values.strings.email_not_verified,
                           ),
-                          Row(
+                          Wrap(
+                            spacing: Values.default_space,
                             children: [
                               IconButtonWidget(
                                 _isVerifySent ? null : _verifyEmail,

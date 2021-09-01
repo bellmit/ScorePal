@@ -64,6 +64,17 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     notifyListeners();
   }
 
+  void shutdownMatch() {
+    // fine
+  }
+
+  @override
+  void dispose() {
+    // close down any associated data running in here
+    shutdownMatch();
+    super.dispose();
+  }
+
   void applyChangedMatchSettings() {
     // this is a little different to the reset as we want to keep the score
     // so we can just restore the point history, which has the side-effect of doing just this

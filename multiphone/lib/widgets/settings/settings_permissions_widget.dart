@@ -77,7 +77,11 @@ class _SettingsPermissionsWidgetState extends State<SettingsPermissionsWidget>
               TextWidget(values.strings.explain_permission_location),
               Row(
                 children: [
-                  TextWidget(values.strings.title_permission_match_location),
+                  IconWidget(Icons.location_history, size: Values.image_icon),
+                  Expanded(
+                    child: TextWidget(
+                        values.strings.title_permission_match_location),
+                  ),
                   Switch(
                     activeColor: Theme.of(context).primaryColor,
                     value: _isMatchLocationPermitted,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_writer.dart';
@@ -52,6 +53,8 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
     // discard and end this match now
     Provider.of<MatchPersistence>(context, listen: false)
         .deleteMatchData(match);
+    // suhtdown the match
+    match.shutdownMatch();
     // and send us home
     _navigateHome();
   }
@@ -60,11 +63,15 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
     // save and close this match now then
     Provider.of<MatchPersistence>(context, listen: false)
         .saveMatchData(match, state: MatchPersistenceState.accepted);
+    // suhtdown the match
+    match.shutdownMatch();
     // and go home
     _navigateHome();
   }
 
   void _navigateHome() {
+    // we are about to leave - killing this match on the way would be good
+    Provider.of<ActiveSport>(context, listen: false).clearSelection();
     // remove all routes and replace with the home screen one
     Navigator.of(context).pushNamedAndRemoveUntil(
         HomeScreen.routeName, (Route<dynamic> route) => false);

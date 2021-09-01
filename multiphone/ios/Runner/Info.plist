@@ -25,10 +25,34 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>uk.co.darkerwaters</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.85965429895-91dbk5o2isuc242bag6rg5lk11d0915a</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>BLE Permissions are needed to access your remote controls to change score</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
@@ -36,11 +60,18 @@
 	<key>NSContactsUsageDescription</key>
 	<string>This app requires contacts access to suggest player's names as you enter them.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location Permissions are needed to access your remote controls to change score</string>
+	<string>Location Permissions are needed to access your remote controls to change score and store the location of your played matches</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Location Permissions are needed to access your remote controls to change score</string>
+	<string>Location Permissions are needed to access your remote controls to change score and store the location of your played matches</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location Permissions are needed to access your remote controls to change score</string>
+	<string>Location Permissions are needed to access your remote controls to change score and store the location of your played matches</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your library needs accessing to get and store data about your latest matches</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>audio</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -60,34 +91,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIBackgroundModes</key>
-    <array>
-		<string>bluetooth-central</string>
-        <string>audio</string>
-    </array>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsLocalNetworking</key>
-        <true/>
-    </dict>
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>uk.co.darkerwaters</string>
-            </array>
-        </dict>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>com.googleusercontent.apps.85965429895-91dbk5o2isuc242bag6rg5lk11d0915a</string>
-            </array>
-        </dict>
-    </array>
 </dict>
 </plist>

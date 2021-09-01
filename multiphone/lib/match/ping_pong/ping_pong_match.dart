@@ -1,6 +1,7 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/speak_service.dart';
 import 'package:multiphone/match/match_id.dart';
 import 'package:multiphone/providers/active_match.dart';
@@ -38,6 +39,14 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
       MatchId matchId, Map<String, Object> data, BuildContext context) {
     super.setData(matchId, data, context);
     //and set any from ours that we saved in here
+  }
+
+  @override
+  void shutdownMatch() {
+    // close down any associated data running in here
+    cancelExpediteSystem();
+    // and the base
+    super.shutdownMatch();
   }
 
   @override
@@ -91,6 +100,7 @@ class PingPongMatch extends ActiveMatch<PingPongMatchSetup, PingPongScore> {
   }
 
   void cancelExpediteSystem() {
+    Log.info('cancelling expedite');
     if (null != _expediteOperation) {
       // cancel this expedite operation then
       _expediteOperation.cancel();

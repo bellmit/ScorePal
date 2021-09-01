@@ -15,6 +15,16 @@ class ActiveSport with ChangeNotifier {
     }
   }
 
+  void clearSelection() {
+    // we are done with the match - clear the selection to let it die
+    _isCreateNewMatch = false;
+    _matchToResume = null;
+    //TODO this doesn't release the active match provider so it hangs around a bit
+
+    // and inform listeners
+    notifyListeners();
+  }
+
   Sport get sport {
     return _sport;
   }

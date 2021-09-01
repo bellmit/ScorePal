@@ -47,8 +47,8 @@ class _UserDetailsWidgetState extends State<UserDetailsWidget> {
               user: _currentUser, signOutFunction: _signOutFirebase);
         } else {
           // not logged in, show the login options
-          return IconButtonWidget(_signInFirebase, Icons.login,
-              Values(context).strings.sign_in);
+          return IconButtonWidget(
+              _signInFirebase, Icons.login, Values(context).strings.sign_in);
         }
       },
     );
@@ -103,12 +103,14 @@ class UserLoggedInWidget extends StatelessWidget {
                 Icons.person,
                 isOnBackground: true,
               ),
-            Padding(
-              padding: const EdgeInsets.all(Values.default_space),
-              child: TextButton(
-                child: TextWidget(userName, isOnBackground: true),
-                onPressed: () =>
-                    MatchPlayTracker.navTo(UserScreen.routeName, context),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(Values.default_space),
+                child: TextButton(
+                  child: TextWidget(userName, isOnBackground: true),
+                  onPressed: () =>
+                      MatchPlayTracker.navTo(UserScreen.routeName, context),
+                ),
               ),
             ),
           ],
