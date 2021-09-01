@@ -33,6 +33,16 @@ class PingPongScoreSummaryWidget extends MatchScoreSummaryWidget {
   }
 
   @override
+  TeamIndex getServingTeam() {
+    return match.isMatchOver() ? null : match.getServingTeam();
+  }
+
+  @override
+  String getServingSvgIcon() {
+    return 'ping-pong-ball-large';
+  }
+
+  @override
   MatchScoreSummaryItem getScoreItem(BuildContext context, int index, int row) {
     // return the points for each round
     String points = match.score

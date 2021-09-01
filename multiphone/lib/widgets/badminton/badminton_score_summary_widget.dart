@@ -22,6 +22,16 @@ class BadmintonScoreSummaryWidget extends MatchScoreSummaryWidget {
         );
 
   @override
+  TeamIndex getServingTeam() {
+    return match.isMatchOver() ? null : match.getServingTeam();
+  }
+
+  @override
+  String getServingSvgIcon() {
+    return 'badminton-shuttle-large';
+  }
+
+  @override
   int getScoreCount() {
     // if we haven't finished, there are points currently in play
     var scoreCount = match.score.getPlayedGames();

@@ -39,6 +39,16 @@ class TennisScoreSummaryWidget extends MatchScoreSummaryWidget {
   }
 
   @override
+  TeamIndex getServingTeam() {
+    return match.isMatchOver() ? null : match.getServingTeam();
+  }
+
+  @override
+  String getServingSvgIcon() {
+    return 'tennis-ball-large';
+  }
+
+  @override
   MatchScoreSummaryItem getScoreItem(BuildContext context, int index, int row) {
     var setIndex = index;
     String points = '';

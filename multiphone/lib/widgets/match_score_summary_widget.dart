@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/providers/active_setup.dart';
 
 import 'common/common_widgets.dart';
 
@@ -26,6 +28,9 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
   int getScoreCount();
   MatchScoreSummaryItem getScoreItem(BuildContext context, int index, int row);
 
+  TeamIndex getServingTeam();
+  String getServingSvgIcon();
+
   Widget headingTextWidget(BuildContext context, String title) {
     return Center(
       child: TextSubheadingWidget(
@@ -34,6 +39,18 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
         isLimitOverflow: true,
       ),
     );
+  }
+
+  Widget _createServingWidget(BuildContext context, bool isServing) {
+    if (isServing) {
+      return Center(
+          child: SvgPicture.asset('images/svg/${getServingSvgIcon()}.svg',
+              width: Values.image_icon, height: Values.image_icon));
+    } else {
+      return Center(
+          child:
+              Container(width: Values.image_icon, height: Values.image_icon));
+    }
   }
 
   Widget _createPoint(BuildContext context, MatchScoreSummaryItem item) {
@@ -103,6 +120,9 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
           Row(
             children: <Widget>[
               _createTeamTitle(context, teamOneName, isTeamOneConceded),
+              if (getServingTeam() != null)
+                _createServingWidget(
+                    context, getServingTeam() == TeamIndex.T_ONE),
               ...List.generate(
                 scoreCount,
                 (index) => _createPoint(
@@ -115,6 +135,9 @@ abstract class MatchScoreSummaryWidget extends StatelessWidget {
           Row(
             children: <Widget>[
               _createTeamTitle(context, teamTwoName, isTeamTwoConceded),
+              if (getServingTeam() != null)
+                _createServingWidget(
+                    context, getServingTeam() == TeamIndex.T_TWO),
               ...List.generate(
                 scoreCount,
                 (index) => _createPoint(
