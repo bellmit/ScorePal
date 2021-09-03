@@ -176,7 +176,15 @@ class _AuthScreenState extends State<AuthScreen> {
     );
     // Sign in the user with Firebase. If the nonce we generated earlier does
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-    return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    final authResult =
+        await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    // this is enough to start with
+    final userData = UserData.create(
+        authResult, authResult.user.email, authResult.user.displayName);
+    // which we can pop into our database
+    await userData.storeData();
+    // and return the result
+    return authResult;
   }
 
   Future<UserCredential> _loginEmailPassword(
