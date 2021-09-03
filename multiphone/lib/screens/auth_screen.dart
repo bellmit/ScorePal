@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,8 +11,27 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/user_screen.dart';
 import 'package:multiphone/widgets/auth/auth_form.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
+import 'package:crypto/crypto.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 enum LoginType { emailPassword, google, apple }
+
+/// Generates a cryptographically secure random nonce, to be included in a
+/// credential request.
+String generateNonce([int length = 32]) {
+  final charset =
+      '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+  final random = Random.secure();
+  return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+      .join();
+}
+
+/// Returns the sha256 hash of [input] in hex notation.
+String sha256ofString(String input) {
+  final bytes = utf8.encode(input);
+  final digest = sha256.convert(bytes);
+  return digest.toString();
+}
 
 class AuthScreen extends StatefulWidget {
   static const String routeName = "/auth-screen";
@@ -28,7 +50,6 @@ class _AuthScreenState extends State<AuthScreen> {
     String password,
     String username,
     bool isLoggingIn,
-    BuildContext ctx,
   ) async {
     // login then!
     UserCredential authResult;
@@ -38,17 +59,15 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       switch (loginType) {
         case LoginType.emailPassword:
-          authResult = await _loginEmailPassword(
-              isLoggingIn, email, password, username, ctx);
+          authResult =
+              await _loginEmailPassword(isLoggingIn, email, password, username);
           break;
         case LoginType.google:
           authResult = await _loginGoogle();
           break;
         case LoginType.apple:
-          Log.error('implement apple sign-in then please');
-          throw PlatformException(
-              code: 'not implemented',
-              message: 'apple sign-in is not implemented yet');
+          authResult = await _loginApple();
+          break;
       }
       // if we are here then this worked excellently
       if (false == authResult.user.emailVerified) {
@@ -109,8 +128,34 @@ class _AuthScreenState extends State<AuthScreen> {
     return authResult;
   }
 
-  Future<UserCredential> _loginEmailPassword(bool isLoggingIn, String email,
-      String password, String username, BuildContext ctx) async {
+  Future<UserCredential> _loginApple() async {
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
+
+    // Request credential for the currently signed in Apple account.
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: nonce,
+    );
+    // Create an `OAuthCredential` from the credential returned by Apple.
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      rawNonce: rawNonce,
+    );
+    // Sign in the user with Firebase. If the nonce we generated earlier does
+    // not match the nonce in `appleCredential.identityToken`, sign in will fail.
+    return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+  }
+
+  Future<UserCredential> _loginEmailPassword(
+    bool isLoggingIn,
+    String email,
+    String password,
+    String username,
+  ) async {
     UserCredential authResult;
     if (isLoggingIn) {
       authResult = await _auth.signInWithEmailAndPassword(

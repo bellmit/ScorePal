@@ -5,16 +5,11 @@ import 'package:multiphone/screens/auth_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/icon_button_widget.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthForm extends StatefulWidget {
-  final void Function(
-    LoginType loginType,
-    String email,
-    String password,
-    String userName,
-    bool isLoggingIn,
-    BuildContext context,
-  ) _onSubmit;
+  final void Function(LoginType loginType, String email, String password,
+      String userName, bool isLoggingIn) _onSubmit;
   final bool _isAuthenticating;
 
   AuthForm(this._onSubmit, this._isAuthenticating);
@@ -30,6 +25,7 @@ class _AuthFormState extends State<AuthForm> {
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
+  bool _isAppleSignInAvailable = false;
 
   void _trySubmit(LoginType loginType) {
     var isSubmit;
@@ -56,9 +52,15 @@ class _AuthFormState extends State<AuthForm> {
         _userPassword.trim(),
         _userName.trim(),
         _isLoggingIn,
-        context,
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    SignInWithApple.isAvailable()
+        .then((value) => setState(() => _isAppleSignInAvailable = value));
   }
 
   @override
@@ -160,8 +162,11 @@ class _AuthFormState extends State<AuthForm> {
                             () => _trySubmit(LoginType.google),
                             FontAwesomeIcons.google,
                             values.strings.signin_google),
-                        /*
-                        IconButtonWidget(() => _trySubmit(LoginType.apple), FontAwesomeIcons.apple, values.strings.signin_apple),*/
+                        if (_isAppleSignInAvailable)
+                          IconButtonWidget(
+                              () => _trySubmit(LoginType.apple),
+                              FontAwesomeIcons.apple,
+                              values.strings.signin_apple),
                       ],
                     ),
                   TextButton(
