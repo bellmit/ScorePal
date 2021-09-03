@@ -129,23 +129,6 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future<UserCredential> _loginApple() async {
-/*
-    final credential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-    );
-    // and sign-in to firebase, waiting for the result
-    UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
-    // this is enough to start with
-    final userData = UserData.create(
-        authResult, authResult.user.email, authResult.user.displayName);
-    // which we can pop into our database
-    await userData.storeData();
-    // and return the result
-    return authResult;*/
-
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
 
@@ -176,9 +159,8 @@ class _AuthScreenState extends State<AuthScreen> {
     );
     // Sign in the user with Firebase. If the nonce we generated earlier does
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-    final authResult =
-        await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-    // this is enough to start with
+    final authResult = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+     // this is enough to start with
     final userData = UserData.create(
         authResult, authResult.user.email, authResult.user.displayName);
     // which we can pop into our database
