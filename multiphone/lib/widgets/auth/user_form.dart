@@ -237,7 +237,7 @@ class _UserFormState extends State<UserForm> {
                           initialValue: _userData.username,
                           autocorrect: true,
                           textCapitalization: TextCapitalization.words,
-                          enableSuggestions: false,
+                          enableSuggestions: true,
                           validator: (value) {
                             // check the username
                             if (!Values.isUsernameValid(value)) {

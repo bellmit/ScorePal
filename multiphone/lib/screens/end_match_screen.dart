@@ -82,7 +82,6 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
         key: ValueKey('match_title'),
         initialValue: match.matchTitle,
         autocorrect: true,
-        textCapitalization: TextCapitalization.words,
         enableSuggestions: true,
         decoration: InputDecoration(
           labelText: Values(context).strings.match_title_entry,

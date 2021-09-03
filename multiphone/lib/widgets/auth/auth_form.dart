@@ -80,8 +80,8 @@ class _AuthFormState extends State<AuthForm> {
                   TextFormField(
                     key: ValueKey('email'),
                     autocorrect: false,
+                    enableSuggestions: true,
                     textCapitalization: TextCapitalization.none,
-                    enableSuggestions: false,
                     validator: (value) {
                       // check the email address
                       if (value.isEmpty ||
@@ -107,7 +107,7 @@ class _AuthFormState extends State<AuthForm> {
                       key: ValueKey('username'),
                       autocorrect: true,
                       textCapitalization: TextCapitalization.words,
-                      enableSuggestions: false,
+                      enableSuggestions: true,
                       validator: (value) {
                         // check the username
                         if (!Values.isUsernameValid(value)) {

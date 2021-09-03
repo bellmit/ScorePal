@@ -139,6 +139,8 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
           FocusNode fieldFocusNode,
           VoidCallback onFieldSubmitted) {
         return TextField(
+          enableSuggestions: true,
+          autocorrect: true,
           controller: fieldTextEditingController,
           focusNode: fieldFocusNode,
           decoration: InputDecoration(

@@ -129,6 +129,23 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future<UserCredential> _loginApple() async {
+/*
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    // and sign-in to firebase, waiting for the result
+    UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+    // this is enough to start with
+    final userData = UserData.create(
+        authResult, authResult.user.email, authResult.user.displayName);
+    // which we can pop into our database
+    await userData.storeData();
+    // and return the result
+    return authResult;*/
+
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
 
@@ -138,8 +155,18 @@ class _AuthScreenState extends State<AuthScreen> {
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
       ],
+      webAuthenticationOptions: WebAuthenticationOptions(
+        // Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
+        clientId: 'uk.co.darkerwaters.scorepal',
+        redirectUri: Uri.parse(
+          'https://regal-campus-169014.firebaseapp.com/__/auth/handler',
+        ),
+      ),
       nonce: nonce,
-    );
+    ).onError((error, stackTrace) {
+      Log.error(error.toString());
+      throw error;
+    });
     // Create an `OAuthCredential` from the credential returned by Apple.
     final oauthCredential = OAuthProvider("apple.com").credential(
       idToken: appleCredential.identityToken,

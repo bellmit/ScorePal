@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>85965429895-91dbk5o2isuc242bag6rg5lk11d0915a.apps.googleusercontent.com</string>
+	<string>85965429895-ukg48b96ufsncgboplitmglsm4g03gnd.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.85965429895-91dbk5o2isuc242bag6rg5lk11d0915a</string>
+	<string>com.googleusercontent.apps.85965429895-ukg48b96ufsncgboplitmglsm4g03gnd</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>85965429895-0o1htpsuv7j30pki76ddhfluf8f1id14.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>uk.co.darkerwaters</string>
+	<string>uk.co.darkerwaters.scorepal</string>
 	<key>PROJECT_ID</key>
 	<string>regal-campus-169014</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:85965429895:ios:7d565191a1580ebb5d2c22</string>
+	<string>1:85965429895:ios:b073206923cc0ac85d2c22</string>
 	<key>DATABASE_URL</key>
 	<string>https://regal-campus-169014.firebaseio.com</string>
 </dict>
