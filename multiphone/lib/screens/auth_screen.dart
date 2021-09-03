@@ -155,14 +155,16 @@ class _AuthScreenState extends State<AuthScreen> {
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
       ],
+      nonce: nonce,
+      /*
+      //TODO apple sign in for google doesn't like the redirect URL at all
       webAuthenticationOptions: WebAuthenticationOptions(
         // Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
         clientId: 'uk.co.darkerwaters.scorepal',
         redirectUri: Uri.parse(
           'https://regal-campus-169014.firebaseapp.com/__/auth/handler',
         ),
-      ),
-      nonce: nonce,
+      ),*/
     ).onError((error, stackTrace) {
       Log.error(error.toString());
       throw error;

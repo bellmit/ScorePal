@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multiphone/helpers/values.dart';
@@ -59,8 +61,13 @@ class _AuthFormState extends State<AuthForm> {
   @override
   void initState() {
     super.initState();
-    SignInWithApple.isAvailable()
-        .then((value) => setState(() => _isAppleSignInAvailable = value));
+    if (Platform.isIOS) {
+      SignInWithApple.isAvailable()
+          .then((value) => setState(() => _isAppleSignInAvailable = value));
+    } else {
+      // apple sign in not working )O:
+      _isAppleSignInAvailable = false;
+    }
   }
 
   @override
