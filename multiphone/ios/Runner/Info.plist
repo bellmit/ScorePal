@@ -54,19 +54,19 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>BLE Permissions are needed to access any bluetooth remote controls to change score</string>
+	<string>Bluetooth is needed to listen and respond to bluetooth remote controls so pressing buttons will update your score without you having to return to your phone.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>BLE Permissions are needed to access any bluetooth remote controls to change score</string>
+	<string>Bluetooth is needed to listen and respond to bluetooth remote controls so pressing buttons will update your score without you having to return to your phone.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>This app requires contacts access to suggest player&apos;s names as you enter them. Instead of typing their names, you can select from your contacts and Scorepal can also then email them the results as you finish the match.</string>
+	<string>Giving Scorepal access to contacts will let you select people to play from your contacts list. Their details will not be stored on any server and remain private to you. However, we will use their email address to find if they are also Scorepal members and let them know the results of the match if they are.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches</string>
+	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches</string>
+	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches</string>
+	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Your library needs accessing to get and store data about your latest matches.</string>
+	<string>Your library needs accessing to get and store data about your played matches.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
