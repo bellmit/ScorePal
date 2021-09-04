@@ -170,10 +170,9 @@ class _AuthFormState extends State<AuthForm> {
                             FontAwesomeIcons.google,
                             values.strings.signin_google),
                         if (_isAppleSignInAvailable)
-                          IconButtonWidget(
-                              () => _trySubmit(LoginType.apple),
-                              FontAwesomeIcons.apple,
-                              values.strings.signin_apple),
+                          SignInWithAppleButton(
+                            onPressed: () => _trySubmit(LoginType.apple),
+                          ),
                       ],
                     ),
                   TextButton(

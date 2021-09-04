@@ -54,19 +54,19 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>BLE Permissions are needed to access your remote controls to change score</string>
+	<string>BLE Permissions are needed to access any bluetooth remote controls to change score</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>BLE Permissions are needed to access your remote controls to change score</string>
+	<string>BLE Permissions are needed to access any bluetooth remote controls to change score</string>
 	<key>NSContactsUsageDescription</key>
-	<string>This app requires contacts access to suggest player&apos;s names as you enter them.</string>
+	<string>This app requires contacts access to suggest player&apos;s names as you enter them. Instead of typing their names, you can select from your contacts and Scorepal can also then email them the results as you finish the match.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location Permissions are needed to access your remote controls to change score and store the location of your played matches</string>
+	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Location Permissions are needed to access your remote controls to change score and store the location of your played matches</string>
+	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location Permissions are needed to access your remote controls to change score and store the location of your played matches</string>
+	<string>Location Permissions are needed to access any bluetooth remote controls to change score and store the location of your played matches</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Your library needs accessing to get and store data about your latest matches</string>
+	<string>Your library needs accessing to get and store data about your latest matches.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>

@@ -139,6 +139,13 @@ class _AuthScreenState extends State<AuthScreen> {
         AppleIDAuthorizationScopes.fullName,
       ],
       nonce: nonce,
+      // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
+      webAuthenticationOptions: WebAuthenticationOptions(
+        clientId: 'uk.co.darkerwaters.scorepal',
+        redirectUri: Uri.parse(
+          'https://scorepal.darkerwaters.co.uk/callbacks/sign_in_with_apple',
+        ),
+      ),
       /*
       //TODO apple sign in for google doesn't like the redirect URL at all
       webAuthenticationOptions: WebAuthenticationOptions(
@@ -159,8 +166,9 @@ class _AuthScreenState extends State<AuthScreen> {
     );
     // Sign in the user with Firebase. If the nonce we generated earlier does
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-    final authResult = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-     // this is enough to start with
+    final authResult =
+        await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    // this is enough to start with
     final userData = UserData.create(
         authResult, authResult.user.email, authResult.user.displayName);
     // which we can pop into our database
