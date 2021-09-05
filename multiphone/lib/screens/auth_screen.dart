@@ -117,11 +117,23 @@ class _AuthScreenState extends State<AuthScreen> {
     // with the google credential - we can login to firebase so get that here
     final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
     // and sign-in to firebase, waiting for the result
     authResult = await FirebaseAuth.instance.signInWithCredential(credential);
     // this is enough to start with
-    final userData = UserData.create(
-        authResult, authResult.user.email, authResult.user.displayName);
+    String username = authResult.user.displayName;
+    if (username == null || username.isEmpty) {
+      // try the google given data
+      username = googleUser.displayName.trim();
+    }
+    // this is enough to start with
+    final userData =
+        UserData.create(authResult, authResult.user.email, username);
+    if (username == null || username.isEmpty) {
+      // warn the user about this
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: TextWidget(Values(context).strings.error_no_username)));
+    }
     // which we can pop into our database
     await userData.storeData();
     // and return the result
@@ -169,8 +181,20 @@ class _AuthScreenState extends State<AuthScreen> {
     final authResult =
         await FirebaseAuth.instance.signInWithCredential(oauthCredential);
     // this is enough to start with
-    final userData = UserData.create(
-        authResult, authResult.user.email, authResult.user.displayName);
+    String username = authResult.user.displayName;
+    if (username == null || username.isEmpty) {
+      // try the apple given data
+      username =
+          '${appleCredential.givenName} ${appleCredential.familyName}'.trim();
+    }
+    // create the user data from this data
+    final userData =
+        UserData.create(authResult, authResult.user.email, username);
+    if (username == null || username.isEmpty) {
+      // warn the user about this
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: TextWidget(Values(context).strings.error_no_username)));
+    }
     // which we can pop into our database
     await userData.storeData();
     // and return the result

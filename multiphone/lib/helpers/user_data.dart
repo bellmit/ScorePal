@@ -17,7 +17,7 @@ class UserData {
     return UserData._create(
       userCredential.user,
       email,
-      username,
+      username ?? '',
       true,
     );
   }

@@ -401,11 +401,16 @@ abstract class ActiveSetup with ChangeNotifier {
 
   bool isAccountUserInTeam(TeamIndex teamIndex) {
     final String accountUserName = getAccountUserName();
-    // the account user is playing if their name is the player or the partner
-    return usernameEquals(
-            _playerNames[getTeamPlayer(teamIndex).index], accountUserName) ||
-        usernameEquals(
-            _playerNames[getTeamPartner(teamIndex).index], accountUserName);
+    if (accountUserName == null || accountUserName.isEmpty) {
+      // the account holder doesn't have a name, this isn't great
+      return false;
+    } else {
+      // the account user is playing if their name is the player or the partner
+      return usernameEquals(
+              _playerNames[getTeamPlayer(teamIndex).index], accountUserName) ||
+          usernameEquals(
+              _playerNames[getTeamPartner(teamIndex).index], accountUserName);
+    }
   }
 
   static bool usernameEquals(String username, String compare) {
