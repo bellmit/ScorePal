@@ -136,7 +136,7 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
         if (!prefs.soundAnnounceChange) {
           // we wont say the correction message - so say here
           appendPause(spokenMessage, Values(context).strings.correction,
-              Point.K_SPEAKING_SPACE);
+              Point.K_SPEAKING_PAUSE);
         }
       } else if (state.isChanged(ScoreChange.increment)) {
         // only speak the action if we are not speaking the score as points change
@@ -178,7 +178,7 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
                 spokenMessage,
                 match.createPointsPhrase(
                     context, state.getTeamChanged(), state.getLevelChanged()),
-                Point.K_SPEAKING_PAUSE);
+                Point.K_SPEAKING_PAUSE_LONG);
           }
         }
         // add the extra details here
@@ -186,12 +186,12 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
           // don't announce any of this change in state if the match is over
           if (state.isChanged(ScoreChange.decidingPoint)) {
             appendPause(spokenMessage, Values(context).strings.deciding_point,
-                Point.K_SPEAKING_SPACE);
+                Point.K_SPEAKING_PAUSE);
           }
           if (state.isChanged(ScoreChange.ends) &&
               prefs.soundAnnounceChangeEnds) {
             appendPause(spokenMessage, Values(context).strings.change_ends,
-                Point.K_SPEAKING_SPACE);
+                Point.K_SPEAKING_PAUSE);
           }
           if (state.isChanged(ScoreChange.server) &&
               prefs.soundAnnounceChangeServer) {
@@ -205,7 +205,7 @@ abstract class MatchSpeaker<T extends ActiveMatch> {
                 spokenMessage,
                 Values(context).construct(
                     Values(context).strings.change_server_server, [serverName]),
-                Point.K_SPEAKING_SPACE);
+                Point.K_SPEAKING_PAUSE);
           }
           if (state.isChanged(ScoreChange.tieBreak)) {
             // this is a tie, say this as it's super important

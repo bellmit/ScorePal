@@ -126,17 +126,9 @@ class _AuthScreenState extends State<AuthScreen> {
       // try the google given data
       username = googleUser.displayName.trim();
     }
-    // this is enough to start with
-    final userData =
-        UserData.create(authResult, authResult.user.email, username);
-    if (username == null || username.isEmpty) {
-      // warn the user about this
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: TextWidget(Values(context).strings.error_no_username)));
-    }
-    // which we can pop into our database
-    await userData.storeData();
-    // and return the result
+    // if this is the first time, we can create this user data as here
+    await _updateUserData(authResult, authResult.user.email, username);
+    // and return the user credential
     return authResult;
   }
 
@@ -181,18 +173,31 @@ class _AuthScreenState extends State<AuthScreen> {
       username =
           '${appleCredential.givenName} ${appleCredential.familyName}'.trim();
     }
-    // create the user data from this data
-    final userData =
-        UserData.create(authResult, authResult.user.email, username);
-    if (username == null || username.isEmpty) {
-      // warn the user about this
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: TextWidget(Values(context).strings.error_no_username)));
-    }
-    // which we can pop into our database
-    await userData.storeData();
+    // if this is the first time, we can create this user data as here
+    await _updateUserData(authResult, authResult.user.email, username);
     // and return the result
     return authResult;
+  }
+
+  Future<UserData> _updateUserData(
+      UserCredential user, String email, String username) async {
+    UserData userData = await UserData.loadUserData(user.user);
+    if (null == userData) {
+      // there isn't any doc in the datastore, create the start of this
+      if (username.isEmpty) {
+        // set the username from the email
+        int index = email.indexOf('@');
+        if (index != -1) {
+          username = email.substring(0, index);
+        }
+      }
+      // and create the data
+      userData = UserData.create(user, email, username);
+      // which we can pop into our database
+      await userData.storeData();
+    }
+    // and return
+    return userData;
   }
 
   Future<UserCredential> _loginEmailPassword(

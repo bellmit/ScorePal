@@ -202,7 +202,8 @@ class _UserFormState extends State<UserForm> {
                                       'google.com'))
                                 Row(
                                   children: <Widget>[
-                                    IconWidget(FontAwesomeIcons.google),
+                                    IconWidget(FontAwesomeIcons.google,
+                                        size: Values.image_icon),
                                     SizedBox(width: 10),
                                     TextWidget(
                                       values.strings.provider_google,
@@ -215,7 +216,8 @@ class _UserFormState extends State<UserForm> {
                                       'apple.com'))
                                 Row(
                                   children: <Widget>[
-                                    IconWidget(FontAwesomeIcons.apple),
+                                    IconWidget(FontAwesomeIcons.apple,
+                                        size: Values.image_icon),
                                     SizedBox(width: 10),
                                     TextWidget(
                                       values.strings.provider_apple,

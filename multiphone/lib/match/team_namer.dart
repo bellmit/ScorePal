@@ -68,6 +68,18 @@ class TeamNamer {
     return '';
   }
 
+  String getDefaultTeamName(TeamIndex teamIndex, BuildContext context) {
+    switch (teamIndex) {
+      case TeamIndex.T_ONE:
+        return Values(context).strings.team_one;
+        break;
+      case TeamIndex.T_TWO:
+        return Values(context).strings.team_two;
+        break;
+    }
+    return '';
+  }
+
   String getTeamName(BuildContext context, TeamIndex teamIndex,
       {bool isUseDefaults = false}) {
     // sort out what we are doing with our names, by default in doubles
@@ -89,6 +101,9 @@ class TeamNamer {
           teamName = _createFullNameTeamName(context, teamIndex);
           break;
       }
+    } else if (_setup.singlesDoubles == MatchSinglesDoubles.doubles) {
+      // we are using defaults - if we are saying team name (doubles) then just return that
+      teamName = getDefaultTeamName(teamIndex, context);
     }
     if (null == teamName || teamName.isEmpty) {
       switch (teamIndex) {

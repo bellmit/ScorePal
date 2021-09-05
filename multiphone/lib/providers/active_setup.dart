@@ -313,7 +313,7 @@ abstract class ActiveSetup with ChangeNotifier {
     }
   }
 
-  get singlesDoubles {
+  MatchSinglesDoubles get singlesDoubles {
     return _singlesDoubles;
   }
 
@@ -417,10 +417,17 @@ abstract class ActiveSetup with ChangeNotifier {
       return false;
     } else {
       // the account user is playing if their name is the player or the partner
-      return usernameEquals(
-              _playerNames[getTeamPlayer(teamIndex).index], accountUserName) ||
-          usernameEquals(
-              _playerNames[getTeamPartner(teamIndex).index], accountUserName);
+      if (singlesDoubles == MatchSinglesDoubles.singles) {
+        // just check the player
+        return usernameEquals(
+            _playerNames[getTeamPlayer(teamIndex).index], accountUserName);
+      } else {
+        // check the team
+        return usernameEquals(_playerNames[getTeamPlayer(teamIndex).index],
+                accountUserName) ||
+            usernameEquals(
+                _playerNames[getTeamPartner(teamIndex).index], accountUserName);
+      }
     }
   }
 

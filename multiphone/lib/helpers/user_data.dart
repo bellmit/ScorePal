@@ -44,16 +44,39 @@ class UserData {
     if (null == currentUser) {
       return Future.error('not logged on');
     }
+    UserData data = await loadUserData(currentUser);
+    if (data == null) {
+      // create empty placeholder data
+      data = UserData._create(
+          currentUser, currentUser.email, currentUser.displayName, true);
+      // and put in in the store as we are
+      await data.storeData();
+      // returning it
+      return data;
+    } else {
+      // return the loaded data
+      return data;
+    }
+  }
+
+  static Future<UserData> loadUserData(User user) async {
     // get from firebase
     final doc = await FirebaseFirestore.instance
         .collection('users')
-        .doc(currentUser.uid)
+        .doc(user.uid)
         .get();
+    if (doc == null) {
+      return null;
+    }
     // get the data from the document
     final docData = doc.data();
+    if (docData == null) {
+      // no data in the doc
+      return null;
+    }
     // and return the wrapper for this data
     return UserData._create(
-      currentUser,
+      user,
       docData['email'],
       docData['username'],
       false,
