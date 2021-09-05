@@ -28,7 +28,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   DateTime _dateMatchStarted;
   int _matchTimePlayedMs;
   MatchLocation _matchLocation;
-  bool _isShareMatchResults;
+  bool _isShareMatchResults = true;
 
   MatchSpeaker _speaker;
   MatchWriter _writer;
@@ -97,7 +97,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   bool get isShareMatchResults => _isShareMatchResults;
 
   void setIsShareMatchResult(bool isShareResults, bool isNotify) {
-    _isShareMatchResults = isShareResults;
+    _isShareMatchResults = isShareResults ?? true;
     if (isNotify) {
       notifyListeners();
     }

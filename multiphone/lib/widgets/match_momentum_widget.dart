@@ -203,7 +203,7 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
             spots: team == TeamIndex.T_ONE
                 ? teamOneGraphPoints
                 : teamTwoGraphPoints,
-            isCurved: true,
+            isCurved: false,
             colors: gradientColors(),
             barWidth: 3,
             isStrokeCapRound: true,

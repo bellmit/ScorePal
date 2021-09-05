@@ -37,6 +37,13 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
     super.dispose();
   }
 
+  void _setShareMatchResults(bool isShare, ActiveMatch match) {
+    // set this on the match
+    match.setIsShareMatchResult(isShare, false);
+    // and on this state
+    setState(() => _isShareMatchResults = isShare);
+  }
+
   void _concedeMatch(ActiveMatch match, TeamIndex team) {
     // have this team concede
     match.concedeMatch(team);
@@ -139,7 +146,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                         activeColor: Theme.of(context).primaryColor,
                         value: _isShareMatchResults,
                         onChanged: (value) =>
-                            setState(() => _isShareMatchResults = value),
+                            _setShareMatchResults(value, match),
                       ),
                     ],
                   ),
@@ -171,6 +178,7 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
       ),
       body: Consumer<ActiveMatch>(
         builder: (ctx, match, child) {
+          _isShareMatchResults = match != null && match.isShareMatchResults;
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
