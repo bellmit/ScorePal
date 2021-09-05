@@ -236,6 +236,17 @@ abstract class ActiveSetup with ChangeNotifier {
     return [..._playerEmailAddresses[player.index]];
   }
 
+  List<String> getSharingEmails() {
+    final List<String> emails = [];
+    for (PlayerIndex player in PlayerIndex.values) {
+      if (!isPlayerAccountUser(player)) {
+        // this is not the user, this is an email to send to
+        emails.addAll(_playerEmailAddresses[player.index]);
+      }
+    }
+    return emails;
+  }
+
   String getTeamName(TeamIndex team, BuildContext context) {
     // return the correct name for the team
     return _teamNamer.getTeamName(context, team, isUseDefaults: false);
@@ -410,6 +421,17 @@ abstract class ActiveSetup with ChangeNotifier {
               _playerNames[getTeamPlayer(teamIndex).index], accountUserName) ||
           usernameEquals(
               _playerNames[getTeamPartner(teamIndex).index], accountUserName);
+    }
+  }
+
+  bool isPlayerAccountUser(PlayerIndex player) {
+    final String accountUserName = getAccountUserName();
+    if (accountUserName == null || accountUserName.isEmpty) {
+      // the account holder doesn't have a name, this isn't great
+      return false;
+    } else {
+      // the account user is playing if their name is the player
+      return usernameEquals(_playerNames[player.index], accountUserName);
     }
   }
 

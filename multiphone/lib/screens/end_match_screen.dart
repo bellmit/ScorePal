@@ -21,6 +21,9 @@ class EndMatchScreen extends StatefulWidget {
 }
 
 class _EndMatchScreenState extends State<EndMatchScreen> {
+  bool _isShareMatchResults = true;
+  bool _isShowEmailShares = false;
+
   @override
   void initState() {
     super.initState();
@@ -94,6 +97,69 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
         svgPath: match.sport.icon,
         description: match.getDescription(DescriptionLevel.SHORT, context),
       );
+
+  Widget _shareMatch(BuildContext context, ActiveMatch match) {
+    final setup = match.getSetup();
+    final values = Values(context);
+    final emailsSharing = setup.getSharingEmails();
+    if (emailsSharing == null || emailsSharing.isEmpty) {
+      // not sharing anything
+      return Container();
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(Values.default_space),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(Values.default_space),
+              child: IconWidget(Icons.share, size: Values.image_icon),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Wrap(
+                          children: [
+                            TextWidget(
+                                'Auto-share results to registered Scorepal users'),
+                            if (_isShareMatchResults)
+                              TextButton(
+                                  onPressed: () => setState(() =>
+                                      _isShowEmailShares = !_isShowEmailShares),
+                                  child: TextSubheadingWidget(
+                                      values.strings.buttons_emails))
+                          ],
+                        ),
+                      ),
+                      Switch(
+                        activeColor: Theme.of(context).primaryColor,
+                        value: _isShareMatchResults,
+                        onChanged: (value) =>
+                            setState(() => _isShareMatchResults = value),
+                      ),
+                    ],
+                  ),
+                  if (_isShareMatchResults && _isShowEmailShares)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: emailsSharing
+                          .map(
+                            (e) => TextWidget(e),
+                          )
+                          .toList(),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,6 +256,9 @@ class _EndMatchScreenState extends State<EndMatchScreen> {
                       values.strings.match_concede_undo,
                     ),
                   ),
+                if (match.isMatchOver())
+                  // and the share option
+                  _shareMatch(context, match),
                 // and show the breakdown for the match
                 MatchBreakdownWidget(match: match),
                 MatchMomentumWidget(match: match),

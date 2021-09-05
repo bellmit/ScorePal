@@ -28,6 +28,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
   DateTime _dateMatchStarted;
   int _matchTimePlayedMs;
   MatchLocation _matchLocation;
+  bool _isShareMatchResults;
 
   MatchSpeaker _speaker;
   MatchWriter _writer;
@@ -93,6 +94,15 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
     _score.resetState();
   }
 
+  bool get isShareMatchResults => _isShareMatchResults;
+
+  void setIsShareMatchResult(bool isShareResults, bool isNotify) {
+    _isShareMatchResults = isShareResults;
+    if (isNotify) {
+      notifyListeners();
+    }
+  }
+
   void setLocation(LocationData location) {
     _matchLocation = location == null
         ? null
@@ -140,6 +150,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
             'lat': _matchLocation.lat,
             'lon': _matchLocation.lon,
           };
+    data['isShare'] = _isShareMatchResults;
     data['title'] = _matchTitle;
     // and if anyone conceded
     for (int i = 0; i < _conceded.length; ++i) {
@@ -161,6 +172,7 @@ abstract class ActiveMatch<TSetup extends ActiveSetup, TScore extends Score>
       _conceded[i] = data['conceded_${i + 1}'] ?? false;
     }
     _matchTitle = data['title'] ?? '';
+    _isShareMatchResults = data['isShare'] ?? true;
     // get the location if there is one
     final locationObject = data['location'] as Map<String, Object>;
     if (locationObject != null &&

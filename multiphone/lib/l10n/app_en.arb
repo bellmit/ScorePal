@@ -316,6 +316,8 @@
     "button_import": "Import",
     "button_view": "View",
 
+    "buttons_emails": "uses email addresses...",
+    "title_share_emails_list": "emails to share to:",
     "match_title_entry": "Match title / explanation",
     "title_account": "Account",
     "explain_account_not_signed_in": "You are currently not logged in, all your data will remain local and not be stored remotely. Consider signing in to back up scores and calculate your match victories etc.",

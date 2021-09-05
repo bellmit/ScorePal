@@ -94,6 +94,7 @@ exports.processMatchOpponents = functions.firestore
         // check all the data is there, needs to be complete and not communicated_from an inbox
         if (data && data.setup &&
             data.analysis && data.analysis.complete &&
+            !data.isShare === false &&
             !data.setup.communicated_from) {
             // this match is complete we can try to find all our opponents and send
             // them the score also
