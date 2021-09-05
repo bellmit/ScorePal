@@ -151,13 +151,6 @@ class _AuthScreenState extends State<AuthScreen> {
         AppleIDAuthorizationScopes.fullName,
       ],
       nonce: nonce,
-      // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
-      webAuthenticationOptions: WebAuthenticationOptions(
-        clientId: 'uk.co.darkerwaters.scorepal',
-        redirectUri: Uri.parse(
-          'https://scorepal.darkerwaters.co.uk/callbacks/sign_in_with_apple',
-        ),
-      ),
       /*
       //TODO apple sign in for google doesn't like the redirect URL at all
       webAuthenticationOptions: WebAuthenticationOptions(
@@ -165,6 +158,7 @@ class _AuthScreenState extends State<AuthScreen> {
         clientId: 'uk.co.darkerwaters.scorepal',
         redirectUri: Uri.parse(
           'https://regal-campus-169014.firebaseapp.com/__/auth/handler',
+          'https://scorepal.darkerwaters.co.uk/callbacks/sign_in_with_apple',
         ),
       ),*/
     ).onError((error, stackTrace) {

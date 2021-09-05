@@ -60,20 +60,20 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!-- Set up the Sign in with Apple activity, such that it's callable from the browser-redirect -->
-            <!-- android:name="uk.co.darkerwaters.scorepal.SignInWithAppleCallback" -->
-            <activity
-                android:name="com.aboutyou.dart_packages.sign_in_with_apple.SignInWithAppleCallback"
-                android:exported="true">
-                <intent-filter>
-                    <action android:name="android.intent.action.VIEW" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                    <category android:name="android.intent.category.BROWSABLE" />
+        </activity>
+        <!-- Set up the Sign in with Apple activity, such that it's callable from the browser-redirect -->
+        <!-- android:name="uk.co.darkerwaters.scorepal.SignInWithAppleCallback" -->
+        <activity
+            android:name=".dart_packages.sign_in_with_apple.SignInWithAppleCallback"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                    <data android:scheme="signinwithapple" />
-                    <data android:path="callback" />
-                </intent-filter>
-            </activity>
+                <data android:scheme="signinwithapple" />
+                <data android:path="callback" />
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

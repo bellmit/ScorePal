@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
             Locale('en', ''), // English, no country code
             Locale('fr', ''), // French, no country code
           ];
-          final homePage = FutureBuilder(
+          final homePage = FutureBuilder<FirebaseApp>(
             // Initialize FlutterFire:
             future: _initialization,
             builder: (context, snapshot) {

@@ -165,13 +165,30 @@ class _AuthFormState extends State<AuthForm> {
                             _isLoggingIn
                                 ? values.strings.sign_in
                                 : values.strings.create_account),
-                        IconButtonWidget(
-                            () => _trySubmit(LoginType.google),
-                            FontAwesomeIcons.google,
-                            values.strings.signin_google),
+                        MaterialButton(
+                          onPressed: () => _trySubmit(LoginType.google),
+                          color: Theme.of(context).primaryColor,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: IconWidget(FontAwesomeIcons.google,
+                                    size: Values.image_icon),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(values.strings.signin_google),
+                              ),
+                            ],
+                          ),
+                        ),
                         if (_isAppleSignInAvailable)
-                          SignInWithAppleButton(
-                            onPressed: () => _trySubmit(LoginType.apple),
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: 300),
+                            child: SignInWithAppleButton(
+                              onPressed: () => _trySubmit(LoginType.apple),
+                            ),
                           ),
                       ],
                     ),
