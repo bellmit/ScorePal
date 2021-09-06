@@ -4,6 +4,7 @@ import 'package:flic_button/flic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:multiphone/helpers/flic2_wrapper.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
@@ -248,11 +249,13 @@ class _SetupFlic2ScreenState extends BaseNavScreenState<SetupFlic2Screen>
       leading: Container(
         child: Stack(
           children: [
-            IconSvgWidget(
-              'flic-two',
-              size: Values.image_medium,
-              isOnBackground:
-                  _lastClick != null && _lastClick.button.uuid == button.uuid,
+            SvgPicture.asset(
+              'images/svg/flic-two.svg',
+              width: Values.image_medium,
+              height: Values.image_medium,
+              color: _lastClick != null && _lastClick.button.uuid == button.uuid
+                  ? Theme.of(context).accentColor
+                  : Theme.of(context).iconTheme.color,
             ),
             if (_lastClick != null && _lastClick.button.uuid == button.uuid)
               Container(

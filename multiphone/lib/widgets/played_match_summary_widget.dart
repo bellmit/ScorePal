@@ -146,19 +146,20 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                     ),
                   if (!setup.isCommunicatedFrom &&
                       setup.communicatedTo.isNotEmpty)
-                    Column(
-                      children: setup.communicatedTo
-                          .map(
-                            (e) => ListTile(
-                              leading: IconWidget(Icons.person_add),
-                              title: TextWidget(values.construct(
-                                  values.strings.auto_send_summary, [
-                                setup.getPlayerNameForEmail(e.email) ??
-                                    e.username
-                              ])),
-                            ),
-                          )
-                          .toList(),
+                    ListTile(
+                      leading: IconWidget(Icons.person_add),
+                      title: TextWidget(
+                        values.construct(values.strings.auto_send_summary,
+                            [setup.communicatedTo.length]),
+                      ),
+                      subtitle: Column(
+                          children: setup.communicatedTo
+                              .map(
+                                (e) => TextWidget(
+                                    setup.getPlayerNameForEmail(e.email) ??
+                                        e.username),
+                              )
+                              .toList()),
                     ),
                 ],
               ),
