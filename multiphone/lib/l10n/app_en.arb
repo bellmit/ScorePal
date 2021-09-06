@@ -89,8 +89,13 @@
     "description_check_inbox": "You have some matches in your inbox from other players...",
     "description_play_new_match": "Why not play a match to get started...",
     "description_purchase_flic": "Scorepal works best when you control it via a bluetooth button...\nHint: get a metal clip to attach to your shorts!",
+    "action_setup_flic": "Setup Flic2",
     "action_purchase_flic": "Purchase Flic2",
     "description_sign_in_scorepal": "Scorepal works best when you sign in!\nBackup your match history and gather a lifetime of stats.",
+    "description_last_month": "{0} match results:",
+    "description_wins_losses": "You played {0}\nWon {1} and lost {2}",
+    "title_wins": "wins",
+    "title_losses": "lost",
 
     "title_setup_tennis": "{0} vs {1} in a {2} set match of tennis...",
     "title_tennis_sets": "Sets",

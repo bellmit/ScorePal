@@ -10,6 +10,7 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/adverts/check_inbox_widget.dart';
+import 'package:multiphone/widgets/adverts/last_month_stats_widget.dart';
 import 'package:multiphone/widgets/adverts/play_new_match_widget.dart';
 import 'package:multiphone/widgets/adverts/signin_scorepal_widget.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
@@ -32,6 +33,7 @@ class HomeScreen extends BaseNavScreen {
 class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
   List<ActiveMatch> matches;
 
+  static const lastMonthCardKey = 'advert_last_month_stats';
   static const purchaseFlicCardKey = 'advert_purchase_flic';
   static const signInScorepalCardKey = 'advert_sign_in_scorepal';
 
@@ -101,6 +103,22 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
     if (matches == null || matches.length <= 0) {
       // no matches, let them play one to start up and don't let them dismiss that
       cards.add(PlayNewMatchWidget());
+    }
+    final stats = await persistence.getLastMonthStats();
+    if (stats != null &&
+        !prefs.isAdvertDismissed(lastMonthCardKey) &&
+        stats.isValid) {
+      // there are stats
+      cards.add(Dismissible(
+        direction: DismissDirection.horizontal,
+        // Each Dismissible must contain a Key. Keys allow Flutter to
+        // uniquely identify widgets.
+        key: Key(lastMonthCardKey),
+        // Provide a function that tells the app
+        // what to do after an item has been swiped away.
+        onDismissed: (direction) => _dismissAdvert(prefs, lastMonthCardKey),
+        child: LastMonthStatsWidget(stats: stats),
+      ));
     }
     if (!prefs.isControlFlic1 &&
         !prefs.isControlFlic2 &&

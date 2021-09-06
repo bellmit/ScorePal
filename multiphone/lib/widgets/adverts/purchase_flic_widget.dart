@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
+import 'package:multiphone/screens/setup_flic2_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,6 +20,10 @@ class PurchaseFlicWidget extends StatelessWidget {
               TextWidget(Values(context).strings.error_navigating_to_flic)));
       return false;
     });
+  }
+
+  static void navUserToSetupFlic(BuildContext context) {
+    MatchPlayTracker.navTo(SetupFlic2Screen.routeName, context);
   }
 
   @override
@@ -49,9 +55,19 @@ class PurchaseFlicWidget extends StatelessWidget {
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
-                    child: TextButton(
-                        onPressed: () => navUserToPurchaseFlic(context),
-                        child: TextWidget(values.strings.action_purchase_flic)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            onPressed: () => navUserToSetupFlic(context),
+                            child:
+                                TextWidget(values.strings.action_setup_flic)),
+                        TextButton(
+                            onPressed: () => navUserToPurchaseFlic(context),
+                            child: TextWidget(
+                                values.strings.action_purchase_flic)),
+                      ],
+                    ),
                   ),
                 ],
               ),

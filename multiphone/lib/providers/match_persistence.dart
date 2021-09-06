@@ -12,6 +12,7 @@ import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/match/match_id.dart';
+import 'package:multiphone/match/match_stats_month.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';
@@ -33,6 +34,8 @@ enum MatchPersistenceSyncState {
 class MatchPersistence with ChangeNotifier {
   static const usersCollection = 'users';
   static const matchCollection = 'matches';
+  static const resultsMonthCollection = 'results_months';
+  static const resultsPlayersCollection = 'results_players';
   static const lastActivePrefix = 'active';
 
   static final DateFormat dateKey = DateFormat("yyyy-MM");
@@ -454,5 +457,34 @@ class MatchPersistence with ChangeNotifier {
     // and return this sorted nicely (with the most recent on the top please)
     return SplayTreeMap<String, ActiveMatch>.from(
         matches, (key1, key2) => key2.compareTo(key1));
+  }
+
+  Future<MatchStatsMonth> getLastMonthStats() async {
+    if (null == _user) {
+      Log.error('Cannot get any stats as the user is not logged in');
+      return null;
+    }
+    // get the last two - will be this month (maybe) and the one before
+    final QuerySnapshot<Map<String, dynamic>> snapshot =
+        await FirebaseFirestore.instance
+            .collection(usersCollection)
+            .doc(_user.uid)
+            .collection(resultsMonthCollection)
+            //.orderBy('id', descending: true)
+            //.limit(2)
+            .get();
+    if (snapshot != null && snapshot.docs != null) {
+      // we have docs, get the first one in this list that is not now.
+      DateTime now = DateTime.now();
+      for (final doc in snapshot.docs) {
+        final statsMonth = MatchStatsMonth.dateFromFirebaseId(doc.id);
+        if (statsMonth.month != now.month || statsMonth.year != now.year) {
+          // this isn't now, show this
+          return MatchStatsMonth.create(doc.id, doc.data());
+        }
+      }
+    }
+    // if we get there then there are no valid stats to return
+    return null;
   }
 }

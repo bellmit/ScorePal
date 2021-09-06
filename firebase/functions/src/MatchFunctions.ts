@@ -81,7 +81,7 @@ exports.processMatchWinnings = functions.firestore
                 const matchMonth = context.params.matchId.substr(0, 7);
                 changeFutures.push(admin.firestore().collection('users')
                     .doc(context.params.userId)
-                    .collection('results')
+                    .collection('results_months')
                     .doc(matchMonth)
                     .set({
                         wins: admin.firestore.FieldValue.increment(winChange),
@@ -148,7 +148,7 @@ exports.processMatchWinnings = functions.firestore
 function updatePlayerResults(userUid: string, name: string, wins:number, losses:number, played:number): Promise<any> {
     return admin.firestore().collection('users')
         .doc(userUid)
-        .collection('results')
+        .collection('results_players')
         .doc('player_' + name.toLowerCase().split(' ').join('_'))
         .set({
             name: name,

@@ -9,5 +9,11 @@ service cloud.firestore {
   	match /users/{uid}/inbox/{document=*} {
     	allow read, delete: if request.auth != null && request.auth.uid == uid;
     }
+  	match /users/{uid}/results_months/{document=*} {
+    	allow read: if request.auth != null && request.auth.uid == uid;
+    }
+  	match /users/{uid}/results_players/{document=*} {
+    	allow read: if request.auth != null && request.auth.uid == uid;
+    }
   }
 }
