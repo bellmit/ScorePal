@@ -91,7 +91,7 @@ exports.processMatchWinnings = functions.firestore
                     .catch((error: any) => {
                         console.error('Failed to increment the change in wins and losses for the month ' + matchMonth, error);
                     }));
-                // and your players
+                // each player gets the results logged against them
                 if (data.setup) {
                     if (data.setup.player1) {
                         // do the change for player1
