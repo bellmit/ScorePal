@@ -65,8 +65,9 @@ exports.processMatchWinnings = functions.firestore
                 }
             }
             if (winChange !== 0 || lossChange !== 0 || playedChange !== 0) {
-                // there is some change in data, so change it then
-                return admin.firestore().collection('users')
+                // there is some change in data, so change it on the user data then
+                const changeFutures = [];
+                changeFutures.push(admin.firestore().collection('users')
                     .doc(context.params.userId)
                     .update({
                         wins: admin.firestore.FieldValue.increment(winChange),
@@ -75,12 +76,90 @@ exports.processMatchWinnings = functions.firestore
                     })
                     .catch((error: any) => {
                         console.error('Failed to increment the change in wins and losses for a user', error);
-                    });
+                    }));
+                // and on the month breakdown for this match
+                const matchMonth = context.params.matchId.substr(0, 7);
+                changeFutures.push(admin.firestore().collection('users')
+                    .doc(context.params.userId)
+                    .collection('results')
+                    .doc(matchMonth)
+                    .set({
+                        wins: admin.firestore.FieldValue.increment(winChange),
+                        losses: admin.firestore.FieldValue.increment(lossChange),
+                        played: admin.firestore.FieldValue.increment(playedChange),
+                    }, {merge: true})
+                    .catch((error: any) => {
+                        console.error('Failed to increment the change in wins and losses for the month ' + matchMonth, error);
+                    }));
+                // each player gets the results logged against them
+                if (data.setup) {
+                    if (data.setup.player1) {
+                        // do the change for player1
+                        changeFutures.push(
+                            updatePlayerResults(
+                                context.params.userId,
+                                data.setup.player1,
+                                winChange,
+                                lossChange,
+                                playedChange));
+                    }
+                    if (data.setup.player2) {
+                        // do the change for player2
+                        changeFutures.push(
+                            updatePlayerResults(
+                                context.params.userId,
+                                data.setup.player2,
+                                winChange,
+                                lossChange,
+                                playedChange));
+                    }
+                    if (data.setup.singles === false) {
+                        // this is doubles, do their partners
+                        if (data.setup.player3) {
+                            // do the change for player3
+                            changeFutures.push(
+                                updatePlayerResults(
+                                    context.params.userId,
+                                    data.setup.player3,
+                                    winChange,
+                                    lossChange,
+                                    playedChange));
+                        }
+                        if (data.setup.player4) {
+                            // do the change for player4
+                            changeFutures.push(
+                                updatePlayerResults(
+                                    context.params.userId,
+                                    data.setup.player4,
+                                    winChange,
+                                    lossChange,
+                                    playedChange));
+                        }
+                    }
+                }
+                // and wait for these to complete
+                return Promise.all(changeFutures);
             }
         }
         // nothing to do
         return false;
     });
+
+function updatePlayerResults(userUid: string, name: string, wins:number, losses:number, played:number): Promise<any> {
+    return admin.firestore().collection('users')
+        .doc(userUid)
+        .collection('results')
+        .doc('player_' + name.toLowerCase().split(' ').join('_'))
+        .set({
+            name: name,
+            wins: admin.firestore.FieldValue.increment(wins),
+            losses: admin.firestore.FieldValue.increment(losses),
+            played: admin.firestore.FieldValue.increment(played),
+        }, {merge: true})
+        .catch((error: any) => {
+            console.error('Failed to increment the change in wins and losses for the player ' + name, error);
+    });
+}
 
 /**
 * Listen for changes to matches to send the player's opponents the score also
