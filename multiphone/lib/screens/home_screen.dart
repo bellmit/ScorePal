@@ -104,21 +104,22 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
       // no matches, let them play one to start up and don't let them dismiss that
       cards.add(PlayNewMatchWidget());
     }
-    final stats = await persistence.getLastMonthStats();
-    if (stats != null &&
-        !prefs.isAdvertDismissed(lastMonthCardKey) &&
-        stats.isValid) {
-      // there are stats
-      cards.add(Dismissible(
-        direction: DismissDirection.horizontal,
-        // Each Dismissible must contain a Key. Keys allow Flutter to
-        // uniquely identify widgets.
-        key: Key(lastMonthCardKey),
-        // Provide a function that tells the app
-        // what to do after an item has been swiped away.
-        onDismissed: (direction) => _dismissAdvert(prefs, lastMonthCardKey),
-        child: LastMonthStatsWidget(stats: stats),
-      ));
+    if (!prefs.isAdvertDismissed(lastMonthCardKey)) {
+      // we want to show this card, maybe - get the data to see
+      final stats = await persistence.getLastMonthStats();
+      if (stats != null && stats.isValid) {
+        // there are stats
+        cards.add(Dismissible(
+          direction: DismissDirection.horizontal,
+          // Each Dismissible must contain a Key. Keys allow Flutter to
+          // uniquely identify widgets.
+          key: Key(lastMonthCardKey),
+          // Provide a function that tells the app
+          // what to do after an item has been swiped away.
+          onDismissed: (direction) => _dismissAdvert(prefs, lastMonthCardKey),
+          child: LastMonthStatsWidget(stats: stats),
+        ));
+      }
     }
     if (!prefs.isControlFlic1 &&
         !prefs.isControlFlic2 &&

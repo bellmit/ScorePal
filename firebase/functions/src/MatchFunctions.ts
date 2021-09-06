@@ -84,6 +84,7 @@ exports.processMatchWinnings = functions.firestore
                     .collection('results_months')
                     .doc(matchMonth)
                     .set({
+                        id: matchMonth,
                         wins: admin.firestore.FieldValue.increment(winChange),
                         losses: admin.firestore.FieldValue.increment(lossChange),
                         played: admin.firestore.FieldValue.increment(playedChange),

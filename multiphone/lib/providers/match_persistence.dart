@@ -465,14 +465,14 @@ class MatchPersistence with ChangeNotifier {
       return null;
     }
     // get the last two - will be this month (maybe) and the one before
-    final QuerySnapshot<Map<String, dynamic>> snapshot =
-        await FirebaseFirestore.instance
-            .collection(usersCollection)
-            .doc(_user.uid)
-            .collection(resultsMonthCollection)
-            //.orderBy('id', descending: true)
-            //.limit(2)
-            .get();
+    final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection(usersCollection)
+        .doc(_user.uid)
+        .collection(resultsMonthCollection)
+        .orderBy('id', descending: true)
+        .limit(2)
+        .get();
     if (snapshot != null && snapshot.docs != null) {
       // we have docs, get the first one in this list that is not now.
       DateTime now = DateTime.now();
