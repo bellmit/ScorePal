@@ -15,7 +15,7 @@ import * as functions from 'firebase-functions';
         return change.after.ref.update({'email_lc': email == null ? '' : email.toLowerCase()});
      } else {
         // no change to make is fine
-        return false;
+            return Promise.resolve();
      }
  });
 
@@ -26,7 +26,7 @@ exports.deleteUserData = functions.auth.user().onDelete((user) => {
     // the user is deleted, delete the document
     if (!user) {
         console.error('User deleted without a user document passed');
-        return false;
+        return Promise.reject(Error('User deleted without a user document passed'));
     } else {
         // delete the user's document data
         return admin.firestore()
