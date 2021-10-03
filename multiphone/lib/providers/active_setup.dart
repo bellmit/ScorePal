@@ -422,6 +422,23 @@ abstract class ActiveSetup with ChangeNotifier {
     return accountUserName;
   }
 
+  PlayerIndex getAccountUserPlayer() {
+    final String accountUserName = getAccountUserName();
+    if (accountUserName == null || accountUserName.isEmpty) {
+      // the account holder doesn't have a name, this isn't great
+      return null;
+    } else {
+      // the account user is playing if their name is the player
+      for (final playerIndex in PlayerIndex.values) {
+        if (isPlayerAccountUser(playerIndex)) {
+          return playerIndex;
+        }
+      }
+      // no match
+      return null;
+    }
+  }
+
   bool isAccountUserInTeam(TeamIndex teamIndex) {
     final String accountUserName = getAccountUserName();
     if (accountUserName == null || accountUserName.isEmpty) {

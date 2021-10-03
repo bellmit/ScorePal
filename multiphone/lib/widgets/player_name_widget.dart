@@ -10,6 +10,7 @@ class PlayerNameWidget extends StatefulWidget {
   final void Function(Contact) onContactSelected;
   final void Function() onPlayerSelectedToServe;
   final bool isPlayerServer;
+  final bool isPlayerUser;
   final List<Contact> availableOpponents;
   final String hintText;
   final String initialText;
@@ -20,6 +21,7 @@ class PlayerNameWidget extends StatefulWidget {
     @required this.hintText,
     @required this.availableOpponents,
     @required this.onPlayerSelectedToServe,
+    @required this.isPlayerUser,
     @required this.isPlayerServer,
     @required this.onTextChanged,
     @required this.onContactSelected,
@@ -192,7 +194,36 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
       child: Row(
         children: [
           Expanded(
-            child: _createAutoComplete(context),
+            child: Stack(
+              children: [
+                if (widget.isPlayerUser)
+                  Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        color: Theme.of(context).accentColor.withAlpha(100)),
+                    child: Column(
+                      children: [
+                        IconWidget(
+                          Icons.person,
+                          size: Values.image_icon,
+                          isOnBackground: true,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: TextWidget('you', isOnBackground: true),
+                        ),
+                      ],
+                    ),
+                  ),
+                Padding(
+                  padding: widget.isPlayerUser
+                      ? EdgeInsets.only(
+                          left: Values.image_icon + Values.default_space)
+                      : EdgeInsets.all(0),
+                  child: _createAutoComplete(context),
+                ),
+              ],
+            ),
           ),
           Container(
             decoration: BoxDecoration(

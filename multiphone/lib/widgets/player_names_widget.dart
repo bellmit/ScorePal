@@ -30,6 +30,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
     with TickerProviderStateMixin {
   bool _showPartners;
   PlayerIndex _servingPlayer = PlayerIndex.P_ONE;
+  PlayerIndex _playerAccountUser = null;
 
   AnimationController _controller;
   Animation<Offset> _slideAnimation;
@@ -59,7 +60,9 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
       parent: _controller,
       curve: Curves.easeInOut,
     ));
-
+    // get who the account user is
+    _playerAccountUser =
+        Provider.of<ActiveSetup>(context, listen: false).getAccountUserPlayer();
     _showPartnerNames(_showPartners);
   }
 
@@ -71,8 +74,9 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
 
   void _onPlayerNameChanged(String playerName, PlayerIndex playerIndex) {
     // update the player name in the settings
-    Provider.of<ActiveSetup>(context, listen: false)
-        .setPlayerName(playerIndex, playerName);
+    final setup = Provider.of<ActiveSetup>(context, listen: false);
+    setup.setPlayerName(playerIndex, playerName);
+    _playerAccountUser = setup.getAccountUserPlayer();
   }
 
   void _onPlayerContactSet(Contact contact, PlayerIndex playerIndex) {
@@ -126,6 +130,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
               _onPlayerNameChanged(newName, PlayerIndex.P_ONE),
           onContactSelected: (contact) =>
               _onPlayerContactSet(contact, PlayerIndex.P_ONE),
+          isPlayerUser: _playerAccountUser == PlayerIndex.P_ONE,
           isPlayerServer: _servingPlayer == PlayerIndex.P_ONE,
           onPlayerSelectedToServe: () => _onServerSelected(PlayerIndex.P_ONE),
           availableOpponents: contacts,
@@ -147,6 +152,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_ONE),
                 onContactSelected: (contact) =>
                     _onPlayerContactSet(contact, PlayerIndex.PT_ONE),
+                isPlayerUser: _playerAccountUser == PlayerIndex.PT_ONE,
                 isPlayerServer: _servingPlayer == PlayerIndex.PT_ONE,
                 onPlayerSelectedToServe: () =>
                     _onServerSelected(PlayerIndex.PT_ONE),
@@ -163,6 +169,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
               _onPlayerNameChanged(newName, PlayerIndex.P_TWO),
           onContactSelected: (contact) =>
               _onPlayerContactSet(contact, PlayerIndex.P_TWO),
+          isPlayerUser: _playerAccountUser == PlayerIndex.P_TWO,
           isPlayerServer: _servingPlayer == PlayerIndex.P_TWO,
           onPlayerSelectedToServe: () => _onServerSelected(PlayerIndex.P_TWO),
           availableOpponents: contacts,
@@ -184,6 +191,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
                     _onPlayerNameChanged(newName, PlayerIndex.PT_TWO),
                 onContactSelected: (contact) =>
                     _onPlayerContactSet(contact, PlayerIndex.PT_TWO),
+                isPlayerUser: _playerAccountUser == PlayerIndex.PT_TWO,
                 isPlayerServer: _servingPlayer == PlayerIndex.PT_TWO,
                 onPlayerSelectedToServe: () =>
                     _onServerSelected(PlayerIndex.PT_TWO),
