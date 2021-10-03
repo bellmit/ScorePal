@@ -96,6 +96,7 @@
     "description_wins_losses": "You played {0}\nWon {1} and lost {2}",
     "title_wins": "wins",
     "title_losses": "lost",
+    "title_even": "",
 
     "title_setup_tennis": "{0} vs {1} in a {2} set match of tennis...",
     "title_tennis_sets": "Sets",

@@ -24,7 +24,6 @@ class LastMonthStatsWidget extends StatelessWidget {
         constraints: BoxConstraints.loose(Size.fromWidth(cardWidth)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
@@ -39,13 +38,15 @@ class LastMonthStatsWidget extends StatelessWidget {
                           show: false,
                         ),
                         sectionsSpace: 0,
+                        centerSpaceRadius: Values.default_space,
+                        startDegreeOffset: 45,
                         sections: [
                           PieChartSectionData(
                             color: theme.primaryColorDark,
                             value: stats.losses.toDouble(),
-                            title: stats.losses > stats.wins
+                            title: stats.losses >= stats.wins
                                 ? values.strings.title_losses
-                                : '',
+                                : values.strings.title_even,
                             //title: '${(stats.losses / stats.played * 100).round()}%',
                             titleStyle: TextStyle(
                                 color: theme.accentTextTheme.button.color),
@@ -53,9 +54,9 @@ class LastMonthStatsWidget extends StatelessWidget {
                           PieChartSectionData(
                             color: theme.accentColor,
                             value: stats.wins.toDouble(),
-                            title: stats.losses < stats.wins
+                            title: stats.losses <= stats.wins
                                 ? values.strings.title_wins
-                                : '',
+                                : values.strings.title_even,
                             //title: '${(stats.wins / stats.played * 100).round()}%',
                             titleStyle: TextStyle(
                                 color: theme.accentTextTheme.button.color),
@@ -65,7 +66,7 @@ class LastMonthStatsWidget extends StatelessWidget {
                 ),
               ),
             ),
-            Flexible(
+            Expanded(
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(Values.default_space),

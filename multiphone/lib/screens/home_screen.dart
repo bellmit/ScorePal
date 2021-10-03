@@ -32,6 +32,7 @@ class HomeScreen extends BaseNavScreen {
 
 class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
   List<ActiveMatch> matches;
+  List<Widget> advertCards;
 
   static const lastMonthCardKey = 'advert_last_month_stats';
   static const purchaseFlicCardKey = 'advert_purchase_flic';
@@ -61,12 +62,16 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
     if (persistence.isUserLoggedOn) {
       await persistence.syncDataFromFirebase();
     }
+    // get any adverts we want to show
+    // and get the required adverts
+    final advertsCreated = await _createAdvertCards(persistence);
     // and get the matches
     final matchesReturned =
         await persistence.getMatches(MatchPersistenceState.accepted, context);
     // have the matches back here, set them locally
     setState(() {
       matches = List.of(matchesReturned.values);
+      advertCards = advertsCreated;
     });
   }
 
@@ -198,42 +203,25 @@ class _HomeScreenState extends BaseNavScreenState<HomeScreen> {
     return Container(
       child: Column(
         children: [
-          Consumer<MatchPersistence>(
-            builder: (ctx, persistence, child) {
-              return FutureBuilder(
-                future: _createAdvertCards(persistence),
-                builder: (ctx, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.hasData) {
-                    // have a list of cards, don't let them take up too much height...
-                    final advertsHeight =
-                        MediaQuery.of(context).size.height * 0.3;
-                    return ConstrainedBox(
-                        constraints: BoxConstraints.loose(
-                            Size.fromHeight(advertsHeight)),
-                        child: SingleChildScrollView(
-                            child: Wrap(children: snapshot.data)));
-                  } else {
-                    // no cards
-                    return Container();
-                  }
-                },
-              );
-            },
-          ),
           Expanded(
             child: RefreshIndicator(
               onRefresh: _refreshMatches,
               child: OrientationBuilder(
                 builder: (ctx, orientation) {
                   return StaggeredGridView.countBuilder(
-                    itemCount: matches == null ? 0 : matches.length,
+                    itemCount: (matches == null ? 0 : matches.length) +
+                        (advertCards == null ? 0 : advertCards.length),
                     crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
                     crossAxisSpacing: Values.default_space,
                     mainAxisSpacing: Values.default_space,
                     staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
                     itemBuilder: (BuildContext context, int index) {
-                      final match = matches.elementAt(index);
+                      final adCardCount =
+                          advertCards == null ? 0 : advertCards.length;
+                      if (index < adCardCount) {
+                        return advertCards[index];
+                      }
+                      final match = matches.elementAt(index - adCardCount);
                       return Dismissible(
                         direction: DismissDirection.endToStart,
                         background: Container(
