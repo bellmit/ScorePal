@@ -8,6 +8,7 @@ import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_sport.dart';
 import 'package:multiphone/providers/match_persistence.dart';
 import 'package:multiphone/screens/home_screen.dart';
+import 'package:multiphone/screens/match_breakdown_screen.dart';
 import 'package:multiphone/screens/setup_match_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -80,6 +81,11 @@ class MatchPlayTracker {
     Provider.of<ActiveSport>(context, listen: false).resumeMatch(match);
     // and show the playing screen for this
     navTo(match.sport.playNavPath, context);
+  }
+
+  static void breakdownMatch(ActiveMatch match, BuildContext context) {
+    // show the breakdown screen for this
+    navTo(MatchBreakdownScreen.routeName, context, arguments: [match]);
   }
 
   void clearMatchData() {

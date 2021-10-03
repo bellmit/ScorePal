@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
 import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';
+import 'package:multiphone/screens/match_breakdown_screen.dart';
 import 'package:multiphone/widgets/badminton/badminton_score_summary_widget.dart';
 import 'package:multiphone/widgets/common/icon_button_widget.dart';
+import 'package:multiphone/widgets/match_communicated_widget.dart';
 import 'package:multiphone/widgets/pingpong/ping_pong_score_summary_widget.dart';
 import 'package:multiphone/widgets/score_headline_widget.dart';
 import 'package:multiphone/widgets/tennis/tennis_score_summary_widget.dart';
@@ -123,14 +126,20 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
               padding: EdgeInsets.only(top: Values.default_space),
               child: ScoreHeadlineWidget(match: widget.match),
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: IconButtonWidget(
-                  _toggleMore,
-                  _isExpanded ? Icons.expand_less : Icons.expand_more,
-                  _isExpanded
-                      ? values.strings.show_less
-                      : values.strings.show_more),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButtonWidget(
+                    () => MatchPlayTracker.breakdownMatch(widget.match, context),
+                    Icons.analytics,
+                    'Breakdown'),
+                IconButtonWidget(
+                    _toggleMore,
+                    _isExpanded ? Icons.expand_less : Icons.expand_more,
+                    _isExpanded
+                        ? values.strings.show_less
+                        : values.strings.show_more),
+              ],
             ),
             if (_isExpanded)
               Column(
@@ -139,28 +148,7 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
                     padding: EdgeInsets.all(Values.default_space),
                     child: _createScoreSummaryWidget(context),
                   ),
-                  if (setup.isCommunicatedFrom)
-                    ListTile(
-                      leading: IconWidget(Icons.hail),
-                      title: TextWidget(values.strings.auto_send_rx_summary),
-                    ),
-                  if (!setup.isCommunicatedFrom &&
-                      setup.communicatedTo.isNotEmpty)
-                    ListTile(
-                      leading: IconWidget(Icons.person_add),
-                      title: TextWidget(
-                        values.construct(values.strings.auto_send_summary,
-                            [setup.communicatedTo.length]),
-                      ),
-                      subtitle: Column(
-                          children: setup.communicatedTo
-                              .map(
-                                (e) => TextWidget(
-                                    setup.getPlayerNameForEmail(e.email) ??
-                                        e.username),
-                              )
-                              .toList()),
-                    ),
+                  MatchCommunicatedWidget(setup: setup),
                 ],
               ),
           ],

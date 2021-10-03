@@ -233,6 +233,7 @@
     "match_completed": "Match Completed",
     "match_resume": "Resume Match",
     "match_end": "End Match",
+    "match_breakdown": "Match Breakdown",
     "match_accept": "Accept Results",
     "match_delete": "Delete Match",
     "match_deleted": "Match deleted",

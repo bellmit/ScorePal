@@ -228,7 +228,7 @@ class _MatchMomentumWidgetState extends State<MatchMomentumWidget> {
   }
 
   void _showMomentumFullScreen() {
-    MatchPlayTracker.navTo(MatchMomentumScreen.routeName, context);
+    MatchPlayTracker.navTo(MatchMomentumScreen.routeName, context,arguments: widget.match);
   }
 
   @override

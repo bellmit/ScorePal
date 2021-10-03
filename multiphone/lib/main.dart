@@ -18,6 +18,7 @@ import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/change_match_setup_screen.dart';
 import 'package:multiphone/screens/home_screen.dart';
 import 'package:multiphone/screens/inbox_screen.dart';
+import 'package:multiphone/screens/match_breakdown_screen.dart';
 import 'package:multiphone/screens/match_history_screen.dart';
 import 'package:multiphone/screens/match_momentum_screen.dart';
 import 'package:multiphone/screens/setup_flic2_screen.dart';
@@ -136,6 +137,7 @@ class MyApp extends StatelessWidget {
         SetupMatchScreen.routeName: (ctx) => SetupMatchScreen(),
         SettingsScreen.routeName: (ctx) => SettingsScreen(),
         ChangeMatchSetupScreen.routeName: (ctx) => ChangeMatchSetupScreen(),
+        MatchBreakdownScreen.routeName: (ctx) => MatchBreakdownScreen(),
         TrashScreen.routeName: (ctx) => TrashScreen(),
         SetupFlic2Screen.routeName: (ctx) => SetupFlic2Screen(),
         AttributionsScreen.routeName: (ctx) => AttributionsScreen(),
