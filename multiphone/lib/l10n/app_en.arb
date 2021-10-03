@@ -214,6 +214,7 @@
     "password_valid": "Please enter a valid password at least 8 characters long.",
     "username_valid": "Please enter a valid username... Your full name (with spaces) works best as will be spoken and recorded as you play a match.",
     "create_account": "Create Account",
+    "forgot_password": "Forgot Password",
     "already_account": "I already have an account...",
     "signin_google": "Sign in with Google",
     "signin_apple": "Sign in with Apple",
@@ -425,6 +426,7 @@
     "warning_logon_to_delete": "You need to sign in for any changes to also be made online...",
     "warning_no_matches_to_delete": "You haven't any deleted matches...",
     "warning_no_matches_in_inbox": "You haven't any matches sent from other Scorepal members...",
+    "warning_password_email_sent": "We have sent you an email with instructions on how to reset your password....",
 
     "error_no_username": "For your match tracking to work properly, it's worth entering a username on your user's settings now.",
     "error_change_server": "Sorry, you can't change server at this point in the match.",

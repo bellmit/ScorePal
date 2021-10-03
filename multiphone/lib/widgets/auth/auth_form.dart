@@ -24,6 +24,7 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   var _isLoggingIn = true;
 
+  LoginType _typeSelected = LoginType.emailPassword;
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
@@ -31,7 +32,8 @@ class _AuthFormState extends State<AuthForm> {
 
   void _trySubmit(LoginType loginType) {
     var isSubmit;
-    if (loginType == LoginType.emailPassword) {
+    _typeSelected = loginType;
+    if (loginType == LoginType.emailPassword || loginType == LoginType.forgot) {
       // validate the form
       final isValid = _formKey.currentState.validate();
       // close the soft keyboard (O:
@@ -135,7 +137,8 @@ class _AuthFormState extends State<AuthForm> {
                     key: ValueKey('password'),
                     validator: (value) {
                       // check the password
-                      if (value.length < 8) {
+                      if (_typeSelected != LoginType.forgot &&
+                          value.length < 8) {
                         return values.strings.password_valid;
                       } else {
                         return null;
@@ -192,16 +195,26 @@ class _AuthFormState extends State<AuthForm> {
                           ),
                       ],
                     ),
-                  TextButton(
-                    child: _isLoggingIn
-                        ? TextWidget(values.strings.create_account)
-                        : TextWidget(values.strings.already_account),
-                    onPressed: () {
-                      // change our state
-                      setState(() {
-                        _isLoggingIn = !_isLoggingIn;
-                      });
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        child: _isLoggingIn
+                            ? TextWidget(values.strings.create_account)
+                            : TextWidget(values.strings.already_account),
+                        onPressed: () {
+                          // change our state
+                          setState(() {
+                            _isLoggingIn = !_isLoggingIn;
+                          });
+                        },
+                      ),
+                      if (_isLoggingIn)
+                        TextButton(
+                          child: TextWidget(values.strings.forgot_password),
+                          onPressed: () => _trySubmit(LoginType.forgot),
+                        ),
+                    ],
                   ),
                 ],
               ),

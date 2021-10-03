@@ -14,7 +14,7 @@ import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:crypto/crypto.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-enum LoginType { emailPassword, google, apple }
+enum LoginType { emailPassword, google, apple, forgot }
 
 /// Generates a cryptographically secure random nonce, to be included in a
 /// credential request.
@@ -68,6 +68,12 @@ class _AuthScreenState extends State<AuthScreen> {
         case LoginType.apple:
           authResult = await _loginApple();
           break;
+        default:
+          await _forgotPassword(email);
+          _displayError(Values(context).strings.warning_password_email_sent);
+          // they sent themselves an email, pop back to where they were then
+          Navigator.of(context).pop();
+          return;
       }
       // if we are here then this worked excellently
       if (false == authResult.user.emailVerified) {
@@ -90,6 +96,8 @@ class _AuthScreenState extends State<AuthScreen> {
       message = error.message;
     } else if (error is FirebaseException && null != error.message) {
       message = error.message;
+    } else if (error is String) {
+      message = error;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: TextWidget(message),
@@ -198,6 +206,16 @@ class _AuthScreenState extends State<AuthScreen> {
     }
     // and return
     return userData;
+  }
+
+  Future<void> _forgotPassword(String email) {
+    return _auth
+        .sendPasswordResetEmail(email: email)
+        .onError((error, stackTrace) {
+      Log.error(error.toString());
+      throw error;
+    });
+    ;
   }
 
   Future<UserCredential> _loginEmailPassword(
