@@ -159,7 +159,7 @@
     "six": "6",
 
     "speak_all": "all",
-    "speak_number_all": "%1$d {1} all",
+    "speak_number_all": "{1} all",
     "display_zero": "0",
     "speak_zero": "zero",
     "speak_zeros": "zeros",
@@ -271,10 +271,10 @@
     "naming_mode_surname": "Surname",
     "naming_mode_full_name": "Full Name",
     "explain_name_mode": "Choose how to display and speak the names of your players and teams in a match.",
-    "example_naming_mode_surname_initial": "J. McEnroe -- S. Williams",
+    "example_naming_mode_surname_initial": "J. McRacket -- S. Wondershot",
     "example_naming_mode_first_name": "John -- Serena",
-    "example_naming_mode_surname": "McEnroe -- Williams",
-    "example_naming_mode_full_name": "John McEnroe -- Serena Williams",
+    "example_naming_mode_surname": "McRacket -- Wondershot",
+    "example_naming_mode_full_name": "John McRacket -- Serena Wondershot",
 
     "scoreSummaryLevel": "Level {0}",
     "scoreSummaryOneLine": "{0} {2} — {3} {1}",
