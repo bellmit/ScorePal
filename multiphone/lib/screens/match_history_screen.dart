@@ -131,7 +131,12 @@ class _MatchHistoryScreenState extends State<MatchHistoryScreen> {
           Values values,
           bool isShowUndo) =>
       ListTile(
-        leading: IconWidget(Icons.person_add),
+        leading: history.team == TeamIndex.T_TWO
+            ? IconWidget(Icons.person_add)
+            : null,
+        trailing: history.team == TeamIndex.T_ONE
+            ? IconWidget(Icons.person_add)
+            : null,
         title: Row(
           children: [
             Expanded(
