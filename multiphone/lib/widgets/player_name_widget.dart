@@ -210,15 +210,17 @@ class _PlayerNameWidgetState extends State<PlayerNameWidget> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: TextWidget('you', isOnBackground: true),
+                          child: TextWidget(
+                            Values(context).strings.player_user,
+                            isOnBackground: true,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 Padding(
                   padding: widget.isPlayerUser
-                      ? EdgeInsets.only(
-                          left: Values.image_icon + Values.default_space)
+                      ? EdgeInsets.only(left: Values.image_icon)
                       : EdgeInsets.all(0),
                   child: _createAutoComplete(context),
                 ),

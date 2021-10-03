@@ -259,6 +259,7 @@
     "team_conceded": "Retired",
 
     "playing": "Vs",
+    "player_user": "you",
     "results_breakdown": "Results Breakdown",
     "total_points": "Total Points",
     "break_points": "Break Points",
