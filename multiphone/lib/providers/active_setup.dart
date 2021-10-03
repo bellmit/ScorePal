@@ -449,13 +449,22 @@ abstract class ActiveSetup with ChangeNotifier {
       if (singlesDoubles == MatchSinglesDoubles.singles) {
         // just check the player
         return usernameEquals(
-            _playerNames[getTeamPlayer(teamIndex).index], accountUserName);
+          _playerNames[getTeamPlayer(teamIndex).index],
+          accountUserName,
+          isCheckPartial: true,
+        );
       } else {
         // check the team
-        return usernameEquals(_playerNames[getTeamPlayer(teamIndex).index],
-                accountUserName) ||
+        return usernameEquals(
+              _playerNames[getTeamPlayer(teamIndex).index],
+              accountUserName,
+              isCheckPartial: true,
+            ) ||
             usernameEquals(
-                _playerNames[getTeamPartner(teamIndex).index], accountUserName);
+              _playerNames[getTeamPartner(teamIndex).index],
+              accountUserName,
+              isCheckPartial: true,
+            );
       }
     }
   }
@@ -467,11 +476,16 @@ abstract class ActiveSetup with ChangeNotifier {
       return false;
     } else {
       // the account user is playing if their name is the player
-      return usernameEquals(_playerNames[player.index], accountUserName);
+      return usernameEquals(
+        _playerNames[player.index],
+        accountUserName,
+        isCheckPartial: true,
+      );
     }
   }
 
-  static bool usernameEquals(String username, String compare) {
+  static bool usernameEquals(String username, String compare,
+      {bool isCheckPartial = false}) {
     if (username == null && compare == null) {
       return true;
     } else if (username != null && compare == null) {
@@ -480,8 +494,20 @@ abstract class ActiveSetup with ChangeNotifier {
     } else if (username == null && compare != null) {
       // not the same
       return false;
-    } else {
+    } else if (!isCheckPartial) {
+      // just check the strings
       return username.trim().toLowerCase() == compare.trim().toLowerCase();
+    } else {
+      // check the length of the compare string
+      if (compare.length < username.length) {
+        // can't be the same
+        return false;
+      } else {
+        // is the user name bit (length of compare) the same as what we are testing
+        // so 'douglas' would match 'douglas brain', as would 'doug' but not 'duggie'
+        return compare.substring(0, username.length).trim().toLowerCase() ==
+            username.trim().toLowerCase();
+      }
     }
   }
 
