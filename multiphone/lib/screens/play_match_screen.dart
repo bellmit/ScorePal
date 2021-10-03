@@ -218,7 +218,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
     }
   }
 
-  void _onMatchOptionSelected(PlayMatchOptions option, BuildContext context) {
+  void _onMatchOptionSelected(
+      ActiveSetup setup, PlayMatchOptions option, BuildContext context) {
     switch (option) {
       case PlayMatchOptions.clear:
         final values = Values(context);
@@ -258,8 +259,12 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         _activateKeyController(isActivate: false);
         // then nav away to the page and re-activate when we come back
         MatchPlayTracker.navTo(SettingsScreen.routeName, context,
-                arguments: {SettingsScreen.argShowSidebar: false})
-            .then((value) => _activateKeyController());
+            arguments: {SettingsScreen.argShowSidebar: false}).then((value) {
+          // activate the key controller
+          _activateKeyController();
+          // and update the setup as things might have changed
+          setup.refreshSettings();
+        });
         break;
       case PlayMatchOptions.show_match_settings:
         // show the settings without the option to change sports or play new
@@ -267,7 +272,12 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
         _activateKeyController(isActivate: false);
         // then nav away to the page and re-activate when we come back
         MatchPlayTracker.navTo(ChangeMatchSetupScreen.routeName, context)
-            .then((value) => _activateKeyController());
+            .then((value) {
+          // activate the key controller
+          _activateKeyController();
+          // and update the setup as things might have changed
+          setup.refreshSettings();
+        });
         break;
     }
     // and hide the options screen
@@ -456,7 +466,7 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                         child: Padding(
                           padding: const EdgeInsets.all(Values.default_space),
                           child: IconButtonWidget(
-                            () => _onMatchOptionSelected(
+                            () => _onMatchOptionSelected(match.getSetup(),
                                 PlayMatchOptions.end_match, context),
                             Icons.stop,
                             values.strings.match_end,
@@ -490,8 +500,8 @@ class _PlayMatchScreenState extends State<PlayMatchScreen>
                             teamTwoName: match
                                 .getSetup()
                                 .getTeamName(TeamIndex.T_TWO, context),
-                            onOptionSelected: (value) =>
-                                _onMatchOptionSelected(value, context),
+                            onOptionSelected: (value) => _onMatchOptionSelected(
+                                match.getSetup(), value, context),
                           ),
                         ),
                       ),

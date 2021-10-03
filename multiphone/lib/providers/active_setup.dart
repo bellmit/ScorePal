@@ -73,6 +73,8 @@ abstract class ActiveSetup with ChangeNotifier {
   void newMatchCreated() {
     // called from the provider when we make a new one (to not do it again)
     _isCreateNewMatch = false;
+    // refresh our settings
+    refreshSettings();
   }
 
   ActiveMatch get matchToResume {
@@ -82,14 +84,24 @@ abstract class ActiveSetup with ChangeNotifier {
   void createNewMatch() {
     _isCreateNewMatch = true;
     _matchToResume = null;
-    // and inform listeners
+    // refresh our settings
+    refreshSettings();
+    // and inform listeners of this change
     notifyListeners();
   }
 
   void resumeMatch(ActiveMatch match) {
     _matchToResume = match;
     _isCreateNewMatch = false;
+    // refresh our settings
+    refreshSettings();
+    // and inform listeners of this change
     notifyListeners();
+  }
+
+  void refreshSettings() {
+    // set the team namer as required
+    _teamNamer = TeamNamer(this);
   }
 
   Map<String, Object> getData() {
