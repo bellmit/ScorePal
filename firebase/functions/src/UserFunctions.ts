@@ -29,13 +29,80 @@ exports.deleteUserData = functions.auth.user().onDelete((user) => {
         return Promise.reject(Error('User deleted without a user document passed'));
     } else {
         // delete the user's document data
-        return admin.firestore()
-            .collection('users')
-            .doc(user.uid)
-            .delete()
-            .then()
-            .catch((error) => {
-                console.error('Failed to delete the document data for the user: ' + user.uid, error);
-            });
+        const activeFutures = [
+            admin.firestore()
+                .collection('users')
+                .doc(user.uid)
+                .collection('matches')
+                .get()
+                .then((snapshot) => {
+                    // for each entry in the matches collection below a user, delete the document
+                    return snapshot.forEach((value) => {
+                        if (value.exists && value.ref) {
+                            value.ref.delete();
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Failed to delete the match data for the user: ' + user.uid, error);
+                }),
+            admin.firestore()
+                .collection('users')
+                .doc(user.uid)
+                .collection('inbox')
+                .get()
+                .then((snapshot) => {
+                    // for each entry in the inbox collection below a user, delete the document
+                    return snapshot.forEach((value) => {
+                        if (value.exists && value.ref) {
+                            value.ref.delete();
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Failed to delete the match data for the user: ' + user.uid, error);
+                }),
+            admin.firestore()
+                .collection('users')
+                .doc(user.uid)
+                .collection('results_months')
+                .get()
+                .then((snapshot) => {
+                    // for each entry in the results collection below a user, delete the document
+                    return snapshot.forEach((value) => {
+                        if (value.exists && value.ref) {
+                            value.ref.delete();
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Failed to delete the results_months data for the user: ' + user.uid, error);
+                }),
+            admin.firestore()
+                .collection('users')
+                .doc(user.uid)
+                .collection('results_players')
+                .get()
+                .then((snapshot) => {
+                    // for each entry in the results collection below a user, delete the document
+                    return snapshot.forEach((value) => {
+                        if (value.exists && value.ref) {
+                            value.ref.delete();
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Failed to delete the results_months data for the user: ' + user.uid, error);
+                }),
+            admin.firestore()
+                .collection('users')
+                .doc(user.uid)
+                .delete()
+                .catch((error) => {
+                    console.error('Failed to delete the document data for the user: ' + user.uid, error);
+                }),
+        ];
+        // and return on completion of all these functions
+        return Promise.all(activeFutures);
     }
 });
