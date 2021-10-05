@@ -44,6 +44,11 @@ class _AttributionsScreenState extends BaseNavScreenState<AttributionsScreen> {
       'text':
           "&quot;<a title='Jenni Schmidt' href='https://flickr.com/photos/triotex/920948462'>Jenni Schmidt&quot;</a> flickr photo by <a href='https://flickr.com/people/triotex'>Triotex</a> shared under a <a href='https://creativecommons.org/licenses/by-sa/2.0/'>Creative Commons (BY-SA) license</a> </small>",
     },
+    {
+      'image': 'images/img/pickleball.jpg',
+      'text':
+          "&quot;<a href='https://www.flickr.com/photos/srahn/51236984621/' target='_blank'>Team Kenny 2021</a>&quot;&nbsp;(<a rel='license' href='https://creativecommons.org/publicdomain/zero/1.0/' target='_blank'>Public Domain</a>)&nbsp;by&nbsp;<a xmlns:cc='http://creativecommons.org/ns#' rel='cc:attributionURL' property='cc:attributionName' href='https://www.flickr.com/people/srahn/' target='_blank'>StephenGA</a>"
+    }
   ];
 
   @override

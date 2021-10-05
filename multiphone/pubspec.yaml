@@ -115,6 +115,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/img/badminton.jpg
+    - images/img/pickleball.jpg
     - images/img/ping_pong.jpg
     - images/img/points.jpg
     - images/img/squash.jpg
@@ -139,6 +140,8 @@ flutter:
     - images/svg/match-settings.svg
     - images/svg/media-remote.svg
     - images/svg/nineteen_points.svg
+    - images/svg/pickleball-ball-large.svg
+    - images/svg/pickleball.svg
     - images/svg/ping-pong.svg
     - images/svg/ping-pong-ball-five.svg
     - images/svg/ping-pong-ball-large.svg
