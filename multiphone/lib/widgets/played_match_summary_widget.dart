@@ -5,7 +5,6 @@ import 'package:multiphone/match/match_writer.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/providers/active_setup.dart';
 import 'package:multiphone/providers/sport.dart';
-import 'package:multiphone/screens/match_breakdown_screen.dart';
 import 'package:multiphone/widgets/badminton/badminton_score_summary_widget.dart';
 import 'package:multiphone/widgets/common/icon_button_widget.dart';
 import 'package:multiphone/widgets/match_communicated_widget.dart';
@@ -130,7 +129,8 @@ class _PlayedMatchSummaryWidgetState extends State<PlayedMatchSummaryWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButtonWidget(
-                    () => MatchPlayTracker.breakdownMatch(widget.match, context),
+                    () =>
+                        MatchPlayTracker.breakdownMatch(widget.match, context),
                     Icons.analytics,
                     'Breakdown'),
                 IconButtonWidget(

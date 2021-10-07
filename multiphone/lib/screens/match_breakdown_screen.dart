@@ -8,7 +8,6 @@ import 'package:multiphone/widgets/match_breakdown_widget.dart';
 import 'package:multiphone/widgets/match_communicated_widget.dart';
 import 'package:multiphone/widgets/match_momentum_widget.dart';
 import 'package:multiphone/widgets/match_summary_title_widget.dart';
-import 'package:provider/provider.dart';
 
 class MatchBreakdownScreen extends StatefulWidget {
   static const String routeName = '/match-breakdown';

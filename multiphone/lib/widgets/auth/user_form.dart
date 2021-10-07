@@ -24,6 +24,7 @@ class _UserFormState extends State<UserForm> {
 
   UserData _userData;
   String passwordError;
+  bool _isLoggedIn = false;
   bool _isChangingPassword = false;
   bool _isDeleteRequired = false;
   bool _isChangeInPasswordRequired = false;
@@ -33,13 +34,22 @@ class _UserFormState extends State<UserForm> {
   bool _isDirty = false;
   String _newPassword = '';
 
-  _UserFormState(this._userData);
+  _UserFormState(this._userData)
+      : _isLoggedIn = _userData != null && _userData.currentUser != null;
 
   void _refreshUserData() {
     // reload the state
-    _userData.currentUser.reload();
+    if (_isLoggedIn) {
+      _userData.currentUser.reload();
+    }
     // and update our data
-    UserData.load().then((value) => setState(() => _userData = value));
+    UserData.load().then(
+      (value) => setState(() {
+        _userData = value;
+        _isLoggedIn = _userData != null && _userData.currentUser != null;
+        return _userData;
+      }),
+    );
   }
 
   void _trySubmit() {
@@ -48,7 +58,7 @@ class _UserFormState extends State<UserForm> {
     // close the soft keyboard (O:
     FocusScope.of(context).unfocus();
 
-    if (isValid) {
+    if (isValid && _isLoggedIn) {
       // login here then - first save all the values to the form
       _formKey.currentState.save();
       // and change this data in the user data and send to firebase
@@ -70,7 +80,7 @@ class _UserFormState extends State<UserForm> {
     // close the soft keyboard (O:
     FocusScope.of(context).unfocus();
 
-    if (isValid) {
+    if (isValid && _isLoggedIn) {
       passwordError = null;
       setState(() {
         _isChangingPassword = true;
@@ -95,10 +105,12 @@ class _UserFormState extends State<UserForm> {
   void _deleteAllOnlineUserData() {
     // just delete the user - cloud functions will tidy up our data
     try {
-      _userData.currentUser
-          .delete()
-          .then((value) => Navigator.of(context).pop())
-          .onError((error, stackTrace) => _displayError(error));
+      if (_isLoggedIn) {
+        _userData.currentUser
+            .delete()
+            .then((value) => Navigator.of(context).pop())
+            .onError((error, stackTrace) => _displayError(error));
+      }
     } catch (error) {
       _displayError(error);
     }
@@ -109,7 +121,13 @@ class _UserFormState extends State<UserForm> {
     setState(() => _isDeleteInProgress = true);
     Provider.of<MatchPersistence>(context, listen: false)
         .deleteAllLocalData()
-        .then((value) => setState(() => _isDeleteInProgress = false))
+        .then((value) => setState(() {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: TextWidget(
+                    Values(context).strings.warning_all_local_data_deleted),
+              ));
+              _isDeleteInProgress = false;
+            }))
         .onError((error, stackTrace) => _displayError(error));
   }
 
@@ -132,11 +150,13 @@ class _UserFormState extends State<UserForm> {
   }
 
   void _onUsernameUpdated() {
-    // store the data, when done we are no longer saving data
-    _userData.storeData().then((value) => setState(() {
-          _isSaveInProgress = false;
-          _isDirty = false;
-        }));
+    if (_isLoggedIn) {
+      // store the data, when done we are no longer saving data
+      _userData.storeData().then((value) => setState(() {
+            _isSaveInProgress = false;
+            _isDirty = false;
+          }));
+    }
   }
 
   void _makeDirty() {
@@ -151,7 +171,9 @@ class _UserFormState extends State<UserForm> {
     setState(() {
       _isVerifySent = true;
     });
-    _userData.currentUser.sendEmailVerification();
+    if (_isLoggedIn) {
+      _userData.currentUser.sendEmailVerification();
+    }
   }
 
   @override
@@ -173,7 +195,7 @@ class _UserFormState extends State<UserForm> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (_userData.currentUser.photoURL != null)
+                      if (_isLoggedIn && _userData.currentUser.photoURL != null)
                         Container(
                           height: Values.image_large,
                           width: Values.image_large,
@@ -185,7 +207,8 @@ class _UserFormState extends State<UserForm> {
                                     _userData.currentUser.photoURL)),
                           ),
                         ),
-                      if (_userData.currentUser.photoURL == null)
+                      if (!_isLoggedIn ||
+                          _userData.currentUser.photoURL == null)
                         IconWidget(Icons.person),
                       Expanded(
                         child: Padding(
@@ -194,12 +217,13 @@ class _UserFormState extends State<UserForm> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               TextWidget(
-                                _userData.currentUser.email,
+                                _isLoggedIn ? _userData.currentUser.email : '',
                               ),
-                              if (_userData.currentUser.providerData.any(
-                                  (element) =>
-                                      element.providerId.toLowerCase() ==
-                                      'google.com'))
+                              if (_isLoggedIn &&
+                                  _userData.currentUser.providerData.any(
+                                      (element) =>
+                                          element.providerId.toLowerCase() ==
+                                          'google.com'))
                                 Row(
                                   children: <Widget>[
                                     IconWidget(FontAwesomeIcons.google,
@@ -210,10 +234,11 @@ class _UserFormState extends State<UserForm> {
                                     ),
                                   ],
                                 ),
-                              if (_userData.currentUser.providerData.any(
-                                  (element) =>
-                                      element.providerId.toLowerCase() ==
-                                      'apple.com'))
+                              if (_isLoggedIn &&
+                                  _userData.currentUser.providerData.any(
+                                      (element) =>
+                                          element.providerId.toLowerCase() ==
+                                          'apple.com'))
                                 Row(
                                   children: <Widget>[
                                     IconWidget(FontAwesomeIcons.apple,
@@ -236,8 +261,9 @@ class _UserFormState extends State<UserForm> {
                         constraints: BoxConstraints.loose(Size.fromWidth(250)),
                         child: TextFormField(
                           key: ValueKey('username'),
-                          initialValue: _userData.username,
+                          initialValue: _isLoggedIn ? _userData.username : '',
                           autocorrect: true,
+                          enabled: _isLoggedIn,
                           textCapitalization: TextCapitalization.words,
                           enableSuggestions: true,
                           validator: (value) {
@@ -254,7 +280,9 @@ class _UserFormState extends State<UserForm> {
                           onChanged: (value) => _makeDirty(),
                           onSaved: (value) {
                             // store this value on the user data
-                            _userData.username = value ?? '';
+                            if (_isLoggedIn) {
+                              _userData.username = value ?? '';
+                            }
                           },
                         ),
                       ),
@@ -265,9 +293,9 @@ class _UserFormState extends State<UserForm> {
                             child: TextWidget(values.strings.save)),
                     ],
                   ),
-                  IconButtonWidget(
-                      _signOut, Icons.logout, values.strings.sign_out),
-                  if (!_userData.currentUser.emailVerified)
+                  IconButtonWidget(_isLoggedIn ? _signOut : null, Icons.logout,
+                      values.strings.sign_out),
+                  if (_isLoggedIn && !_userData.currentUser.emailVerified)
                     Padding(
                       padding: const EdgeInsets.all(Values.default_space),
                       child: Column(
@@ -294,8 +322,10 @@ class _UserFormState extends State<UserForm> {
                       ),
                     ),
                   IconButtonWidget(
-                    () => setState(() => _isChangeInPasswordRequired =
-                        !_isChangeInPasswordRequired),
+                    _isLoggedIn
+                        ? () => setState(() => _isChangeInPasswordRequired =
+                            !_isChangeInPasswordRequired)
+                        : null,
                     Icons.password,
                     _isChangeInPasswordRequired
                         ? values.strings.cancel
@@ -316,6 +346,7 @@ class _UserFormState extends State<UserForm> {
                               return null;
                             }
                           },
+                          enabled: _isLoggedIn,
                           decoration: InputDecoration(
                             labelText: values.strings.password,
                           ),
@@ -332,6 +363,7 @@ class _UserFormState extends State<UserForm> {
                               return null;
                             }
                           },
+                          enabled: _isLoggedIn,
                           decoration: InputDecoration(
                             labelText: values.strings.confirm_password,
                           ),
@@ -342,7 +374,9 @@ class _UserFormState extends State<UserForm> {
                           },
                         ),
                         IconButtonWidget(
-                          _isChangingPassword ? null : _changePassword,
+                          !_isLoggedIn || _isChangingPassword
+                              ? null
+                              : _changePassword,
                           Icons.password,
                           values.strings.change_password,
                         ),
@@ -366,7 +400,7 @@ class _UserFormState extends State<UserForm> {
                           Wrap(
                             children: [
                               IconButtonWidget(
-                                _deleteAllOnlineUserData,
+                                _isLoggedIn ? _deleteAllOnlineUserData : null,
                                 Icons.delete_sweep,
                                 values.strings.delete_user_data_online,
                               ),

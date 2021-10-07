@@ -359,6 +359,7 @@
     "warning_no_matches_to_delete": "Vous n'avez supprimé aucun match...",
     "warning_no_matches_in_inbox": "Vous n'avez aucun match envoyé par d'autres membres Scorepal...",
     "warning_password_email_sent": "Nous vous avons envoyé un e-mail avec des instructions sur la façon de réinitialiser votre mot de passe....",
+    "warning_all_local_data_deleted": "Toutes les données locales ont été supprimées, connectez-vous et actualisez vos correspondances pour recharger les données depuis le cloud.",
 
     "error_no_username": "Pour que votre suivi des matchs fonctionne correctement, il vaut la peine de saisir un nom d'utilisateur dans les paramètres de votre utilisateur maintenant.",
     "error_change_server": "Désolé, vous ne pouvez pas changer de serveur à ce stade du match.",

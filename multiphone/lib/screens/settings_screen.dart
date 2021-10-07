@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:multiphone/helpers/log.dart';
 import 'package:multiphone/helpers/preferences.dart';
 import 'package:multiphone/helpers/values.dart';
+import 'package:multiphone/match/match_play_tracker.dart';
+import 'package:multiphone/screens/auth_screen.dart';
 import 'package:multiphone/screens/base_nav_screen.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/common/line_break_widget.dart';
@@ -112,6 +114,7 @@ class _SettingsScreenState extends BaseNavScreenState<SettingsScreen> {
 
   void _changeUser() {
     // change the user / login or logout or whatever
+    MatchPlayTracker.navTo(AuthScreen.routeName, context);
   }
 
   void _changeUserLoginState(User user) {

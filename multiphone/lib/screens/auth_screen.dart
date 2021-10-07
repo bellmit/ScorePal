@@ -215,7 +215,6 @@ class _AuthScreenState extends State<AuthScreen> {
       Log.error(error.toString());
       throw error;
     });
-    ;
   }
 
   Future<UserCredential> _loginEmailPassword(

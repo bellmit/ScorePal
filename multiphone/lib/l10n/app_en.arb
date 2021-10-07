@@ -428,6 +428,7 @@
     "warning_no_matches_to_delete": "You haven't any deleted matches...",
     "warning_no_matches_in_inbox": "You haven't any matches sent from other Scorepal members...",
     "warning_password_email_sent": "We have sent you an email with instructions on how to reset your password....",
+    "warning_all_local_data_deleted": "All local data has been deleted, sign on and refresh your matches to load data back from the cloud.",
 
     "error_no_username": "For your match tracking to work properly, it's worth entering a username on your user's settings now.",
     "error_change_server": "Sorry, you can't change server at this point in the match.",

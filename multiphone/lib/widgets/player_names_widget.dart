@@ -30,7 +30,7 @@ class _PlayerNamesWidgetState extends State<PlayerNamesWidget>
     with TickerProviderStateMixin {
   bool _showPartners;
   PlayerIndex _servingPlayer = PlayerIndex.P_ONE;
-  PlayerIndex _playerAccountUser = null;
+  PlayerIndex _playerAccountUser;
 
   AnimationController _controller;
   Animation<Offset> _slideAnimation;

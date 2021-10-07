@@ -4,7 +4,6 @@ import 'package:multiphone/helpers/values.dart';
 import 'package:multiphone/providers/active_match.dart';
 import 'package:multiphone/widgets/common/common_widgets.dart';
 import 'package:multiphone/widgets/match_momentum_widget.dart';
-import 'package:provider/provider.dart';
 
 class MatchMomentumScreen extends StatefulWidget {
   static const String routeName = '/match-momentum';

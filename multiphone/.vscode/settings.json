@@ -4,11 +4,16 @@
         "colors",
         "firestore",
         "flic",
+        "localstore",
         "multiphone",
+        "notitle",
         "pickleball",
+        "Schyler",
         "Scorepal",
         "signedin",
         "signin",
-        "Smartbutton"
+        "Smartbutton",
+        "Trajan",
+        "wakelock"
     ]
 }
